@@ -13,4 +13,16 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((SampleApplication) getApplication()).setCurrentActivity(this);
+    }
+
+    @Override
+    protected void onPause() {
+//        ((SampleApplication) getApplication()).setCurrentActivity(null);
+        super.onPause();
+    }
 }

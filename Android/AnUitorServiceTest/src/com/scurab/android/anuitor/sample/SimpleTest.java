@@ -19,5 +19,7 @@ public class SimpleTest {
     @Test
     public void testSimple() {
         assertNotNull(Robolectric.application);
+
+        Robolectric.getBackgroundScheduler().unPause();
     }
 }
