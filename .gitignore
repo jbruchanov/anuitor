@@ -30,3 +30,19 @@ Thumbs.db
 #.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 .gradle
 build/
+
+
+#GWT
+/build
+/classes
+*.jar
+*.class
+*~
+*/web-app/gwt
+*/web-app/WEB-INF/classes
+target
+gwt-unitCache/
+.gwt-log
+GWT/AnUitor/war/anuitor/gwt/clean
+GWT/AnUitor/war/anuitor
+GWT/AnUitor/.settings
