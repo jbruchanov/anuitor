@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.extract;
 
+import android.os.Build;
 import android.view.View;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
@@ -13,7 +14,7 @@ import java.util.HashMap;
  * Time: 14:20
  */
 public class ViewExtractor {
-    private static final int[] position = new int[2];
+    private static final int[] POSITION = new int[2];
 
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         data.put("Type", String.valueOf(v.getClass().getCanonicalName()));
@@ -30,33 +31,9 @@ public class ViewExtractor {
         data.put("PaddingBottom", v.getPaddingBottom());
         data.put("Visibility", v.getVisibility());
 
-        data.put("ScaleX", v.getScaleX());
-        data.put("ScaleY", v.getScaleY());
+        fillScale(v, data, parentData);
+        fillLocationValues(v, data, parentData);
 
-        float fx = 1f;
-        float fy = 1f;
-        if (parentData != null) {
-            Float ofx = (Float) parentData.get("_ScaleX");
-            Float ofy = (Float) parentData.get("_ScaleY");
-            if (ofx != null || ofy != null) {
-                fx = ofx;
-                fy = ofy;
-            }
-        }
-
-        data.put("_ScaleX", v.getScaleX() * fx);
-        data.put("_ScaleY", v.getScaleY() * fy);
-
-        v.getLocationOnScreen(position);
-        data.put("LocationScreenX", position[0]);
-        data.put("LocationScreenY", position[1]);
-        position[0] = position[1] = 0;
-
-        v.getLocationInWindow(position);
-        data.put("LocationWindowX", position[0]);
-        data.put("LocationWindowY", position[1]);
-
-        String s = v.getClass().getSimpleName();
         if (isExportView(v)) {
             fillAnnotatedValues(v, data);
         }
@@ -64,6 +41,53 @@ public class ViewExtractor {
         return data;
     }
 
+    public static HashMap<String, Object> fillLocationValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+        v.getLocationOnScreen(POSITION);
+        data.put("LocationScreenX", POSITION[0]);
+        data.put("LocationScreenY", POSITION[1]);
+        POSITION[0] = POSITION[1] = 0;
+
+        v.getLocationInWindow(POSITION);
+        data.put("LocationWindowX", POSITION[0]);
+        data.put("LocationWindowY", POSITION[1]);
+        return data;
+    }
+
+    /**
+     * Fill fields for ScaleX, ScaleY values
+     * @param v
+     * @param data
+     * @param parentData
+     * @return
+     */
+    public static HashMap<String, Object> fillScale(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            data.put("ScaleX", v.getScaleX());
+            data.put("ScaleY", v.getScaleY());
+
+            float fx = 1f;
+            float fy = 1f;
+            if (parentData != null) {
+                Float ofx = (Float) parentData.get("_ScaleX");
+                Float ofy = (Float) parentData.get("_ScaleY");
+                if (ofx != null || ofy != null) {
+                    fx = ofx;
+                    fy = ofy;
+                }
+            }
+
+            data.put("_ScaleX", v.getScaleX() * fx);
+            data.put("_ScaleY", v.getScaleY() * fy);
+        }
+        return data;
+    }
+
+    /**
+     * Fill annotated values
+     * @param v
+     * @param data
+     * @return
+     */
     public static HashMap<String, Object> fillAnnotatedValues(View v, HashMap<String, Object> data) {
         Field[] fields = v.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -81,7 +105,7 @@ public class ViewExtractor {
         return data;
     }
 
-    private boolean isExportView(View v) {
+    private static boolean isExportView(View v) {
         return v.getClass().getAnnotation(ExportView.class) != null;
     }
 }

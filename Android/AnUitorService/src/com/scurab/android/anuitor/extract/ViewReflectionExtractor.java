@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.extract;
 
 import android.util.Log;
 import android.view.View;
+
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 
@@ -14,8 +15,7 @@ import java.util.HashMap;
  * Date: 12/05/2014
  * Time: 14:20
  */
-public class ViewReflectionExtractor extends ViewExtractor{
-    private static final int[] position = new int[2];
+public class ViewReflectionExtractor extends ViewExtractor {
     public static final String GET = "get";
 
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
@@ -44,28 +44,8 @@ public class ViewReflectionExtractor extends ViewExtractor{
             }
         }
 
-        float fx = 1f;
-        float fy = 1f;
-        if (parentData != null) {
-            Float ofx = (Float) parentData.get("_ScaleX");
-            Float ofy = (Float) parentData.get("_ScaleY");
-            if (ofx != null || ofy != null) {
-                fx = ofx;
-                fy = ofy;
-            }
-        }
-
-        data.put("_ScaleX", v.getScaleX() * fx);
-        data.put("_ScaleY", v.getScaleY() * fy);
-
-        v.getLocationOnScreen(position);
-        data.put("LocationScreenX", position[0]);
-        data.put("LocationScreenY", position[1]);
-        position[0] = position[1] = 0;
-
-        v.getLocationInWindow(position);
-        data.put("LocationWindowX", position[0]);
-        data.put("LocationWindowY", position[1]);
+        ViewExtractor.fillScale(v, data, parentData);
+        ViewExtractor.fillLocationValues(v, data, parentData);
 
         if (isExportView(v)) {
             fillAnnotatedValues(v, data);
