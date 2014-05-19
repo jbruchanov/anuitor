@@ -40,7 +40,7 @@ public class FileSystemToolsTest extends AndroidTestCase {
     }
 
     public void testGetStorages() {
-        List<FSItem> root = FileSystemTools.getRoot(getContext());
+        List<FSItem> root = FileSystemTools.get(getContext());
         assertNotNull(root);
         assertFalse(root.isEmpty());
     }

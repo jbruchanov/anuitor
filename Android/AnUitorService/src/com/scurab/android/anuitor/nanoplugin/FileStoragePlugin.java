@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.nanoplugin;
 
-import android.net.Uri;
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.scurab.android.anuitor.model.FSItem;
 import com.scurab.android.anuitor.tools.FileSystemTools;
@@ -19,10 +20,11 @@ import java.util.Map;
 public class FileStoragePlugin extends BasePlugin {
 
     private static final String FILE = "storage.json";
-    private String mAppRoot;
+    private final List<FSItem> mRootItems;
 
-    public FileStoragePlugin(String appRoot) {
-        mAppRoot = String.format("/data/data/%s/", appRoot);;
+
+    public FileStoragePlugin(Context context) {
+        mRootItems = FileSystemTools.get(context);
     }
 
     @Override
@@ -39,19 +41,12 @@ public class FileStoragePlugin extends BasePlugin {
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         String path = session.getQueryParameterString();
         int len = path != null ? path.length() : 0;
-        if (len == 0) {
-            path = mAppRoot;
-        } else if (path.charAt(0) != '/') {
-            path = mAppRoot + path;
-        }
 
-        String json = "{}";
-        try {
-            List<FSItem> files = FileSystemTools.get(path);
-            json = new Gson().toJson(files);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<FSItem> files;
+        String json;
+
+        files = len == 0 ? mRootItems : FileSystemTools.get(path);
+        json = new Gson().toJson(files);
 
         NanoHTTPD.Response response = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
             @Override public int getRequestStatus() { return 0; }

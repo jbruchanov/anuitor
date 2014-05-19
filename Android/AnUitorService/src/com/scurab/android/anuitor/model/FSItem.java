@@ -45,7 +45,7 @@ public class FSItem implements Comparable<FSItem> {
         if (mType == o.mType) {
             return mName.compareTo(o.mName);
         } else {
-            return mType - o.mType;
+            return -(mType - o.mType);
         }
     }
 }

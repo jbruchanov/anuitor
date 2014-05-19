@@ -26,7 +26,7 @@ public class FileSystemTools {
      * @param context
      * @return
      */
-    public static List<FSItem> getRoot(Context context) {
+    public static List<FSItem> get(Context context) {
         ArrayList<FSItem> result = new ArrayList<FSItem>();
         File f = new File(String.format("/data/data/%s", context.getPackageName()));
         if (f.exists()) {
@@ -39,6 +39,31 @@ public class FileSystemTools {
         return result;
     }
 
+    /**
+     * Get items for specific location
+     *
+     * @param location
+     * @return
+     */
+    public static List<FSItem> get(String location) {
+        File[] files = new File(location).listFiles();
+
+        ArrayList<FSItem> result = new ArrayList<FSItem>();
+        try {
+            if (files != null) { //if we don't have access it's null
+                for (File f : files) {
+                    int type = f.isFile() ? FSItem.TYPE_FILE : FSItem.TYPE_FOLDER;
+                    FSItem fi = new FSItem(f.getName(), type == FSItem.TYPE_FILE ? f.length() : 0, type);
+                    result.add(fi);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Collections.sort(result);
+        return result;
+    }
 
     @SuppressWarnings("UnusedDeclaration")
     private static String[] getMemoryFolders() {
@@ -58,25 +83,5 @@ public class FileSystemTools {
             }
         }
         return null;
-    }
-
-    public static List<FSItem> get(String location) {
-        File[] files = new File(location).listFiles();
-
-        ArrayList<FSItem> result = new ArrayList<FSItem>();
-        try {
-            if (files != null) { //if we don't have access it's null
-                for (File f : files) {
-                    int type = f.isFile() ? FSItem.TYPE_FILE : FSItem.TYPE_FOLDER;
-                    FSItem fi = new FSItem(f.getName(), type == FSItem.TYPE_FILE ? f.length() : 0, type);
-                    result.add(fi);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Collections.sort(result);
-        return result;
     }
 }
