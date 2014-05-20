@@ -62,7 +62,7 @@ public class ViewNodeJSO extends JavaScriptObject {
     public final Object getDataValue(String key) {
         String type = getDataValueType(key);
         if ("Number".equals(type)) {
-            return getInt(key);
+            return getDouble(key);            
         }else if ("String".equals(type)) {
             return getString(key);
         } else if ("Boolean".equals(type)) {
@@ -92,6 +92,12 @@ public class ViewNodeJSO extends JavaScriptObject {
     /*-{
         return this.Data[key];
     }-*/;
+    
+    public final native double getDouble(String key)
+    /*-{
+        return this.Data[key];
+    }-*/;
+
 
     public final native float getFloat(String key)
     /*-{
