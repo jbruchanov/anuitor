@@ -5,6 +5,9 @@ import java.util.Set;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.text.shared.SafeHtmlRenderer;
 
 /**
  * Base JSObject for intercommunication with device service
@@ -70,6 +73,15 @@ public class ViewNodeJSO extends JavaScriptObject {
     /*-{
         return this.Data[key];
     }-*/;
+        
+    public final String getType(){
+        return getString("Type");
+    }
+    
+    public final String getSimpleType(){
+        String[] nameFull = getType().split("\\.");
+        return nameFull[nameFull.length - 1];
+    }
 
     public final native boolean hasKey(String key)
     /*-{
