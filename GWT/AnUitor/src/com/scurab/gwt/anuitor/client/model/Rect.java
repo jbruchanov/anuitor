@@ -52,8 +52,8 @@ public class Rect {
 
         if (withScaling) {
             String s = view.toString();
-            float scaleX = view.hasKey(ViewFields.Internal.SCALE_X) ? view.getFloat(ViewFields.Internal.SCALE_X) : 1f;
-            float scaleY = view.hasKey(ViewFields.Internal.SCALE_Y) ? view.getFloat(ViewFields.Internal.SCALE_Y) : 1f;
+            double scaleX = view.hasKey(ViewFields.Internal.SCALE_X) ? view.getDouble(ViewFields.Internal.SCALE_X) : 1.0;
+            double scaleY = view.hasKey(ViewFields.Internal.SCALE_Y) ? view.getDouble(ViewFields.Internal.SCALE_Y) : 1.0;
             width *= scaleX;
             height *= scaleY;
         }

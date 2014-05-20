@@ -6,7 +6,6 @@ import android.widget.TextView;
 import com.scurab.android.anuitor.model.ViewNode;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * User: jbruchanov
