@@ -18,9 +18,15 @@ import java.util.Map;
 public class ViewHierarchyPlugin extends ActivityPlugin {
 
     public static final String TREE_JSON = "viewhierarchy.json";
+    public static final String PATH = "/" + TREE_JSON;
 
     public ViewHierarchyPlugin(KnowsActivity... knowsActivity) {
         super(knowsActivity);
+    }
+
+    @Override
+    public boolean canServeUri(String uri, File rootDir) {
+        return PATH.equals(uri);
     }
 
     @Override

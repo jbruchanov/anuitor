@@ -20,6 +20,7 @@ import java.util.Map;
 public class FileStoragePlugin extends BasePlugin {
 
     private static final String FILE = "storage.json";
+    private static final String PATH = "/" + FILE;
     private final List<FSItem> mRootItems;
 
 
@@ -35,6 +36,11 @@ public class FileStoragePlugin extends BasePlugin {
     @Override
     public String mimeType() {
         return MIME_JSON;
+    }
+
+    @Override
+    public boolean canServeUri(String uri, File rootDir) {
+        return PATH.equals(uri);
     }
 
     @Override

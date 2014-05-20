@@ -17,9 +17,15 @@ import java.util.Map;
 public class ScreenViewPlugin extends ActivityPlugin {
 
     public static final String SCREEN_PNG = "screen.png";
+    public static final String PATH = "/" + SCREEN_PNG;
 
     public ScreenViewPlugin(KnowsActivity... knowsActivity) {
         super(knowsActivity);
+    }
+
+    @Override
+    public boolean canServeUri(String uri, File rootDir) {
+        return PATH.equals(uri);
     }
 
     @Override

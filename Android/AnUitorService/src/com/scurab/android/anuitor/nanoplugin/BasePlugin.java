@@ -16,11 +16,6 @@ public abstract class BasePlugin implements WebServerPlugin {
     public static final String MIME_PNG = "image/png";
 
     @Override
-    public boolean canServeUri(String uri, File rootDir) {
-        return true;
-    }
-
-    @Override
     public void initialize(Map<String, String> commandLineOptions) {
 
     }
