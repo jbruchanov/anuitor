@@ -48,8 +48,37 @@ public class ViewNodeJSO extends JavaScriptObject {
     public final Set<String> getDataKeys() {
         return new JSONObject(getData()).keySet();
     }
+    
+    public final native String getDataValueType(String key)
+    /*-{
+		var obj = this.Data[key];
+		if (typeof obj === "undefined")
+			return "undefined";
+		if (obj === null)
+			return "null";
+		return Object.prototype.toString.call(obj).match(/^\[object\s(.*)\]$/)[1];
+    }-*/;
+    
+    public final Object getDataValue(String key) {
+        String type = getDataValueType(key);
+        if ("Number".equals(type)) {
+            return getInt(key);
+        }else if ("String".equals(type)) {
+            return getString(key);
+        } else if ("Boolean".equals(type)) {
+            return getBoolean(type);
+        } else if ("Array".equals(type)) {
+            throw new IllegalStateException("Not implemented for Array type");
+        } else if ("Object".equals(type)) {
+            return getJSDataValue(key);
+        } else if ("null".equals(type) || "undefined".equals(type)) {
+            return null;
+        } else {
+            throw new IllegalStateException("Not implemented for type:" + type);
+        }
+    }
 
-    public final native Object getDataValue(String key)
+    public final native JavaScriptObject getJSDataValue(String key)
     /*-{
         return this.Data[key];
     }-*/;
