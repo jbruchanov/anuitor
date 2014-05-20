@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.scurab.android.anuitor.model.ViewNode;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * User: jbruchanov
@@ -55,9 +56,13 @@ public final class ViewDetailExtractor {
         }
     }
 
-    private static ViewExtractor getExtractor(View v) {
+    static ViewExtractor getExtractor(View v) {
         Class<?> clz = v.getClass();
         ViewExtractor ve = MAP.get(clz);
+        while (ve == null && clz != Object.class) {//object just for sure that View is unregistered
+            clz = clz.getSuperclass();
+            ve = MAP.get(clz);
+        }
         if (ve == null) {
             ve = MAP.get(View.class);
         }
