@@ -3,12 +3,11 @@ package com.scurab.android.anuitor.extract;
 import android.util.Log;
 import android.view.View;
 
-import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 /**
  * User: jbruchanov
@@ -18,23 +17,37 @@ import java.util.HashMap;
 public class ViewReflectionExtractor extends ViewExtractor {
     public static final String GET = "get";
 
+    /**
+     * Fill this with regexp patterns to ignore methods
+     */
+    public static Pattern[] IGNORE_PATTERNS = new Pattern[]{
+            Pattern.compile("add.*", 0),
+            Pattern.compile("call.*", 0),
+            Pattern.compile("gen.*", 0),
+            Pattern.compile("on.*", 0),
+            Pattern.compile("perform.*", 0),
+            Pattern.compile("request.*", 0),
+            Pattern.compile("show.*", 0),
+            Pattern.compile("will.*", 0)
+    };
+
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         data.put("Type", String.valueOf(v.getClass().getCanonicalName()));
 
         Class clz = v.getClass();
         Method[] methods = clz.getMethods();
         for (Method method : methods) {
-            //TODO: add some excl mechanic to avoid calling performClick() etc...
             String name = method.getName();
-            Class<?> returnType = method.getReturnType();
+            if (ignoreMethod(name)) {
+                continue;
+            }
 
+            Class<?> returnType = method.getReturnType();
             if (method.getParameterTypes().length == 0
                     && returnType.isPrimitive()
                     && !returnType.equals(Void.TYPE)) {
+
                 method.setAccessible(true);
-                if (name.startsWith(GET)) {
-                    name = name.substring(GET.length());
-                }
                 try {
                     Object value = method.invoke(v, null);
                     data.put(name, value);
@@ -52,6 +65,15 @@ public class ViewReflectionExtractor extends ViewExtractor {
         }
 
         return data;
+    }
+
+    public static boolean ignoreMethod(String methodName) {
+        for (Pattern s : IGNORE_PATTERNS) {
+            if (s.matcher(methodName).matches()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isExportView(View v) {
