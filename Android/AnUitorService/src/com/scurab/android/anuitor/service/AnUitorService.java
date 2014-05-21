@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.service;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -89,8 +90,13 @@ public class AnUitorService extends Service {
         String s = getBaseContext().getCacheDir().toString();
 
         mServer = new AnUiHttpServer(this, port, new File(s), false, mCallbackHandler, (KnowsActivity)getApplication());
-        mServer.start();
-        startForeground();
+        try {
+            mServer.start();
+            startForeground();
+        } catch (Exception e) {
+            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            nm.notify(1, createSimpleNotification(e.getMessage()));
+        }
     }
 
 
@@ -112,8 +118,14 @@ public class AnUitorService extends Service {
     }
 
     private Notification createSimpleNotification() {
+        return createSimpleNotification(null);
+    }
+    private Notification createSimpleNotification(String addMsg) {
         int defaults = Notification.DEFAULT_LIGHTS;
         String msg = String.format("IPs:%s\nPort:%s", NetTools.getLocalIpAddress(), mServer.getListeningPort());
+        if (addMsg != null) {
+            msg = msg + "\n" + addMsg;
+        }
         Notification noti = new NotificationCompat.Builder(this)
                 .setContentTitle("AnUitor")
                 .setAutoCancel(true)
