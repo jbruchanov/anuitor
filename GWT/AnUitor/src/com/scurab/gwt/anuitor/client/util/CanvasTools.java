@@ -30,7 +30,7 @@ public final class CanvasTools{
         drawVerticalLine(c, x, y, h);
         drawVerticalLine(c, x + w, y, h);
 
-        c.setGlobalAlpha(0.3);
+        c.setGlobalAlpha(0.05);
         c.setFillStyle(fill);
         c.fillRect(x, y, w, h);
         c.setGlobalAlpha(1);
