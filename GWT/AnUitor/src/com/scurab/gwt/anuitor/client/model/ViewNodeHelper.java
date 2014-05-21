@@ -53,7 +53,7 @@ public class ViewNodeHelper {
      * @return
      */
     public static ViewNodeJSO findFrontVisibleView(ViewNodeJSO root, int x, int y) {
-        if(((int)root.getDouble(ViewFields.VISIBILITY)) != 0){//not visible
+        if(((int)root.getDouble(ViewFields.Internal.VISIBILITY)) != 0){//not visible
             return null;
         }
         if (Rect.fromView(root).contains(x, y)) {

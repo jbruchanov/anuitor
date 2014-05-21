@@ -1,5 +1,9 @@
 /** Add css rules here for your application. */
 
+body{
+	font-family:verdana;
+  	font-size: 0.85em;
+}
 
 /** Example rules used by the template application (remove for your app) */
 h1 {
@@ -31,4 +35,20 @@ h1 {
 /** Set ids using widget.getElement().setId("idOfElement") */
 #closeButton {
   margin: 15px 6px 6px;
+}
+
+.TableValue{
+	font-family: monospace;	
+}
+
+.treeNode{	
+	cursor: hand;
+  	cursor: pointer;
+}
+
+.treeNode_highlighted{
+	font-weight: bold;
+	color: red;
+	cursor: hand;
+  	cursor: pointer;
 }

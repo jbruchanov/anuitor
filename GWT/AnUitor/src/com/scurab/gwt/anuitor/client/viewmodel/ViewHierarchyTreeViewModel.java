@@ -11,6 +11,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.text.shared.SafeHtmlRenderer;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -26,6 +27,8 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
  */
 public class ViewHierarchyTreeViewModel implements TreeViewModel {
 
+    private static final String CSS_HIGHLIGHTED_NODE = "treeNode_highlighted";
+    
     public interface OnSelectionChangedListener {
         void onSelectionChanged(ViewNodeJSO viewNode, boolean selected);
     }
@@ -144,8 +147,8 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         }
     };
 
-    private ViewNodeCell mViewNodeCell = new ViewNodeCell();
-
+    private ViewNodeCell mViewNodeCell = new ViewNodeCell();    
+    
     /**
      * Simple ViewNodeJSO -> String rendering
      * 
@@ -155,11 +158,11 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
     private class ViewNodeCell extends AbstractSafeHtmlCell<ViewNodeJSO> {                
         private static final String EVENT_MOUSEOVER = "mouseover";
         private static final String EVENT_CLICK = "click";
-        
+
         public ViewNodeCell() {
             super(new SafeHtmlRenderer<ViewNodeJSO>() {
                 @Override
-                public SafeHtml render(ViewNodeJSO object) {
+                public SafeHtml render(ViewNodeJSO object) {                    
                     return SafeHtmlUtils.fromString(object.getSimpleType());
                 }
 
@@ -167,12 +170,21 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
                 public void render(ViewNodeJSO object, SafeHtmlBuilder builder) {
                     builder.append(render(object));
                 }
-            }, EVENT_MOUSEOVER, EVENT_CLICK);
+            }, EVENT_MOUSEOVER, EVENT_CLICK);                      
         }
 
         @Override
         protected void render(com.google.gwt.cell.client.Cell.Context context, SafeHtml data, SafeHtmlBuilder sb) {
-            sb.append(data);
+            Object o = context.getKey();
+            int key = 0; 
+            if(o instanceof ViewNodeJSO){
+                key = o.hashCode();
+            }
+            sb.appendHtmlConstant("<label class=\"treeNode\" id=\"ViewNodeJSO_id_" + key + "\">");
+            if (data != null) {
+              sb.append(data);
+            }
+            sb.appendHtmlConstant("</label>");
         }
         
         @Override
@@ -198,9 +210,62 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
     
     /**
      * Get current selected node, null if nothing is selected
+     * 
      * @return
      */
     public ViewNodeJSO getSelectedNode() {
         return mSelectionModel.getSelectedObject();
+    }
+
+    /**
+     * Select node
+     * @param vs
+     */
+    public void selectNode(ViewNodeJSO vs) {
+        if (mSelectionChangedHandler.mLastSelected != null) {
+            mSelectionModel.setSelected(mSelectionChangedHandler.mLastSelected, false);
+        }
+        mSelectionModel.setSelected(vs, true);
+    }
+    
+    /**
+     * Clear any selected node
+     * @return true if there was a selection
+     */
+    public boolean clearSelectedNode(){
+        if (mSelectionChangedHandler.mLastSelected != null) {
+            mSelectionModel.setSelected(mSelectionChangedHandler.mLastSelected, false);
+            return true;
+        }
+        return false;
+    }
+
+    /* Last highlighted element */
+    private Element mHighlightedElement;
+
+    /**
+     * Highlight element by viewnode
+     * @param vs
+     */
+    public void highlightNode(ViewNodeJSO vs) {
+        String key = "ViewNodeJSO_id_" + vs.hashCode();
+        clearHighlightedNode();
+        mHighlightedElement = DOM.getElementById(key);
+        if (mHighlightedElement != null) {
+            mHighlightedElement.addClassName(CSS_HIGHLIGHTED_NODE);            
+        }
+    }
+    
+    /**
+     * Remove highlight for any viewnode
+     * @return true if there was a highlight
+     */
+    public boolean clearHighlightedNode(){
+        if (mHighlightedElement != null) {
+            mHighlightedElement.removeClassName(CSS_HIGHLIGHTED_NODE);
+            mHighlightedElement = null;
+            return true;
+        }
+        return false;
     }
 }
