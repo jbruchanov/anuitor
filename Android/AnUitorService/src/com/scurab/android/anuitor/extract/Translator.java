@@ -2,6 +2,10 @@ package com.scurab.android.anuitor.extract;
 
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
 /**
  *
@@ -60,5 +64,37 @@ public class Translator {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * Translate value from layout params
+     * @param value
+     * @return
+     */
+    public static Object layoutSize(int value) {
+        if (ViewGroup.LayoutParams.MATCH_PARENT == value) {
+            return "match_parent";
+        } else if (ViewGroup.LayoutParams.WRAP_CONTENT == value) {
+            return "wrap_content";
+        } else {
+            return value;
+        }
+    }
+
+    private static final String[] RELATIVE_LAYOUT_RULES =
+            new String[]{"leftOf", "rightOf", "above", "below", "alignBaseline", "alignLeft", "alignTop", "alignRight", "alignBottom", "alignParentLeft", "alignParentTop", "alignParentRight", "alignParentBottom", "center", "centerHorizontal", "centerVertical"};
+
+    public static String relativeLayoutParamRuleName(int index){
+        return "layoutParams_" + RELATIVE_LAYOUT_RULES[index];
+    }
+
+    public static Object relativeLayoutParamRuleValue(int value) {
+        if (RelativeLayout.TRUE == value) {
+            return true;
+        } else if (value == 0) {
+            return "false/NO_ID";
+        } else {
+            return IdsHelper.getValueForId(value);
+        }
     }
 }

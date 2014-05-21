@@ -2,6 +2,9 @@ package com.scurab.android.anuitor.extract;
 
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 
@@ -29,8 +32,11 @@ public class ViewExtractor {
         data.put("PaddingTop", v.getPaddingTop());
         data.put("PaddingRight", v.getPaddingRight());
         data.put("PaddingBottom", v.getPaddingBottom());
+        data.put("_Visibility", v.getVisibility());
         data.put("Visibility", Translator.visibility(v.getVisibility()));
 
+
+        fillLayoutParams(v, data, parentData);
         fillScale(v, data, parentData);
         fillLocationValues(v, data, parentData);
 
@@ -38,6 +44,39 @@ public class ViewExtractor {
             fillAnnotatedValues(v, data);
         }
 
+        return data;
+    }
+
+    public HashMap<String, Object> fillLayoutParams(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+        ViewGroup.LayoutParams lp = v.getLayoutParams();
+
+        data.put("LayoutParams", lp != null ? lp.getClass().getCanonicalName() : "null");
+
+        if (lp == null) {
+            return data;
+        }
+
+        data.put("layout_width", Translator.layoutSize(lp.width));
+        data.put("layout_height", Translator.layoutSize(lp.height));
+        if (lp instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lp;
+            data.put("layoutParams_leftMargin", mlp.leftMargin);
+            data.put("layoutParams_topMargin", mlp.topMargin);
+            data.put("layoutParams_rightMargin", mlp.rightMargin);
+            data.put("layoutParams_bottomMargin", mlp.bottomMargin);
+
+        }
+
+        if (lp instanceof RelativeLayout.LayoutParams) {
+            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) lp;
+            int[] rules = rlp.getRules();
+            for (int i = 0; i < rules.length; i++) {
+                int rlData = rules[i];
+                if (rlData != 0) {
+                    data.put(Translator.relativeLayoutParamRuleName(i), Translator.relativeLayoutParamRuleValue(rlData));
+                }
+            }
+        }
         return data;
     }
 
@@ -55,13 +94,14 @@ public class ViewExtractor {
 
     /**
      * Fill fields for ScaleX, ScaleY values
+     *
      * @param v
      * @param data
      * @param parentData
      * @return
      */
     public static HashMap<String, Object> fillScale(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             data.put("ScaleX", v.getScaleX());
             data.put("ScaleY", v.getScaleY());
 
@@ -84,6 +124,7 @@ public class ViewExtractor {
 
     /**
      * Fill annotated values
+     *
      * @param v
      * @param data
      * @return
