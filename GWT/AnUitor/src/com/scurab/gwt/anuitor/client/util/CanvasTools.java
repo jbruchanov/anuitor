@@ -24,6 +24,8 @@ public final class CanvasTools{
      */
     public static void drawRectangle(Canvas canvas, int x, int y, int w, int h, String stroke, String fill) {
         Context2d c = canvas.getContext2d();
+        
+        c.setLineWidth(1);
         c.setStrokeStyle(stroke);
         drawHorizontalLine(c, x, y, w);
         drawHorizontalLine(c, x, y + h, w);
