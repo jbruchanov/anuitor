@@ -29,7 +29,7 @@ public class ViewExtractor {
         data.put("PaddingTop", v.getPaddingTop());
         data.put("PaddingRight", v.getPaddingRight());
         data.put("PaddingBottom", v.getPaddingBottom());
-        data.put("Visibility", v.getVisibility());
+        data.put("Visibility", Translator.visibility(v.getVisibility()));
 
         fillScale(v, data, parentData);
         fillLocationValues(v, data, parentData);

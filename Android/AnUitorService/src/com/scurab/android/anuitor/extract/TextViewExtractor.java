@@ -20,39 +20,7 @@ public class TextViewExtractor extends ViewExtractor {
         values.put("Text", String.valueOf(tv.getText()));
         values.put("TextSize", tv.getTextSize());
         values.put("TextColor", "#" + Integer.toHexString(tv.getCurrentTextColor()).toUpperCase());
-        values.put("Gravity",getGravity(tv));
+        values.put("Gravity",Translator.gravity(tv.getGravity()));
         return values;
-    }
-
-    private String getGravity(TextView tv) {
-        int gravity = tv.getGravity();
-        StringBuilder sb = new StringBuilder();
-        if ((gravity & Gravity.CENTER) == Gravity.CENTER) {
-            sb.append("Center");
-        } else {
-            if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
-                sb.append("CenterVertical|");
-            }
-            if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
-                sb.append("CenterHorizontal|");
-            }
-            if ((gravity & Gravity.TOP) == Gravity.TOP) {
-                sb.append("Top|");
-            }
-            if ((gravity & Gravity.LEFT) == Gravity.LEFT) {
-                sb.append("Left|");
-            }
-            if ((gravity & Gravity.RIGHT) == Gravity.RIGHT) {
-                sb.append("Right|");
-            }
-            if ((gravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
-                sb.append("Bottom|");
-            }
-            int len = sb.length();
-            if (len > 0) {
-                sb.setLength(len - 1);
-            }
-        }
-        return sb.toString();
     }
 }
