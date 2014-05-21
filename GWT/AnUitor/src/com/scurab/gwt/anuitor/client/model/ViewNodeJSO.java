@@ -5,9 +5,6 @@ import java.util.Set;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.text.shared.SafeHtmlRenderer;
 
 /**
  * Base JSObject for intercommunication with device service
@@ -66,7 +63,8 @@ public class ViewNodeJSO extends JavaScriptObject {
         }else if ("String".equals(type)) {
             return getString(key);
         } else if ("Boolean".equals(type)) {
-            return getBoolean(type);
+            //TODO: check why do i have to convert to string and then parse it, json looks fine
+            return Boolean.parseBoolean(getStringedValue(key));
         } else if ("Array".equals(type)) {
             throw new IllegalStateException("Not implemented for Array type");
         } else if ("Object".equals(type)) {
@@ -86,29 +84,23 @@ public class ViewNodeJSO extends JavaScriptObject {
     public final native String getString(String key)
     /*-{
         return this.Data[key];
-    }-*/;
-
-    public final native int getInt(String key)
-    /*-{
-        return this.Data[key];
-    }-*/;
+    }-*/;    
     
     public final native double getDouble(String key)
     /*-{
         return this.Data[key];
-    }-*/;
-
-
-    public final native float getFloat(String key)
-    /*-{
-        return this.Data[key];
-    }-*/;
+    }-*/;    
 
     public final native boolean getBoolean(String key)
     /*-{
-        return this.Data[key];
+        return (this.Data[key] === true);
     }-*/;
-        
+    
+    public final native String getStringedValue(String key)
+    /*-{
+        return String(this.Data[key]);
+    }-*/;
+    
     public final String getType(){
         return getString("Type");
     }

@@ -45,13 +45,12 @@ public class Rect {
      * @return
      */
     public static Rect fromView(ViewNodeJSO view, boolean withScaling) {
-        int x = view.getInt(ViewFields.LOCATION_SCREEN_X);
-        int y = view.getInt(ViewFields.LOCATION_SCREEN_Y);
-        int width = view.getInt(ViewFields.WIDTH);
-        int height = view.getInt(ViewFields.HEIGHT);
+        int x = (int)view.getDouble(ViewFields.LOCATION_SCREEN_X);
+        int y = (int)view.getDouble(ViewFields.LOCATION_SCREEN_Y);
+        int width = (int)view.getDouble(ViewFields.WIDTH);
+        int height = (int)view.getDouble(ViewFields.HEIGHT);
 
-        if (withScaling) {
-            String s = view.toString();
+        if (withScaling) {            
             double scaleX = view.hasKey(ViewFields.Internal.SCALE_X) ? view.getDouble(ViewFields.Internal.SCALE_X) : 1.0;
             double scaleY = view.hasKey(ViewFields.Internal.SCALE_Y) ? view.getDouble(ViewFields.Internal.SCALE_Y) : 1.0;
             width *= scaleX;
