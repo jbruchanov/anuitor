@@ -54,3 +54,4 @@ misc.xml
 encodings.xml
 compiler.xml
 .name
+*.symbolMap
