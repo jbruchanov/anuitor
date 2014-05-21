@@ -10,24 +10,7 @@ import java.util.List;
  * @author jbruchanov
  *
  */
-public class ViewNodeHelper {
-
-    /**
-     * Find most deep view based on position
-     * @param root
-     * @param x
-     * @param y
-     * @return
-     */
-    public static ViewNodeJSO findViewByPosition(ViewNodeJSO root, int x, int y) {
-        List<ViewNodeJSO> result = new ArrayList<ViewNodeJSO>();
-        findByPosition(root, x, y, result);
-        if (result.size() > 0) {
-            Collections.sort(result, LEVEL_COMPARATOR);
-            return result.get(0);
-        }
-        return null;
-    }
+public class ViewNodeHelper {    
 
     /**
      * Find views in view hieararchy based on position
@@ -52,38 +35,39 @@ public class ViewNodeHelper {
     private static void findByPosition(ViewNodeJSO root, int x, int y, List<ViewNodeJSO> found) {
         if (Rect.fromView(root).contains(x, y)) {
             int n = root.getNodes() != null ? root.getNodes().length() : 0;
-            if (n > 0) {
+            if (n > 0) {                
                 for (int i = n - 1; i >= 0; i--) {
                     ViewNodeJSO child = root.getNodes().get(i);
                     findByPosition(child, x, y, found);
                 }
-            } else {
-                found.add(root);
             }
+            found.add(root);            
         }
     }
 
     /**
-     * Old implementation for traversing
+     * Find front visible only view
      * @param root
      * @param x
      * @param y
      * @return
      */
-    private static ViewNodeJSO findByPositionOld(ViewNodeJSO root, int x, int y) {
+    public static ViewNodeJSO findFrontVisibleView(ViewNodeJSO root, int x, int y) {
+        if(((int)root.getDouble(ViewFields.VISIBILITY)) != 0){//not visible
+            return null;
+        }
         if (Rect.fromView(root).contains(x, y)) {
-            int n = root.getNodes().length();
+            int n = root.getNodes() != null ? root.getNodes().length() : 0;
             if (n > 0) {
                 for (int i = n - 1; i >= 0; i--) {
                     ViewNodeJSO child = root.getNodes().get(i);
-                    ViewNodeJSO candidate = findByPositionOld(child, x, y);
+                    ViewNodeJSO candidate = findFrontVisibleView(child, x, y);
                     if (candidate != null) {
                         return candidate;
                     }
                 }
-            } else {
-                return root;
-            }
+            } 
+            return root;            
         }
         return null;
     }
