@@ -44,10 +44,10 @@
   zoom: 1;
 }
 
-.cellTreeItemValue {
-  /* padding-left: 3px;
-  padding-right: 3px; */
-  outline: none;
+.cellTreeItemValue {	
+  padding-left: 3px;
+  padding-right: 10px;
+  outline: none;    
 }
 
 .cellTreeOpenItem {
