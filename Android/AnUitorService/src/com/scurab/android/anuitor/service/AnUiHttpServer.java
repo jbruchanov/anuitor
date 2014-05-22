@@ -22,7 +22,8 @@ public class AnUiHttpServer extends SimpleWebServer {
         registerPluginForMimeType(new ScreenViewPlugin(activityKeeper));
         registerPluginForMimeType(new AggregateMimePlugin(
                 new ViewHierarchyPlugin(activityKeeper),
-                new FileStoragePlugin(context)));
+                new FileStoragePlugin(context),
+                new ResourcesPlugin()));
     }
 
     public static void registerPluginForMimeType(BasePlugin plugin) {

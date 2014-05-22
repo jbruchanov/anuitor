@@ -2,10 +2,14 @@ package com.scurab.android.anuitor.hierarchy;
 
 import android.util.SparseArray;
 
+import com.google.gson.Gson;
 import com.scurab.android.anuitor.R;
+import com.scurab.android.anuitor.model.Pair;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * User: jbruchanov
@@ -38,7 +42,11 @@ public class IdsHelper {
     private static void fillClass(Class<?> containerClass, boolean android) {
         SparseArray<String> values = new SparseArray<String>();
         String name = containerClass.getSimpleName();
-        VALUES.put(containerClass.getCanonicalName(), values);
+        String v = containerClass.getCanonicalName();
+        if(!android) {
+            v = v.replace(containerClass.getPackage().getName(), "").substring(1);
+        }
+        VALUES.put(v, values);
         fillFields(name, values, containerClass.getFields(), android);
     }
 
@@ -80,5 +88,20 @@ public class IdsHelper {
             }
         }
         return null;
+    }
+
+    public static String toJson() {
+        HashMap<String, List<Pair<Object, Object>>> result = new HashMap<String, List<Pair<Object, Object>>>();
+        for (String type : VALUES.keySet()) {
+            List<Pair<Object, Object>> list = new ArrayList<Pair<Object, Object>>();
+            result.put(type, list);
+            SparseArray<String> sa = VALUES.get(type);
+            for (int i = 0, n = sa.size(); i < n; i++) {
+                int key = sa.keyAt(i);
+                String value = sa.get(key);
+                list.add(new Pair<Object, Object>(key, value));
+            }
+        }
+        return new Gson().toJson(result);
     }
 }
