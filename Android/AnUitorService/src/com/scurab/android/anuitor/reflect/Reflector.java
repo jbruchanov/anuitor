@@ -31,7 +31,7 @@ public abstract class Reflector<T> {
     }
 
     protected <T> T callByReflection(Object... objects) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String methodName = getCalleeMethod();//remove _
+        String methodName = getCalleeMethod();
 
         Class<?>[] clzs = new Class<?>[objects.length];
         for (int i = 0; i < objects.length; i++) {
@@ -54,6 +54,20 @@ public abstract class Reflector<T> {
             Class<?> clz = params[i];
             if (clz == Integer.class) {
                 params[i] = int.class;
+            } else if (clz == Boolean.class) {
+                params[i] = boolean.class;
+            } else if (clz == Short.class) {
+                params[i] = short.class;
+            } else if (clz == Character.class) {
+                params[i] = char.class;
+            } else if (clz == Byte.class) {
+                params[i] = byte.class;
+            } else if (clz == Long.class) {
+                params[i] = long.class;
+            } else if (clz == Double.class) {
+                params[i] = double.class;
+            } else if (clz == Float.class) {
+                params[i] = float.class;
             }
         }
     }
