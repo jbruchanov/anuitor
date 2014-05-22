@@ -30,18 +30,18 @@ public abstract class Reflector<T> {
         this.mReal = mReal;
     }
 
-    protected <T> T callByReflection(Object... objects) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    protected <T> T callByReflection(Object... params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String methodName = getCalleeMethod();
 
-        Class<?>[] clzs = new Class<?>[objects.length];
-        for (int i = 0; i < objects.length; i++) {
-            clzs[i] = objects[i].getClass();
+        Class<?>[] clzs = new Class<?>[params.length];
+        for (int i = 0; i < params.length; i++) {
+            clzs[i] = params[i].getClass();
         }
         fixAutoboxing(clzs);
 
         Method m = Resources.class.getDeclaredMethod(methodName, clzs);
         m.setAccessible(true);
-        return (T) m.invoke(mReal, objects);
+        return (T) m.invoke(mReal, params);
     }
 
     protected String getCalleeMethod() {

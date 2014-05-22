@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.extract;
 
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
