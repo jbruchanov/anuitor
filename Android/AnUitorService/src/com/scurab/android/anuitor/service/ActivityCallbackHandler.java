@@ -11,9 +11,12 @@ import com.scurab.android.anuitor.nanoplugin.KnowsActivity;
  * User: jbruchanov
  * Date: 12/05/2014
  * Time: 11:39
+ *
+ * Currently not used as registration for callback handler needs quite high API and it <b>won't catch first start activity</b>
+ * {@link com.scurab.android.anuitor.nanoplugin.KnowsActivity} must be used for Application
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-public class ActivityCallbackHandler implements Application.ActivityLifecycleCallbacks, KnowsActivity {
+class ActivityCallbackHandler implements Application.ActivityLifecycleCallbacks, KnowsActivity {
 
     private Activity mCurrentActivity;
 

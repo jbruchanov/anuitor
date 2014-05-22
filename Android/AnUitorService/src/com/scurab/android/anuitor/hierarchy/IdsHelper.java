@@ -11,10 +11,10 @@ import java.lang.reflect.Field;
  */
 public class IdsHelper {
 
-    private static final SparseArray<String> mValues;
+    private static final SparseArray<String> VALUES;
 
     static {
-        mValues = new SparseArray<String>();
+        VALUES = new SparseArray<String>();
     }
 
     public static void loadValues(Class<?> Rclass) throws NoSuchFieldException, ClassNotFoundException {
@@ -32,7 +32,7 @@ public class IdsHelper {
             String name = field.getName();
             try {
                 int value = field.getInt(null);
-                mValues.put(value, prefix == null ? name : prefix + "." + name);
+                VALUES.put(value, prefix == null ? name : prefix + "." + name);
             } catch (IllegalAccessException e) {
                 //this should never happen if we have setAccessible
                 continue;
@@ -51,6 +51,6 @@ public class IdsHelper {
     }
 
     public static String getValueForId(int id) {
-        return mValues.get(id, null);
+        return VALUES.get(id, null);
     }
 }

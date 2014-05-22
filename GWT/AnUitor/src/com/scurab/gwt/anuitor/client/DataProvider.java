@@ -15,7 +15,7 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
  */
 public class DataProvider {
 
-    private static final String VIEW_TREE_HIERARCHY = "/tree.json";
+    private static final String VIEW_TREE_HIERARCHY = "/viewhierarchy.json";
     private static final int HTTP_OK = 200;
     
     /**
