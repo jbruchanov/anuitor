@@ -59,27 +59,6 @@ public abstract class Reflector<T> {
     }
 
     protected String transformToString(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException, TransformerException {
-        int type;
-        while ((type = xmlPullParser.next()) != XmlPullParser.START_TAG &&
-                type != XmlPullParser.END_DOCUMENT) {
-            // Empty loop
-        }
-
-        if (type != XmlPullParser.START_TAG) {
-            throw new XmlPullParserException("No start tag found");
-        }
-
-
-        DOM2XmlPullBuilder dom2XmlPullBuilder = new DOM2XmlPullBuilder();
-        Element element = dom2XmlPullBuilder.parseSubTree(xmlPullParser);
-        StringWriter buffer = new StringWriter();
-
-        TransformerFactory transFactory = TransformerFactory.newInstance();
-        Transformer transformer = transFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-        transformer.transform(new DOMSource(element), new StreamResult(buffer));
-
-        return buffer.toString();
+        return DOM2XmlPullBuilder.transform(xmlPullParser);
     }
 }

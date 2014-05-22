@@ -16,11 +16,18 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 //TOOD add parse methodthat will usenextToken() to reconstruct complete XML infoset
 
@@ -125,10 +132,14 @@ public class DOM2XmlPullBuilder {
                 String attrName = pp.getAttributeName(i);
                 String attrValue = pp.getAttributeValue(i);
                 //android stuff
-                if (attrValue != null && attrValue.length() > 0 && attrValue.charAt(0) == '@') {
+                if (attrValue != null && attrValue.length() > 1
+                        && attrValue.charAt(0) == '@' && Character.isDigit(attrValue.charAt(1))) {
                     try {
                         int iValue = Integer.parseInt(attrValue.substring(1));
-                        attrValue = IdsHelper.getValueForId(iValue);
+                        String newValue = IdsHelper.getValueForId(iValue);
+                        if(newValue != null){
+                            attrValue = newValue;
+                        }
                     } catch (Exception e) {
                         //ignore and keep old value
                     }
@@ -185,6 +196,30 @@ public class DOM2XmlPullBuilder {
         if (o == null) {
             throw new RuntimeException("expected no null value");
         }
+    }
+
+    public static String transform(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException, TransformerException {
+        int type;
+        while ((type = xmlPullParser.next()) != XmlPullParser.START_TAG &&
+                type != XmlPullParser.END_DOCUMENT) {
+            // Empty loop
+        }
+
+        if (type != XmlPullParser.START_TAG) {
+            throw new XmlPullParserException("No start tag found");
+        }
+
+        DOM2XmlPullBuilder dom2XmlPullBuilder = new DOM2XmlPullBuilder();
+        Element element = dom2XmlPullBuilder.parseSubTree(xmlPullParser);
+        StringWriter buffer = new StringWriter();
+
+        TransformerFactory transFactory = TransformerFactory.newInstance();
+        Transformer transformer = transFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        transformer.transform(new DOMSource(element), new StreamResult(buffer));
+
+        return buffer.toString();
     }
 }
 
