@@ -322,7 +322,7 @@ public class SimpleWebServer extends NanoHTTPD {
         String mimeTypeForFile = getMimeTypeForFile(uri);
         WebServerPlugin plugin = mimeTypeHandlers.get(mimeTypeForFile);
         Response response = null;
-        if (plugin != null) {
+        if (plugin != null && plugin.canServeUri(uri, f)) {
             response = plugin.serveFile(uri, headers, session, f, mimeTypeForFile);
             if (response != null && response instanceof InternalRewrite) {
                 InternalRewrite rewrite = (InternalRewrite) response;
