@@ -25,13 +25,17 @@ public class ViewNode {
     @SerializedName("Level")
     private final int mLevel;
 
+    @SerializedName("Position")
+    private final int mPosition;
+
     @SerializedName("Data")
     private HashMap<String, Object> mData;
 
-    public ViewNode(int id, int level, HashMap<String, Object> data) {
+    public ViewNode(int id, int level, int position, HashMap<String, Object> data) {
         mId = id;
         mLevel = level;
         mIdReadable = IdsHelper.getValueForId(mId);
+        mPosition = position;
         mData = data;
     }
 

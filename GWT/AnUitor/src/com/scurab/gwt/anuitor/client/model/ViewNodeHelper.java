@@ -1,7 +1,6 @@
 package com.scurab.gwt.anuitor.client.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -10,7 +9,11 @@ import java.util.List;
  * @author jbruchanov
  *
  */
-public class ViewNodeHelper {    
+public class ViewNodeHelper {
+    
+    public interface Func<T>{
+        void doFunc(T value);
+    }        
 
     /**
      * Find views in view hieararchy based on position
@@ -81,4 +84,25 @@ public class ViewNodeHelper {
             return -(o1.getLevel() - o2.getLevel());
         }
     };
+
+    /**
+     * Iterate whole tree and call function for every node
+     * @param root
+     * @param function
+     */
+    public static void forEachNodePreOrder(ViewNodeJSO root, Func<ViewNodeJSO> function) {
+        if (root == null) {
+            return;
+        }
+
+        function.doFunc(root);
+
+        int n = root.getNodes() != null ? root.getNodes().length() : 0;
+        if (n > 0) {
+            for (int i = n - 1; i >= 0; i--) {
+                ViewNodeJSO child = root.getNodes().get(i);
+                forEachNodePreOrder(child, function);
+            }
+        }
+    }
 }

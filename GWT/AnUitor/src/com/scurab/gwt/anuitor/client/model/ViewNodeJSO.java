@@ -124,4 +124,17 @@ public class ViewNodeJSO extends JavaScriptObject {
     public final String toJsonString() {
         return new JSONObject(this).toString();
     }
+
+    public final native int getPosition() 
+    /*-{
+        return this.Position;
+    }-*/;
+    
+    public final native boolean isLeaf() /*-{
+        return this.Nodes == null || this.Nodes.length == 0;
+    }-*/;
+    
+    public final native boolean shouldRender() /*-{
+        return this.Nodes == null || this.Nodes.length == 0 || this.Data["_RenderViewContent"] === true;
+    }-*/;
 }

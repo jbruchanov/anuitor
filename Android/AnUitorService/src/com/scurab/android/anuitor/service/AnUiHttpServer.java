@@ -19,7 +19,9 @@ public class AnUiHttpServer extends SimpleWebServer {
     }
 
     protected void initPlugins(Context context, KnowsActivity... activityKeeper) {
-        registerPluginForMimeType(new ScreenViewPlugin(activityKeeper));
+        registerPluginForMimeType(new AggregateMimePlugin(
+                new ScreenViewPlugin(activityKeeper),
+                new ViewShotPlugin(activityKeeper)));
         registerPluginForMimeType(new AggregateMimePlugin(
                 new ViewHierarchyPlugin(activityKeeper),
                 new FileStoragePlugin(context),

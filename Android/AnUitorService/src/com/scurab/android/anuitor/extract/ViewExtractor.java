@@ -35,6 +35,8 @@ public class ViewExtractor {
         data.put("_Visibility", v.getVisibility());
         data.put("Visibility", Translator.visibility(v.getVisibility()));
 
+        data.put("_RenderViewContent", !(v.getBackground() == null || (v instanceof ViewGroup)));
+
 
         fillLayoutParams(v, data, parentData);
         fillScale(v, data, parentData);
