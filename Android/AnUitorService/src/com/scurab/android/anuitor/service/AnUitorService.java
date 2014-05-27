@@ -86,7 +86,7 @@ public class AnUitorService extends Service {
     public boolean start(int port, String rootFolder) {
         String s = getBaseContext().getCacheDir().toString() + "/" + rootFolder;
 
-        mServer = new AnUiHttpServer(this, port, new File(s), false, (KnowsActivity) getApplication());
+        mServer = new AnUiHttpServer(getApplicationContext(), port, new File(s), false, (KnowsActivity) getApplication());
         try {
             mServer.start();
             startForeground();

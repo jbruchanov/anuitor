@@ -1,10 +1,13 @@
 package com.scurab.android.anuitor.hierarchy;
 
+import android.content.res.Resources;
+import android.util.Log;
 import android.util.SparseArray;
+import android.util.TypedValue;
 
 import com.google.gson.Gson;
-import com.scurab.android.anuitor.R;
 import com.scurab.android.anuitor.model.Pair;
+import com.scurab.android.anuitor.model.Tuple;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -43,7 +46,7 @@ public class IdsHelper {
         SparseArray<String> values = new SparseArray<String>();
         String name = containerClass.getSimpleName();
         String v = containerClass.getCanonicalName();
-        if(!android) {
+        if (!android) {
             v = v.replace(containerClass.getPackage().getName(), "").substring(1);
         }
         VALUES.put(v, values);
@@ -53,7 +56,7 @@ public class IdsHelper {
     private static void fillFields(String type, SparseArray<String> container, Field[] fields, boolean android) {
         for (Field field : fields) {
             field.setAccessible(true);
-            if(field.getType() == int.class) {
+            if (field.getType() == int.class) {
                 String name = field.getName();
                 try {
                     int value = field.getInt(null);
@@ -91,15 +94,33 @@ public class IdsHelper {
     }
 
     public static String toJson() {
+        return toJson(null);
+    }
+
+    public static String toJson(Resources res) {
+        TypedValue tv = new TypedValue();
+        CharSequence location = null;
         HashMap<String, List<Pair<Object, Object>>> result = new HashMap<String, List<Pair<Object, Object>>>();
         for (String type : VALUES.keySet()) {
+            boolean showValue = res != null && ((type.equals("R.drawable") || type.equals("R.layout")));
             List<Pair<Object, Object>> list = new ArrayList<Pair<Object, Object>>();
             result.put(type, list);
             SparseArray<String> sa = VALUES.get(type);
             for (int i = 0, n = sa.size(); i < n; i++) {
                 int key = sa.keyAt(i);
                 String value = sa.get(key);
-                list.add(new Pair<Object, Object>(key, value));
+                if (showValue) {
+                    try {
+                        res.getValue(key, tv, false);
+                        location = tv.string;
+                    } catch (Exception e) {
+                        //just for sure
+                        Log.e("IdsHelper", String.format("Name:%s Err:%s", value, e.getMessage()));
+                        e.printStackTrace();
+                    }
+                }
+                list.add(new Tuple<Object, Object, Object>(key, value, showValue ? location : null));
+                location = null;
             }
         }
         return new Gson().toJson(result);
