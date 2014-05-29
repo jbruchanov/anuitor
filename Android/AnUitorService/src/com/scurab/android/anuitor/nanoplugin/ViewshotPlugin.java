@@ -29,7 +29,7 @@ import fi.iki.elonen.NanoHTTPD;
  * Date: 12/05/2014
  * Time: 15:53
  */
-public class ViewshotPlugin1 extends ActivityPlugin {
+public class ViewshotPlugin extends ActivityPlugin {
 
     private static final String POSITION = "position";
 
@@ -46,7 +46,7 @@ public class ViewshotPlugin1 extends ActivityPlugin {
         LOCKS.add("3");
     }
 
-    public ViewshotPlugin1(WindowManager windowManager) {
+    public ViewshotPlugin(WindowManager windowManager) {
         super(windowManager);
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }

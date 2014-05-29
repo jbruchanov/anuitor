@@ -23,7 +23,7 @@ public class AnUiHttpServer extends SimpleWebServer {
     protected void initPlugins(Context context, WindowManager windowManager) {
         registerPluginForMimeType(new AggregateMimePlugin(
                 new ScreenViewPlugin(windowManager),
-                new ViewShotPlugin(windowManager)));
+                new ViewshotPlugin(windowManager)));
         registerPluginForMimeType(new AggregateMimePlugin(
                 new ViewHierarchyPlugin(windowManager),
                 new FileStoragePlugin(context),
