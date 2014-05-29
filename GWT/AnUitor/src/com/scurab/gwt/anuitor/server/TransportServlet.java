@@ -41,21 +41,15 @@ public class TransportServlet extends HttpServlet {
         try {
             String qs = req.getQueryString();            
             String newUrl = getContentURL(req.getRequestURI() + (qs == null || qs.length() == 0 ? "" : "?" + req.getQueryString()));
-//            newUrl = "http://www.scurab.com/gtfo.png";
-            System.out.println("NewURL:" + newUrl);
             URL url = new URL(newUrl);
-            System.out.println("OpenConnection");
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-            urlc.setConnectTimeout(1000);
-            urlc.setReadTimeout(1000);
+            urlc.setConnectTimeout(3000);
+            urlc.setReadTimeout(2000);
             
             urlc.setDoInput(true);
             urlc.setDoOutput(true);
-            System.out.println("connect");
             urlc.connect();            
-            System.out.println("getInputStream");            
             InputStream is = urlc.getInputStream();
-            System.out.println("getOutputStream");
             OutputStream os = resp.getOutputStream();
 
             byte[] buffer = new byte[1024];
