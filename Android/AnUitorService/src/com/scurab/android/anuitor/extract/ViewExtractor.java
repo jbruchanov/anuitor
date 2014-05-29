@@ -35,7 +35,12 @@ public class ViewExtractor {
         data.put("_Visibility", v.getVisibility());
         data.put("Visibility", Translator.visibility(v.getVisibility()));
 
-        data.put("_RenderViewContent", !(v.getBackground() == null || (v instanceof ViewGroup)));
+        boolean isViewGroup = (v instanceof ViewGroup);
+        Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer)parentData.get("_Visibility");
+        boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
+        boolean hasBackground = v.getBackground() != null;
+        boolean shouldRender = isVisible && ((isViewGroup && hasBackground) || !isViewGroup);
+        data.put("_RenderViewContent", shouldRender);
 
 
         fillLayoutParams(v, data, parentData);
