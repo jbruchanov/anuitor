@@ -46,6 +46,8 @@ public class TransportServlet extends HttpServlet {
             URL url = new URL(newUrl);
             System.out.println("OpenConnection");
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+            urlc.setConnectTimeout(1000);
+            urlc.setReadTimeout(1000);
             
             urlc.setDoInput(true);
             urlc.setDoOutput(true);
