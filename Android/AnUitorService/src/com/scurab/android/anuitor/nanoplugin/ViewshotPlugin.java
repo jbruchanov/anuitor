@@ -9,6 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.scurab.android.anuitor.extract.ViewDetailExtractor;
 import com.scurab.android.anuitor.reflect.WindowManager;
@@ -84,7 +85,7 @@ public class ViewshotPlugin extends ActivityPlugin {
                             Canvas c = new Canvas(b);
                             c.drawRect(0, 0, w, h, mClearPaint);
                         } else {
-                            if (view instanceof ViewGroup) {
+                            if (view instanceof ViewGroup && !(view instanceof WebView)) {
                                 //just draw background if we have it
                                 Drawable drawable = view.getBackground();
                                 b = drawDrawable(drawable, w, h);

@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.extract;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
 import com.scurab.android.anuitor.hierarchy.ExportField;
@@ -35,7 +36,7 @@ public class ViewExtractor {
         data.put("_Visibility", v.getVisibility());
         data.put("Visibility", Translator.visibility(v.getVisibility()));
 
-        boolean isViewGroup = (v instanceof ViewGroup);
+        boolean isViewGroup = (v instanceof ViewGroup) && !(v instanceof WebView);
         Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer)parentData.get("_Visibility");
         boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
         boolean hasBackground = v.getBackground() != null;
