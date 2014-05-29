@@ -25,12 +25,14 @@ import javax.xml.transform.stream.StreamResult;
 public abstract class Reflector<T> {
 
     protected final T mReal;
+    protected final Class<?> mClass;
 
-    protected Reflector(T mReal) {
-        this.mReal = mReal;
+    protected Reflector(T real) {
+        mReal = real;
+        mClass = mReal.getClass();
     }
 
-    protected <T> T callByReflection(Object... params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    protected <T> T callByReflection(Object... params) {
         String methodName = getCalleeMethod();
 
         Class<?>[] clzs = new Class<?>[params.length];
@@ -39,9 +41,13 @@ public abstract class Reflector<T> {
         }
         fixAutoboxing(clzs);
 
-        Method m = Resources.class.getDeclaredMethod(methodName, clzs);
-        m.setAccessible(true);
-        return (T) m.invoke(mReal, params);
+        try {
+            Method m = mClass.getDeclaredMethod(methodName, clzs);
+            m.setAccessible(true);
+            return (T) m.invoke(mReal, params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected String getCalleeMethod() {
