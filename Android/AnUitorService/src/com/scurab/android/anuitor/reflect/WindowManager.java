@@ -1,0 +1,16 @@
+package com.scurab.android.anuitor.reflect;
+
+import android.app.Activity;
+import android.view.View;
+
+/**
+ * User: jbruchanov
+ * Date: 12/05/2014
+ * Time: 15:55
+ */
+public interface WindowManager {
+
+    public Activity getCurrentActivity();
+
+    public View getCurrentRootView();
+}

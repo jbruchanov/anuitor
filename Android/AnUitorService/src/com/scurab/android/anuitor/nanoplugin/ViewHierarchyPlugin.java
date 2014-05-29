@@ -4,6 +4,8 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.scurab.android.anuitor.model.ViewNode;
 import com.scurab.android.anuitor.extract.ViewDetailExtractor;
+import com.scurab.android.anuitor.reflect.WindowManager;
+
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.ByteArrayInputStream;
@@ -20,8 +22,8 @@ public class ViewHierarchyPlugin extends ActivityPlugin {
     public static final String TREE_JSON = "viewhierarchy.json";
     public static final String PATH = "/" + TREE_JSON;
 
-    public ViewHierarchyPlugin(KnowsActivity... knowsActivity) {
-        super(knowsActivity);
+    public ViewHierarchyPlugin(WindowManager windowManager) {
+        super(windowManager);
     }
 
     @Override
@@ -31,9 +33,15 @@ public class ViewHierarchyPlugin extends ActivityPlugin {
 
     @Override
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
-        View view = getActivity().getWindow().getDecorView().getRootView();
-        ViewNode vn = ViewDetailExtractor.parse(view, false);
-        String json = new Gson().toJson(vn);
+        View view = getCurrentRootView();
+        String json;
+
+        if (view != null) {
+            ViewNode vn = ViewDetailExtractor.parse(view, false);
+            json = new Gson().toJson(vn);
+        } else {
+            json = "{}";
+        }
 
         NanoHTTPD.Response response = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
             @Override public int getRequestStatus() { return 0; }

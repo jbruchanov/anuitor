@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.ViewDetailExtractor;
+import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.ByteArrayInputStream;
@@ -11,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -36,8 +36,8 @@ public class ViewShotPlugin extends ActivityPlugin {
         LOCKS.add("2");
     }
 
-    public ViewShotPlugin(KnowsActivity... knowsActivity) {
-        super(knowsActivity);
+    public ViewShotPlugin(WindowManager windowManager) {
+        super(windowManager);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class ViewShotPlugin extends ActivityPlugin {
             HashMap<String, String> qsValue = HttpTools.parseQueryString(queryString);
             if (qsValue.containsKey(POSITION)) {
                 int position = Integer.parseInt(qsValue.get(POSITION));
-                View view = getActivity().getWindow().getDecorView().getRootView();
-                view = ViewDetailExtractor.findViewByPosition(view, position);
+                View view = getCurrentRootView();
+                view = view != null ? ViewDetailExtractor.findViewByPosition(view, position) : null;
                 if (view != null) {
                     Object o = null;
                     try {
