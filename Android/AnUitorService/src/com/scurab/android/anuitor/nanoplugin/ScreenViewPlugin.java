@@ -1,6 +1,10 @@
 package com.scurab.android.anuitor.nanoplugin;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.view.View;
 
 import com.scurab.android.anuitor.reflect.WindowManager;
@@ -22,8 +26,13 @@ public class ScreenViewPlugin extends ActivityPlugin {
     public static final String SCREEN_PNG = "screen.png";
     public static final String PATH = "/" + SCREEN_PNG;
 
+    private Paint mClearPaint = new Paint();
+
+    private int[] mLocation = new int[2];
+
     public ScreenViewPlugin(WindowManager windowManager) {
         super(windowManager);
+        mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 
     @Override
@@ -39,13 +48,27 @@ public class ScreenViewPlugin extends ActivityPlugin {
         ByteArrayInputStream resultInputStream = null;
 
         if (view != null) {
-            view.destroyDrawingCache();
-            view.buildDrawingCache(false);
+            view.getLocationOnScreen(mLocation);
+            Bitmap b;
 
-            // get bitmap
-            Bitmap b = view.getDrawingCache();
+            if (mLocation[0] != 0 || mLocation[1] != 0) {//dialog or something, rootview is not at [0,0]
+                int w = mLocation[0] + view.getWidth();
+                int h = mLocation[1] + view.getHeight();
+                b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                Canvas c = new Canvas(b);
+                c.drawRect(0, 0, w, h, mClearPaint);//clear white background to get transparency
+                c.translate(mLocation[0], mLocation[1]);
+                view.draw(c);
+            } else {
+                view.destroyDrawingCache();
+                view.buildDrawingCache(false);
+
+                // get bitmap
+                b = view.getDrawingCache();
+            }
             b.compress(Bitmap.CompressFormat.PNG, 20, bos);
             resultInputStream = new ByteArrayInputStream(bos.toByteArray());
+            b.recycle();
         }
 
 
