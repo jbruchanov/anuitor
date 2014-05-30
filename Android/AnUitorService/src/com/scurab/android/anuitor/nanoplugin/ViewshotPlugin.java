@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
+import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -58,7 +60,8 @@ public class ViewshotPlugin extends ActivityPlugin {
     }
 
     @Override
-    public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
+    public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session,
+                                            File file, String mimeType) {
         String queryString = session.getQueryParameterString();
         int len = queryString != null ? queryString.length() : 0;
         ByteArrayInputStream resultInputStream = null;
@@ -77,37 +80,49 @@ public class ViewshotPlugin extends ActivityPlugin {
                         int h = view.getHeight();
                         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-                        Bitmap b;
+                        Bitmap bitmap = null;
 
                         if (w == 0 || h == 0) {
                             //just workaround for incorrect call, view is not visible
-                            b = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-                            Canvas c = new Canvas(b);
+                            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+                            Canvas c = new Canvas(bitmap);
                             c.drawRect(0, 0, w, h, mClearPaint);
                         } else {
-                            if (view instanceof ViewGroup && !(view instanceof WebView)) {
-                                //just draw background if we have it
-                                Drawable drawable = view.getBackground();
-                                b = drawDrawable(drawable, w, h);
-                            } else {
-                                if (view.getVisibility() == View.VISIBLE) {
+                            if (view.getVisibility() == View.VISIBLE) {
+                                if (view instanceof ViewGroup && !ViewDetailExtractor
+                                        .isExcludedViewGroup(view.getClass())) {
+                                    //just draw background if we have it
+                                    Drawable drawable = view.getBackground();
+                                    if (drawable != null) {
+                                        bitmap = drawDrawable(drawable, w, h);
+                                    }
+                                }
+                                if (bitmap == null) {
                                     // get bitmap
                                     view.destroyDrawingCache();
-                                    view.buildDrawingCache(false);
-                                    b = view.getDrawingCache();
-                                    if (b == null) {
-                                        b = drawView(view, w, h);
+                                    try {
+                                        view.buildDrawingCache(false);
+                                    } catch (Exception e) {
+                                        Log.e("ViewshotPlugin", e.getMessage());
+                                        e.printStackTrace();
                                     }
-                                } else {
-                                    b = getEmptyBitmap();
+                                    bitmap = view.getDrawingCache();
+                                    if (bitmap == null) {
+                                        bitmap = drawView(view, w, h);
+                                    }
                                 }
+
+                            } else {
+                                bitmap = getEmptyBitmap();
                             }
+
                         }
 
-                        b.compress(Bitmap.CompressFormat.PNG, 20, bos);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 20, bos);
                         resultInputStream = new ByteArrayInputStream(bos.toByteArray());
-                        b.recycle();
+                        bitmap.recycle();
                     } catch (Exception e) {
+                        Log.e("ViewshotPlugin", e.getMessage());
                         e.printStackTrace();
                     }
                     LOCKS.add(o);
@@ -163,7 +178,7 @@ public class ViewshotPlugin extends ActivityPlugin {
 
     @Override
     public String[] files() {
-        return new String[]{VIEW_PNG};
+        return new String[] {VIEW_PNG};
     }
 
     @Override
