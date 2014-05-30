@@ -37,6 +37,11 @@ public class ViewNode {
         mIdReadable = IdsHelper.getValueForId(mId);
         mPosition = position;
         mData = data;
+
+        //TODO:remove later
+        if(mData != null){
+            mData.put("Position", mPosition);
+        }
     }
 
     public void addChild(ViewNode n) {

@@ -2,10 +2,13 @@ package com.scurab.android.anuitor.extract;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 import com.scurab.android.anuitor.model.ViewNode;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * User: jbruchanov
@@ -14,12 +17,16 @@ import java.util.HashMap;
  */
 public final class ViewDetailExtractor {
 
-    private static final HashMap<Class<?>, ViewExtractor> MAP;
+    static final HashMap<Class<?>, ViewExtractor> MAP;
+    static final HashSet<Class<?>> VIEWGROUP_IGNORE;
 
     static {
         MAP = new HashMap<Class<?>, ViewExtractor>();
         registerExtractor(TextView.class, new TextViewExtractor());
         registerExtractor(View.class, new ViewExtractor());
+
+        VIEWGROUP_IGNORE = new HashSet<Class<?>>();
+        VIEWGROUP_IGNORE.add(WebView.class);
     }
 
     public static void registerExtractor(Class<?> clz, ViewExtractor extractor) {
@@ -28,6 +35,18 @@ public final class ViewDetailExtractor {
 
     public static void unregisterExtractor(Class<?> clz){
         MAP.remove(clz);
+    }
+
+    public static boolean excludeViewGroup(Class<?> clz){
+        return VIEWGROUP_IGNORE.add(clz);
+    }
+
+    public static boolean removeExcludeViewGroup(Class<?> clz){
+        return VIEWGROUP_IGNORE.remove(clz);
+    }
+
+    public static boolean isExcludedViewGroup(Class<?> clz){
+        return VIEWGROUP_IGNORE.contains(clz);
     }
 
     public static ViewNode parse(View rootView, boolean lazy) {
