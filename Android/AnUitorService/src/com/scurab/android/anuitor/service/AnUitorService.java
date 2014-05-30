@@ -223,8 +223,10 @@ public class AnUitorService extends Service {
                     f.mkdir();
                     try {
                         String zipFile = folder + "/web.zip";
-                        ZipTools.copyFileIntoInternalStorageIfNecessary(context, rawWebZipFileRes, zipFile);
-                        ZipTools.extractFolder(zipFile, folder);
+                        if(rawWebZipFileRes != 0) {
+                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, rawWebZipFileRes, zipFile);
+                            ZipTools.extractFolder(zipFile, folder);
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
