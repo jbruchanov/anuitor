@@ -11,9 +11,15 @@ import java.util.List;
  */
 public class ViewNodeHelper {
     
-    public interface Func<T>{
-        void doFunc(T value);
-    }        
+    public interface Action<T>{
+        /**
+         * 
+         * @param value
+         * @param parent
+         * @return false if you want to stop traversing
+         */
+        boolean doAction(T value, T parent);
+    }       
 
     /**
      * Find views in view hieararchy based on position
@@ -90,19 +96,29 @@ public class ViewNodeHelper {
      * @param root
      * @param function
      */
-    public static void forEachNodePreOrder(ViewNodeJSO root, Func<ViewNodeJSO> function) {
+    public static void forEachNodePreOrder(ViewNodeJSO root, Action<ViewNodeJSO> function) {
+        forEachNodePreOrder(root, null, function);
+    }
+    
+    private static boolean forEachNodePreOrder(ViewNodeJSO root, ViewNodeJSO parent, Action<ViewNodeJSO> function) {
         if (root == null) {
-            return;
+            return true;
         }
 
-        function.doFunc(root);
+        if(!function.doAction(root, parent)){
+            return false;
+        }
 
         int n = root.getNodes() != null ? root.getNodes().length() : 0;
         if (n > 0) {
             for (int i = n - 1; i >= 0; i--) {
                 ViewNodeJSO child = root.getNodes().get(i);
-                forEachNodePreOrder(child, function);
+                boolean cont = forEachNodePreOrder(child, root, function);
+                if(!cont){
+                    return false;
+                }
             }
         }
+        return true;
     }
 }

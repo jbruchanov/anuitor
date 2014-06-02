@@ -1,4 +1,4 @@
-package com.scurab.gwt.anuitor.client;
+package com.scurab.gwt.anuitor.client.util;
 
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 
@@ -7,7 +7,6 @@ import thothbot.parallax.core.shared.materials.Material;
 import thothbot.parallax.core.shared.objects.Mesh;
 
 public class ViewMesh extends Mesh{
-    
     
     private ViewNodeJSO mView;
     
