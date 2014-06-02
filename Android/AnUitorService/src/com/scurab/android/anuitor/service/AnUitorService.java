@@ -86,6 +86,14 @@ public class AnUitorService extends Service {
      */
     public boolean start(int port, String rootFolder) {
         String s = getBaseContext().getCacheDir().toString() + "/" + rootFolder;
+        File f = new File(s);
+        /*
+            If web foloder doesn't exist it means that extraction didn't happen or some problem,
+            but at least we will enable plugins to work, because http server won't execute them if root folder doesn't exist.
+         */
+        if (!f.exists()) {
+            f.mkdirs();
+        }
 
         mServer = new AnUiHttpServer(getApplicationContext(), port, new File(s), false, new WindowManagerGlobal());
         try {
