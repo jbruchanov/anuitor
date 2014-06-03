@@ -1,11 +1,5 @@
 package com.scurab.gwt.anuitor.client.util;
 
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.dom.client.CanvasElement;
-import com.google.gwt.dom.client.Document;
-import com.scurab.gwt.anuitor.client.model.ViewFields;
-import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
-
 import thothbot.parallax.core.client.textures.Texture;
 import thothbot.parallax.core.shared.cameras.Camera;
 import thothbot.parallax.core.shared.core.Color;
@@ -15,6 +9,12 @@ import thothbot.parallax.core.shared.core.Vector3;
 import thothbot.parallax.core.shared.geometries.CubeGeometry;
 import thothbot.parallax.core.shared.materials.Material;
 import thothbot.parallax.core.shared.materials.MeshBasicMaterial;
+
+import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.dom.client.CanvasElement;
+import com.google.gwt.dom.client.Document;
+import com.scurab.gwt.anuitor.client.model.ViewFields;
+import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 
 /**
  * Help methods for working in 3D mode

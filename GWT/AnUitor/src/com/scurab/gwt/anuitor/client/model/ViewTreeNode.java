@@ -2,7 +2,13 @@ package com.scurab.gwt.anuitor.client.model;
 
 import com.github.gwtd3.api.layout.Node;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.scurab.gwt.anuitor.client.ui.TreeView;
 
+/**
+ * Data model class used for {@link TreeView}
+ * @author jbruchanov
+ *
+ */
 public class ViewTreeNode extends Node {
 
     protected ViewTreeNode() {
@@ -50,17 +56,6 @@ public class ViewTreeNode extends Node {
     
     public final native void setParent(Node parent) /*-{
         this.parent = parent;
-    }-*/;
-    
-    public final native int getLevelPosition() /*-{
-        if(this.levelPosition){
-            return this.levelPosition;
-        }
-        return 0;
-    }-*/;
-
-    public final native void setLevelPosition(int position) /*-{
-        this.levelPosition = position;
     }-*/;
     
     public static final ViewTreeNode createObject() {

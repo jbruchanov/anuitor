@@ -129,12 +129,23 @@ public class ViewNodeHelper {
         return true;
     }
     
+    /**
+     * Tranform tree into same tree with {@link ViewTreeNode} classes
+     * @param root
+     * @return
+     */
     public static ViewTreeNode convertToViewTreeNodes(ViewNodeJSO root){
         return convertToViewTreeNodes(root, null);
     }
     
-    public static ViewTreeNode convertToViewTreeNodes(ViewNodeJSO root, List<Integer> itemsInLevels){        
-        return convertToViewTreeNodesImpl(root, null, 0, itemsInLevels);
+    /**
+     * Tranform tree into same tree with {@link ViewTreeNode} classes
+     * @param root
+     * @param outItemsInLevels optional reference to list to fill how many items are per level (size() = levels, value = items)
+     * @return
+     */
+    public static ViewTreeNode convertToViewTreeNodes(ViewNodeJSO root, List<Integer> outItemsInLevels){        
+        return convertToViewTreeNodesImpl(root, null, 0, outItemsInLevels);
     }
     
     private static ViewTreeNode convertToViewTreeNodesImpl(ViewNodeJSO root, ViewTreeNode parent, int level, List<Integer> itemsInLevels){
@@ -142,7 +153,7 @@ public class ViewNodeHelper {
             return null;
         }
         
-        if(itemsInLevels != null){
+        if (itemsInLevels != null) {
             if (itemsInLevels.size() <= level) {
                 itemsInLevels.add(1);
             } else {
@@ -159,8 +170,7 @@ public class ViewNodeHelper {
             for (int i = 0; i < n; i++) {
                 ViewNodeJSO child = root.getNodes().get(i);
                 ViewTreeNode vtn = convertToViewTreeNodesImpl(child, node, level + 1, itemsInLevels);
-                if (vtn != null) {
-                    vtn.setLevelPosition((int)itemsInLevels.get(level));
+                if (vtn != null) {                    
                     node.addChildren(vtn);
                 }
             }

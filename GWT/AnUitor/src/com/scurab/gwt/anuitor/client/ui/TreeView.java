@@ -18,7 +18,6 @@ import com.github.gwtd3.api.layout.Link;
 import com.github.gwtd3.api.layout.Node;
 import com.github.gwtd3.api.layout.TreeLayout;
 import com.github.gwtd3.api.svg.Diagonal;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.http.client.Request;
@@ -29,8 +28,8 @@ import com.scurab.gwt.anuitor.client.DataProvider.AsyncCallback;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 import com.scurab.gwt.anuitor.client.model.ViewTreeNode;
-import com.scurab.gwt.anuitor.client.style.TreeViewStyle;
 import com.scurab.gwt.anuitor.client.style.TreeViewResources;
+import com.scurab.gwt.anuitor.client.style.TreeViewStyle;
 
 /**
  * Tree view panel for view hierarchy
@@ -363,7 +362,7 @@ public class TreeView extends FlowPanel{
             update(node);
             return null;
         }
-    }     
+    }
     
     /**
      * Mouse enter/leave handler
