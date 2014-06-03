@@ -15,7 +15,7 @@ import java.util.List;
 public class ViewNode {
 
     @SerializedName("Nodes")
-    private List<ViewNode> nodes;
+    private List<ViewNode> mNodes;
 
     @SerializedName("IDi")
     private int mId;
@@ -45,18 +45,18 @@ public class ViewNode {
     }
 
     public void addChild(ViewNode n) {
-        if(nodes == null){
-            nodes = new ArrayList<ViewNode>();
+        if(mNodes == null){
+            mNodes = new ArrayList<ViewNode>();
         }
-        nodes.add(n);
+        mNodes.add(n);
     }
 
     public int getChildCount(){
-        return nodes != null ? nodes.size() : 0;
+        return mNodes != null ? mNodes.size() : 0;
     }
 
     public ViewNode getChildAt(int index) {
-        return nodes.get(index);
+        return mNodes.get(index);
     }
 
     public HashMap<String, Object> getData() {
