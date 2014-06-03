@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+
 /**
  * Helk class for traversing view tree
  * @author jbruchanov
@@ -20,6 +23,10 @@ public class ViewNodeHelper {
          */
         boolean doAction(T value, T parent);
     }       
+    
+    public interface HasNodes<T extends JavaScriptObject> {
+        JsArray<T> getNodes();
+    }
 
     /**
      * Find views in view hieararchy based on position
@@ -96,11 +103,11 @@ public class ViewNodeHelper {
      * @param root
      * @param function
      */
-    public static void forEachNodePreOrder(ViewNodeJSO root, Action<ViewNodeJSO> function) {
+    public static <T extends JavaScriptObject & HasNodes<T>> void forEachNodePreOrder(T root, Action<T> function) {
         forEachNodePreOrder(root, null, function);
     }
     
-    private static boolean forEachNodePreOrder(ViewNodeJSO root, ViewNodeJSO parent, Action<ViewNodeJSO> function) {
+    private static <T extends JavaScriptObject & HasNodes<T>> boolean forEachNodePreOrder(T root, T parent, Action<T> function) {
         if (root == null) {
             return true;
         }
@@ -112,7 +119,7 @@ public class ViewNodeHelper {
         int n = root.getNodes() != null ? root.getNodes().length() : 0;
         if (n > 0) {
             for (int i = n - 1; i >= 0; i--) {
-                ViewNodeJSO child = root.getNodes().get(i);
+                T child = root.getNodes().get(i);
                 boolean cont = forEachNodePreOrder(child, root, function);
                 if(!cont){
                     return false;
@@ -120,5 +127,44 @@ public class ViewNodeHelper {
             }
         }
         return true;
+    }
+    
+    public static ViewTreeNode convertToViewTreeNodes(ViewNodeJSO root){
+        return convertToViewTreeNodes(root, null);
+    }
+    
+    public static ViewTreeNode convertToViewTreeNodes(ViewNodeJSO root, List<Integer> itemsInLevels){        
+        return convertToViewTreeNodesImpl(root, null, 0, itemsInLevels);
+    }
+    
+    private static ViewTreeNode convertToViewTreeNodesImpl(ViewNodeJSO root, ViewTreeNode parent, int level, List<Integer> itemsInLevels){
+        if (root == null) {
+            return null;
+        }
+        
+        if(itemsInLevels != null){
+            if (itemsInLevels.size() <= level) {
+                itemsInLevels.add(1);
+            } else {
+                itemsInLevels.set(level, itemsInLevels.get(level) + 1);
+            }
+        }
+
+        ViewTreeNode node = ViewTreeNode.createObject();
+        node.setParent(parent);
+        node.setView(root);        
+        
+        int n = root.getNodes() != null ? root.getNodes().length() : 0;        
+        if (n > 0) {
+            for (int i = 0; i < n; i++) {
+                ViewNodeJSO child = root.getNodes().get(i);
+                ViewTreeNode vtn = convertToViewTreeNodesImpl(child, node, level + 1, itemsInLevels);
+                if (vtn != null) {
+                    vtn.setLevelPosition((int)itemsInLevels.get(level));
+                    node.addChildren(vtn);
+                }
+            }
+        }
+        return node;
     }
 }

@@ -5,6 +5,7 @@ import java.util.Set;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONObject;
+import com.scurab.gwt.anuitor.client.model.ViewNodeHelper.HasNodes;
 
 /**
  * Base JSObject for intercommunication with device service
@@ -12,7 +13,7 @@ import com.google.gwt.json.client.JSONObject;
  * @author jbruchanov
  * 
  */
-public class ViewNodeJSO extends JavaScriptObject {
+public class ViewNodeJSO extends JavaScriptObject implements HasNodes<ViewNodeJSO> {
 
     protected ViewNodeJSO() {
 
