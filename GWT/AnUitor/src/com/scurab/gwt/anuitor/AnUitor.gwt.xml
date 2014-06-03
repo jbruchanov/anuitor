@@ -23,6 +23,7 @@
   <!-- Other module inherits                                      -->
   <inherits name="com.google.gwt.http.HTTP" /> 
   <inherits name="com.google.gwt.json.JSON" />  
+  <inherits name='com.github.gwtd3.D3' />
   
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.scurab.gwt.anuitor.client.AnUitor'/>
