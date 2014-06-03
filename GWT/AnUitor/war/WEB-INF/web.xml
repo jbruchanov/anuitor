@@ -6,14 +6,16 @@
          xmlns="http://java.sun.com/xml/ns/javaee">        
 
 	<servlet>
-		<servlet-name>view</servlet-name>
+		<servlet-name>transport</servlet-name>
 		<servlet-class>com.scurab.gwt.anuitor.server.TransportServlet
 		</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>view</servlet-name>
-		<url-pattern>/</url-pattern>
+		<servlet-name>transport</servlet-name>
+		<url-pattern>/viewhierarchy.json</url-pattern>
+		<url-pattern>/screen.png</url-pattern>
+		<url-pattern>/view.png</url-pattern>		
 	</servlet-mapping>
   
   <!-- Default page to serve -->
