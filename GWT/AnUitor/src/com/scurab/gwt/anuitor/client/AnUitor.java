@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.scurab.gwt.anuitor.client.ui.TestPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDScene;
 import com.scurab.gwt.anuitor.client.ui.TreeView;
@@ -42,7 +43,7 @@ public class AnUitor implements EntryPoint {
         screen.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                openWidget(((Button) event.getSource()).getText(), new TestPage());
+                openWidget(((Button) event.getSource()).getText(), new TestPage(), false);
             }
         });
         hp.add(screen);
@@ -55,7 +56,7 @@ public class AnUitor implements EntryPoint {
                 renderingPanel.setBackground(0x111111);
                 ThreeDScene scene = new ThreeDScene();
                 renderingPanel.setAnimatedScene(scene);
-                openWidget(((Button) event.getSource()).getText(), renderingPanel);
+                openWidget(((Button) event.getSource()).getText(), renderingPanel, true);
             }
         });
         hp.add(triD);
@@ -63,7 +64,7 @@ public class AnUitor implements EntryPoint {
         vh.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                openWidget(((Button) event.getSource()).getText(), new TreeView());
+                openWidget(((Button) event.getSource()).getText(), new TreeView(), false);
             }
         });
         hp.add(vh);
@@ -71,9 +72,14 @@ public class AnUitor implements EntryPoint {
         RootLayoutPanel.get().add(hp);
     }
 
-    private void openWidget(String v, IsWidget w) {
+    private void openWidget(String v, IsWidget w, boolean rootLayoutPanel) {
         History.newItem(v);
+        RootPanel.get().clear();
         RootLayoutPanel.get().clear();
-        RootLayoutPanel.get().add(w);
+        if (rootLayoutPanel) {
+            RootLayoutPanel.get().add(w);
+        } else {
+            RootPanel.get().add(w);
+        }
     }
 }
