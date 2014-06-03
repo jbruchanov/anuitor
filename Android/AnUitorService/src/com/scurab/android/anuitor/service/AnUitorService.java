@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.reflect.WindowManagerGlobal;
+import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
 import com.scurab.android.anuitor.tools.ZipTools;
 
@@ -227,7 +228,7 @@ public class AnUitorService extends Service {
                 String folder = String.format("%s/%s", context.getCacheDir().toString(), DEFAULT_ROOT_FOLDER);
                 File f = new File(folder);
                 if (overwriteWebFolder || !f.exists()) {
-                    f.delete();
+                    FileSystemTools.deleteFolder(f);
                     f.mkdir();
                     try {
                         String zipFile = folder + "/web.zip";
