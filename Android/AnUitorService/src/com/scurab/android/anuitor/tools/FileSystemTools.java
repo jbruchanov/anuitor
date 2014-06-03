@@ -84,4 +84,22 @@ public class FileSystemTools {
         }
         return null;
     }
+
+    /**
+     * Delete folder including internal files/folders
+     * @param folder
+     */
+    public static void deleteFolder(File folder) {
+        File[] files = folder.listFiles();
+        if (files != null) { //some JVMs return null for empty dirs
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+        folder.delete();
+    }
 }

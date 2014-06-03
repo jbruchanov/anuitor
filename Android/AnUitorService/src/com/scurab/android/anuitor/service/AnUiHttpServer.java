@@ -2,6 +2,8 @@ package com.scurab.android.anuitor.service;
 
 import android.content.Context;
 import com.scurab.android.anuitor.nanoplugin.*;
+import com.scurab.android.anuitor.reflect.WindowManager;
+
 import fi.iki.elonen.SimpleWebServer;
 
 import java.io.File;
@@ -13,15 +15,17 @@ import java.io.File;
  */
 public class AnUiHttpServer extends SimpleWebServer {
 
-    public AnUiHttpServer(Context context, int port, File wwwroot, boolean quiet, KnowsActivity... activityKeeper) {
+    public AnUiHttpServer(Context context, int port, File wwwroot, boolean quiet, WindowManager windowManager) {
         super(null, port, wwwroot, quiet);
-        initPlugins(context, activityKeeper);
+        initPlugins(context, windowManager);
     }
 
-    protected void initPlugins(Context context, KnowsActivity... activityKeeper) {
-        registerPluginForMimeType(new ScreenViewPlugin(activityKeeper));
+    protected void initPlugins(Context context, WindowManager windowManager) {
         registerPluginForMimeType(new AggregateMimePlugin(
-                new ViewHierarchyPlugin(activityKeeper),
+                new ScreenViewPlugin(windowManager),
+                new ViewshotPlugin(windowManager)));
+        registerPluginForMimeType(new AggregateMimePlugin(
+                new ViewHierarchyPlugin(windowManager),
                 new FileStoragePlugin(context),
                 new ResourcesPlugin(context.getResources())));
     }

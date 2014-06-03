@@ -20,5 +20,7 @@ public final class ViewFields {
         public static String SCALE_X = "_ScaleX";
         public static String SCALE_Y = "_ScaleX";
         public static String VISIBILITY = "_Visibility";
+        public static String POSITION = "_Position";
+        public static String RENDERVIEWCONTENT = "_RenderViewContent";
     }
 }

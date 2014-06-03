@@ -12,7 +12,9 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
-import com.scurab.android.anuitor.nanoplugin.KnowsActivity;
+import com.scurab.android.anuitor.reflect.WindowManager;
+import com.scurab.android.anuitor.reflect.WindowManagerGlobal;
+import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
 import com.scurab.android.anuitor.tools.ZipTools;
 
@@ -85,8 +87,16 @@ public class AnUitorService extends Service {
      */
     public boolean start(int port, String rootFolder) {
         String s = getBaseContext().getCacheDir().toString() + "/" + rootFolder;
+        File f = new File(s);
+        /*
+            If web foloder doesn't exist it means that extraction didn't happen or some problem,
+            but at least we will enable plugins to work, because http server won't execute them if root folder doesn't exist.
+         */
+        if (!f.exists()) {
+            f.mkdirs();
+        }
 
-        mServer = new AnUiHttpServer(getApplicationContext(), port, new File(s), false, (KnowsActivity) getApplication());
+        mServer = new AnUiHttpServer(getApplicationContext(), port, new File(s), false, new WindowManagerGlobal());
         try {
             mServer.start();
             startForeground();
@@ -209,24 +219,23 @@ public class AnUitorService extends Service {
      * @param rawWebZipFileRes   resource id for zip file of web
      * @param overwriteWebFolder true to delete old web folder and unzip again
      * @param onFinishCallback   called when {@link Context#startService(android.content.Intent)} has been called, can be null, is called in non main thread!
-     * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.nanoplugin.KnowsActivity}
+     * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
      */
     public static void startService(final Context context, final int rawWebZipFileRes, final boolean overwriteWebFolder, final Runnable onFinishCallback) {
-        if (!(context.getApplicationContext() instanceof KnowsActivity)) {
-            throw new IllegalStateException("Application must implement KnowsActivity iface!");
-        }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String folder = String.format("%s/%s", context.getCacheDir().toString(), DEFAULT_ROOT_FOLDER);
                 File f = new File(folder);
                 if (overwriteWebFolder || !f.exists()) {
-                    f.delete();
+                    FileSystemTools.deleteFolder(f);
                     f.mkdir();
                     try {
                         String zipFile = folder + "/web.zip";
-                        ZipTools.copyFileIntoInternalStorageIfNecessary(context, rawWebZipFileRes, zipFile);
-                        ZipTools.extractFolder(zipFile, folder);
+                        if(rawWebZipFileRes != 0) {
+                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, rawWebZipFileRes, zipFile);
+                            ZipTools.extractFolder(zipFile, folder);
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

@@ -42,11 +42,15 @@ public class DataProvider {
             
             builder.sendRequest(null, new RequestCallback() {
                 @Override
-                public void onResponseReceived(Request request, Response response) {
+                public void onResponseReceived(Request request, Response response) {                    
                     if (HTTP_OK == response.getStatusCode()) {
-                        String value = response.getText();
-                        ViewNodeJSO vn = JsonUtils.safeEval(value);
-                        callback.onDownloaded(vn);
+                        try {
+                            String value = response.getText();
+                            ViewNodeJSO vn = JsonUtils.safeEval(value);
+                            callback.onDownloaded(vn);
+                        } catch (Exception e) {
+                            callback.onError(request, e);
+                        }
                     } else {
                         callback.onError(request, new Exception("ErrCode:" + response.getStatusCode()));
                     }
