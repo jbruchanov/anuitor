@@ -1,10 +1,12 @@
 package com.scurab.gwt.anuitor.client.ui;
 
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.ImageData;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,12 +15,20 @@ import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -26,11 +36,18 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.scurab.gwt.anuitor.client.DataProvider;
+import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
+import com.scurab.gwt.anuitor.client.style.CustomTreeResources;
 import com.scurab.gwt.anuitor.client.util.CanvasTools;
+import com.scurab.gwt.anuitor.client.util.CellTreeTools;
 import com.scurab.gwt.anuitor.client.util.HTMLColors;
+import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel;
+import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnSelectionChangedListener;
+import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnViewNodeMouseOverListener;
 
 public class TestPage extends Composite {
 
@@ -43,7 +60,8 @@ public class TestPage extends Composite {
     @UiField FlowPanel flowPanel;
     @UiField Button btnTest;
     @UiField VerticalPanel testPanel;
-    @UiField Label text;
+    @UiField Label text;    
+    @UiField(provided=true) CellTable<Pair> cellTable = new CellTable<Pair>();
 
     private float mScale = 1;
     private Canvas mCanvas;
@@ -61,6 +79,7 @@ public class TestPage extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         image.setVisible(false);
         bind();
+        initTable();
     }
 
     private void bind() {
@@ -108,12 +127,16 @@ public class TestPage extends Composite {
             }
         });
 
+        
         mCanvas = Canvas.createIfSupported();
         mCanvas.getElement().getStyle().setCursor(com.google.gwt.dom.client.Style.Cursor.CROSSHAIR);
         if (mCanvas != null) {
             mCanvas.addMouseMoveHandler(new MouseMoveHandler() {
                 @Override
-                public void onMouseMove(MouseMoveEvent event) {
+                public void onMouseMove(MouseMoveEvent event) { 
+                    if(mTreeViewModel != null && mTreeViewModel.getSelectedNode() != null){
+                        return;//dont do anything here if we have selected node
+                    }
                     int x = event.getRelativeX(mCanvas.getElement());
                     int y = event.getRelativeY(mCanvas.getElement());
                     onUpdateImageMousePosition(x, y);
@@ -123,6 +146,34 @@ public class TestPage extends Composite {
                     onUpdateZoomCanvas(scaledX, scaledY);
                     if (mRoot != null) {
                         mTimer.schedule(scaledX, scaledY);
+                    }
+                }
+            });
+            
+            mCanvas.addMouseOutHandler(new MouseOutHandler() {                
+                @Override
+                public void onMouseOut(MouseOutEvent event) {
+                    clearCanvas();
+                    mTreeViewModel.clearHighlightedNode();
+                }
+            });
+            
+            mCanvas.addMouseDownHandler(new MouseDownHandler() {                
+                @Override
+                public void onMouseDown(MouseDownEvent event) {               
+                    if (mTreeViewModel != null && mRoot != null) {
+                        int x = event.getRelativeX(mCanvas.getElement());
+                        int y = event.getRelativeY(mCanvas.getElement());                        
+                        int scaledX = (int) (x / mScale);
+                        int scaledY = (int) (y / mScale);
+                        ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY);
+                        if(vs != null){                            
+                            if (vs == mTreeViewModel.getSelectedNode()) {
+                                mTreeViewModel.clearSelectedNode();
+                            } else {
+                                mTreeViewModel.selectNode(vs);
+                            }                            
+                        }
                     }
                 }
             });
@@ -140,13 +191,22 @@ public class TestPage extends Composite {
 
         @Override
         public void run() {
-            // ViewNodeJSO v = ViewNodeHelper.findByPositionOld(mRoot, mX, mY);
-            List<ViewNodeJSO> views = ViewNodeHelper.findViewsByPosition(mRoot, mX, mY);
+            
             clearCanvas();
+            if(true){
+                ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, mX, mY);
+                drawRectForView(vs, mCanvas, mScale, HTMLColors.RED, COLORS[0]);
+                if(mTreeViewModel != null){
+                    mTreeViewModel.highlightNode(vs);
+                }
+                return;
+            }
+            
+            List<ViewNodeJSO> views = ViewNodeHelper.findViewsByPosition(mRoot, mX, mY);
+            
             for (int i = 0, n = views.size(); i < n; i++) {
-                ViewNodeJSO v = views.get(i);
-                String s = v.toJsonString();
-                drawRectForView(v, mCanvas, mScale, HTMLColors.RED, COLORS[i]);
+                ViewNodeJSO v = views.get(i);                
+                drawRectForView(v, mCanvas, mScale, HTMLColors.RED, COLORS[i % COLORS.length]);
             }
         }
 
@@ -158,7 +218,7 @@ public class TestPage extends Composite {
         }
     };
 
-    private String[] COLORS = new String[] { HTMLColors.RED,HTMLColors.MAGENTA, HTMLColors.GREEN, HTMLColors.CYAN};
+    private String[] COLORS = new String[] { HTMLColors.RED,HTMLColors.MAGENTA, HTMLColors.GREEN, HTMLColors.CYAN, HTMLColors.YELLOW, HTMLColors.BLUE};
 
     private void onInitZoomCanvas() {
         if (true) {// disabled for now
@@ -197,18 +257,88 @@ public class TestPage extends Composite {
     private ViewNodeJSO mRoot;
 
     protected void onTest() {
-        DataProvider.getTreeHierarchy(new DataProvider.AsyncCallback<ViewNodeJSO>() {
-
+        List<ViewNodeJSO> views = ViewNodeHelper.findViewsByPosition(mRoot, 420, 400);
+        int s = views.size();
+    }
+    
+    private void initTable(){
+        cellTable.getLoadingIndicator().setVisible(false);
+        Column<Pair, String> column = new Column<Pair, String>(new TextCell()) {
             @Override
-            public void onError(Request r, Throwable t) {
-
+            public String getValue(Pair p) {                
+                return p.key;
             }
-
+        };        
+        cellTable.addColumn(column, "Property");
+        cellTable.setColumnWidth(column, "200px");
+        
+        column = new Column<Pair, String>(new TextCell()) {
             @Override
-            public void onDownloaded(ViewNodeJSO result) {
-                mRoot = result;
+            public String getValue(Pair object) {
+                return String.valueOf(object.value);
             }
-        });
+        };                       
+        column.setCellStyleNames("TableValue");
+        cellTable.addColumn(column, "Value");
+        cellTable.setColumnWidth(column, "100%");                  
+    }
+    
+    private void onViewTreeNodeSelectionChanged(ViewNodeJSO viewNode, boolean selected){
+        clearCanvas();
+        if (selected) {
+            onShowTableDetail(viewNode);
+            drawRectForView(viewNode);
+        }        
+    }
+    
+    private void onShowTableDetail(ViewNodeJSO viewNode){
+        ListDataProvider<Pair> dataProvider = new ListDataProvider<Pair>();
+        List<Pair> list = dataProvider.getList();
+        Set<String> keys = viewNode.getDataKeys();
+        StringBuilder sb = new StringBuilder();
+        for (String key : keys) {
+
+            if (key.startsWith("_") || key.equals(ViewFields.TYPE)) { //ignore internal fields and type for now
+                continue;
+            }
+            try{
+                String value = viewNode.getStringedValue(key);
+                list.add(new Pair(key, value));
+            }catch(Exception e){
+                sb.append(key).append("\n");                
+            }
+        }
+        
+        if(sb.length() > 0){
+            Window.alert(sb.toString());
+        }
+        java.util.Collections.sort(list);
+
+        list.add(0, new Pair("Level", viewNode.getLevel()));
+        list.add(0, new Pair("IDName", viewNode.getIDName()));
+        list.add(0, new Pair("ID", viewNode.getID()));
+        list.add(0, new Pair(ViewFields.TYPE, viewNode.getStringedValue(ViewFields.TYPE)));
+        
+        dataProvider.addDataDisplay(cellTable);  
+    }
+    
+    
+    
+    private static class Pair implements Comparable<Pair>{
+        public final String key;
+        public final Object value;
+        private final String keyCompare;
+        
+        public Pair(String key, Object value) {
+            this.key = key;
+            this.value = value;
+            keyCompare = key.toLowerCase();
+        }
+
+        @Override
+        public int compareTo(Pair o) {            
+            return keyCompare.compareTo(o.keyCompare);
+        }
     }
 
     public static void drawRectangle(Canvas c, int x, int y, int w, int h) {
@@ -237,6 +367,50 @@ public class TestPage extends Composite {
     protected void onReloadImage() {
         btnReload.setEnabled(false);
         image.setUrl("/screen.png?time=" + System.currentTimeMillis());
+        loadTree();
+    }
+    
+    private ViewHierarchyTreeViewModel mTreeViewModel;
+    
+    CellTree mCellTree;
+    private void loadTree(){
+        DataProvider.getTreeHierarchy(new DataProvider.AsyncCallback<ViewNodeJSO>() {
+
+            @Override
+            public void onError(Request r, Throwable t) {
+
+            }
+
+            @Override
+            public void onDownloaded(ViewNodeJSO result) {
+                mRoot = result;                
+                CellTree.Resources res = GWT.create(CustomTreeResources.class);
+                mTreeViewModel = new ViewHierarchyTreeViewModel(result);
+                mTreeViewModel.setOnSelectionChangedListener(new OnSelectionChangedListener() {                    
+                    @Override
+                    public void onSelectionChanged(ViewNodeJSO viewNode, boolean selected) {                       
+                        TestPage.this.onViewTreeNodeSelectionChanged(viewNode, selected);
+                    }
+                });
+                mTreeViewModel.setOnViewNodeMouseOverListener(new OnViewNodeMouseOverListener() {
+                    @Override
+                    public void onMouseOver(ViewNodeJSO viewNode) {
+                        if (mTreeViewModel.getSelectedNode() == null) {
+                            clearCanvas();
+                            drawRectForView(viewNode);
+                        }
+                    }
+                });
+                
+                if(mCellTree != null){
+                    mCellTree.removeFromParent();
+                }
+                mCellTree = new CellTree(mTreeViewModel, null, res);                   
+                testPanel.add(mCellTree);                
+                CellTreeTools.expandAll(mCellTree.getRootTreeNode());
+                mCellTree.setAnimationEnabled(true);
+            }                        
+        });
     }
 
     protected void onScaleDown() {
@@ -255,5 +429,5 @@ public class TestPage extends Composite {
         mCanvas.setCoordinateSpaceWidth(w);
         mCanvas.setCoordinateSpaceHeight(h);
         mCanvas.getContext2d().drawImage(ImageElement.as(image.getElement()), 0, 0, w, h);
-    }
+    }      
 }
