@@ -19,6 +19,8 @@ import thothbot.parallax.core.shared.geometries.PlaneGeometry;
 import thothbot.parallax.core.shared.materials.MeshBasicMaterial;
 import thothbot.parallax.core.shared.objects.Mesh;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -31,6 +33,8 @@ import com.scurab.gwt.anuitor.client.DataProvider;
 import com.scurab.gwt.anuitor.client.DataProvider.AsyncCallback;
 import com.scurab.gwt.anuitor.client.event.ViewHoverChangedEvent;
 import com.scurab.gwt.anuitor.client.event.ViewHoverChangedEventHandler;
+import com.scurab.gwt.anuitor.client.event.ViewNodeClickEvent;
+import com.scurab.gwt.anuitor.client.event.ViewNodeClickEventHandler;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper.Action;
@@ -53,6 +57,9 @@ public class ThreeDScene extends AnimatedScene {
 
     /* Collection of meshes findable by view */
     private HashMap<ViewNodeJSO, ViewMesh> mViewFrames = new HashMap<ViewNodeJSO, ViewMesh>();
+    
+    /* Last mesh targetted by mouse */
+    private ViewMesh mLastMesh;
     
     private HandlerManager mEventBus = new HandlerManager(this);
 
@@ -83,8 +90,6 @@ public class ThreeDScene extends AnimatedScene {
 
     private void bind() {
         getCanvas().addMouseMoveHandler(new MouseMoveHandler() {
-            private ViewMesh mLastMesh;
-
             @Override
             public void onMouseMove(MouseMoveEvent event) {
                 Canvas3d canvas = getCanvas();
@@ -114,6 +119,15 @@ public class ThreeDScene extends AnimatedScene {
                     setMaterial(mLastMesh, false);
                     notifyMeshHoverChanged(mLastMesh, false);
                     mLastMesh = null;                    
+                }
+            }
+        });
+
+        getCanvas().addClickHandler(new ClickHandler() {            
+            @Override
+            public void onClick(ClickEvent event) {               
+                if (mLastMesh != null) {
+                    mEventBus.fireEvent(new ViewNodeClickEvent(mLastMesh.getView()));
                 }
             }
         });
@@ -154,7 +168,7 @@ public class ThreeDScene extends AnimatedScene {
             public boolean doAction(ViewNodeJSO value, ViewNodeJSO parent) {
                 try {
                     ViewMesh vm = addMesh(value);
-                    mViewFrames.put(value, vm);                    
+                    mViewFrames.put(value, vm);                       
                 } catch (Exception e) {
                     // swallow some internal exception
                     Log.error(e);
@@ -313,5 +327,13 @@ public class ThreeDScene extends AnimatedScene {
 
     public void removeMeshHoverChangedHandler(ViewHoverChangedEventHandler handler) {
         mEventBus.removeHandler(ViewHoverChangedEvent.TYPE, handler);
+    }
+    
+    public void addMeshClickHandler(ViewNodeClickEventHandler handler) {
+        mEventBus.addHandler(ViewNodeClickEvent.TYPE, handler);        
+    }
+
+    public void removeMeshClickEventHandler(ViewNodeClickEventHandler handler) {
+        mEventBus.removeHandler(ViewNodeClickEvent.TYPE, handler);
     }
 }
