@@ -20,11 +20,16 @@ import com.github.gwtd3.api.layout.TreeLayout;
 import com.github.gwtd3.api.svg.Diagonal;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.scurab.gwt.anuitor.client.DataProvider;
 import com.scurab.gwt.anuitor.client.DataProvider.AsyncCallback;
+import com.scurab.gwt.anuitor.client.event.ViewHoverChangedEvent;
+import com.scurab.gwt.anuitor.client.event.ViewHoverChangedEventHandler;
+import com.scurab.gwt.anuitor.client.event.ViewNodeClickEvent;
+import com.scurab.gwt.anuitor.client.event.ViewNodeClickEventHandler;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 import com.scurab.gwt.anuitor.client.model.ViewTreeNode;
@@ -72,6 +77,10 @@ public class TreeView extends FlowPanel{
     private final int mCloseNodes = 4;
     /* Difference if we have first nodes closer together */
     private int mCloseNodesDiff = mShowId ? Math.max(0, mCloseNodes * (WIDTH_COEF_ID - WIDTH_COEF)) : 0;
+    /* Currently selected/last clicked node*/
+    private ViewTreeNode mSelectedNode;
+    /* EventBus for click/hover events */
+    private HandlerManager mEventBus = new HandlerManager(this);
 
     public TreeView() {
         super();
@@ -93,6 +102,9 @@ public class TreeView extends FlowPanel{
     protected void onDataLoaded(ViewNodeJSO srcroot) {        
         List<Integer> levelItems = new ArrayList<Integer>();        
         mViewTreeRoot = ViewNodeHelper.convertToViewTreeNodes(srcroot, levelItems);
+        if(levelItems.size() <= mCloseNodes){
+            mCloseNodesDiff = 0;
+        }
                 
         int width = ((mShowId ? WIDTH_COEF_ID : WIDTH_COEF) * levelItems.size()) - mCloseNodesDiff;
         int height = (mShowId ? HEIGHT_COEF_ID : HEIGHT_COEF) * Collections.max(levelItems);
@@ -198,9 +210,10 @@ public class TreeView extends FlowPanel{
         Selection nodeEnter = node
                 .enter()
                 .append("g")
-                .attr("class", CSS.node())                      
+                .attr("class", CSS.node())                   
                 .attr("transform", "translate(" + source.getNumAttr(ORIGIN_Y) + "," + source.getNumAttr(ORIGIN_X) + ")")
-                .on("click", new ClickHandler())
+                .on("click", new NodeClickHandler())
+                .on("dblclick", new CollapseExpandHandler())
                 .on("mouseenter", new HoverHandler(true))
                 .on("mouseleave", new HoverHandler(false));
 
@@ -254,22 +267,31 @@ public class TreeView extends FlowPanel{
 
 
         // transition entering nodes
-        Transition nodeUpdate = node.transition().duration(DURATION).attr("transform", new DatumFunction<String>() {
-                    @Override
-                    public String apply(Element context, Value d, int index) {
-                        ViewTreeNode data = d.<ViewTreeNode>as();
-                        return "translate(" + data.y() + "," + data.x() + ")";
-                    }
-                });
+        Transition nodeUpdate = node.transition()
+                .duration(DURATION)
+                    .attr("transform", new DatumFunction<String>() {
+                        @Override
+                        public String apply(Element context, Value d, int index) {
+                            ViewTreeNode data = d.<ViewTreeNode>as();
+                            return "translate(" + data.y() + "," + data.x() + ")";
+                        }
+                    });
 
-        nodeUpdate.select("circle").attr("r", CIRCLE_RADIUS)
-                .style("fill", new DatumFunction<String>() {
-                    @Override
-                    public String apply(Element context, Value d, int index) {
-                        JavaScriptObject object = d.<ViewTreeNode>as().getObjAttr("_children");
-                        return (object != null) ? "lightsteelblue" : "#fff";
-                    }
-                });
+        nodeUpdate.select("circle")
+                .attr("r", CIRCLE_RADIUS)
+                    .style("fill", new DatumFunction<String>() {
+                        @Override
+                        public String apply(Element context, Value d, int index) {
+                            ViewTreeNode node = d.<ViewTreeNode>as();
+                            JavaScriptObject object = node.getObjAttr("_children");
+                            boolean isCollapsed = object != null;
+                            if (node.isSelected()) {
+                                return isCollapsed ? "DarkRed" :"Coral";
+                            } else {                                                                    
+                                return isCollapsed ? "lightsteelblue" : "#fff";
+                            }
+                        }
+                    });
 
         // transition exiting nodes
         Transition nodeExit = node.exit().transition().duration(DURATION)
@@ -344,11 +366,11 @@ public class TreeView extends FlowPanel{
     }
 
     /**
-     * Click event handler
+     * Collapse/Expand click handler
      * @author jbruchanov
      *
      */
-    private class ClickHandler implements DatumFunction<Void> {
+    private class CollapseExpandHandler implements DatumFunction<Void> {
         @Override
         public Void apply(Element context, Value d, int index) {
             ViewTreeNode node = d.<ViewTreeNode> as();
@@ -377,7 +399,48 @@ public class TreeView extends FlowPanel{
         @Override
         public Void apply(Element context, Value d, int index) { 
             ViewTreeNode node = d.<ViewTreeNode> as();
+            ViewNodeJSO v = node.getView();
+            mEventBus.fireEvent(new ViewHoverChangedEvent(v, mEntered));
             return null;
         }        
+    }
+    
+    /**
+     * Node click handler fires events and change selection
+     * @author jbruchanov
+     *
+     */
+    private class NodeClickHandler implements DatumFunction<Void> {                 
+        @Override
+        public Void apply(Element context, Value d, int index) {
+            ViewTreeNode node = d.<ViewTreeNode> as();
+            if(mSelectedNode != null){
+                mSelectedNode.setSelected(false);
+                update(mSelectedNode);
+            }            
+            mSelectedNode = node;
+            mSelectedNode.setSelected(true);
+            
+            ViewNodeJSO v = mSelectedNode.getView();
+            mEventBus.fireEvent(new ViewNodeClickEvent(v));
+            update(node);
+            return null;
+        }        
+    }
+    
+    public void addClickHandler(ViewNodeClickEventHandler handler) {
+        mEventBus.addHandler(ViewNodeClickEvent.TYPE, handler);
+    }
+
+    public void removeClickHandler(ViewNodeClickEventHandler handler) {
+        mEventBus.removeHandler(ViewNodeClickEvent.TYPE, handler);
+    }
+    
+    public void addHoverChangedHandler(ViewHoverChangedEventHandler handler) {
+        mEventBus.addHandler(ViewHoverChangedEvent.TYPE, handler);
+    }
+
+    public void removeHoverChangedHandler(ViewHoverChangedEventHandler handler) {
+        mEventBus.removeHandler(ViewHoverChangedEvent.TYPE, handler);
     }
 }
