@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.scurab.gwt.anuitor.client.DataProvider;
+import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
@@ -45,6 +46,7 @@ import com.scurab.gwt.anuitor.client.style.CustomTreeResources;
 import com.scurab.gwt.anuitor.client.util.CanvasTools;
 import com.scurab.gwt.anuitor.client.util.CellTreeTools;
 import com.scurab.gwt.anuitor.client.util.HTMLColors;
+import com.scurab.gwt.anuitor.client.util.TableTools;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnSelectionChangedListener;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnViewNodeMouseOverListener;
@@ -262,25 +264,7 @@ public class TestPage extends Composite {
     }
     
     private void initTable(){
-        cellTable.getLoadingIndicator().setVisible(false);
-        Column<Pair, String> column = new Column<Pair, String>(new TextCell()) {
-            @Override
-            public String getValue(Pair p) {                
-                return p.key;
-            }
-        };        
-        cellTable.addColumn(column, "Property");
-        cellTable.setColumnWidth(column, "200px");
-        
-        column = new Column<Pair, String>(new TextCell()) {
-            @Override
-            public String getValue(Pair object) {
-                return String.valueOf(object.value);
-            }
-        };                       
-        column.setCellStyleNames("TableValue");
-        cellTable.addColumn(column, "Value");
-        cellTable.setColumnWidth(column, "100%");                  
+        TableTools.initTableForPairs(cellTable);                    
     }
     
     private void onViewTreeNodeSelectionChanged(ViewNodeJSO viewNode, boolean selected){
@@ -289,56 +273,10 @@ public class TestPage extends Composite {
             onShowTableDetail(viewNode);
             drawRectForView(viewNode);
         }        
-    }
-    
-    private void onShowTableDetail(ViewNodeJSO viewNode){
-        ListDataProvider<Pair> dataProvider = new ListDataProvider<Pair>();
-        List<Pair> list = dataProvider.getList();
-        Set<String> keys = viewNode.getDataKeys();
-        StringBuilder sb = new StringBuilder();
-        for (String key : keys) {
+    }        
 
-            if (key.startsWith("_") || key.equals(ViewFields.TYPE)) { //ignore internal fields and type for now
-                continue;
-            }
-            try{
-                String value = viewNode.getStringedValue(key);
-                list.add(new Pair(key, value));
-            }catch(Exception e){
-                sb.append(key).append("\n");                
-            }
-        }
-        
-        if(sb.length() > 0){
-            Window.alert(sb.toString());
-        }
-        java.util.Collections.sort(list);
-
-        list.add(0, new Pair("Level", viewNode.getLevel()));
-        list.add(0, new Pair("IDName", viewNode.getIDName()));
-        list.add(0, new Pair("ID", viewNode.getID()));
-        list.add(0, new Pair(ViewFields.TYPE, viewNode.getStringedValue(ViewFields.TYPE)));
-        
-        dataProvider.addDataDisplay(cellTable);  
-    }
-    
-    
-    
-    private static class Pair implements Comparable<Pair>{
-        public final String key;
-        public final Object value;
-        private final String keyCompare;
-        
-        public Pair(String key, Object value) {
-            this.key = key;
-            this.value = value;
-            keyCompare = key.toLowerCase();
-        }
-
-        @Override
-        public int compareTo(Pair o) {            
-            return keyCompare.compareTo(o.keyCompare);
-        }
+    private void onShowTableDetail(ViewNodeJSO viewNode) {        
+        TableTools.createDataProvider(viewNode).addDataDisplay(cellTable);
     }
 
     public static void drawRectangle(Canvas c, int x, int y, int w, int h) {

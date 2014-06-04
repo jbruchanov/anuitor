@@ -37,9 +37,16 @@ h1 {
   margin: 15px 6px 6px;
 }
 
-.TableValue{
-	font-family: monospace;	
+.tableValue{
+	font: 9.5px "Lucida Console", Monaco, monospace, sans-serif;
+	max-width: 50px;		
+	word-wrap:break-word;
 }
+
+.tableLabel{	
+	font: 10px "Lucida Console", Monaco, monospace, sans-serif;	
+}
+
 
 .treeNode{	
 	cursor: hand;
