@@ -5,8 +5,8 @@
 	<ui:style>
 	.content {
 		position: absolute;
-		width: 98%;
-		height: 98%;
+		width: 100%;
+		height: 100%;
 		margin: 0;
 		padding: 0;
 	}

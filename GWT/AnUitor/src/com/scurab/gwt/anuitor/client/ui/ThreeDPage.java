@@ -13,7 +13,6 @@ public class ThreeDPage extends SplitPanelPage {
 
     private RenderingPanel mPanel;
     private ThreeDScene mScene;
-    private static final int MARGIN = 20;
 
     @Override
     public IsWidget getContentPanelWidget() {
@@ -32,27 +31,29 @@ public class ThreeDPage extends SplitPanelPage {
             }
         });
         RenderingPanel renderingPanel = new RenderingPanel();
-        updateRenderSize(renderingPanel);        
+        updateRenderSize(renderingPanel, 0.999);
         renderingPanel.setBackground(0x111111);
         mScene = new ThreeDScene();
-        mScene.addMeshClickHandler(new ViewNodeClickEventHandler() {            
+        mScene.addMeshClickHandler(new ViewNodeClickEventHandler() {
             @Override
-            public void onViewNodeClick(ViewNodeClickEvent event) {           
+            public void onViewNodeClick(ViewNodeClickEvent event) {
+                if (mFirstClick) {
+                    updateRenderSize(mPanel);
+                }
                 dispatchViewNodeClick(event.getView());
             }
         });
-        renderingPanel.setAnimatedScene(mScene);        
+        renderingPanel.setAnimatedScene(mScene);
         return renderingPanel;
-    }
-    
-    @Override
-    protected boolean shouldHideTableOnStart() {     
-        return false;
     }
 
     private void updateRenderSize(RenderingPanel panel) {
-        if (panel != null) {            
-            panel.setSize(Window.getClientWidth() * CONTENT_PERCENT + "px", Window.getClientHeight() - MARGIN + "px");
+        updateRenderSize(panel, CONTENT_PERCENT);
+    }
+
+    private void updateRenderSize(RenderingPanel panel, double coef) {
+        if (panel != null) {
+            panel.setSize(Window.getClientWidth() * coef + "px", Window.getClientHeight() + "px");
         }
     }
 }
