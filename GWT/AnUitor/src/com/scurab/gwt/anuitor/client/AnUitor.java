@@ -14,8 +14,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.scurab.gwt.anuitor.client.ui.TestPage;
-import com.scurab.gwt.anuitor.client.ui.ThreeDScene;
-import com.scurab.gwt.anuitor.client.ui.TreeView;
+import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
 
 /**
@@ -52,12 +51,8 @@ public class AnUitor implements EntryPoint {
         triD.setWidth("120px");
         triD.addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent event) {
-                RenderingPanel renderingPanel = new RenderingPanel();
-                renderingPanel.setBackground(0x111111);
-                ThreeDScene scene = new ThreeDScene();
-                renderingPanel.setAnimatedScene(scene);
-                openWidget(((Button) event.getSource()).getText(), renderingPanel, true);
+            public void onClick(ClickEvent event) {               
+                openWidget(((Button) event.getSource()).getText(), new ThreeDPage(), true);
             }
         });
         hp.add(triD);
@@ -77,10 +72,6 @@ public class AnUitor implements EntryPoint {
         History.newItem(v);
         RootPanel.get().clear();
         RootLayoutPanel.get().clear();
-        if (rootLayoutPanel) {
-            RootLayoutPanel.get().add(w);
-        } else {
-            RootPanel.get().add(w);
-        }
+        RootLayoutPanel.get().add(w);
     }
 }
