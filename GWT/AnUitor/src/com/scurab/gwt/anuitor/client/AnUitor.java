@@ -1,7 +1,5 @@
 package com.scurab.gwt.anuitor.client;
 
-import thothbot.parallax.core.client.RenderingPanel;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,7 +10,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.scurab.gwt.anuitor.client.ui.TestPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
@@ -43,7 +40,7 @@ public class AnUitor implements EntryPoint {
         screen.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                openWidget(((Button) event.getSource()).getText(), new TestPage(), false);
+                openWidget(((Button) event.getSource()).getText(), new TestPage());
             }
         });
         hp.add(screen);
@@ -51,8 +48,8 @@ public class AnUitor implements EntryPoint {
         triD.setWidth("120px");
         triD.addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent event) {               
-                openWidget(((Button) event.getSource()).getText(), new ThreeDPage(), true);
+            public void onClick(ClickEvent event) {
+                openWidget(((Button) event.getSource()).getText(), new ThreeDPage());
             }
         });
         hp.add(triD);
@@ -60,18 +57,21 @@ public class AnUitor implements EntryPoint {
         vh.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                openWidget(((Button) event.getSource()).getText(), new TreeViewPage(), false);
+                openWidget(((Button) event.getSource()).getText(), new TreeViewPage());
             }
         });
-        hp.add(vh);
-        RootPanel.get().clear();        
-        RootPanel.get().add(hp);
+        hp.add(vh);        
+        openWidget("", hp);
     }
 
-    private void openWidget(String v, IsWidget w, boolean rootLayoutPanel) {
+    private IsWidget mLastScreen;
+
+    private void openWidget(String v, IsWidget w) {
         History.newItem(v);
-        RootPanel.get().clear();
-        RootLayoutPanel.get().clear();
-        RootLayoutPanel.get().add(w);
+        if (mLastScreen != null) {
+            RootLayoutPanel.get().remove(mLastScreen);
+        }
+        mLastScreen = w;
+        RootLayoutPanel.get().add(mLastScreen);
     }
 }
