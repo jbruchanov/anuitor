@@ -60,5 +60,13 @@ public class ViewTreeNode extends Node {
     
     public static final ViewTreeNode createObject() {
         return JavaScriptObject.createObject().cast();
-    }    
+    } 
+    
+    public final native void setSelected(boolean value) /*-{
+        this.selected = value;
+    }-*/;
+
+    public final native boolean isSelected() /*-{
+        return this.selected === true;
+     }-*/;
 }
