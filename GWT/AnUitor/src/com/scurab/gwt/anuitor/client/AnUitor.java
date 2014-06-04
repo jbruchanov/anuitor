@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.scurab.gwt.anuitor.client.ui.TestPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDScene;
 import com.scurab.gwt.anuitor.client.ui.TreeView;
+import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -64,12 +65,12 @@ public class AnUitor implements EntryPoint {
         vh.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                openWidget(((Button) event.getSource()).getText(), new TreeView(), false);
+                openWidget(((Button) event.getSource()).getText(), new TreeViewPage(), false);
             }
         });
         hp.add(vh);
-        RootLayoutPanel.get().clear();
-        RootLayoutPanel.get().add(hp);
+        RootPanel.get().clear();        
+        RootPanel.get().add(hp);
     }
 
     private void openWidget(String v, IsWidget w, boolean rootLayoutPanel) {
