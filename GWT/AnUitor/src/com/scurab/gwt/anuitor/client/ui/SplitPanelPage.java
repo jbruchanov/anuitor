@@ -17,6 +17,8 @@ import com.scurab.gwt.anuitor.client.util.TableTools;
 public abstract class SplitPanelPage extends Composite {
 
     private static SplitPanelPageUiBinder uiBinder = GWT.create(SplitPanelPageUiBinder.class);
+    
+    public static final double CONTENT_PERCENT = 0.75;
 
     interface SplitPanelPageUiBinder extends UiBinder<Widget, SplitPanelPage> {
     }
@@ -30,16 +32,20 @@ public abstract class SplitPanelPage extends Composite {
 
     public SplitPanelPage() {
         initWidget(uiBinder.createAndBindUi(this));
-        
-        splitLayoutPanel.setWidgetSize(contentPanel, Window.getClientWidth() * 0.99);        
+        TableTools.initTableForPairs(cellTable);
+        splitLayoutPanel.setWidgetSize(contentPanel, Window.getClientWidth() * (shouldHideTableOnStart() ? 0.99 : CONTENT_PERCENT));       
         contentPanel.add(getContentPanelWidget());
+    }        
+    
+    protected boolean shouldHideTableOnStart() {
+        return true;
     }
     
     public abstract IsWidget getContentPanelWidget();    
 
     protected void dispatchViewNodeClick(ViewNodeJSO view) {
         if(mFirstClick){
-            splitLayoutPanel.setWidgetSize(contentPanel, Window.getClientWidth() * 0.75);
+            splitLayoutPanel.setWidgetSize(contentPanel, Window.getClientWidth() * CONTENT_PERCENT);
             mFirstClick = false;
         }
         TableTools.createDataProvider(view).addDataDisplay(cellTable);
