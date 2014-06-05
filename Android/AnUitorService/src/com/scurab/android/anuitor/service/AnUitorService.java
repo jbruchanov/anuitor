@@ -96,7 +96,7 @@ public class AnUitorService extends Service {
             f.mkdirs();
         }
 
-        mServer = new AnUiHttpServer(getApplicationContext(), port, new File(s), false, new WindowManagerGlobal());
+        mServer = new AnUiHttpServer(getApplicationContext(), port, new File(s), true, new WindowManagerGlobal());
         try {
             mServer.start();
             startForeground();
