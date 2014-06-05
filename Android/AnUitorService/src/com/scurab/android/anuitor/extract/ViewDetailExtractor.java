@@ -1,10 +1,18 @@
 package com.scurab.android.anuitor.extract;
 
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.webkit.WebView;
+import android.widget.AbsListView;
+import android.widget.AbsSeekBar;
+import android.widget.CheckedTextView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
+
 import com.scurab.android.anuitor.model.ViewNode;
 
 import java.util.HashMap;
@@ -22,8 +30,20 @@ public final class ViewDetailExtractor {
 
     static {
         MAP = new HashMap<Class<?>, ViewExtractor>();
-        registerExtractor(TextView.class, new TextViewExtractor());
         registerExtractor(View.class, new ViewExtractor());
+        registerExtractor(ViewGroup.class, new ViewGroupExtractor());
+        registerExtractor(AbsListView.class, new AbsListViewExtractor());
+        registerExtractor(TextView.class, new TextViewExtractor());
+        registerExtractor(CheckedTextView.class, new CheckedTextViewExtractor());
+        registerExtractor(ViewPager.class, new ViewPagerExtractor());
+        registerExtractor(ScrollView.class, new ScrollViewExtractor());
+        registerExtractor(ViewStub.class, new ViewStubExtractor());
+        registerExtractor(ImageView.class, new ImageViewExtractor());
+        registerExtractor(ProgressBar.class, new ProgressBarExtractor());
+        registerExtractor(AbsSeekBar.class, new AbsSeekBarExtractor());
+        registerExtractor(ImageView.class, new ImageViewExtractor());
+        registerExtractor(ViewPager.class, new ViewPagerExtractor());
+
 
         VIEWGROUP_IGNORE = new HashSet<Class<?>>();
         VIEWGROUP_IGNORE.add(WebView.class);

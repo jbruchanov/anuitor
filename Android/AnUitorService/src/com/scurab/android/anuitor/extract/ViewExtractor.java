@@ -1,13 +1,20 @@
 package com.scurab.android.anuitor.extract;
 
+import android.graphics.Rect;
 import android.os.Build;
+import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
+import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -19,10 +26,23 @@ import java.util.HashMap;
  */
 public class ViewExtractor {
     private static final int[] POSITION = new int[2];
+    private static final Rect RECT = new Rect();
 
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         data.put("Type", String.valueOf(v.getClass().getCanonicalName()));
 
+        data.put("Baseline", v.getBaseline());
+        data.put("Background", String.valueOf(v.getBackground()));
+        data.put("Context", String.valueOf(v.getContext()));
+        data.put("ContentDescription", String.valueOf(v.getContentDescription()));
+        data.put("IsClickable", v.isClickable());
+        data.put("IsLongClickable", v.isLongClickable());
+        data.put("IsEnabled", v.isEnabled());
+        data.put("IsFocusable", v.isFocusable());
+        data.put("IsFocusableInTouchMode", v.isFocusableInTouchMode());
+        data.put("IsDuplicateParentState", v.isDuplicateParentStateEnabled());
+        data.put("IsShown", v.isShown());
+        data.put("KeepScreenOn", v.getKeepScreenOn());
         data.put("Left", v.getLeft());
         data.put("Top", v.getTop());
         data.put("Right", v.getRight());
@@ -36,8 +56,48 @@ public class ViewExtractor {
         data.put("_Visibility", v.getVisibility());
         data.put("Visibility", Translator.visibility(v.getVisibility()));
 
+        data.put("NextFocusDownId", IdsHelper.getValueForId(v.getNextFocusDownId()));
+        data.put("NextFocusLeftId", IdsHelper.getValueForId(v.getNextFocusLeftId()));
+        data.put("NextFocusRightId", IdsHelper.getValueForId(v.getNextFocusRightId()));
+        data.put("NextFocusUpId", IdsHelper.getValueForId(v.getNextFocusUpId()));
+
+        v.getHitRect(RECT);
+        data.put("HitRect", RECT.toShortString());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+            data.put("MinWidth", v.getMinimumWidth());
+            data.put("MinWidth", v.getMinimumWidth());
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            data.put("Alpha", v.getAlpha());
+            data.put("IsHWAccelerated", v.isHardwareAccelerated());
+            data.put("LayerType", Translator.layerType(v.getLayerType()));
+            data.put("Matrix", v.getMatrix().toShortString());
+            data.put("NextFocusForwardId", IdsHelper.getValueForId(v.getNextFocusForwardId()));
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            data.put("HasOnClickListener", v.hasOnClickListeners());
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (v.getResources() != null) {
+                data.put("CameraDistance", v.getCameraDistance());
+            }
+            data.put("IsImportantForA11Y", Translator.importantForA11Y(v.getImportantForAccessibility()));
+            data.put("LayerDirection", Translator.layoutDirection(v.getLayoutDirection()));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            data.put("LabelFor", IdsHelper.getValueForId(v.getLabelFor()));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            data.put("ClipBounds", String.valueOf(v.getClipBounds()));
+        }
+
         boolean isViewGroup = (v instanceof ViewGroup) && !ViewDetailExtractor.VIEWGROUP_IGNORE.contains(v.getClass());
-        Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer)parentData.get("_Visibility");
+//        boolean isVisible = v.isShown();
+        Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
         boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
         boolean hasBackground = v.getBackground() != null;
         boolean shouldRender = isVisible && ((isViewGroup && hasBackground) || !isViewGroup);
@@ -71,11 +131,21 @@ public class ViewExtractor {
         data.put("layout_height", Translator.layoutSize(lp.height));
         if (lp instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lp;
-            data.put("layoutParams_leftMargin", mlp.leftMargin);
-            data.put("layoutParams_topMargin", mlp.topMargin);
-            data.put("layoutParams_rightMargin", mlp.rightMargin);
-            data.put("layoutParams_bottomMargin", mlp.bottomMargin);
+            data.put("LayoutParams_leftMargin", mlp.leftMargin);
+            data.put("LayoutParams_topMargin", mlp.topMargin);
+            data.put("LayoutParams_rightMargin", mlp.rightMargin);
+            data.put("LayoutParams_bottomMargin", mlp.bottomMargin);
+        }
 
+        if(lp instanceof FrameLayout.LayoutParams){
+            FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) lp;
+            data.put("LayoutParams_layoutGravity", Translator.gravity(flp.gravity));
+        }
+
+        if(lp instanceof LinearLayout.LayoutParams){
+            LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) lp;
+            data.put("LayoutParams_weight", llp.weight);
+            data.put("LayoutParams_layoutGravity", Translator.gravity(llp.gravity));
         }
 
         if (lp instanceof RelativeLayout.LayoutParams) {
@@ -87,6 +157,12 @@ public class ViewExtractor {
                     data.put(Translator.relativeLayoutParamRuleName(i), Translator.relativeLayoutParamRuleValue(rlData));
                 }
             }
+        }
+
+        if(lp instanceof ViewPager.LayoutParams){
+            ViewPager.LayoutParams vlp = (ViewPager.LayoutParams) lp;
+            data.put("LayoutParams_layoutGravity", Translator.gravity(vlp.gravity));
+            data.put("LayoutParams_isDecor", vlp.isDecor);
         }
         return data;
     }
