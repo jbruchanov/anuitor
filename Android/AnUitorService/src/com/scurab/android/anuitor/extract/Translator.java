@@ -91,7 +91,7 @@ public class Translator {
             new String[]{"leftOf", "rightOf", "above", "below", "alignBaseline", "alignLeft", "alignTop", "alignRight", "alignBottom", "alignParentLeft", "alignParentTop", "alignParentRight", "alignParentBottom", "center", "centerHorizontal", "centerVertical"};
 
     public static String relativeLayoutParamRuleName(int index){
-        return "layoutParams_" + RELATIVE_LAYOUT_RULES[index];
+        return "layoutParams_" + (index < RELATIVE_LAYOUT_RULES.length ? RELATIVE_LAYOUT_RULES[index] : index);
     }
 
     public static Object relativeLayoutParamRuleValue(int value) {
