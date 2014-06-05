@@ -61,6 +61,20 @@ public class ViewExtractor {
         data.put("NextFocusRightId", IdsHelper.getValueForId(v.getNextFocusRightId()));
         data.put("NextFocusUpId", IdsHelper.getValueForId(v.getNextFocusUpId()));
 
+        data.put("ScrollX", v.getScrollX());
+        data.put("ScrollY", v.getScrollY());
+        data.put("X", v.getX());
+        data.put("Y", v.getY());
+        data.put("Tag", v.getTag() != null ? String.valueOf(v.getTag()) : null);
+        data.put("HasFocus", v.hasFocus());
+        data.put("HasFocusable", v.hasFocusable());
+        data.put("IsOpaque", v.isOpaque());
+        data.put("IsPressed", v.isPressed());
+        data.put("IsSelected", v.isSelected());
+        data.put("IsSoundEffects", v.isSoundEffectsEnabled());
+        data.put("WillNotDraw", v.willNotDraw());
+        data.put("WillNotCacheDrawing", v.willNotCacheDrawing());
+
         v.getHitRect(RECT);
         data.put("HitRect", RECT.toShortString());
 
@@ -71,6 +85,13 @@ public class ViewExtractor {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             data.put("Alpha", v.getAlpha());
+            data.put("Rotation", v.getRotation());
+            data.put("RotationX", v.getRotationX());
+            data.put("RotationY", v.getRotationY());
+            data.put("PivotX", v.getPivotX());
+            data.put("PivotY", v.getPivotY());
+            data.put("TranslationX", v.getTranslationX());
+            data.put("TranslationY", v.getTranslationY());
             data.put("IsHWAccelerated", v.isHardwareAccelerated());
             data.put("LayerType", Translator.layerType(v.getLayerType()));
             data.put("Matrix", v.getMatrix().toShortString());
