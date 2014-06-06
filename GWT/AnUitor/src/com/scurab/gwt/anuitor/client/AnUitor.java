@@ -27,41 +27,47 @@ public class AnUitor implements EntryPoint {
             @Override
             public void onValueChange(ValueChangeEvent<String> event) {
                 if (event.getValue().length() == 0) {
-                    addSelectionPane();
+                    openScreen("");
                 }
             }
         });
-        addSelectionPane();
+
+        openScreen(History.getToken());
     }
 
-    private void addSelectionPane() {
+    private void openScreen(String screen) {
+        IsWidget toOpen = null;
+        if ("ScreenPreview".equals(screen)) {
+            toOpen = new TestPage();
+        } else if ("3D".equals(screen)) {
+            toOpen = new ThreeDPage();
+        } else if ("ViewHierarchy".equals(screen)) {
+            toOpen = new TreeViewPage();
+        } else {
+            screen = "";
+            toOpen = createSelectionPane();
+        }
+
+        openWidget(screen, toOpen);
+    }
+
+    private HorizontalPanel createSelectionPane() {
         HorizontalPanel hp = new HorizontalPanel();
+
         Button screen = new Button("ScreenPreview");
-        screen.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                openWidget(((Button) event.getSource()).getText(), new TestPage());
-            }
-        });
+        screen.addClickHandler(mClickHandler);
         hp.add(screen);
+
         Button triD = new Button("3D");
         triD.setWidth("120px");
-        triD.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                openWidget(((Button) event.getSource()).getText(), new ThreeDPage());
-            }
-        });
+        triD.addClickHandler(mClickHandler);
         hp.add(triD);
+
         Button vh = new Button("ViewHierarchy");
-        vh.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                openWidget(((Button) event.getSource()).getText(), new TreeViewPage());
-            }
-        });
-        hp.add(vh);        
-        openWidget("", hp);
+        vh.addClickHandler(mClickHandler);
+
+        hp.add(vh);
+        return hp;
     }
 
     private IsWidget mLastScreen;
@@ -74,4 +80,11 @@ public class AnUitor implements EntryPoint {
         mLastScreen = w;
         RootLayoutPanel.get().add(mLastScreen);
     }
+
+    private ClickHandler mClickHandler = new ClickHandler() {
+        @Override
+        public void onClick(ClickEvent event) {
+            openScreen(((Button) event.getSource()).getText());
+        }
+    };
 }
