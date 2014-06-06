@@ -228,4 +228,19 @@ public class Translator {
             return String.format("UNKWNOWN (%s)", value);
         }
     }
+
+    public static String stateListDrawableStates(int[] states) {
+        StringBuilder sb = new StringBuilder();
+        for (int state : states) {
+            String canname = IdsHelper.getNameForId(Math.abs(state));
+            String[] names = canname.split("/");
+            String name = names[names.length - 1];
+            sb.append(name).append("=").append(state > 0).append(" ");
+        }
+        int length = sb.length();
+        if (length > 0) {
+            sb.setLength(length - 1);
+        }
+        return sb.toString();
+    }
 }
