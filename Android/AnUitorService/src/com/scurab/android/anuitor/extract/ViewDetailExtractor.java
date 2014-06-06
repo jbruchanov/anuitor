@@ -91,7 +91,6 @@ public final class ViewDetailExtractor {
 
 
         counter[0]++;
-        //TODO:version problem
         parse(rootView, vn, 1, counter, lazy, vn.getData());
         return vn;
     }
