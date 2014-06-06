@@ -103,7 +103,7 @@ public class AnUitorService extends Service {
             return true;
         } catch (Exception e) {
             NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            nm.notify(NOTIF_ID, createSimpleNotification(e.getMessage()));
+            nm.notify(NOTIF_ID, createSimpleNotification(e.getMessage(), false));
         }
         return false;
     }
@@ -144,12 +144,21 @@ public class AnUitorService extends Service {
     }
 
     /**
+     * {@see #createSimpleNotification}, stop action is true by default
+     * @param addMsg
+     * @return
+     */
+    private Notification createSimpleNotification(String addMsg) {
+        return createSimpleNotification(addMsg, true);
+    }
+
+    /**
      * Create notification for service, adds stop button
      *
      * @param addMsg option msg added after IPs and port
      * @return
      */
-    private Notification createSimpleNotification(String addMsg) {
+    private Notification createSimpleNotification(String addMsg, boolean addStopAction) {
         int defaults = Notification.DEFAULT_LIGHTS;
         String msg = String.format("IPs:%s\nPort:%s", NetTools.getLocalIpAddress(), mServer.getListeningPort());
         if (addMsg != null) {
