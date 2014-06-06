@@ -1,16 +1,22 @@
 package com.scurab.android.anuitor.extract;
 
+import android.os.Build;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.AbsSeekBar;
+import android.widget.AdapterView;
 import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.scurab.android.anuitor.model.ViewNode;
@@ -30,19 +36,27 @@ public final class ViewDetailExtractor {
 
     static {
         MAP = new HashMap<Class<?>, ViewExtractor>();
+        registerExtractor(AbsListView.class, new AbsListViewExtractor());
+        registerExtractor(AbsSeekBar.class, new AbsSeekBarExtractor());
+        registerExtractor(AdapterView.class, new AdapterViewExtractor());
+        registerExtractor(CheckedTextView.class, new CheckedTextViewExtractor());
+        registerExtractor(CompoundButton.class, new CompoundButtonExtractor());
+        registerExtractor(DrawerLayout.class, new DrawerLayoutExtractor());
+        registerExtractor(ImageView.class, new ImageViewExtractor());
+        registerExtractor(ListView.class, new ListViewExtractor());
+        registerExtractor(ProgressBar.class, new ProgressBarExtractor());
+        registerExtractor(ScrollView.class, new ScrollViewExtractor());
+        registerExtractor(TextView.class, new TextViewExtractor());
         registerExtractor(View.class, new ViewExtractor());
         registerExtractor(ViewGroup.class, new ViewGroupExtractor());
-        registerExtractor(AbsListView.class, new AbsListViewExtractor());
-        registerExtractor(TextView.class, new TextViewExtractor());
-        registerExtractor(CheckedTextView.class, new CheckedTextViewExtractor());
         registerExtractor(ViewPager.class, new ViewPagerExtractor());
-        registerExtractor(ScrollView.class, new ScrollViewExtractor());
         registerExtractor(ViewStub.class, new ViewStubExtractor());
-        registerExtractor(ImageView.class, new ImageViewExtractor());
-        registerExtractor(ProgressBar.class, new ProgressBarExtractor());
-        registerExtractor(AbsSeekBar.class, new AbsSeekBarExtractor());
-        registerExtractor(ImageView.class, new ImageViewExtractor());
-        registerExtractor(ViewPager.class, new ViewPagerExtractor());
+        registerExtractor(WebView.class, new WebViewExtrator());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            registerExtractor(Switch.class, new SwitchExtractor());
+        }
+
 
 
         VIEWGROUP_IGNORE = new HashSet<Class<?>>();

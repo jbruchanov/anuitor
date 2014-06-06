@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.scurab.android.anuitor.extract.Translator;
+import com.scurab.android.anuitor.extract.ViewDetailExtractor;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
@@ -256,5 +258,14 @@ public class ViewExtractor {
 
     private static boolean isExportView(View v) {
         return v.getClass().getAnnotation(ExportView.class) != null;
+    }
+
+    /**
+     * Convert int value into hex #AARRGGBB format
+     * @param value
+     * @return
+     */
+    public String getStringColor(int value) {
+        return String.format("#%08X", (0xFFFFFFFF & value));
     }
 }

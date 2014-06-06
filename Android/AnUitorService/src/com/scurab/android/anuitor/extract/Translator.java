@@ -2,11 +2,13 @@ package com.scurab.android.anuitor.extract;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.v4.widget.DrawerLayout;
 import android.text.InputType;
 import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
@@ -197,5 +199,33 @@ public class Translator {
             e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    public static Object choiceMode(int value) {
+        switch (value) {
+        case AbsListView.CHOICE_MODE_NONE:
+            return "NONE";
+        case AbsListView.CHOICE_MODE_SINGLE:
+            return "SINGLE";
+        case AbsListView.CHOICE_MODE_MULTIPLE:
+            return "MULTIPLE";
+        case AbsListView.CHOICE_MODE_MULTIPLE_MODAL:
+            return "MUTLIPLE_MODAL";
+        default:
+            return String.format("UNKWNOWN (%s)", value);
+        }
+    }
+
+    public static Object drawerLockMode(int value) {
+        switch (value) {
+        case DrawerLayout.LOCK_MODE_UNLOCKED:
+            return "UNLOCKED";
+        case DrawerLayout.LOCK_MODE_LOCKED_OPEN:
+            return "OPEN";
+        case DrawerLayout.LOCK_MODE_LOCKED_CLOSED:
+            return "CLOSED";
+        default:
+            return String.format("UNKWNOWN (%s)", value);
+        }
     }
 }

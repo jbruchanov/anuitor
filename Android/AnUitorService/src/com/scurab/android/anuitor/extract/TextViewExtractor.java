@@ -19,11 +19,11 @@ public class TextViewExtractor extends ViewExtractor {
 
         values.put("Text", String.valueOf(tv.getText()));
         values.put("TextSize", tv.getTextSize());
-        values.put("TextColor", "#" + Integer.toHexString(tv.getCurrentTextColor()).toUpperCase());
-        values.put("HintTextColor", "#" + Integer.toHexString(tv.getCurrentHintTextColor()).toUpperCase());
+        values.put("TextColor", getStringColor(tv.getCurrentTextColor()));
+        values.put("HintTextColor", getStringColor(tv.getCurrentHintTextColor()));
         values.put("LinksClickable", tv.getLinksClickable());
         values.put("MovementMethod", String.valueOf(tv.getMovementMethod()));
-        values.put("Gravity",Translator.gravity(tv.getGravity()));
+        values.put("Gravity", Translator.gravity(tv.getGravity()));
         values.put("AutoLinkMask",Translator.linkMask(tv.getAutoLinkMask()));
         values.put("Ellipsize", String.valueOf(tv.getEllipsize()));
         values.put("InputType", Translator.inputType(tv.getInputType()));
@@ -39,7 +39,7 @@ public class TextViewExtractor extends ViewExtractor {
             values.put("LineSpacingExtra", tv.getLineSpacingExtra());
             values.put("LineSpacingMultiplier", tv.getLineSpacingMultiplier());
             values.put("MaxLines", tv.getMaxLines());
-            values.put("ShadowColor","#" + Integer.toHexString(tv.getShadowColor()).toUpperCase());
+            values.put("ShadowColor", getStringColor(tv.getShadowColor()));
             values.put("ShadowDX", tv.getShadowDx());
             values.put("ShadowDX", tv.getShadowDy());
             values.put("ShadowRadius", tv.getShadowRadius());

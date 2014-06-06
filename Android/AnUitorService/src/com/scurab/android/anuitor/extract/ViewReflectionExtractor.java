@@ -57,8 +57,8 @@ public class ViewReflectionExtractor extends ViewExtractor {
             }
         }
 
-        ViewExtractor.fillScale(v, data, parentData);
-        ViewExtractor.fillLocationValues(v, data, parentData);
+        fillScale(v, data, parentData);
+        fillLocationValues(v, data, parentData);
 
         if (isExportView(v)) {
             fillAnnotatedValues(v, data);
