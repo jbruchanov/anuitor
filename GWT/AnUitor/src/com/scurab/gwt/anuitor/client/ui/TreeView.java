@@ -54,7 +54,7 @@ public class TreeView extends FlowPanel{
     /* Virtual one column width is showing view's ID */
     private static final int WIDTH_COEF_ID = 250;
     /* Virtual one column height is showing view's ID */
-    private static final int HEIGHT_COEF_ID = 45;
+    private static final int HEIGHT_COEF_ID = 50;
     /* Virtual one column width only type */
     private static final int WIDTH_COEF = 150;
     /* Virtual one column height only type */
