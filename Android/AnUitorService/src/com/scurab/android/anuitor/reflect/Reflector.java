@@ -9,6 +9,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -53,6 +54,16 @@ public abstract class Reflector<T> {
     protected String getCalleeMethod() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         return stackTrace[4].getMethodName();//getThreadStackTrace, getCalleeMethod, callByReflection, our method
+    }
+
+    protected <T> T getFieldValue(String fieldName) {
+        try {
+            Field f = mClass.getDeclaredField(fieldName);
+            f.setAccessible(true);
+            return (T) f.get(mReal);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected void fixAutoboxing(Class<?>[] params) {
