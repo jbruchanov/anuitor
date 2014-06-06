@@ -21,6 +21,22 @@ import java.util.List;
  */
 public class IdsHelper {
 
+    public enum RefType {
+        anim, animator, array, attr,
+        bool,
+        color,
+        dimen, drawable,
+        fraction,
+        id, integer, interpolator,
+        layout,
+        menu, mimpam,
+        plurals,
+        raw,
+        string, style, styleable,
+        unknown,
+        xml;
+    }
+
     private static final HashMap<String, SparseArray<String>> VALUES;
 
     static {
@@ -79,7 +95,7 @@ public class IdsHelper {
         return null;
     }
 
-    public static String getValueForId(int id) {
+    public static String getNameForId(int id) {
         if (id == -1) {
             return "undefined";
         }
@@ -91,6 +107,20 @@ public class IdsHelper {
             }
         }
         return null;
+    }
+
+    public static RefType getType(int id) {
+        for (String type : VALUES.keySet()) {
+            SparseArray<String> array = VALUES.get(type);
+            String result = array.get(id, null);
+            if (result != null) {
+                String[] values = type.split("\\.");
+                String value = values[values.length - 1];
+                RefType refType = RefType.valueOf(value);
+                return refType;
+            }
+        }
+        return RefType.unknown;
     }
 
     public static String toJson() {

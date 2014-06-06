@@ -102,7 +102,7 @@ public class Translator {
         } else if (value == 0) {
             return "false/NO_ID";
         } else {
-            return IdsHelper.getValueForId(value);
+            return IdsHelper.getNameForId(value);
         }
     }
 

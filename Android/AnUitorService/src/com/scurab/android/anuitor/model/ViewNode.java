@@ -34,7 +34,7 @@ public class ViewNode {
     public ViewNode(int id, int level, int position, HashMap<String, Object> data) {
         mId = id;
         mLevel = level;
-        mIdReadable = IdsHelper.getValueForId(mId);
+        mIdReadable = IdsHelper.getNameForId(mId);
         mPosition = position;
         mData = data;
 

@@ -136,7 +136,7 @@ public class DOM2XmlPullBuilder {
                         && attrValue.charAt(0) == '@' && Character.isDigit(attrValue.charAt(1))) {
                     try {
                         int iValue = Integer.parseInt(attrValue.substring(1));
-                        String newValue = IdsHelper.getValueForId(iValue);
+                        String newValue = IdsHelper.getNameForId(iValue);
                         if(newValue != null){
                             attrValue = newValue;
                         }

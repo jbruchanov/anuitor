@@ -4,16 +4,11 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.scurab.android.anuitor.extract.Translator;
-import com.scurab.android.anuitor.extract.ViewDetailExtractor;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
@@ -32,6 +27,7 @@ public class ViewExtractor {
 
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         data.put("Type", String.valueOf(v.getClass().getCanonicalName()));
+        data.put("Extractor", getClass().getCanonicalName());//TODO: add _ to make it invisible later
 
         data.put("Baseline", v.getBaseline());
         data.put("Background", String.valueOf(v.getBackground()));
@@ -58,15 +54,13 @@ public class ViewExtractor {
         data.put("_Visibility", v.getVisibility());
         data.put("Visibility", Translator.visibility(v.getVisibility()));
 
-        data.put("NextFocusDownId", IdsHelper.getValueForId(v.getNextFocusDownId()));
-        data.put("NextFocusLeftId", IdsHelper.getValueForId(v.getNextFocusLeftId()));
-        data.put("NextFocusRightId", IdsHelper.getValueForId(v.getNextFocusRightId()));
-        data.put("NextFocusUpId", IdsHelper.getValueForId(v.getNextFocusUpId()));
+        data.put("NextFocusDownId", IdsHelper.getNameForId(v.getNextFocusDownId()));
+        data.put("NextFocusLeftId", IdsHelper.getNameForId(v.getNextFocusLeftId()));
+        data.put("NextFocusRightId", IdsHelper.getNameForId(v.getNextFocusRightId()));
+        data.put("NextFocusUpId", IdsHelper.getNameForId(v.getNextFocusUpId()));
 
         data.put("ScrollX", v.getScrollX());
         data.put("ScrollY", v.getScrollY());
-        data.put("X", v.getX());
-        data.put("Y", v.getY());
         data.put("Tag", v.getTag() != null ? String.valueOf(v.getTag()) : null);
         data.put("HasFocus", v.hasFocus());
         data.put("HasFocusable", v.hasFocusable());
@@ -97,7 +91,9 @@ public class ViewExtractor {
             data.put("IsHWAccelerated", v.isHardwareAccelerated());
             data.put("LayerType", Translator.layerType(v.getLayerType()));
             data.put("Matrix", v.getMatrix().toShortString());
-            data.put("NextFocusForwardId", IdsHelper.getValueForId(v.getNextFocusForwardId()));
+            data.put("NextFocusForwardId", IdsHelper.getNameForId(v.getNextFocusForwardId()));
+            data.put("X", v.getX());
+            data.put("Y", v.getY());
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
@@ -112,7 +108,7 @@ public class ViewExtractor {
             data.put("LayerDirection", Translator.layoutDirection(v.getLayoutDirection()));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            data.put("LabelFor", IdsHelper.getValueForId(v.getLabelFor()));
+            data.put("LabelFor", IdsHelper.getNameForId(v.getLabelFor()));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             data.put("ClipBounds", String.valueOf(v.getClipBounds()));
@@ -144,7 +140,7 @@ public class ViewExtractor {
     public HashMap<String, Object> fillLayoutParams(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         ViewGroup.LayoutParams lp = v.getLayoutParams();
 
-        data.put("LayoutParams", lp != null ? lp.getClass().getCanonicalName() : "null");
+        data.put("LayoutParams", lp != null ? lp.getClass().getCanonicalName() : null);
 
         if (lp == null) {
             return data;

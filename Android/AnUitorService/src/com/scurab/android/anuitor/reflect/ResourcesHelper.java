@@ -33,7 +33,7 @@ public class ResourcesHelper extends Reflector<Resources> {
      * @throws XmlPullParserException
      * @throws IOException
      */
-    public String load(int resId) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, TransformerException, XmlPullParserException, IOException {
+    public String load(int resId) throws TransformerException, XmlPullParserException, IOException {
         TypedValue value = new TypedValue();
         mReal.getValue(resId, value, true);
         if (!value.string.toString().endsWith(".xml")) {
@@ -49,7 +49,7 @@ public class ResourcesHelper extends Reflector<Resources> {
     }
 
     public XmlResourceParser loadXmlResourceParser(String file, int id,
-                                                   int assetCookie, String type) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+                                                   int assetCookie, String type){
         return callByReflection(file, id, assetCookie, type);
     }
 }

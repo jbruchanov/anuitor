@@ -17,9 +17,9 @@ public class ViewStubExtractor extends ViewExtractor {
         super.fillValues(v, data, parentData);
 
         ViewStub vs = (ViewStub) v;
-        data.put("LayoutResource", IdsHelper.getValueForId(vs.getLayoutResource()));
+        data.put("LayoutResource", IdsHelper.getNameForId(vs.getLayoutResource()));
         data.put("InflatedId", vs.getInflatedId());
-        data.put("InflatedIdS", IdsHelper.getValueForId(vs.getInflatedId()));
+        data.put("InflatedIdS", IdsHelper.getNameForId(vs.getInflatedId()));
 
         return data;
     }
