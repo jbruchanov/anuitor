@@ -24,4 +24,13 @@ public class HttpTools {
         }
         return result;
     }
+
+    /**
+     * Convert int value into hex #AARRGGBB format
+     * @param value
+     * @return
+     */
+    public static String getStringColor(int value) {
+        return String.format("#%08X", (0xFFFFFFFF & value));
+    }
 }

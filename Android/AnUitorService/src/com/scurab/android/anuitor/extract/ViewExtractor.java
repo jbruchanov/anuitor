@@ -12,6 +12,9 @@ import android.widget.RelativeLayout;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
+import com.scurab.android.anuitor.tools.HttpTools;
+
+import org.apache.http.protocol.HTTP;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -261,7 +264,7 @@ public class ViewExtractor {
      * @param value
      * @return
      */
-    public String getStringColor(int value) {
-        return String.format("#%08X", (0xFFFFFFFF & value));
+    public static String getStringColor(int value) {
+        return HttpTools.getStringColor(value);
     }
 }
