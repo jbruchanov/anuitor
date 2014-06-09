@@ -1,6 +1,8 @@
 package com.scurab.android.anuitor.nanoplugin;
 
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,9 +14,10 @@ import android.util.Base64;
 import android.util.TypedValue;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
+import com.scurab.android.anuitor.model.ResourceResponse;
+import com.scurab.android.anuitor.reflect.ColorStateListReflector;
 import com.scurab.android.anuitor.reflect.ResourcesHelper;
 import com.scurab.android.anuitor.reflect.StateListDrawableReflector;
 import com.scurab.android.anuitor.tools.DOM2XmlPullBuilder;
@@ -39,7 +42,9 @@ import fi.iki.elonen.NanoHTTPD;
 public class ResourcesPlugin extends BasePlugin {
 
     private static final String FILE = "resources.json";
-    public static final String PATH = "/" + FILE;
+    private static final String PATH = "/" + FILE;
+    private static final String STRING_DATA_TYPE = String.class.getSimpleName();
+    private static final String STRINGS_NAME = String[].class.getSimpleName();
 
     private Resources mRes;
     private ResourcesHelper mHelper;
@@ -104,31 +109,30 @@ public class ResourcesPlugin extends BasePlugin {
         response.name = IdsHelper.getNameForId(id);
         switch(type){
             case anim:
+            case animator:
+            case interpolator:
                 response.data = DOM2XmlPullBuilder.transform(mRes.getAnimation(id));
                 response.dataType = "xml";
                 break;
-            case animator:
-                break;
             case array:
-                response.data = mRes.getStringArray(id);
-                response.dataType = String[].class.getSimpleName();
-                break;
-            case attr:
+                handleArray(id, response);
                 break;
             case bool:
                 response.data = mRes.getBoolean(id);
                 response.dataType = boolean.class.getSimpleName();
                 break;
             case color:
+                handleColor(id, response);
                 break;
             case dimen:
                 response.data = mRes.getDimension(id);
                 response.dataType = Number.class.getSimpleName();
                 break;
             case drawable:
+            case mipmap:
                 handleDrawable(id, response);
                 break;
-            case fraction:
+            case fraction: {
                 TypedValue tv = new TypedValue();
                 mRes.getValue(id, tv, true);
                 if (TypedValue.TYPE_FRACTION == tv.type) {
@@ -139,6 +143,7 @@ public class ResourcesPlugin extends BasePlugin {
                 } else {
                     response.data = "Not implemented franction for TypedValue.type = " + tv.type;
                 }
+            }
                 break;
             case id:
                 response.data = id;
@@ -148,34 +153,29 @@ public class ResourcesPlugin extends BasePlugin {
                 response.data = mRes.getInteger(id);
                 response.dataType = int.class.getSimpleName();
                 break;
-            case interpolator:
-                break;
+            case menu:
             case layout:
                 String load = mHelper.load(id);
                 response.data = load;
                 response.dataType = "xml";
                 break;
-            case menu:
-                break;
-            case mimpam:
-                break;
-            case plurals:
-                break;
-            case raw:
-                break;
             case string:
                 response.data = mRes.getString(id);
                 response.data = "String";
-                break;
-            case style:
-                break;
-            case styleable:
                 break;
             case xml:
                 response.data = DOM2XmlPullBuilder.transform(mRes.getXml(id));
                 response.dataType = "xml";
                 break;
+            default:
+            case attr:
+            case plurals:
+            case raw:
+            case style:
+            case styleable:
             case unknown:
+                response.data = String.format("Type '%s' is not supported.", type);
+                response.dataType = STRING_DATA_TYPE;
                 break;
         }
 
@@ -185,8 +185,49 @@ public class ResourcesPlugin extends BasePlugin {
         return result;
     }
 
+
+    private void handleArray(int id, ResourceResponse outResponse){
+        String[] stringArray = mRes.getStringArray(id);
+        if (hasOnlyNulls(stringArray)) {
+            int[] array = mRes.getIntArray(id);
+            if (hasOnlyZeros(array)) {
+                handleTypedArray(id, outResponse);
+                outResponse.dataType = STRINGS_NAME;
+            } else {
+                outResponse.dataType = int[].class.getSimpleName();
+            }
+        } else {
+            outResponse.data = stringArray;
+            outResponse.dataType = STRINGS_NAME;
+        }
+    }
+
+    private void handleTypedArray(int id, ResourceResponse outResponse) {
+        TypedArray array = mRes.obtainTypedArray(id);
+        int len = array.length();
+        TypedValue tv = new TypedValue();
+        String[] s = new String[len];
+        outResponse.data = s;
+        for (int i = 0; i < len; i++) {
+            array.getValue(i, tv);
+            if (tv.type == TypedValue.TYPE_REFERENCE) {
+                s[i] = IdsHelper.getNameForId(tv.data);
+            } else {
+                s[i] = String.valueOf(tv.data);
+
+            }
+        }
+    }
+
     private static final int SIZE = 300;
 
+    /**
+     * Draw drawable into PNG image
+     * @param d
+     * @param xmlW width for xml drawable
+     * @param xmlH height for xml drawable
+     * @return
+     */
     private byte[] drawDrawable(Drawable d, int xmlW, int xmlH) {
         int w, h; w = xmlW; h = xmlH;
         int iw = d.getIntrinsicWidth();
@@ -204,6 +245,67 @@ public class ResourcesPlugin extends BasePlugin {
         b.compress(Bitmap.CompressFormat.PNG, 100, baos);
         b.recycle();
         return baos.toByteArray();
+    }
+
+    /**
+     *
+     * @param id
+     * @param outResponse
+     * @throws java.io.IOException
+     * @throws javax.xml.transform.TransformerException
+     * @throws org.xmlpull.v1.XmlPullParserException
+     */
+
+    private void handleColor(int id, ResourceResponse outResponse) throws IOException, TransformerException, XmlPullParserException {
+        TypedValue tv = new TypedValue();
+        mRes.getValue(id, tv, true);
+        if (tv.string != null && tv.string.toString().endsWith(".xml")) {
+            outResponse.dataType = "array";
+            ResourceResponse[] rr = new ResourceResponse[2];
+            outResponse.data = rr;
+
+            ResourceResponse xml = new ResourceResponse();
+            rr[0] = xml;
+            xml.data = mHelper.load(id);
+            xml.dataType = "xml";
+            xml.id = id;
+
+            ResourceResponse colors = new ResourceResponse();
+            ColorStateList colorStateList = mRes.getColorStateList(id);
+            colors.id = id;
+            rr[1] = colors;
+            colors.dataType = "array";
+            handleColorStateList(id, (ColorStateList) colorStateList, colors);
+            return;//just leave everything is rendered now
+        }
+
+        outResponse.data = HttpTools.getStringColor(mRes.getColor(id));
+        outResponse.dataType = STRING_DATA_TYPE;
+    }
+
+    private void handleColorStateList(int id, ColorStateList colorStateList, ResourceResponse outColors) {
+        ColorStateListReflector reflector = new ColorStateListReflector(colorStateList);
+        final int len = reflector.getStateCount();
+
+        ResourceResponse[] stateColors = new ResourceResponse[len];
+        outColors.data = stateColors;
+
+        for (int i = 0; i < len; i++) {
+            ResourceResponse rr = new ResourceResponse();
+            rr.id = id;
+            rr.dataType = STRING_DATA_TYPE;
+            int[] stateSet = reflector.getColorState(i);
+            rr.context = Translator.stateListDrawableStates(stateSet);
+            int color = colorStateList.getColorForState(stateSet, Integer.MIN_VALUE);
+            rr.data = HttpTools.getStringColor(color);
+            if (color == Integer.MIN_VALUE) {
+                int test = colorStateList.getColorForState(stateSet, Integer.MAX_VALUE);
+                if (test == Integer.MAX_VALUE) {
+                    rr.data = "Unable to get Color for state";
+                }
+            }
+            stateColors[i] = rr;
+        }
     }
 
     private void handleDrawable(int id, ResourceResponse outResponse) throws IOException, TransformerException, XmlPullParserException {
@@ -236,6 +338,12 @@ public class ResourcesPlugin extends BasePlugin {
         outResponse.dataType = "base64_png";
     }
 
+    /**
+     *
+     * @param resId
+     * @param sld
+     * @param outResponse
+     */
     private void handleStateListDrawable(int resId, StateListDrawable sld, ResourceResponse outResponse) {
         outResponse.dataType = "array";
 
@@ -256,23 +364,21 @@ public class ResourcesPlugin extends BasePlugin {
         }
     }
 
-    public static class ResourceResponse {
-        @SerializedName("Type")
-        public IdsHelper.RefType type;
+    private static boolean hasOnlyNulls(String[] arr){
+        for (String s : arr) {
+            if(s != null){
+                return false;
+            }
+        }
+        return true;
+    }
 
-        @SerializedName("Id")
-        public int id;
-
-        @SerializedName("Name")
-        public String name;
-
-        @SerializedName("Data")
-        public Object data;
-
-        @SerializedName("Context")
-        public Object context;
-
-        @SerializedName("DataType")
-        public String dataType;
+    private static boolean hasOnlyZeros(int[] arr) {
+        for (int i : arr) {
+            if (i != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }
