@@ -7,7 +7,7 @@ import android.content.res.ColorStateList;
  */
 public class ColorStateListReflector extends Reflector<ColorStateList> {
 
-    protected ColorStateListReflector(ColorStateList real) {
+    public ColorStateListReflector(ColorStateList real) {
         super(real);
     }
 
