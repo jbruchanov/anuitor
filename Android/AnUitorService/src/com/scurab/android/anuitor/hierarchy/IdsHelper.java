@@ -29,7 +29,7 @@ public class IdsHelper {
         fraction,
         id, integer, interpolator,
         layout,
-        menu, mimpam,
+        menu, mipmap,
         plurals,
         raw,
         string, style, styleable,
@@ -132,7 +132,7 @@ public class IdsHelper {
         CharSequence location = null;
         HashMap<String, List<Pair<Object, Object>>> result = new HashMap<String, List<Pair<Object, Object>>>();
         for (String type : VALUES.keySet()) {
-            boolean showValue = res != null && ((type.equals("R.drawable") || type.equals("R.layout")));
+            boolean showValue = res != null && ((type.equals("R.drawable") || type.equals("R.layout") || type.equals("R.color")));
             List<Pair<Object, Object>> list = new ArrayList<Pair<Object, Object>>();
             result.put(type, list);
             SparseArray<String> sa = VALUES.get(type);
