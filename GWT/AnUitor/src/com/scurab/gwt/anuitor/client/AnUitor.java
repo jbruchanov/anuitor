@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.TestPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
@@ -32,7 +33,7 @@ public class AnUitor implements EntryPoint {
             }
         });
 
-        openScreen(History.getToken());
+        openScreen(History.getToken());        
     }
 
     private void openScreen(String screen) {
@@ -43,7 +44,9 @@ public class AnUitor implements EntryPoint {
             toOpen = new ThreeDPage();
         } else if ("ViewHierarchy".equals(screen)) {
             toOpen = new TreeViewPage();
-        } else {
+        } else if ("Resources".equals(screen)) {
+            toOpen = new ResourcesPage();
+        }else {
             screen = "";
             toOpen = createSelectionPane();
         }
@@ -65,8 +68,12 @@ public class AnUitor implements EntryPoint {
 
         Button vh = new Button("ViewHierarchy");
         vh.addClickHandler(mClickHandler);
-
         hp.add(vh);
+        
+        Button res = new Button("Resources");
+        res.addClickHandler(mClickHandler);
+        hp.add(res);
+
         return hp;
     }
 
