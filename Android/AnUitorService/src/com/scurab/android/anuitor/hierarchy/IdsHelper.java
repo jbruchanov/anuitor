@@ -76,7 +76,7 @@ public class IdsHelper {
                 String name = field.getName();
                 try {
                     int value = field.getInt(null);
-                    container.put(value, String.format("@%s/%s", android ? "android:" + type : type, name));
+                    container.put(value, String.format("%s%s/%s", ("attr".equals(type) ? "?" : "@"), android ? "android:" + type : type, name));
                 } catch (Exception e) {
                     //this should never happen if we have setAccessible
                     continue;
