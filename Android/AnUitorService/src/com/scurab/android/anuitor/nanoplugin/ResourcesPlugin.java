@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.nanoplugin;
 
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -8,7 +9,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.Base64;
 import android.util.TypedValue;
@@ -43,8 +46,14 @@ public class ResourcesPlugin extends BasePlugin {
 
     private static final String FILE = "resources.json";
     private static final String PATH = "/" + FILE;
-    private static final String STRING_DATA_TYPE = String.class.getSimpleName();
-    private static final String STRINGS_NAME = String[].class.getSimpleName();
+    private static final String STRING_DATA_TYPE = "string";
+    private static final String STRINGS_DATA_TYPE = "string[]";
+    public static final String BASE64_PNG = "base64_png";
+    private static final int MAX_9PATCH_SIZE = 600;
+    private static final int MIN_9PATCH_SIZE = 100;
+    private static final int INC_9PATCH_CONST = 3;
+    public static final String ARRAY = "array";
+    public static final String XML = "xml";
 
     private Resources mRes;
     private ResourcesHelper mHelper;
@@ -86,8 +95,12 @@ public class ResourcesPlugin extends BasePlugin {
                 id = Integer.parseInt(qs.get("id"));
                 resultInputStream = dispatchIdRequest(id);
             } catch (Exception e) {
-                resultInputStream = new ByteArrayInputStream(e.getMessage().getBytes());
-                type = "text/plain";
+                ResourceResponse rr = new ResourceResponse();
+                rr.data = (e == null ? "WTF NullException!" : e.getMessage());
+                rr.context = e != null ? e.getClass().getCanonicalName() : null;
+                rr.dataType = "string";
+                rr.type = IdsHelper.RefType.unknown;
+                resultInputStream = new ByteArrayInputStream(mGson.toJson(rr).getBytes());
             }
         } else {
             String s = IdsHelper.toJson(mRes);
@@ -112,21 +125,21 @@ public class ResourcesPlugin extends BasePlugin {
             case animator:
             case interpolator:
                 response.data = DOM2XmlPullBuilder.transform(mRes.getAnimation(id));
-                response.dataType = "xml";
+                response.dataType = XML;
                 break;
             case array:
                 handleArray(id, response);
                 break;
             case bool:
                 response.data = mRes.getBoolean(id);
-                response.dataType = boolean.class.getSimpleName();
+                response.dataType = "boolean";
                 break;
             case color:
                 handleColor(id, response);
                 break;
             case dimen:
                 response.data = mRes.getDimension(id);
-                response.dataType = Number.class.getSimpleName();
+                response.dataType = "number";
                 break;
             case drawable:
             case mipmap:
@@ -135,6 +148,7 @@ public class ResourcesPlugin extends BasePlugin {
             case fraction: {
                 TypedValue tv = new TypedValue();
                 mRes.getValue(id, tv, true);
+                response.dataType = "number";
                 if (TypedValue.TYPE_FRACTION == tv.type) {
                     response.data = mRes.getFraction(id, 100, 100);
                     response.context = "Base=100";
@@ -142,6 +156,7 @@ public class ResourcesPlugin extends BasePlugin {
                     response.data = tv.getFloat();
                 } else {
                     response.data = "Not implemented franction for TypedValue.type = " + tv.type;
+                    response.dataType = "string";
                 }
             }
                 break;
@@ -157,19 +172,21 @@ public class ResourcesPlugin extends BasePlugin {
             case layout:
                 String load = mHelper.load(id);
                 response.data = load;
-                response.dataType = "xml";
+                response.dataType = XML;
+                break;
+            case plurals:
+                handlePlurals(id, response);
                 break;
             case string:
                 response.data = mRes.getString(id);
-                response.data = "String";
+                response.dataType = "String";
                 break;
             case xml:
                 response.data = DOM2XmlPullBuilder.transform(mRes.getXml(id));
-                response.dataType = "xml";
+                response.dataType = XML;
                 break;
             default:
             case attr:
-            case plurals:
             case raw:
             case style:
             case styleable:
@@ -185,6 +202,17 @@ public class ResourcesPlugin extends BasePlugin {
         return result;
     }
 
+    private static final int[] QUANTITIES = {-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50, 80, 99, 100, 1000, 10000};
+    private void handlePlurals(int resId, ResourceResponse outResponse) {
+        outResponse.dataType = STRINGS_DATA_TYPE;
+        String[] result = new String[QUANTITIES.length];
+        outResponse.data = result;
+        for (int i = 0; i < QUANTITIES.length; i++) {
+            int quantity = QUANTITIES[i];
+            result[i] = String.format("%s\t(%s)", mRes.getQuantityString(resId, quantity, quantity), quantity);
+        }
+    }
+
 
     private void handleArray(int id, ResourceResponse outResponse){
         String[] stringArray = mRes.getStringArray(id);
@@ -192,13 +220,13 @@ public class ResourcesPlugin extends BasePlugin {
             int[] array = mRes.getIntArray(id);
             if (hasOnlyZeros(array)) {
                 handleTypedArray(id, outResponse);
-                outResponse.dataType = STRINGS_NAME;
+                outResponse.dataType = STRINGS_DATA_TYPE;
             } else {
                 outResponse.dataType = int[].class.getSimpleName();
             }
         } else {
             outResponse.data = stringArray;
-            outResponse.dataType = STRINGS_NAME;
+            outResponse.dataType = STRINGS_DATA_TYPE;
         }
     }
 
@@ -219,7 +247,7 @@ public class ResourcesPlugin extends BasePlugin {
         }
     }
 
-    private static final int SIZE = 300;
+    private static final int SIZE = 150;
 
     /**
      * Draw drawable into PNG image
@@ -236,6 +264,10 @@ public class ResourcesPlugin extends BasePlugin {
             w = iw;
             h = ih;
         }
+        return drawDrawableWithSize(d, w, h);
+    }
+
+    private byte[] drawDrawableWithSize(Drawable d, int w, int h) {
         Bitmap b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         d.setBounds(0, 0, w, h);
         Canvas c = new Canvas(b);
@@ -260,27 +292,27 @@ public class ResourcesPlugin extends BasePlugin {
         TypedValue tv = new TypedValue();
         mRes.getValue(id, tv, true);
         if (tv.string != null && tv.string.toString().endsWith(".xml")) {
-            outResponse.dataType = "array";
+            outResponse.dataType = ARRAY;
             ResourceResponse[] rr = new ResourceResponse[2];
             outResponse.data = rr;
 
             ResourceResponse xml = new ResourceResponse();
             rr[0] = xml;
             xml.data = mHelper.load(id);
-            xml.dataType = "xml";
+            xml.dataType = XML;
             xml.id = id;
 
             ResourceResponse colors = new ResourceResponse();
             ColorStateList colorStateList = mRes.getColorStateList(id);
             colors.id = id;
             rr[1] = colors;
-            colors.dataType = "array";
+            colors.dataType = ARRAY;
             handleColorStateList(id, (ColorStateList) colorStateList, colors);
             return;//just leave everything is rendered now
         }
 
         outResponse.data = HttpTools.getStringColor(mRes.getColor(id));
-        outResponse.dataType = STRING_DATA_TYPE;
+        outResponse.dataType = "color";
     }
 
     private void handleColorStateList(int id, ColorStateList colorStateList, ResourceResponse outColors) {
@@ -293,9 +325,9 @@ public class ResourcesPlugin extends BasePlugin {
         for (int i = 0; i < len; i++) {
             ResourceResponse rr = new ResourceResponse();
             rr.id = id;
-            rr.dataType = STRING_DATA_TYPE;
+            rr.dataType = "color";
             int[] stateSet = reflector.getColorState(i);
-            rr.context = Translator.stateListDrawableStates(stateSet);
+            rr.context = Translator.stateListFlags(stateSet);
             int color = colorStateList.getColorForState(stateSet, Integer.MIN_VALUE);
             rr.data = HttpTools.getStringColor(color);
             if (color == Integer.MIN_VALUE) {
@@ -311,31 +343,80 @@ public class ResourcesPlugin extends BasePlugin {
     private void handleDrawable(int id, ResourceResponse outResponse) throws IOException, TransformerException, XmlPullParserException {
         TypedValue tv = new TypedValue();
         mRes.getValue(id, tv, true);
-        if (tv.string.toString().endsWith(".xml")) {
-            outResponse.dataType = "array";
+        Drawable drawable = mRes.getDrawable(id);
+        if (drawable instanceof NinePatchDrawable) {
+            outResponse.context = "9patch";
+            handleNinePatchDrawable(id, (NinePatchDrawable)drawable, outResponse);
+            return;
+        }
+
+        if (tv.string != null && tv.string.toString().endsWith(".xml")) {
+            outResponse.dataType = ARRAY;
             ResourceResponse[] rr = new ResourceResponse[2];
             outResponse.data = rr;
 
             ResourceResponse xml = new ResourceResponse();
             rr[0] = xml;
             xml.data = mHelper.load(id);
-            xml.dataType = "xml";
+            xml.dataType = XML;
             xml.id = id;
 
             ResourceResponse image = new ResourceResponse();
-            Drawable drawable = mRes.getDrawable(id);
             image.id = id;
             rr[1] = image;
             if (drawable instanceof StateListDrawable) {
-                image.dataType = "array";
+                image.dataType = ARRAY;
                 handleStateListDrawable(id, (StateListDrawable) drawable, image);
                 return;//just leave everything is rendered now
+            } else if(drawable instanceof AnimationDrawable){
+                image.dataType = ARRAY;
+                handleAnimationDrawable(id, (AnimationDrawable) drawable, image);
+                return;
             }
             outResponse = image;//assign image as outResponse to fill ours, not real one
         }
 
-        outResponse.data = Base64.encodeToString(drawDrawable(mRes.getDrawable(id), SIZE, SIZE), Base64.NO_WRAP);
-        outResponse.dataType = "base64_png";
+        outResponse.data = Base64.encodeToString(drawDrawable(drawable, SIZE, SIZE), Base64.NO_WRAP);
+        outResponse.dataType = BASE64_PNG;
+    }
+
+    private void handleNinePatchDrawable(int resId, NinePatchDrawable drawable, ResourceResponse outResponse) {
+        ResourceResponse[] images = new ResourceResponse[4];
+        outResponse.data = images;
+        outResponse.dataType = ARRAY;
+        int w = drawable.getIntrinsicWidth();
+        int h = drawable.getIntrinsicHeight();
+        int[] sizes = {w, h,
+                       Math.max(MIN_9PATCH_SIZE, Math.min(INC_9PATCH_CONST * w, MAX_9PATCH_SIZE)), h,
+                       w, Math.max(MIN_9PATCH_SIZE, Math.min(INC_9PATCH_CONST * h, MAX_9PATCH_SIZE)),
+                       Math.max(MIN_9PATCH_SIZE, Math.min(INC_9PATCH_CONST * w, MAX_9PATCH_SIZE)), Math.max(MIN_9PATCH_SIZE, Math.min(INC_9PATCH_CONST * h, MAX_9PATCH_SIZE))};
+        for (int i = 0; i < images.length; i++) {
+            ResourceResponse rr = new ResourceResponse();
+            rr.id = resId;
+            rr.dataType = BASE64_PNG;
+            int tw = sizes[i * 2];
+            int th = sizes[(i * 2) + 1];
+            rr.context = String.format("Size: %sx%s %s", tw, th, i == 0 ? "original" : "");
+            rr.data = Base64.encodeToString(drawDrawableWithSize(drawable, tw, th), Base64.NO_WRAP);
+            images[i] = rr;
+        }
+    }
+
+    private void handleAnimationDrawable(int resId, AnimationDrawable drawable, ResourceResponse outResponse) {
+        int len = drawable.getNumberOfFrames();
+        ResourceResponse[] frames = new ResourceResponse[len];
+        outResponse.data = frames;
+        for (int i = 0; i < len; i++) {
+            Drawable frame = drawable.getFrame(i);
+
+            ResourceResponse rr = new ResourceResponse();
+            rr.id = resId;
+            rr.dataType = BASE64_PNG;
+
+            rr.context = String.format("Frame:%s", i);
+            rr.data = Base64.encodeToString(drawDrawable(frame, SIZE, SIZE), Base64.NO_WRAP);
+            frames[i] = rr;
+        }
     }
 
     /**
@@ -345,7 +426,7 @@ public class ResourcesPlugin extends BasePlugin {
      * @param outResponse
      */
     private void handleStateListDrawable(int resId, StateListDrawable sld, ResourceResponse outResponse) {
-        outResponse.dataType = "array";
+        outResponse.dataType = ARRAY;
 
         StateListDrawableReflector sldReflector = new StateListDrawableReflector(sld);
         int len = sldReflector.getStateCount();
@@ -356,10 +437,11 @@ public class ResourcesPlugin extends BasePlugin {
 
             ResourceResponse rr = new ResourceResponse();
             rr.id = resId;
-            rr.dataType = "base64_png";
+            rr.dataType = BASE64_PNG;
             int[] stateSet = sldReflector.getStateSet(i);
-            rr.context = Translator.stateListDrawableStates(stateSet);
-            rr.data = Base64.encodeToString(drawDrawable(sld, SIZE, SIZE), Base64.NO_WRAP);
+            state.setState(stateSet);
+            rr.context = Translator.stateListFlags(stateSet);
+            rr.data = Base64.encodeToString(drawDrawable(sldReflector.getStateDrawable(i), SIZE, SIZE), Base64.NO_WRAP);
             stateImages[i] = rr;
         }
     }
