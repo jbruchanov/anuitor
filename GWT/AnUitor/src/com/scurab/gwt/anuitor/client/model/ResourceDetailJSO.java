@@ -45,7 +45,7 @@ public class ResourceDetailJSO extends JavaScriptObject {
     
     public final native String getStringedContext()
     /*-{
-        return String(this.Context);
+        return this.Context == undefined ? null : String(this.Context);
     }-*/;
     
     public final boolean hasDataArray(){
