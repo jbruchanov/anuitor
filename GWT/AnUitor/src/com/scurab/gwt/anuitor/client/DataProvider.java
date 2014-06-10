@@ -7,7 +7,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.scurab.gwt.anuitor.client.model.ResourceDetailJSO;
-import com.scurab.gwt.anuitor.client.model.ResourceItemJSO;
 import com.scurab.gwt.anuitor.client.model.ResourcesJSO;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 
