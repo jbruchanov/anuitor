@@ -3,6 +3,8 @@
 
 package com.scurab.android.anuitor.tools;
 
+
+import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
 import org.w3c.dom.DOMException;
@@ -17,6 +19,11 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -132,12 +139,13 @@ public class DOM2XmlPullBuilder {
                 String attrName = pp.getAttributeName(i);
                 String attrValue = pp.getAttributeValue(i);
                 //android stuff
-                if (attrValue != null && attrValue.length() > 1
-                        && attrValue.charAt(0) == '@' && Character.isDigit(attrValue.charAt(1))) {
+                if (attrValue != null && attrValue.length() > 1 &&
+                        (attrValue.charAt(0) == '@' || attrValue.charAt(0) == '?')
+                        && Character.isDigit(attrValue.charAt(1))) {
                     try {
                         int iValue = Integer.parseInt(attrValue.substring(1));
                         String newValue = IdsHelper.getNameForId(iValue);
-                        if(newValue != null){
+                        if (newValue != null) {
                             attrValue = newValue;
                         }
                     } catch (Exception e) {
@@ -150,6 +158,7 @@ public class DOM2XmlPullBuilder {
                 } else {
                     String attrPrefix = null;//pp.getAttributePrefix(i); not supported on android
                     String attrQname = attrPrefix != null ? attrPrefix + ":" + attrName : attrName;
+                    attrValue = translateValue(attrQname, attrValue);
                     parent.setAttributeNS(attrNs, attrQname, attrValue);
                 }
             }
@@ -170,6 +179,39 @@ public class DOM2XmlPullBuilder {
             }
             pp.require(XmlPullParser.END_TAG, ns, name);
             return parent;
+        }
+
+        private String translateValue(String attrName, String xmlValue) {
+            boolean lower = true;
+            try {
+                if ("layout_width".equals(attrName) || "layout_height".equals(attrName)) {
+                    xmlValue = String.valueOf(Translator.layoutSize(Integer.parseInt(xmlValue)));
+                } else if ("layout_gravity".equals(attrName) || "gravity".equals(attrName)) {
+                    xmlValue = Translator.gravity(Integer.parseInt(xmlValue.replace("0x", ""), 16));
+                } else if ("orientation".equals(attrName)) {
+                    xmlValue = String.valueOf(Translator.orientation(Integer.parseInt(xmlValue)));
+                } else if ("visibility".equals(attrName)) {
+                    xmlValue = String.valueOf(Translator.visibility(Integer.parseInt(xmlValue)));
+                } else if ("scaleType".equals(attrName)) {
+                    xmlValue = String.valueOf(Translator.scaleType(Integer.parseInt(xmlValue)));
+                } else if ("importantForAccessibility".equals(attrName)) {
+                    xmlValue = String.valueOf(Translator.importantForA11Y(Integer.parseInt(xmlValue)));
+                } else if ("textStyle".equals(attrName)) {
+                    xmlValue = String.valueOf(Translator.textStyle(Integer.parseInt(xmlValue.replace("0x", ""), 16)));
+                } else if ("inputType".equals(attrName)) {
+                    //TODO: pretty big from atrs
+                } else if ("ellipsize".equals(attrName)) {
+                    xmlValue = String.valueOf(Translator.ellipsize(Integer.parseInt(xmlValue)));
+                } else if ("shape".equals(attrName)) {
+                    xmlValue = String.valueOf(Translator.shape(Integer.parseInt(xmlValue)));
+                } else{
+                    lower = false;
+                }
+            } catch (Exception e) {
+                lower = false;
+                //swallow it, a lot of options
+            }
+            return lower ? xmlValue.toLowerCase() : xmlValue;
         }
 
         private void declareNamespaces(XmlPullParser pp, Element parent)
@@ -216,10 +258,81 @@ public class DOM2XmlPullBuilder {
         TransformerFactory transFactory = TransformerFactory.newInstance();
         Transformer transformer = transFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");//added later
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
         transformer.transform(new DOMSource(element), new StreamResult(buffer));
 
-        return buffer.toString();
+        return COMMENT + naiveFormat(buffer.toString());
     }
+
+    /**
+     * Simple naive formating of xml file to have 1 attribute per line
+     * @param xml
+     * @return
+     * @throws IOException
+     * @throws XmlPullParserException
+     */
+    public static String naiveFormat(String xml) throws IOException, XmlPullParserException {
+        String[] lines = xml.split("\\n");
+        StringBuilder sb = new StringBuilder();
+        for (String line : lines) {
+            sb.append(naiveFormatLine(line));
+        }
+        return sb.toString();
+    }
+
+    private static int getFrontOffset(String line) {
+        for (int i = 0, n = line.length(); i < n; i++) {
+            if (!Character.isWhitespace(line.charAt(i))) {
+                return Math.max(0, i - 1);
+            }
+        }
+        return line.length();
+    }
+
+
+    private static final char SPACE = ' ';
+
+    private static String naiveFormatLine(String line) throws IOException, XmlPullParserException {
+        int offset = getFrontOffset(line);
+        List<String> attrs = getElements(line);
+        if (attrs.size() == 1) {
+            return line + "\n";
+        }
+        boolean closesTag = line.endsWith("/>");
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0, n = attrs.size(); i < n; i++) {
+            String value = attrs.get(i);
+            insertChar(sb, SPACE, i == 0 ? offset : offset + 4);
+            sb.append(value).append("\n");
+        }
+        sb.setLength(sb.length() - 1);
+        sb.append(closesTag ? "/>" : ">").append("\n");
+        return sb.toString();
+    }
+
+    /* Help regex for xml formatting */
+    private static final Pattern REGEX = Pattern.compile("(</?[^\\s/>]*|\\w+=\"([^\\\".]|\\.)*\\\")");
+
+    private static List<String> getElements(String line){
+        Matcher matcher = REGEX.matcher(line);
+        List<String> values = new ArrayList<String>();
+        while(matcher.find()){
+            String value = matcher.group();
+            values.add(value);
+        }
+        Collections.sort(values);
+        return values;
+    }
+
+    private static void insertChar(StringBuilder sb, char c, int nTimes) {
+        for (int i = 0; i < nTimes; i++) {
+            sb.append(c);
+        }
+    }
+
+    private static final String COMMENT = "<!--\n This XML file is recreated based on XMLPullParser, it's not a direct copy of XML file!\n-->\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 }
 
