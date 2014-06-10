@@ -49,4 +49,17 @@ public final class HTMLColors {
                            + addZeroPrefixIfNecessary(data.getGreenAt(x, y)) 
                            + addZeroPrefixIfNecessary(data.getBlueAt(x, y));
     }
+    
+    /**
+     * Convert #ARGB to rgba(r,g,b,a);
+     * @param argb
+     * @return
+     */
+    public static String convertColor(String argb){       
+       int r = Integer.parseInt(argb.substring(3, 5), 16);
+       int g = Integer.parseInt(argb.substring(5, 7), 16);
+       int b = Integer.parseInt(argb.substring(7, 9), 16);
+       float a = Integer.parseInt(argb.substring(1, 3), 16) / 100f;
+       return "rgba(" + r + ", " + g + ", " + b + ", " + a + ");";
+    }
 }
