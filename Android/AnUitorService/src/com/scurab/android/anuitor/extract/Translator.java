@@ -1,15 +1,20 @@
 package com.scurab.android.anuitor.extract;
 
 import android.annotation.TargetApi;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
@@ -29,9 +34,9 @@ public class Translator {
     public static String visibility(int visibility) {
         if (View.VISIBLE == visibility) {
             return "Visible";
-        } else if (View.INVISIBLE == visibility) {
+        } else if (1 == visibility || View.INVISIBLE == visibility) { //1 by attrs
             return "Invisible";
-        } else if (View.GONE == visibility) {
+        } else if (2 == visibility || View.GONE == visibility) {//2 by attrs
             return "Gone";
         } else {
             return String.format("Unknown value:'%s'", visibility);
@@ -229,7 +234,7 @@ public class Translator {
         }
     }
 
-    public static String stateListDrawableStates(int[] states) {
+    public static String stateListFlags(int[] states) {
         StringBuilder sb = new StringBuilder();
         for (int state : states) {
             String canname = IdsHelper.getNameForId(Math.abs(state));
@@ -240,7 +245,59 @@ public class Translator {
         int length = sb.length();
         if (length > 0) {
             sb.setLength(length - 1);
+        } else {
+            sb.append("default");
         }
         return sb.toString();
+    }
+
+    public static Object orientation(int value) {
+        switch (value){
+            case LinearLayout.VERTICAL:
+                return "VERTICAL";
+            case LinearLayout.HORIZONTAL:
+                return "HORIZONTAL";
+            default:
+                return String.format("UNKWNOWN (%s)", value);
+        }
+    }
+
+    public static Object scaleType(int value) {
+        return ImageView.ScaleType.values()[value].toString();
+    }
+
+    public static Object textStyle(int value) {
+        TextView tv;
+        switch (value) {
+            case Typeface.NORMAL:
+                return "NORMAL";
+            case Typeface.BOLD:
+                return "BOLD";
+            case Typeface.ITALIC:
+                return "ITALIC";
+            case Typeface.BOLD_ITALIC:
+                return "BOLD_ITALIC";
+            default:
+                return String.format("UNKWNOWN (%s)", value);
+        }
+    }
+
+    public static Object ellipsize(int value) {
+        return TextUtils.TruncateAt.values()[value].toString();
+    }
+
+    public static Object shape(int value) {
+        switch(value){
+            case 0:
+                return "rectangle";
+            case 1:
+                return "oval";
+            case 2:
+                return "line";
+            case 3:
+                return "ring";
+            default:
+                return String.format("UNKWNOWN (%s)", value);
+        }
     }
 }
