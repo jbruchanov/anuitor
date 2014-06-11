@@ -37,8 +37,8 @@ public class WebViewExtrator extends ViewGroupExtractor {
                     fillSettings(settings, data);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        data.put("CanZoomIm", wv.canZoomIn());
-                        data.put("CanZoomIm", wv.canZoomOut());
+                        data.put("CanZoomIn", wv.canZoomIn());
+                        data.put("CanZoomOut", wv.canZoomOut());
                         data.put("IsPrivateBrowsingEnabled", wv.isPrivateBrowsingEnabled());
                     }
 
