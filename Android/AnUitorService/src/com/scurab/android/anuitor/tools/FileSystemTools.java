@@ -33,6 +33,20 @@ public class FileSystemTools {
             result.add(new FSItem(f.getAbsolutePath(), FSItem.TYPE_FOLDER, 0));
         }
         if (context.checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) { //better way if you have multiple storages
+                try {
+                    File[] fs = new File("/storage").listFiles();
+                    if (fs != null) {
+                        for (File file : fs) {
+                            if (file.isDirectory()) {
+                                result.add(new FSItem(file.getAbsolutePath(), FSItem.TYPE_FOLDER, 0));
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    //swallow it and just grab default values from Environment class
+                }
+            }
             String location = Environment.getExternalStorageDirectory().getAbsolutePath();
             result.add(new FSItem(location, FSItem.TYPE_FOLDER, 0));
         }
