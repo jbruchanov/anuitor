@@ -16,7 +16,8 @@
 		<url-pattern>/viewhierarchy.json</url-pattern>
 		<url-pattern>/screen.png</url-pattern>
 		<url-pattern>/view.png</url-pattern>
-		<url-pattern>/resources.json</url-pattern>		
+		<url-pattern>/resources.json</url-pattern>
+		<url-pattern>/storage.json</url-pattern>		
 	</servlet-mapping>
   
   <!-- Default page to serve -->

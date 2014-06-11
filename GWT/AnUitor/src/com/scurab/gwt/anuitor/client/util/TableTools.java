@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.view.client.ListDataProvider;
+import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
@@ -76,5 +79,55 @@ public final class TableTools {
         column.setCellStyleNames("tableValue");
         cellTable.addColumn(column, "Value");
         cellTable.setColumnWidth(column, "100%");
+    }
+    
+    /**
+     * Init table by adding 2columns
+     * @param cellTable
+     */
+    public static void initTableForFileStorage(CellTable<FSItemJSO> cellTable) {        
+        Column<FSItemJSO, String> column = new Column<FSItemJSO, String>(new TextCell()) {
+            @Override
+            public String getValue(FSItemJSO p) {                
+                return p.getName();
+            }
+        };
+        column.setCellStyleNames("tableLabel");
+        cellTable.addColumn(column, "Name");
+        cellTable.setColumnWidth(column, "500px");
+
+        column = new Column<FSItemJSO, String>(new TextCell()) {
+            @Override
+            public String getValue(FSItemJSO object) {
+                return object.getType() == FSItemJSO.TYPE_FILE ? object.getSize() : "DIR";                
+            }
+        };
+        column.setCellStyleNames("tableValue");
+        column.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        cellTable.addColumn(column, "Size");        
+        cellTable.setColumnWidth(column, "100px");
+    }
+
+    /**
+     * 
+     * @param items
+     * @param parentFolder
+     * @return
+     */
+    public static ListDataProvider<FSItemJSO> createDataProvider(JsArray<FSItemJSO> items, boolean addParentFolder) {
+        ListDataProvider<FSItemJSO> dataProvider = new ListDataProvider<FSItemJSO>();
+        List<FSItemJSO> list = dataProvider.getList();   
+        
+        for (int i = 0, n = items.length(); i < n; i++) {
+            list.add(items.get(i));
+        }
+
+        if(addParentFolder){
+            FSItemJSO fsi = FSItemJSO.createObject().cast();
+            fsi.setName("..");
+            fsi.setType(FSItemJSO.TYPE_PARENT_FOLDER);
+            list.add(0, fsi);
+        }                
+        return dataProvider;
     }
 }

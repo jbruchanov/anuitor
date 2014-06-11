@@ -1,11 +1,14 @@
 package com.scurab.gwt.anuitor.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
+import com.scurab.gwt.anuitor.client.DataProvider.AsyncCallback;
+import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.ResourceDetailJSO;
 import com.scurab.gwt.anuitor.client.model.ResourcesJSO;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
@@ -21,6 +24,7 @@ public class DataProvider {
     private static final String VIEW_TREE_HIERARCHY = "/viewhierarchy.json";
     private static final String RESOURCES = "/resources.json";
     private static final String RESOURCE_ID_X = "/resources.json?id=";
+    private static final String STORAGE = "/storage.json?path=";
     private static final int HTTP_OK = 200;
 
     /**
@@ -53,6 +57,10 @@ public class DataProvider {
     public static void getResource(int id, final AsyncCallback<ResourceDetailJSO> callback) {        
         sendRequest(RESOURCE_ID_X + id, callback);
     }
+    
+    public static void getFiles(String folder, AsyncCallback<JsArray<FSItemJSO>> asyncCallback) {        
+        sendRequest(STORAGE + folder, asyncCallback);
+    }   
     
     /**
      * Send GET request
