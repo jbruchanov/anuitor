@@ -1,16 +1,18 @@
 package com.scurab.android.anuitor.nanoplugin;
 
 import android.view.View;
-import com.google.gson.Gson;
-import com.scurab.android.anuitor.model.ViewNode;
-import com.scurab.android.anuitor.extract.ViewDetailExtractor;
-import com.scurab.android.anuitor.reflect.WindowManager;
 
-import fi.iki.elonen.NanoHTTPD;
+import com.scurab.android.anuitor.extract.ViewDetailExtractor;
+import com.scurab.android.anuitor.model.ViewNode;
+import com.scurab.android.anuitor.reflect.WindowManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.Map;
+
+import fi.iki.elonen.NanoHTTPD;
+
+import static com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON;
 
 /**
  * User: jbruchanov
@@ -38,15 +40,12 @@ public class ViewHierarchyPlugin extends ActivityPlugin {
 
         if (view != null) {
             ViewNode vn = ViewDetailExtractor.parse(view, false);
-            json = new Gson().toJson(vn);
+            json = GSON.toJson(vn);
         } else {
             json = "{}";
         }
 
-        NanoHTTPD.Response response = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
-            @Override public int getRequestStatus() { return 0; }
-            @Override public String getDescription() { return null; }
-        }, MIME_JSON, new ByteArrayInputStream(json.getBytes()));
+        NanoHTTPD.Response response = new OKResponse(APP_JSON, new ByteArrayInputStream(json.getBytes()));
         return response;
     }
 
@@ -57,6 +56,6 @@ public class ViewHierarchyPlugin extends ActivityPlugin {
 
     @Override
     public String mimeType() {
-        return MIME_JSON;
+        return APP_JSON;
     }
 }

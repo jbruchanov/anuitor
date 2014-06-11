@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.view.View;
 
 import com.scurab.android.anuitor.reflect.WindowManager;
-
-import fi.iki.elonen.NanoHTTPD;
+import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.File;
 import java.util.Map;
+
+import fi.iki.elonen.NanoHTTPD;
 
 /**
  * User: jbruchanov
@@ -30,7 +31,7 @@ public abstract class ActivityPlugin extends BasePlugin implements WindowManager
     @Override
     public final NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         if (getCurrentActivity() == null) {
-            if (mimeType.equals("application/json")) {
+            if (mimeType.equals(HttpTools.MimeType.APP_JSON)) {
                 return sJsonEmptyResponse;
             } else {
                 return sEmptyResponse;
@@ -40,15 +41,9 @@ public abstract class ActivityPlugin extends BasePlugin implements WindowManager
         }
     }
 
-    private static final NanoHTTPD.Response sEmptyResponse = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
-        @Override public int getRequestStatus() { return 0; }
-        @Override public String getDescription() { return APPLICATION_IS_NOT_ACTIVE; }
-    }, "text/plain", APPLICATION_IS_NOT_ACTIVE);
+    private static final NanoHTTPD.Response sEmptyResponse = new OKResponse(HttpTools.MimeType.TEXT_PLAIN, APPLICATION_IS_NOT_ACTIVE);
 
-    private static final NanoHTTPD.Response sJsonEmptyResponse = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
-        @Override public int getRequestStatus() { return 0; }
-        @Override public String getDescription() { return "{}"; }
-    }, "application/json", "{}");
+    private static final NanoHTTPD.Response sJsonEmptyResponse = new OKResponse(HttpTools.MimeType.APP_JSON, "{}");
 
     public abstract NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType);
 

@@ -9,12 +9,14 @@ import android.view.View;
 
 import com.scurab.android.anuitor.reflect.WindowManager;
 
-import fi.iki.elonen.NanoHTTPD;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Map;
+
+import fi.iki.elonen.NanoHTTPD;
+
+import static com.scurab.android.anuitor.tools.HttpTools.MimeType.IMAGE_PNG;
 
 /**
  * User: jbruchanov
@@ -72,10 +74,7 @@ public class ScreenViewPlugin extends ActivityPlugin {
         }
 
 
-        NanoHTTPD.Response response = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
-            @Override public int getRequestStatus() { return 0; }
-            @Override public String getDescription() { return null; }
-        }, MIME_PNG, resultInputStream);
+        NanoHTTPD.Response response = new OKResponse(IMAGE_PNG, resultInputStream);
         return response;
     }
 
@@ -86,6 +85,6 @@ public class ScreenViewPlugin extends ActivityPlugin {
 
     @Override
     public String mimeType() {
-        return MIME_PNG;
+        return IMAGE_PNG;
     }
 }

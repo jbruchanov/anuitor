@@ -1,9 +1,10 @@
 package com.scurab.android.anuitor.nanoplugin;
 
-import fi.iki.elonen.WebServerPlugin;
+import com.google.gson.Gson;
 
-import java.io.File;
 import java.util.Map;
+
+import fi.iki.elonen.WebServerPlugin;
 
 /**
  * User: jbruchanov
@@ -12,8 +13,7 @@ import java.util.Map;
  */
 public abstract class BasePlugin implements WebServerPlugin {
 
-    public static final String MIME_JSON = "application/json";
-    public static final String MIME_PNG = "image/png";
+    public static final Gson GSON = new Gson();
 
     @Override
     public void initialize(Map<String, String> commandLineOptions) {

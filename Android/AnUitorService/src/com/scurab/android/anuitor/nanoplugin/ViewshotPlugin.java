@@ -2,16 +2,13 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
-import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import com.scurab.android.anuitor.extract.ViewDetailExtractor;
 import com.scurab.android.anuitor.reflect.WindowManager;
@@ -26,6 +23,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import fi.iki.elonen.NanoHTTPD;
+
+import static com.scurab.android.anuitor.tools.HttpTools.MimeType.IMAGE_PNG;
 
 /**
  * User: jbruchanov
@@ -84,19 +83,19 @@ public class ViewshotPlugin extends ActivityPlugin {
 
                         if (w == 0 || h == 0) {
                             //just workaround for incorrect call, view is not visible
-                            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-                            Canvas c = new Canvas(bitmap);
-                            c.drawRect(0, 0, w, h, mClearPaint);
+                            bitmap = getEmptyBitmap();
                         } else {
                             if (view.getVisibility() == View.VISIBLE) {
+
+                                //just draw viewgroup's background if we have it
                                 if (view instanceof ViewGroup && !ViewDetailExtractor
                                         .isExcludedViewGroup(view.getClass())) {
-                                    //just draw background if we have it
                                     Drawable drawable = view.getBackground();
                                     if (drawable != null) {
                                         bitmap = drawDrawable(drawable, w, h);
                                     }
                                 }
+
                                 if (bitmap == null) {
                                     // get bitmap
                                     view.destroyDrawingCache();
@@ -111,11 +110,9 @@ public class ViewshotPlugin extends ActivityPlugin {
                                         bitmap = drawView(view, w, h);
                                     }
                                 }
-
                             } else {
                                 bitmap = getEmptyBitmap();
                             }
-
                         }
 
                         bitmap.compress(Bitmap.CompressFormat.PNG, 20, bos);
@@ -134,17 +131,7 @@ public class ViewshotPlugin extends ActivityPlugin {
             resultInputStream = new ByteArrayInputStream(new byte[0]);
         }
 
-        NanoHTTPD.Response response = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
-            @Override
-            public int getRequestStatus() {
-                return 0;
-            }
-
-            @Override
-            public String getDescription() {
-                return null;
-            }
-        }, MIME_PNG, resultInputStream);
+        NanoHTTPD.Response response = new OKResponse(IMAGE_PNG, resultInputStream);
         return response;
     }
 
@@ -183,7 +170,7 @@ public class ViewshotPlugin extends ActivityPlugin {
 
     @Override
     public String mimeType() {
-        return MIME_PNG;
+        return IMAGE_PNG;
     }
 
 }

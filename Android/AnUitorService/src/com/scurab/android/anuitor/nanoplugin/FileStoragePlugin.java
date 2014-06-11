@@ -2,15 +2,20 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
 import com.scurab.android.anuitor.model.FSItem;
 import com.scurab.android.anuitor.tools.FileSystemTools;
-import fi.iki.elonen.NanoHTTPD;
+import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+
+import fi.iki.elonen.NanoHTTPD;
+
+import static com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON;
 
 /**
  * User: jbruchanov
@@ -35,7 +40,7 @@ public class FileStoragePlugin extends BasePlugin {
 
     @Override
     public String mimeType() {
-        return MIME_JSON;
+        return APP_JSON;
     }
 
     @Override
@@ -45,19 +50,38 @@ public class FileStoragePlugin extends BasePlugin {
 
     @Override
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
-        String path = session.getQueryParameterString();
-        int len = path != null ? path.length() : 0;
+        InputStream inputStream;
+        String mime;
+        String content = null;
+        try {
+            String path = session.getQueryParameterString();
+            int len = path != null ? path.length() : 0;
 
-        List<FSItem> files;
-        String json;
+            List<FSItem> files;
+            String json;
 
-        files = len == 0 ? mRootItems : FileSystemTools.get(path);
-        json = new Gson().toJson(files);
+            File f = new File(path);
+            if (f.exists() && f.isFile()) {
+                inputStream = new FileInputStream(f);
+                mime = HttpTools.getMimeType(f);
+                content = "inline; filename=" + f.getName();
+            } else {
+                mime = APP_JSON;
+                files = len == 0 ? mRootItems : FileSystemTools.get(f);
+                json = GSON.toJson(files);
+                inputStream = new ByteArrayInputStream(json.getBytes());
+            }
+        } catch (Exception e) {
+            inputStream = new ByteArrayInputStream(e.getMessage().getBytes());
+            mime = APP_JSON;
+        }
 
-        NanoHTTPD.Response response = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
-            @Override public int getRequestStatus() { return 0; }
-            @Override public String getDescription() { return null; }
-        }, MIME_JSON, new ByteArrayInputStream(json.getBytes()));
+        final String fd = content;
+
+        NanoHTTPD.Response response = new OKResponse(mime, inputStream);
+        if(content != null) {
+            response.addHeader("Content-Disposition", content);
+        }
         return response;
     }
 }

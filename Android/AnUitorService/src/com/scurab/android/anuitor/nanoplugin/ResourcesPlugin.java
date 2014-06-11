@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.nanoplugin;
 
-import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -16,7 +15,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.Base64;
 import android.util.TypedValue;
 
-import com.google.gson.Gson;
 import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.model.ResourceResponse;
@@ -39,6 +37,8 @@ import javax.xml.transform.TransformerException;
 
 import fi.iki.elonen.NanoHTTPD;
 
+import static com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON;
+
 /**
  * Created by jbruchanov on 22/05/2014.
  */
@@ -54,11 +54,11 @@ public class ResourcesPlugin extends BasePlugin {
     private static final int INC_9PATCH_CONST = 3;
     public static final String ARRAY = "array";
     public static final String XML = "xml";
+    public static final String ID = "id";
+    public static final String NUMBER = "number";
 
     private Resources mRes;
     private ResourcesHelper mHelper;
-
-    private Gson mGson = new Gson();
 
     private Paint mClearPaint = new Paint();
 
@@ -75,7 +75,7 @@ public class ResourcesPlugin extends BasePlugin {
 
     @Override
     public String mimeType() {
-        return MIME_JSON;
+        return APP_JSON;
     }
 
     @Override
@@ -87,30 +87,27 @@ public class ResourcesPlugin extends BasePlugin {
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         String queryString = session.getQueryParameterString();
         HashMap<String, String> qs = HttpTools.parseQueryString(queryString);
-        String type = MIME_JSON;
+        String type = APP_JSON;
         ByteArrayInputStream resultInputStream = null;
-        if (qs.containsKey("id")) {
+        if (qs.containsKey(ID)) {
             int id = -1;
             try {
-                id = Integer.parseInt(qs.get("id"));
+                id = Integer.parseInt(qs.get(ID));
                 resultInputStream = dispatchIdRequest(id);
             } catch (Exception e) {
                 ResourceResponse rr = new ResourceResponse();
                 rr.data = (e == null ? "WTF NullException!" : e.getMessage());
                 rr.context = e != null ? e.getClass().getCanonicalName() : null;
-                rr.dataType = "string";
+                rr.dataType = STRING_DATA_TYPE;
                 rr.type = IdsHelper.RefType.unknown;
-                resultInputStream = new ByteArrayInputStream(mGson.toJson(rr).getBytes());
+                resultInputStream = new ByteArrayInputStream(GSON.toJson(rr).getBytes());
             }
         } else {
             String s = IdsHelper.toJson(mRes);
             resultInputStream = new ByteArrayInputStream(s.getBytes());
         }
 
-        NanoHTTPD.Response response = new NanoHTTPD.Response(new NanoHTTPD.Response.IStatus() {
-            @Override public int getRequestStatus() { return 0; }
-            @Override public String getDescription() { return null; }
-        }, type, resultInputStream);
+        NanoHTTPD.Response response = new OKResponse(type, resultInputStream);
         return response;
     }
 
@@ -139,7 +136,7 @@ public class ResourcesPlugin extends BasePlugin {
                 break;
             case dimen:
                 response.data = mRes.getDimension(id);
-                response.dataType = "number";
+                response.dataType = NUMBER;
                 break;
             case drawable:
             case mipmap:
@@ -148,7 +145,7 @@ public class ResourcesPlugin extends BasePlugin {
             case fraction: {
                 TypedValue tv = new TypedValue();
                 mRes.getValue(id, tv, true);
-                response.dataType = "number";
+                response.dataType = NUMBER;
                 if (TypedValue.TYPE_FRACTION == tv.type) {
                     response.data = mRes.getFraction(id, 100, 100);
                     response.context = "Base=100";
@@ -156,7 +153,7 @@ public class ResourcesPlugin extends BasePlugin {
                     response.data = tv.getFloat();
                 } else {
                     response.data = "Not implemented franction for TypedValue.type = " + tv.type;
-                    response.dataType = "string";
+                    response.dataType = STRING_DATA_TYPE;
                 }
             }
                 break;
@@ -179,7 +176,7 @@ public class ResourcesPlugin extends BasePlugin {
                 break;
             case string:
                 response.data = mRes.getString(id);
-                response.dataType = "String";
+                response.dataType = STRING_DATA_TYPE;
                 break;
             case xml:
                 response.data = DOM2XmlPullBuilder.transform(mRes.getXml(id));
@@ -196,7 +193,7 @@ public class ResourcesPlugin extends BasePlugin {
                 break;
         }
 
-        String json = mGson.toJson(response);
+        String json = GSON.toJson(response);
         ByteArrayInputStream result = new ByteArrayInputStream(json.getBytes());
 
         return result;

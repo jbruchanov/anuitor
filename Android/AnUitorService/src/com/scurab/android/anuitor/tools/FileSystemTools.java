@@ -45,8 +45,8 @@ public class FileSystemTools {
      * @param location
      * @return
      */
-    public static List<FSItem> get(String location) {
-        File[] files = new File(location).listFiles();
+    public static List<FSItem> get(File location) {
+        File[] files = location.listFiles();
 
         ArrayList<FSItem> result = new ArrayList<FSItem>();
         try {
@@ -101,5 +101,21 @@ public class FileSystemTools {
             }
         }
         folder.delete();
+    }
+
+    /**
+     * Returns file extension or null if there is no extension
+     * @param f
+     * @return
+     */
+    public static String getExtension(File f) {
+        String ext = null;
+        String s = f.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i > 0 &&  i < s.length() - 1) {
+            ext = s.substring(i+1).toLowerCase();
+        }
+        return ext;
     }
 }
