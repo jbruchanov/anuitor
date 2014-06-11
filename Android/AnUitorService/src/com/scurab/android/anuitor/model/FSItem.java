@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -17,14 +18,18 @@ public class FSItem implements Comparable<FSItem> {
     private String mName;
 
     @SerializedName("Size")
+    private String mStrSize;
+
+    @Expose
     private long mSize;
 
     @SerializedName("Type")
     private int mType;
 
-    public FSItem(String name, long size, int type) {
+    public FSItem(String name, int type, long size) {
         mName = name;
         mSize = size;
+        mStrSize = String.valueOf(size);
         mType = type;
     }
 

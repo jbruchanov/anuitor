@@ -24,7 +24,7 @@ public class HttpTools {
         for (String item : items) {
             String[] kv = item.split("=");
             String key = kv[0];
-            String value = kv[1];
+            String value = kv.length > 1 ? kv[1] : null;
             result.put(key, value);
         }
         return result;

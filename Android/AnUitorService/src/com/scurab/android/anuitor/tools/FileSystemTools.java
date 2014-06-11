@@ -36,6 +36,7 @@ public class FileSystemTools {
             String location = Environment.getExternalStorageDirectory().getAbsolutePath();
             result.add(new FSItem(location, FSItem.TYPE_FOLDER, 0));
         }
+        //TODO: add / for rooted devices ?
         return result;
     }
 
@@ -53,7 +54,7 @@ public class FileSystemTools {
             if (files != null) { //if we don't have access it's null
                 for (File f : files) {
                     int type = f.isFile() ? FSItem.TYPE_FILE : FSItem.TYPE_FOLDER;
-                    FSItem fi = new FSItem(f.getName(), type == FSItem.TYPE_FILE ? f.length() : 0, type);
+                    FSItem fi = new FSItem(f.getName(), type, type == FSItem.TYPE_FILE ? f.length() : 0);
                     result.add(fi);
                 }
             }

@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,20 +55,24 @@ public class FileStoragePlugin extends BasePlugin {
         String mime;
         String content = null;
         try {
-            String path = session.getQueryParameterString();
-            int len = path != null ? path.length() : 0;
-
+            String qs = session.getQueryParameterString();
+            int len = qs != null ? qs.length() : 0;
+            String path = null;
+            if(len != 0){
+                HashMap<String, String> params = HttpTools.parseQueryString(qs);
+                path = params.get("path");
+            }
             List<FSItem> files;
             String json;
 
-            File f = new File(path);
-            if (f.exists() && f.isFile()) {
+            File f = path != null ? new File(path) : null;
+            if (f != null && f.exists() && f.isFile()) {
                 inputStream = new FileInputStream(f);
                 mime = HttpTools.getMimeType(f);
                 content = "inline; filename=" + f.getName();
             } else {
                 mime = APP_JSON;
-                files = len == 0 ? mRootItems : FileSystemTools.get(f);
+                files = path == null ? mRootItems : FileSystemTools.get(f);
                 json = GSON.toJson(files);
                 inputStream = new ByteArrayInputStream(json.getBytes());
             }
