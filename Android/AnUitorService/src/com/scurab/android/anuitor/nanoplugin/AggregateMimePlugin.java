@@ -15,7 +15,6 @@ public class AggregateMimePlugin extends BasePlugin {
     private BasePlugin[] mPlugins;
     private String[] mFiles;
 
-
     public AggregateMimePlugin(BasePlugin... plugins) {
         mPlugins = plugins;
         if (mPlugins == null || mPlugins.length == 0) {
@@ -29,6 +28,9 @@ public class AggregateMimePlugin extends BasePlugin {
         HashSet<String> files = new HashSet<String>();
         for (BasePlugin b : plugins) {
             for (String file : b.files()) {
+                if(files.contains(file)){
+                    throw new IllegalStateException(String.format("File:'%s' is already defined from previous plugin", file));
+                }
                 files.add(file);
             }
         }
@@ -65,7 +67,7 @@ public class AggregateMimePlugin extends BasePlugin {
         return getServeCandidate(uri, file /*TODO: check if it's fine */).serveFile(uri, headers, session, file, mimeType);
     }
 
-    private BasePlugin getServeCandidate(String uri, File rootDir) {
+    BasePlugin getServeCandidate(String uri, File rootDir) {
         for (BasePlugin plugin : mPlugins) {
             if (plugin.canServeUri(uri, rootDir)) {
                 return plugin;
