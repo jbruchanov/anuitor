@@ -62,4 +62,16 @@ public class ViewNode {
     public HashMap<String, Object> getData() {
         return mData;
     }
+
+    public int getId() {
+        return mId;
+    }
+
+    public int getLevel() {
+        return mLevel;
+    }
+
+    public int getPosition() {
+        return mPosition;
+    }
 }
