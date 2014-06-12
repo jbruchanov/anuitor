@@ -35,7 +35,7 @@ build/
 #GWT
 /build
 /classes
-*.jar
+GWT/AnUitor/war/WEB-INF/*.jar
 *.class
 *~
 */web-app/gwt
