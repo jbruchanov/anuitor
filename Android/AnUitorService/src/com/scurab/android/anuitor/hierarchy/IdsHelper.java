@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * This class preloads everything related with IDs.
+ * At the beggining just load values by {@link #loadValues(Class)} and pass class for your application R.class
+ *
  * User: jbruchanov
  * Date: 12/05/2014
  * Time: 13:52
@@ -43,6 +46,12 @@ public class IdsHelper {
         VALUES = new HashMap<String, SparseArray<String>>();
     }
 
+    /**
+     * Load values
+     * @param Rclass must be class of your application R.class
+     * @throws NoSuchFieldException
+     * @throws ClassNotFoundException
+     */
     public static void loadValues(Class<?> Rclass) throws NoSuchFieldException, ClassNotFoundException {
         if (!VALUES.isEmpty()) {
             return;
@@ -85,16 +94,13 @@ public class IdsHelper {
         }
     }
 
-    private static Class<?> getClass(Class<?> parent, String name) {
-        Class<?>[] classes = parent.getClasses();
-        for (Class<?> aClass : classes) {
-            if (name.equals(aClass.getSimpleName())) {
-                return aClass;
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Returns name for particular id<br/>
+     * If id is not defined {@link android.view.View#getId()} returns -1, this method returns "undefined".
+     * If the id is not found (maybe android.internal stuff) null is returned.
+     * @param id
+     * @return
+     */
     public static String getNameForId(int id) {
         if (id == -1) {
             return "undefined";
@@ -109,6 +115,11 @@ public class IdsHelper {
         return null;
     }
 
+    /**
+     * Get type of particular id. {@link com.scurab.android.anuitor.hierarchy.IdsHelper.RefType#unknown} is returned if not found.
+     * @param id
+     * @return
+     */
     public static RefType getType(int id) {
         for (String type : VALUES.keySet()) {
             SparseArray<String> array = VALUES.get(type);
@@ -123,10 +134,21 @@ public class IdsHelper {
         return RefType.unknown;
     }
 
+    /**
+     * Convert whole dataset of ids into JSON
+     * @see {@link #toJson(android.content.res.Resources)}
+     * @return
+     */
     public static String toJson() {
         return toJson(null);
     }
 
+    /**
+     * Convert whole dataset of ids into JSON.
+     * If @param res is passed, dataset will contain source of xml files for drawables, layouts, colors
+     * @param res optional value, can be null
+     * @return
+     */
     public static String toJson(Resources res) {
         TypedValue tv = new TypedValue();
         CharSequence location = null;
@@ -153,6 +175,6 @@ public class IdsHelper {
                 location = null;
             }
         }
-        return new Gson().toJson(result);
+        return new Gson().toJson(result); //TODO: put GSON reference to one place
     }
 }
