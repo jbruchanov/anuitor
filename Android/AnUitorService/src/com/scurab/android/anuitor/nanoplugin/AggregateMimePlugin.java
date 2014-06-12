@@ -8,7 +8,7 @@ import fi.iki.elonen.NanoHTTPD;
 
 /**
  * Created by jbruchanov on 20/05/2014.
- * Simple wrapper for multiple plugins with sasme mime type.
+ * Simple wrapper for multiple plugins with same mime type.
  */
 public class AggregateMimePlugin extends BasePlugin {
 
@@ -61,7 +61,7 @@ public class AggregateMimePlugin extends BasePlugin {
 
     @Override
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
-        //null should never happend, because it's not called if canServerUri returns false
+        //null should never happened, because it's not called if canServerUri returns false
         return getServeCandidate(uri, file /*TODO: check if it's fine */).serveFile(uri, headers, session, file, mimeType);
     }
 

@@ -267,7 +267,7 @@ public class DOM2XmlPullBuilder {
     }
 
     /**
-     * Simple naive formating of xml file to have 1 attribute per line
+     * Simple naive formatting of xml file to have 1 attribute per line
      * @param xml
      * @return
      * @throws IOException

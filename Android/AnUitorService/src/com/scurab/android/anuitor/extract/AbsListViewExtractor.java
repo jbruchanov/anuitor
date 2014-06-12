@@ -38,8 +38,6 @@ public class AbsListViewExtractor extends AdapterViewExtractor {
             data.put("CheckedItemPositions", checkedItemPositions != null ? checkedItemPositions.toString() : null);
             data.put("IsFastScrollAlwaysVisible", lv.isFastScrollAlwaysVisible());
         }
-
-
         return data;
     }
 }
