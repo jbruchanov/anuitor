@@ -59,7 +59,7 @@ public final class ViewDetailExtractor {
         registerExtractor(ViewGroup.class, new ViewGroupExtractor());
         registerExtractor(ViewPager.class, new ViewPagerExtractor());
         registerExtractor(ViewStub.class, new ViewStubExtractor());
-        registerExtractor(WebView.class, new WebViewExtrator());
+        registerExtractor(WebView.class, new WebViewExtractor());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             registerExtractor(Switch.class, new SwitchExtractor());

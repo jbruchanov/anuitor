@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.extract;
 
 import android.os.Build;
+import android.os.Looper;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 /**
  * Created by jbruchanov on 06/06/2014.
  */
-public class WebViewExtrator extends ViewGroupExtractor {
+public class WebViewExtractor extends ViewGroupExtractor {
 
 
     @Override
