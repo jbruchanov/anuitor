@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.scurab.android.anuitor.C;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -21,6 +22,11 @@ import static junit.framework.TestCase.assertNull;
 @Config(manifest = C.MANIFEST, emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class ViewDetailExtractorTest {
+
+    @Before
+    public void setUp() {
+        ViewDetailExtractor.resetToDefault();
+    }
 
     @Test
     public void testGetParentClassExtractor() {
@@ -43,6 +49,8 @@ public class ViewDetailExtractorTest {
 
         ViewExtractor extractor = ViewDetailExtractor.getExtractor(new HelpTextView(Robolectric.application));
         assertNull(extractor);
+
+        ViewDetailExtractor.resetToDefault();
     }
 
     private static class HelpTextView extends TextView {
