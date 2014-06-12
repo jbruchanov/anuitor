@@ -40,7 +40,7 @@ public class IdsHelper {
         xml;
     }
 
-    private static final HashMap<String, SparseArray<String>> VALUES;
+    static final HashMap<String, SparseArray<String>> VALUES;
 
     static {
         VALUES = new HashMap<String, SparseArray<String>>();
@@ -54,7 +54,7 @@ public class IdsHelper {
      */
     public static void loadValues(Class<?> Rclass) throws NoSuchFieldException, ClassNotFoundException {
         if (!VALUES.isEmpty()) {
-            return;
+            VALUES.clear();
         }
         Class<?>[] clzs = Rclass.getClasses();
         for (Class<?> clz : clzs) {
