@@ -27,6 +27,9 @@ public class FSItem implements Comparable<FSItem> {
     private int mType;
 
     public FSItem(String name, int type, long size) {
+        if (name == null) {
+            throw new IllegalArgumentException("name is null!");
+        }
         mName = name;
         mSize = size;
         mStrSize = String.valueOf(size);
