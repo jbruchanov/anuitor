@@ -41,7 +41,7 @@ public class TextViewExtractor extends ViewExtractor {
             values.put("MaxLines", tv.getMaxLines());
             values.put("ShadowColor", getStringColor(tv.getShadowColor()));
             values.put("ShadowDX", tv.getShadowDx());
-            values.put("ShadowDX", tv.getShadowDy());
+            values.put("ShadowDY", tv.getShadowDy());
             values.put("ShadowRadius", tv.getShadowRadius());
             values.put("IsCursorVisible", tv.isCursorVisible());
         }

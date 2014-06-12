@@ -79,7 +79,7 @@ public class ViewExtractor {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
             data.put("MinWidth", v.getMinimumWidth());
-            data.put("MinWidth", v.getMinimumWidth());
+            data.put("MinHeight", v.getMinimumHeight());
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

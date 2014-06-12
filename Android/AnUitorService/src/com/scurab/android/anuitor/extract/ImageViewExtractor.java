@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.extract;
 
+import android.graphics.Matrix;
 import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +18,8 @@ public class ImageViewExtractor extends ViewExtractor {
 
         ImageView iv = (ImageView) v;
 
-        data.put("ImageMatrix", iv.getImageMatrix().toShortString());
+        Matrix imageMatrix = iv.getImageMatrix();
+        data.put("ImageMatrix", imageMatrix != null ? imageMatrix.toShortString() : null);
         data.put("ScaleType", String.valueOf(iv.getScaleType()));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

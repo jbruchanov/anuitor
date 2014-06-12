@@ -31,11 +31,19 @@ import java.util.HashSet;
  */
 public final class ViewDetailExtractor {
 
-    static final HashMap<Class<?>, ViewExtractor> MAP;
+    static final HashMap<Class<? extends View>, ViewExtractor> MAP;
     static final HashSet<Class<?>> VIEWGROUP_IGNORE;
 
     static {
-        MAP = new HashMap<Class<?>, ViewExtractor>();
+        MAP = new HashMap<Class<? extends View>, ViewExtractor>();
+        VIEWGROUP_IGNORE = new HashSet<Class<?>>();
+        resetToDefault();
+    }
+
+    public static void resetToDefault() {
+        MAP.clear();
+        VIEWGROUP_IGNORE.clear();
+
         registerExtractor(AbsListView.class, new AbsListViewExtractor());
         registerExtractor(AbsSeekBar.class, new AbsSeekBarExtractor());
         registerExtractor(AdapterView.class, new AdapterViewExtractor());
@@ -57,37 +65,34 @@ public final class ViewDetailExtractor {
             registerExtractor(Switch.class, new SwitchExtractor());
         }
 
-
-
-        VIEWGROUP_IGNORE = new HashSet<Class<?>>();
         VIEWGROUP_IGNORE.add(WebView.class);
     }
 
-    public static void registerExtractor(Class<?> clz, ViewExtractor extractor) {
+    public static void registerExtractor(Class<? extends View> clz, ViewExtractor extractor) {
         MAP.put(clz, extractor);
     }
 
-    public static void unregisterExtractor(Class<?> clz){
+    public static void unregisterExtractor(Class<?> clz) {
         MAP.remove(clz);
     }
 
-    public static boolean excludeViewGroup(Class<?> clz){
+    public static boolean excludeViewGroup(Class<?> clz) {
         return VIEWGROUP_IGNORE.add(clz);
     }
 
-    public static boolean removeExcludeViewGroup(Class<?> clz){
+    public static boolean removeExcludeViewGroup(Class<?> clz) {
         return VIEWGROUP_IGNORE.remove(clz);
     }
 
-    public static boolean isExcludedViewGroup(Class<?> clz){
+    public static boolean isExcludedViewGroup(Class<?> clz) {
         return VIEWGROUP_IGNORE.contains(clz);
     }
 
     public static ViewNode parse(View rootView, boolean lazy) {
         int[] counter = {0};
-        ViewNode vn = new ViewNode(rootView.getId(), 0 , counter[0], lazy
-                                                         ? null
-                                                         : getExtractor(rootView).fillValues(rootView, new HashMap<String, Object>(), null));
+        ViewNode vn = new ViewNode(rootView.getId(), 0, counter[0], lazy
+                ? null
+                : getExtractor(rootView).fillValues(rootView, new HashMap<String, Object>(), null));
 
 
         counter[0]++;
@@ -104,7 +109,7 @@ public final class ViewDetailExtractor {
                         child.getId(),
                         level,
                         position[0],
-                        lazy ? null : getExtractor(child).fillValues(child, new HashMap<String, Object>(),parentData)
+                        lazy ? null : getExtractor(child).fillValues(child, new HashMap<String, Object>(), parentData)
                 );
 
                 root.addChild(vn);

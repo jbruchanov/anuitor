@@ -13,7 +13,7 @@ public class StateListDrawableReflector extends Reflector<StateListDrawable> {
     }
 
     public int getStateCount() {
-        return callByReflection();
+        return (Integer)callByReflection();
     }
 
     public int[] getStateSet(int index) {
