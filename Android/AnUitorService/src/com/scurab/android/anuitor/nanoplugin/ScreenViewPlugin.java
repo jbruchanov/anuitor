@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.nanoplugin;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -28,13 +29,13 @@ public class ScreenViewPlugin extends ActivityPlugin {
     public static final String SCREEN_PNG = "screen.png";
     public static final String PATH = "/" + SCREEN_PNG;
 
-    private Paint mClearPaint = new Paint();
+    private Paint mClearPaint;
 
     private int[] mLocation = new int[2];
 
     public ScreenViewPlugin(WindowManager windowManager) {
         super(windowManager);
-        mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        mClearPaint = onCreateClearPaint();
     }
 
     @Override
@@ -56,8 +57,8 @@ public class ScreenViewPlugin extends ActivityPlugin {
             if (mLocation[0] != 0 || mLocation[1] != 0) {//dialog or something, rootview is not at [0,0]
                 int w = mLocation[0] + view.getWidth();
                 int h = mLocation[1] + view.getHeight();
-                b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-                Canvas c = new Canvas(b);
+                b = onCreateBitmap(w, h);
+                Canvas c = onCreateCanvas(b);
                 c.drawRect(0, 0, w, h, mClearPaint);//clear white background to get transparency
                 c.translate(mLocation[0], mLocation[1]);
                 view.draw(c);
@@ -68,14 +69,34 @@ public class ScreenViewPlugin extends ActivityPlugin {
                 // get bitmap
                 b = view.getDrawingCache();
             }
-            b.compress(Bitmap.CompressFormat.PNG, 20, bos);
+            b.compress(Bitmap.CompressFormat.PNG, 100, bos);
             resultInputStream = new ByteArrayInputStream(bos.toByteArray());
             b.recycle();
+        } else {
+            resultInputStream = new ByteArrayInputStream(new byte[0]);
         }
 
 
         NanoHTTPD.Response response = new OKResponse(IMAGE_PNG, resultInputStream);
         return response;
+    }
+
+    Canvas onCreateCanvas(Bitmap b) {
+        return new Canvas(b);
+    }
+
+    Bitmap onCreateBitmap(int w, int h) {
+        return Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+    }
+
+    Paint onCreateClearPaint() {
+        Paint p = new Paint();
+        p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        return p;
+    }
+
+    Paint getClearPaint() {
+        return mClearPaint;
     }
 
     @Override
