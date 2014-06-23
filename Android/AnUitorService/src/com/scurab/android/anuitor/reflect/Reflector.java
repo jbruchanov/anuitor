@@ -66,6 +66,7 @@ public abstract class Reflector<T> {
         }
     }
 
+    //FIXME: naive, if there is nonPrimitive as param, it will fail
     protected void fixAutoboxing(Class<?>[] params) {
         for (int i = 0; params != null && i < params.length; i++) {
             Class<?> clz = params[i];
