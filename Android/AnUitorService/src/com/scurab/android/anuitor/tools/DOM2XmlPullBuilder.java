@@ -199,7 +199,7 @@ public class DOM2XmlPullBuilder {
                 } else if ("textStyle".equals(attrName)) {
                     xmlValue = String.valueOf(Translator.textStyle(Integer.parseInt(xmlValue.replace("0x", ""), 16)));
                 } else if ("inputType".equals(attrName)) {
-                    //TODO: pretty big from atrs
+                    //TODO: pretty big from attrs
                 } else if ("ellipsize".equals(attrName)) {
                     xmlValue = String.valueOf(Translator.ellipsize(Integer.parseInt(xmlValue)));
                 } else if ("shape".equals(attrName)) {
