@@ -27,6 +27,7 @@ public class IdsHelperTest {
 
     @Test
     public void testLoadValues() throws NoSuchFieldException, ClassNotFoundException {
+        IdsHelper.VALUES.clear();
         assertEquals(0, IdsHelper.VALUES.size());
         IdsHelper.loadValues(R.class);
         assertTrue(IdsHelper.VALUES.size() > 0);
