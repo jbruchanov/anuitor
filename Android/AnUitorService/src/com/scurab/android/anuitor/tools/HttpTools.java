@@ -1,7 +1,5 @@
 package com.scurab.android.anuitor.tools;
 
-import android.text.TextUtils;
-
 import java.io.File;
 import java.util.HashMap;
 
@@ -16,7 +14,7 @@ public class HttpTools {
 
     public static HashMap<String, String> parseQueryString(String query) {
         HashMap<String, String> result = new HashMap<String, String>();
-        if (TextUtils.isEmpty(query)) {
+        if (isEmpty(query)) {
             return result;
         }
 
@@ -24,7 +22,7 @@ public class HttpTools {
         for (String item : items) {
             String[] kv = item.split("=");
             String key = kv[0];
-            String value = kv.length > 1 ? kv[1] : null;
+            String value = kv.length > 1 ? kv[1] : "";
             result.put(key, value);
         }
         return result;
@@ -66,7 +64,6 @@ public class HttpTools {
         }
     }
 
-
     public static final class MimeType {
         public static final String APP_JSON = "application/json";
         public static final String APP_XML = "application/xml";
@@ -75,5 +72,9 @@ public class HttpTools {
         public static final String IMAGE_PNG = "image/png";
         public static final String IMAGE_JPG = "image/jpeg";
         public static final String IMAGE_GIF = "image/gif";
+    }
+
+    private static boolean isEmpty(String value){
+        return value == null || value.length() == 0;
     }
 }
