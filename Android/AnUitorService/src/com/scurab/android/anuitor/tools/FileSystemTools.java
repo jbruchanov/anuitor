@@ -81,7 +81,7 @@ public class FileSystemTools {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    private static String[] getMemoryFolders() {
+    private static String[] getSDCardFolders() {
         if (Build.VERSION.SDK_INT > 15) {
             try {
                 File[] fs = new File("/storage").listFiles();
