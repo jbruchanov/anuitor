@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.service;
 
-import android.app.Activity;
 import android.os.Binder;
 
 /**
@@ -16,8 +15,7 @@ public class AnUitorServiceBinder extends Binder {
         mService = service;
     }
 
-    public AnUitorService getService(Activity activity) {
-        mService.onBound(activity);
+    public AnUitorService getService() {
         return mService;
     }
 }

@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.service;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,7 +11,6 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
-import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.reflect.WindowManagerGlobal;
 import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
@@ -72,8 +70,8 @@ public class AnUitorService extends Service {
      * Start service with default values {@link #DEFAULT_PORT}, {@link #DEFAULT_ROOT_FOLDER}
      * @see {@link #start(int, String)}
      */
-    public void start()  {
-        start(DEFAULT_PORT, DEFAULT_ROOT_FOLDER);
+    public boolean start()  {
+        return start(DEFAULT_PORT, DEFAULT_ROOT_FOLDER);
     }
 
     /**
@@ -86,37 +84,45 @@ public class AnUitorService extends Service {
      * @throws IOException
      */
     public boolean start(int port, String rootFolder) {
-        String s = getBaseContext().getCacheDir().toString() + "/" + rootFolder;
-        File f = new File(s);
+        String absPath = getBaseContext().getCacheDir().toString() + "/" + rootFolder;
+        File f = new File(absPath);
         /*
-            If web foloder doesn't exist it means that extraction didn't happen or some problem,
+            If web folder doesn't exist it means that extraction didn't happen or some problem,
             but at least we will enable plugins to work, because http server won't execute them if root folder doesn't exist.
          */
         if (!f.exists()) {
             f.mkdirs();
         }
 
-        mServer = new AnUiHttpServer(getApplicationContext(), port, new File(s), true, new WindowManagerGlobal());
+        mServer = onCreateServer(port, absPath);
         try {
             mServer.start();
             startForeground();
             return true;
-        } catch (Exception e) {
-            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        } catch (Throwable e) {
+            NotificationManager nm = getNotificationManager();
             nm.notify(NOTIF_ID, createSimpleNotification(e.getMessage(), false));
         }
         return false;
+    }
+
+    NotificationManager getNotificationManager() {
+        return (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    }
+
+    protected AnUiHttpServer onCreateServer(int port, String root) {
+        return new AnUiHttpServer(getApplicationContext(), port, new File(root), true, new WindowManagerGlobal());
     }
 
     /**
      * Stop service
      */
     public void stop() {
-        if (mServer != null && mServer.isAlive()) {
+        if (mServer != null) {
             mServer.stop();
             mServer = null;
-            stopForeground(true);
         }
+        stopForeground(true);
     }
 
     /**
@@ -164,18 +170,19 @@ public class AnUitorService extends Service {
         if (addMsg != null) {
             msg = msg + "\n" + addMsg;
         }
-        Notification noti = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder notib = new NotificationCompat.Builder(this)
                 .setContentTitle("AnUitor")
                 .setAutoCancel(true)
                 .setDefaults(defaults)
                 .setContentText(msg)
                 .setSmallIcon(ICON_RES_ID)
-                .addAction(0, STOP, createStopIntent())
                 .setContentIntent(createContentIntent())
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-                .build();
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
 
-        return noti;
+        if(addStopAction){
+            notib.addAction(0, STOP, createStopIntent());
+        }
+        return notib.build();
     }
 
     /**
@@ -195,18 +202,10 @@ public class AnUitorService extends Service {
      *
      * @return
      */
-    private PendingIntent createStopIntent() {
+    PendingIntent createStopIntent() {
         Intent i = new Intent(this, AnUitorService.class);
         i.setAction(STOP);
         return PendingIntent.getService(this, (int) System.currentTimeMillis(), i, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    /**
-     * Called when activity bounds service
-     * @param activity
-     */
-    public void onBound(Activity activity) {
-
     }
 
     /**
