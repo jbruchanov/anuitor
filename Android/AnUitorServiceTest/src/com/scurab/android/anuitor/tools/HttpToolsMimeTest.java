@@ -27,6 +27,7 @@ public class HttpToolsMimeTest {
                 new Object[]{new File("file.xml"), HttpTools.MimeType.APP_XML},
                 new Object[]{new File("file.gif"), HttpTools.MimeType.IMAGE_GIF},
                 new Object[]{new File("file.txt"), HttpTools.MimeType.TEXT_PLAIN},
+                new Object[]{new File("file"), HttpTools.MimeType.APP_OCTET},
                 new Object[]{new File("file."), HttpTools.MimeType.APP_OCTET},
                 new Object[]{new File("file.pdf"), HttpTools.MimeType.APP_OCTET},
                 new Object[]{new File("file.whatever"), HttpTools.MimeType.APP_OCTET}
