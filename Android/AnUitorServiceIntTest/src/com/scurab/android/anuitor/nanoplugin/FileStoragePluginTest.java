@@ -43,6 +43,9 @@ public class FileStoragePluginTest extends AndroidTestCase {
     }
 
     private String getResponse(String path) throws IOException {
+        if (path != null) {
+            path = "path=" + path;
+        }
         FileStoragePlugin plugin = new FileStoragePlugin(getContext());
 
         NanoHTTPD.IHTTPSession session = mock(NanoHTTPD.IHTTPSession.class);

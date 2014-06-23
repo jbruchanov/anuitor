@@ -36,7 +36,7 @@ public class FileStoragePlugin extends BasePlugin {
 
     @Override
     public String[] files() {
-        return new String[] {FILE};
+        return new String[]{FILE};
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FileStoragePlugin extends BasePlugin {
             String qs = session.getQueryParameterString();
             int len = qs != null ? qs.length() : 0;
             String path = null;
-            if(len != 0){
+            if (len != 0) {
                 HashMap<String, String> params = HttpTools.parseQueryString(qs);
                 path = params.get("path");
             }
@@ -68,9 +68,9 @@ public class FileStoragePlugin extends BasePlugin {
             File f = path != null ? new File(path) : null;
             if (f != null && f.exists() && f.isFile()) {
                 inputStream = new FileInputStream(f);
-                mime = HttpTools.getMimeType(f);
-                content = "inline; filename=" + f.getName();
-            } else {
+                mime = HttpTools.getMimeType(f);//try get proper mime to show it directly in browser, otherwise download
+                content = "inline; filename=" + f.getName();//add download filename
+            } else { //folder
                 mime = APP_JSON;
                 files = path == null ? mRootItems : FileSystemTools.get(f);
                 json = GSON.toJson(files);
@@ -81,10 +81,8 @@ public class FileStoragePlugin extends BasePlugin {
             mime = APP_JSON;
         }
 
-        final String fd = content;
-
         NanoHTTPD.Response response = new OKResponse(mime, inputStream);
-        if(content != null) {
+        if (content != null) {
             response.addHeader("Content-Disposition", content);
         }
         return response;

@@ -8,6 +8,7 @@ import android.test.AndroidTestCase;
 
 import com.scurab.android.anuitor.model.FSItem;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -17,14 +18,14 @@ public class FileSystemToolsTest extends AndroidTestCase {
 
     public void testGetAppRoot() {
         String appLocation = String.format("/data/data/%s/", getContext().getPackageName());
-        List<FSItem> fsItems = FileSystemTools.get(appLocation);
+        List<FSItem> fsItems = FileSystemTools.get(new File(appLocation));
         assertNotNull(fsItems);
         assertFalse(fsItems.isEmpty());
     }
 
     public void testGetAppRootCache() {
         String appLocation = String.format("/data/data/%s/cache", getContext().getPackageName());
-        List<FSItem> fsItems = FileSystemTools.get(appLocation);
+        List<FSItem> fsItems = FileSystemTools.get(new File(appLocation));
         assertNotNull(fsItems);
         assertFalse(fsItems.isEmpty());
     }
@@ -33,7 +34,7 @@ public class FileSystemToolsTest extends AndroidTestCase {
         Context c = getContext();
         if ((c.checkCallingOrSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
             String location = Environment.getExternalStorageDirectory().getAbsolutePath();
-            List<FSItem> fsItems = FileSystemTools.get(location);
+            List<FSItem> fsItems = FileSystemTools.get(new File(location));
             assertNotNull(fsItems);
             assertFalse(fsItems.isEmpty());
         }
