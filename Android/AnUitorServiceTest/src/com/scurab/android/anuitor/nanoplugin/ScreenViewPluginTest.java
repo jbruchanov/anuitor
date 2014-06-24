@@ -3,21 +3,17 @@ package com.scurab.android.anuitor.nanoplugin;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.View;
 
 import com.scurab.android.anuitor.C;
 import com.scurab.android.anuitor.reflect.WindowManager;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.maven.artifact.ant.shaded.IOUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 

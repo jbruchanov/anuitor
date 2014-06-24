@@ -1,7 +1,6 @@
 package com.scurab.android.anuitor.extract.view;
 
 import android.os.Build;
-import android.os.Looper;
 import android.webkit.WebView;
 
 import com.scurab.android.anuitor.C;

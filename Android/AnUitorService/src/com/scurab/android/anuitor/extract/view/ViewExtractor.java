@@ -15,7 +15,6 @@ import com.scurab.android.anuitor.extract.ViewDetailExtractor;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
-import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

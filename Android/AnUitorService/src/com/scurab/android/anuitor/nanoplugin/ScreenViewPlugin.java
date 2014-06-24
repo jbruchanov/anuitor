@@ -1,7 +1,6 @@
 package com.scurab.android.anuitor.nanoplugin;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;

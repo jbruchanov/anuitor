@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.sample;
 
 import com.scurab.android.anuitor.C;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;

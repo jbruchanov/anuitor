@@ -3,9 +3,6 @@ package com.scurab.android.anuitor.extract;
 import android.content.Context;
 import android.view.View;
 
-import com.scurab.android.anuitor.extract.ViewDetailExtractor;
-import com.scurab.android.anuitor.extract.view.ViewExtractor;
-
 import org.robolectric.Robolectric;
 
 import java.lang.reflect.Modifier;

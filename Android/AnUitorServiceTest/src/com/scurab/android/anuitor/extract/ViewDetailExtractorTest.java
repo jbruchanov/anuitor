@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.scurab.android.anuitor.C;
 import com.scurab.android.anuitor.extract.view.TextViewExtractor;
-import com.scurab.android.anuitor.extract.view.ViewExtractor;
 
 import org.junit.Before;
 import org.junit.Test;

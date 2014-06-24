@@ -3,8 +3,8 @@ package com.scurab.android.anuitor.tools;
 import java.io.File;
 import java.util.HashMap;
 
-import static com.scurab.android.anuitor.tools.HttpTools.MimeType.*;
 import static com.scurab.android.anuitor.tools.FileSystemTools.getExtension;
+import static com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_OCTET;
 
 /**
  * Created by jbruchanov on 27/05/2014.

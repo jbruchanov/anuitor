@@ -16,7 +16,8 @@ import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
 import com.scurab.android.anuitor.tools.ZipTools;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * User: jbruchanov
