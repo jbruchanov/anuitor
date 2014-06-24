@@ -300,4 +300,25 @@ public class Translator {
                 return String.format("UNKWNOWN (%s)", value);
         }
     }
+
+    public static Object fragmentState(int value){
+        switch (value){
+            case -1:
+                return "INVALID_STATE";
+            case 0:
+                return "INITIALIZING";
+            case 1:
+                return "CREATED";
+            case 2:
+                return "ACTIVITY_CREATED";
+            case 3:
+                return "STOPPED";
+            case 4:
+                return "STARTED";
+            case 5:
+                return "RESUMED";
+            default:
+                return String.format("UNKWNOWN (%s)", value);
+        }
+    }
 }
