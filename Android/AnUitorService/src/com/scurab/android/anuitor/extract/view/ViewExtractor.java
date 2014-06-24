@@ -259,13 +259,4 @@ public class ViewExtractor extends BaseExtractor<View> {
     private static boolean isExportView(View v) {
         return v.getClass().getAnnotation(ExportView.class) != null;
     }
-
-    /**
-     * Convert int value into hex #AARRGGBB format
-     * @param value
-     * @return
-     */
-    public static String getStringColor(int value) {
-        return HttpTools.getStringColor(value);
-    }
 }
