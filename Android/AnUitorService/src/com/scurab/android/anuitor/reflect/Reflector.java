@@ -12,6 +12,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Objects;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -42,13 +44,17 @@ public abstract class Reflector<T> {
         }
         fixAutoboxing(clzs);
 
-        try {
-            Method m = mClass.getDeclaredMethod(methodName, clzs);
-            m.setAccessible(true);
-            return (T) m.invoke(mReal, params);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Class<?> clz = mClass;
+        while (clz != null) {
+            try {
+                Method m = clz.getDeclaredMethod(methodName, clzs);
+                m.setAccessible(true);
+                return (T) m.invoke(mReal, params);
+            } catch (Exception e) {
+                clz = clz.getSuperclass();
+            }
         }
+        throw new RuntimeException("Unable to find method: " + methodName + "(" + Arrays.toString(clzs) + ")");
     }
 
     protected String getCalleeMethod() {
@@ -57,13 +63,17 @@ public abstract class Reflector<T> {
     }
 
     protected <T> T getFieldValue(String fieldName) {
-        try {
-            Field f = mClass.getDeclaredField(fieldName);
-            f.setAccessible(true);
-            return (T) f.get(mReal);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Class<?> clz = mClass;
+        while (clz != null) {
+            try {
+                Field f = clz.getDeclaredField(fieldName);
+                f.setAccessible(true);
+                return (T) f.get(mReal);
+            } catch (Exception e) {
+                clz = clz.getSuperclass();
+            }
         }
+        throw new RuntimeException("Unable to find field:" + fieldName);
     }
 
     //FIXME: naive, if there is nonPrimitive as param, it will fail
