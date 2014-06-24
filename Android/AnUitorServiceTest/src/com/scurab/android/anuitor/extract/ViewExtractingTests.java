@@ -3,6 +3,9 @@ package com.scurab.android.anuitor.extract;
 import android.content.Context;
 import android.view.View;
 
+import com.scurab.android.anuitor.extract.ViewDetailExtractor;
+import com.scurab.android.anuitor.extract.view.ViewExtractor;
+
 import org.robolectric.Robolectric;
 
 import java.lang.reflect.Modifier;
@@ -25,7 +28,7 @@ public class ViewExtractingTests {
             if(Modifier.isAbstract(clz.getModifiers())){
                 continue;
             }
-            ViewExtractor ve = ViewDetailExtractor.MAP.get(clz);
+            BaseExtractor<View> ve = ViewDetailExtractor.MAP.get(clz);
             View v = spy(createView(clz));
 
             HelpHashMap hhm = new HelpHashMap(ve);
@@ -47,9 +50,9 @@ public class ViewExtractingTests {
 
     private static class HelpHashMap<K, V> extends HashMap<K, V> {
 
-        private ViewExtractor mViewExtractor;
+        private BaseExtractor<View> mViewExtractor;
 
-        private HelpHashMap(ViewExtractor viewExtractor) {
+        private HelpHashMap(BaseExtractor<View> viewExtractor) {
             mViewExtractor = viewExtractor;
         }
 

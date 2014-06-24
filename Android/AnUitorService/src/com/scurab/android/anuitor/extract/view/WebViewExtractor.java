@@ -1,7 +1,6 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.view;
 
 import android.os.Build;
-import android.os.Looper;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;

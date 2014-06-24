@@ -1,8 +1,9 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.view;
 
 import android.os.Build;
 
 import com.scurab.android.anuitor.C;
+import com.scurab.android.anuitor.extract.ViewExtractingTests;
 
 import org.junit.Ignore;
 import org.junit.Test;

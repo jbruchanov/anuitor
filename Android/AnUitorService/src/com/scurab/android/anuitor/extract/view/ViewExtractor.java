@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.view;
 
 import android.graphics.Rect;
 import android.os.Build;
@@ -9,12 +9,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.scurab.android.anuitor.extract.BaseExtractor;
+import com.scurab.android.anuitor.extract.Translator;
+import com.scurab.android.anuitor.extract.ViewDetailExtractor;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.tools.HttpTools;
-
-import org.apache.http.protocol.HTTP;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.HashMap;
  * Date: 12/05/2014
  * Time: 14:20
  */
-public class ViewExtractor {
+public class ViewExtractor extends BaseExtractor<View> {
     private static final int[] POSITION = new int[2];
     private static final Rect RECT = new Rect();
 

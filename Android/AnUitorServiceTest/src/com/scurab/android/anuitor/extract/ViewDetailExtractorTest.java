@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.scurab.android.anuitor.C;
+import com.scurab.android.anuitor.extract.view.TextViewExtractor;
+import com.scurab.android.anuitor.extract.view.ViewExtractor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,14 +33,14 @@ public class ViewDetailExtractorTest {
     @Test
     public void testGetParentClassExtractor() {
         HelpTextView v = new HelpTextView(Robolectric.application);
-        ViewExtractor extractor = ViewDetailExtractor.getExtractor(v);
+        BaseExtractor<View> extractor = ViewDetailExtractor.getExtractor(v);
         assertEquals(TextViewExtractor.class, extractor.getClass());
     }
 
     @Test
     public void testGetDeeperParentClassExtractor() {
         HelpTextView2 v = new HelpTextView2(Robolectric.application);
-        ViewExtractor extractor = ViewDetailExtractor.getExtractor(v);
+        BaseExtractor<View> extractor = ViewDetailExtractor.getExtractor(v);
         assertEquals(TextViewExtractor.class, extractor.getClass());
     }
 
@@ -47,7 +49,7 @@ public class ViewDetailExtractorTest {
         ViewDetailExtractor.unregisterExtractor(View.class);
         ViewDetailExtractor.unregisterExtractor(TextView.class);
 
-        ViewExtractor extractor = ViewDetailExtractor.getExtractor(new HelpTextView(Robolectric.application));
+        BaseExtractor<View> extractor = ViewDetailExtractor.getExtractor(new HelpTextView(Robolectric.application));
         assertNull(extractor);
 
         ViewDetailExtractor.resetToDefault();

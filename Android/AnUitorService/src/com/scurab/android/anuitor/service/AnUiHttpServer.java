@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.service;
 import android.content.Context;
 import com.scurab.android.anuitor.nanoplugin.*;
 import com.scurab.android.anuitor.reflect.WindowManager;
+import com.scurab.android.anuitor.reflect.WindowManagerGlobal;
 
 import fi.iki.elonen.SimpleWebServer;
 
@@ -27,7 +28,8 @@ public class AnUiHttpServer extends SimpleWebServer {
         registerPluginForMimeType(new AggregateMimePlugin(
                 new ViewHierarchyPlugin(windowManager),
                 new FileStoragePlugin(context),
-                new ResourcesPlugin(context.getResources())));
+                new ResourcesPlugin(context.getResources()),
+                new ScreenStructurePlugin(new WindowManagerGlobal())));
     }
 
     public static void registerPluginForMimeType(BasePlugin plugin) {

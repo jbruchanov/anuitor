@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.view;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;

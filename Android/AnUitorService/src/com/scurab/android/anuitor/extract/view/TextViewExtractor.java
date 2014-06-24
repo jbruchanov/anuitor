@@ -1,8 +1,10 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.view;
 
 import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
+
+import com.scurab.android.anuitor.extract.Translator;
 
 import java.util.HashMap;
 

@@ -19,6 +19,23 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.scurab.android.anuitor.extract.view.AbsListViewExtractor;
+import com.scurab.android.anuitor.extract.view.AbsSeekBarExtractor;
+import com.scurab.android.anuitor.extract.view.AdapterViewExtractor;
+import com.scurab.android.anuitor.extract.view.CheckedTextViewExtractor;
+import com.scurab.android.anuitor.extract.view.CompoundButtonExtractor;
+import com.scurab.android.anuitor.extract.view.DrawerLayoutExtractor;
+import com.scurab.android.anuitor.extract.view.ImageViewExtractor;
+import com.scurab.android.anuitor.extract.view.ListViewExtractor;
+import com.scurab.android.anuitor.extract.view.ProgressBarExtractor;
+import com.scurab.android.anuitor.extract.view.ScrollViewExtractor;
+import com.scurab.android.anuitor.extract.view.SwitchExtractor;
+import com.scurab.android.anuitor.extract.view.TextViewExtractor;
+import com.scurab.android.anuitor.extract.view.ViewExtractor;
+import com.scurab.android.anuitor.extract.view.ViewGroupExtractor;
+import com.scurab.android.anuitor.extract.view.ViewPagerExtractor;
+import com.scurab.android.anuitor.extract.view.ViewStubExtractor;
+import com.scurab.android.anuitor.extract.view.WebViewExtractor;
 import com.scurab.android.anuitor.model.ViewNode;
 
 import java.util.HashMap;
@@ -31,11 +48,11 @@ import java.util.HashSet;
  */
 public final class ViewDetailExtractor {
 
-    static final HashMap<Class<? extends View>, ViewExtractor> MAP;
-    static final HashSet<Class<?>> VIEWGROUP_IGNORE;
+    static final HashMap<Class<? extends View>, BaseExtractor<View>> MAP;
+    public static final HashSet<Class<?>> VIEWGROUP_IGNORE; //TODO: refactor it...
 
     static {
-        MAP = new HashMap<Class<? extends View>, ViewExtractor>();
+        MAP = new HashMap<Class<? extends View>, BaseExtractor<View>>();
         VIEWGROUP_IGNORE = new HashSet<Class<?>>();
         resetToDefault();
     }
@@ -68,7 +85,7 @@ public final class ViewDetailExtractor {
         VIEWGROUP_IGNORE.add(WebView.class);
     }
 
-    public static void registerExtractor(Class<? extends View> clz, ViewExtractor extractor) {
+    public static void registerExtractor(Class<? extends View> clz, BaseExtractor<View> extractor) {
         MAP.put(clz, extractor);
     }
 
@@ -141,9 +158,9 @@ public final class ViewDetailExtractor {
         return null;
     }
 
-    static ViewExtractor getExtractor(View v) {
+    static BaseExtractor<View> getExtractor(View v) {
         Class<?> clz = v.getClass();
-        ViewExtractor ve = MAP.get(clz);
+        BaseExtractor<View> ve = MAP.get(clz);
         while (ve == null && clz != Object.class) {//object just for sure that View is unregistered
             clz = clz.getSuperclass();
             ve = MAP.get(clz);

@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.view;
 
 import android.graphics.Matrix;
 import android.os.Build;
