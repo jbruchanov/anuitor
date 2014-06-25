@@ -61,6 +61,9 @@ public class FileStoragePlugin extends BasePlugin {
             if (len != 0) {
                 HashMap<String, String> params = HttpTools.parseQueryString(qs);
                 path = params.get("path");
+                if (path != null && path.length() == 0) {
+                    path = null;
+                }
             }
             List<FSItem> files;
             String json;
