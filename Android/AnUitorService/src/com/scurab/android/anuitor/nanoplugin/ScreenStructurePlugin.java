@@ -9,7 +9,10 @@ import android.support.v4.app.FragmentActivity;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
+import com.scurab.android.anuitor.extract.ActivityExtractor;
+import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.FragmentActivityExtractor;
+import com.scurab.android.anuitor.extract.ViewDetailExtractor;
 import com.scurab.android.anuitor.reflect.WindowManagerGlobal;
 import com.scurab.android.anuitor.tools.HttpTools;
 
@@ -59,7 +62,9 @@ public class ScreenStructurePlugin extends BasePlugin {
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         String[] viewRootNames = mWindowManager.getViewRootNames();
         String json = "{}";
+
         List<HashMap<String, Object>> resultDataSet = new ArrayList<HashMap<String, Object>>();
+
         for (String rootName : viewRootNames) {
             View v = mWindowManager.getRootView(rootName);
             Context c = v.getContext();
@@ -68,17 +73,18 @@ public class ScreenStructurePlugin extends BasePlugin {
             resultDataSet.add(data);
 
             if (c instanceof Activity) {
+                ActivityExtractor ae;
+                Activity a = (Activity) c;
                 if (c instanceof FragmentActivity) {
-                    FragmentActivity fa = (FragmentActivity) c;
-                    FragmentActivityExtractor fae = new FragmentActivityExtractor();
-                    fae.fillValues(fa, data, null);
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    android.app.FragmentManager fragmentManager = ((Activity) c).getFragmentManager();
+                    ae = new FragmentActivityExtractor();
+                } else {
+                    ae = new ActivityExtractor();
                 }
-            } else if (c instanceof ContextThemeWrapper) {
-
+                ae.fillValues(a, data, null);
+            } else {
+                BaseExtractor<View> extractor = ViewDetailExtractor.getExtractor(v);
+                extractor.fillValues(v, data, null);
             }
-
         }
 
         Collections.reverse(resultDataSet);//stack order

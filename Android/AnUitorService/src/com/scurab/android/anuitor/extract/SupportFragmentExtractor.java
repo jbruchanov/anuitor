@@ -3,7 +3,7 @@ package com.scurab.android.anuitor.extract;
 import android.support.v4.app.Fragment;
 
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
-import com.scurab.android.anuitor.reflect.SupportFragmentReflector;
+import com.scurab.android.anuitor.reflect.FragmentReflector;
 
 import java.util.HashMap;
 
@@ -34,7 +34,7 @@ public class SupportFragmentExtractor extends BaseExtractor<Fragment> {
         data.put("IsVisible", fragment.isVisible());
         data.put("Arguments", mBundleExtractor.fillValues(fragment.getArguments(), new HashMap<String, Object>(), data));
 
-        SupportFragmentReflector sfr = new SupportFragmentReflector(fragment);
+        FragmentReflector sfr = new FragmentReflector(fragment);
         data.put("State", Translator.fragmentState(sfr.getState()));
         data.put("Who", sfr.getWho());
         data.put("Index", sfr.getIndex());

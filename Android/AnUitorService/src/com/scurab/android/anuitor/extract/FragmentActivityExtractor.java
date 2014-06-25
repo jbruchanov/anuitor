@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.extract;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,10 +19,11 @@ public class FragmentActivityExtractor extends ActivityExtractor {
 
     SupportFragmentExtractor mFragmentExtractor = new SupportFragmentExtractor();
 
-    public HashMap<String, Object> fillValues(FragmentActivity fragmentActivity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    @Override
+    public HashMap<String, Object> fillValues(Activity fragmentActivity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         super.fillValues(fragmentActivity, data, contextData);
         if (fragmentActivity != null) {
-            FragmentManager supportFragmentManager = fragmentActivity.getSupportFragmentManager();
+            FragmentManager supportFragmentManager = ((FragmentActivity)fragmentActivity).getSupportFragmentManager();
             List<Fragment> fragments = supportFragmentManager.getFragments();
             List<HashMap<String, Object>> fragmentsData = handleSupportFragments(fragments, new HashMap<String, Object>());
             data.put("SupportFragments", fragmentsData);

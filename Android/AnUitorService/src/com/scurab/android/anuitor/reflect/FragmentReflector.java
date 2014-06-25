@@ -1,13 +1,11 @@
 package com.scurab.android.anuitor.reflect;
 
-import android.support.v4.app.Fragment;
-
 /**
  * Created by jbruchanov on 24/06/2014.
  */
-public class SupportFragmentReflector extends Reflector<Fragment> {
+public class FragmentReflector extends Reflector<Object> {
 
-    public SupportFragmentReflector(Fragment real) {
+    public FragmentReflector(Object real) {
         super(real);
     }
 
@@ -21,5 +19,13 @@ public class SupportFragmentReflector extends Reflector<Fragment> {
 
     public int getIndex() {
         return getFieldValue("mIndex");
+    }
+
+    public boolean hasOptionsMenu() {
+        return getFieldValue("mHasMenu");
+    }
+
+    public boolean isMenuVisible() {
+        return getFieldValue("mMenuVisible");
     }
 }

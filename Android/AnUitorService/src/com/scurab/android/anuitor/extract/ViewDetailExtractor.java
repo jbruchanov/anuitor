@@ -158,7 +158,7 @@ public final class ViewDetailExtractor {
         return null;
     }
 
-    static BaseExtractor<View> getExtractor(View v) {
+    public static BaseExtractor<View> getExtractor(View v) {
         Class<?> clz = v.getClass();
         BaseExtractor<View> ve = MAP.get(clz);
         while (ve == null && clz != Object.class) {//object just for sure that View is unregistered
