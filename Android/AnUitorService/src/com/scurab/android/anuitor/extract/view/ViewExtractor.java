@@ -225,8 +225,12 @@ public class ViewExtractor extends BaseExtractor<View> {
                 }
             }
 
-            data.put("_ScaleX", v.getScaleX() * fx);
-            data.put("_ScaleY", v.getScaleY() * fy);
+            float sx = v.getScaleX() * fx;
+            data.put("_ScaleX", sx);
+            float sy = v.getScaleY() * fy;
+            data.put("_ScaleY", sy);
+            data.put("ScaleAbsoluteX", sx);
+            data.put("ScaleAbsoluteY", sy);
         }
         return data;
     }
