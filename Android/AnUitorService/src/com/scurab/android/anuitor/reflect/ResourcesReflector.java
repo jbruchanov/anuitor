@@ -14,9 +14,9 @@ import javax.xml.transform.TransformerException;
 /**
  * Created by jbruchanov on 22/05/2014.
  */
-public class ResourcesHelper extends Reflector<Resources> {
+public class ResourcesReflector extends Reflector<Resources> {
 
-    public ResourcesHelper(Resources mReal) {
+    public ResourcesReflector(Resources mReal) {
         super(mReal);
     }
 

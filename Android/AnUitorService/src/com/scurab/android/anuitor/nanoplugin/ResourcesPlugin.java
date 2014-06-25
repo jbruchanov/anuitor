@@ -19,7 +19,7 @@ import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.model.ResourceResponse;
 import com.scurab.android.anuitor.reflect.ColorStateListReflector;
-import com.scurab.android.anuitor.reflect.ResourcesHelper;
+import com.scurab.android.anuitor.reflect.ResourcesReflector;
 import com.scurab.android.anuitor.reflect.StateListDrawableReflector;
 import com.scurab.android.anuitor.tools.DOM2XmlPullBuilder;
 import com.scurab.android.anuitor.tools.HttpTools;
@@ -58,13 +58,13 @@ public class ResourcesPlugin extends BasePlugin {
     public static final String NUMBER = "number";
 
     private Resources mRes;
-    private ResourcesHelper mHelper;
+    private ResourcesReflector mHelper;
 
     private Paint mClearPaint = new Paint();
 
     public ResourcesPlugin(Resources res) {
         mRes = res;
-        mHelper = new ResourcesHelper(mRes);
+        mHelper = new ResourcesReflector(mRes);
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 
