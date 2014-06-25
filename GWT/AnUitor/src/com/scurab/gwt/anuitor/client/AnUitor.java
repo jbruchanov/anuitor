@@ -1,15 +1,20 @@
 package com.scurab.gwt.anuitor.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.dom.client.Style.VerticalAlign;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CellPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.FileStoragePage;
 import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
@@ -57,31 +62,26 @@ public class AnUitor implements EntryPoint {
         openWidget(screen, toOpen);
     }
 
-    private HorizontalPanel createSelectionPane() {
-        HorizontalPanel hp = new HorizontalPanel();
+    private CellPanel createSelectionPane() {
+        VerticalPanel hp = new VerticalPanel();
+        hp.setWidth("100%");
+        hp.setStyleName("mainScreenContent", true);        
+        hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-        Button screen = new Button("ScreenPreview");
-        screen.addClickHandler(mClickHandler);
-        hp.add(screen);
-
-        Button triD = new Button("3D");
-        triD.setWidth("120px");
-        triD.addClickHandler(mClickHandler);
-        hp.add(triD);
-
-        Button vh = new Button("ViewHierarchy");
-        vh.addClickHandler(mClickHandler);
-        hp.add(vh);
-
-        Button res = new Button("Resources");
-        res.addClickHandler(mClickHandler);
-        hp.add(res);
-
-        Button fs = new Button("FileStorage");
-        fs.addClickHandler(mClickHandler);
-        hp.add(fs);
+        hp.add(createButton("ScreenPreview"));
+        hp.add(createButton("3D"));
+        hp.add(createButton("ViewHierarchy"));
+        hp.add(createButton("Resources"));
+        hp.add(createButton("FileStorage"));       
 
         return hp;
+    }
+    
+    private Button createButton(String name){
+        Button btn = new Button(name);
+        btn.setStyleName("mainScreenButton", true);
+        btn.addClickHandler(mClickHandler);
+        return btn;
     }
 
     private IsWidget mLastScreen;

@@ -73,3 +73,12 @@ h1 {
 .contextDetailLabel{
 	font: 12px "Lucida Console", Monaco, monospace, sans-serif;
 }
+
+.mainScreenButton{
+	min-width: 150px;	
+}
+
+.mainScreenContent{
+	padding: 15px;
+	border-spacing:5px;
+}

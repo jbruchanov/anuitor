@@ -44,7 +44,7 @@
 					</g:VerticalPanel>
 				</g:ScrollPanel>
 			</g:center>
-			<g:east size="400">
+			<g:east size="600">
 				<g:ScrollPanel>
 					<p1:CellTable ui:field="cellTable" pageSize="500" />
 				</g:ScrollPanel>
