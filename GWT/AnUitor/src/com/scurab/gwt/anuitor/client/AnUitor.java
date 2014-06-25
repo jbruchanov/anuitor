@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.FileStoragePage;
-import com.scurab.gwt.anuitor.client.ui.TestPage;
+import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
 
@@ -40,7 +40,7 @@ public class AnUitor implements EntryPoint {
     private void openScreen(String screen) {
         IsWidget toOpen = null;
         if ("ScreenPreview".equals(screen)) {
-            toOpen = new TestPage();
+            toOpen = new ScreenPreviewPage();
         } else if ("3D".equals(screen)) {
             toOpen = new ThreeDPage();
         } else if ("ViewHierarchy".equals(screen)) {
