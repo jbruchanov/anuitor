@@ -6,9 +6,11 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.scurab.android.anuitor.extract.ViewDetailExtractor;
 import com.scurab.android.anuitor.reflect.WindowManager;
@@ -72,6 +74,8 @@ public class ViewshotPlugin extends ActivityPlugin {
                 View view = getCurrentRootView();
                 view = view != null ? ViewDetailExtractor.findViewByPosition(view, position) : null;
                 if (view != null) {
+                    float[] scale = getAbsoluteScale(view);
+
                     Object o = null;
                     try {
                         o = LOCKS.take();
@@ -115,6 +119,15 @@ public class ViewshotPlugin extends ActivityPlugin {
                             }
                         }
 
+                        if (scale[0] != 0f || scale[1] != 0f && (bitmap.getWidth() > 0 && bitmap.getHeight() > 0)) {
+                            int scaledW = (int) ((bitmap.getWidth() * scale[0]) + 0.5f);
+                            int scaledH = (int) ((bitmap.getHeight() * scale[1]) + 0.5f);
+                            if (scaledW > 0 && scaledH > 0) {//just prevention about some nonsense
+                                Bitmap scaled = Bitmap.createScaledBitmap(bitmap, scaledW, scaledH, false);
+                                bitmap.recycle();
+                                bitmap = scaled;
+                            }
+                        }
                         bitmap.compress(Bitmap.CompressFormat.PNG, 20, bos);
                         resultInputStream = new ByteArrayInputStream(bos.toByteArray());
                         bitmap.recycle();
@@ -133,6 +146,27 @@ public class ViewshotPlugin extends ActivityPlugin {
 
         NanoHTTPD.Response response = new OKResponse(IMAGE_PNG, resultInputStream);
         return response;
+    }
+
+    /**
+     * Travesre view hierarchy predecessors to get absolute scale of this view
+     * @param view
+     * @return
+     */
+    private static float[] getAbsoluteScale(View view) {
+        float[] scale = {1f, 1f};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            scale[0] = view.getScaleX();
+            scale[1] = view.getScaleY();
+            ViewParent vp = view.getParent();
+            while (vp != null && vp instanceof View) {
+                view = (View) vp;
+                scale[0] *= view.getScaleX();
+                scale[1] *= view.getScaleY();
+                vp = view.getParent();
+            }
+        }
+        return scale;
     }
 
     private Bitmap drawView(View view, int w, int h) {
