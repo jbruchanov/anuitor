@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.extract.view;
 import android.util.Log;
 import android.view.View;
 
+import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 
 import java.lang.reflect.Method;
@@ -30,6 +31,10 @@ public class ViewReflectionExtractor extends ViewExtractor {
             Pattern.compile("show.*", 0),
             Pattern.compile("will.*", 0)
     };
+
+    public ViewReflectionExtractor(Translator translator) {
+        super(translator);
+    }
 
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         data.put("Type", String.valueOf(v.getClass().getCanonicalName()));

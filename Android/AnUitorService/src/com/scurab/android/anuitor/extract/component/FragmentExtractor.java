@@ -1,9 +1,13 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.component;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.os.Build;
+import android.os.Bundle;
 
+import com.scurab.android.anuitor.extract.BaseExtractor;
+import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.reflect.FragmentReflector;
 
@@ -15,7 +19,9 @@ import java.util.HashMap;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class FragmentExtractor extends BaseExtractor<Fragment> {
 
-    private BundleExtractor mBundleExtractor = new BundleExtractor();
+    public FragmentExtractor(Translator translator) {
+        super(translator);
+    }
 
     @Override
     public HashMap<String, Object> fillValues(Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
@@ -31,10 +37,10 @@ public class FragmentExtractor extends BaseExtractor<Fragment> {
         data.put("IsRemoving", fragment.isRemoving());
         data.put("IsResumed", fragment.isResumed());
         data.put("IsVisible", fragment.isVisible());
-        data.put("Arguments", mBundleExtractor.fillValues(fragment.getArguments(), new HashMap<String, Object>(), data));
+        data.put("Arguments", DetailExtractor.getExtractor(Bundle.class).fillValues(fragment.getArguments(), new HashMap<String, Object>(), data));
 
         FragmentReflector sfr = new FragmentReflector(fragment);
-        data.put("State", Translator.fragmentState(sfr.getState()));
+        data.put("State", getTranslator().fragmentState(sfr.getState()));
         data.put("Who", sfr.getWho());
         data.put("Index", sfr.getIndex());
         data.put("HasOptionsMenu", sfr.hasOptionsMenu());

@@ -5,12 +5,18 @@ import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.scurab.android.anuitor.extract.Translator;
+
 import java.util.HashMap;
 
 /**
  * Created by jbruchanov on 05/06/2014.
  */
 public class ImageViewExtractor extends ViewExtractor {
+
+    public ImageViewExtractor(Translator translator) {
+        super(translator);
+    }
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {

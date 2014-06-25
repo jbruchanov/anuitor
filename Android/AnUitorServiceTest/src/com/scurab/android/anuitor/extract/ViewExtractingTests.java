@@ -19,14 +19,14 @@ import static org.mockito.Mockito.spy;
 public class ViewExtractingTests {
 
     public void doTests() {
-        assertTrue(ViewDetailExtractor.MAP.size() > 0);
+        assertTrue(DetailExtractor.MAP.size() > 0);
 
-        for (Class<? extends View> clz : ViewDetailExtractor.MAP.keySet()) {
-            if(Modifier.isAbstract(clz.getModifiers())){
+        for (Class<?> clz : DetailExtractor.MAP.keySet()) {
+            if(Modifier.isAbstract(clz.getModifiers()) || !clz.isAssignableFrom(View.class)){
                 continue;
             }
-            BaseExtractor<View> ve = ViewDetailExtractor.MAP.get(clz);
-            View v = spy(createView(clz));
+            BaseExtractor<View> ve = (BaseExtractor<View>) DetailExtractor.MAP.get(clz);
+            View v = spy(createView((Class<? extends View>) clz));
 
             HelpHashMap hhm = new HelpHashMap(ve);
             ve.fillValues(v, hhm, null);

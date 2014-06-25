@@ -1,10 +1,13 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.component;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import com.scurab.android.anuitor.extract.BaseExtractor;
+import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.reflect.SupportBackStackEntryReflector;
 
@@ -17,7 +20,9 @@ import java.util.List;
  */
 public class FragmentActivityExtractor extends ActivityExtractor {
 
-    SupportFragmentExtractor mFragmentExtractor = new SupportFragmentExtractor();
+    public FragmentActivityExtractor(Translator translator) {
+        super(translator);
+    }
 
     @Override
     public HashMap<String, Object> fillValues(Activity fragmentActivity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
@@ -36,7 +41,8 @@ public class FragmentActivityExtractor extends ActivityExtractor {
 
     protected HashMap<String, Object> extractFragments(Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         if (fragment != null) {
-            mFragmentExtractor.fillValues(fragment, data, contextData);
+            BaseExtractor<Fragment> extractor = DetailExtractor.getExtractor(Fragment.class);
+            extractor.fillValues(fragment, data, contextData);
             FragmentManager childFragmentManager = fragment.getChildFragmentManager();
 
             List<Fragment> childFragments = childFragmentManager.getFragments();

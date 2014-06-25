@@ -6,6 +6,8 @@ import android.os.Build;
 import android.view.View;
 import android.widget.Switch;
 
+import com.scurab.android.anuitor.extract.Translator;
+
 import java.util.HashMap;
 
 /**
@@ -13,6 +15,10 @@ import java.util.HashMap;
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class SwitchExtractor extends CompoundButtonExtractor {
+
+    public SwitchExtractor(Translator translator) {
+        super(translator);
+    }
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data,

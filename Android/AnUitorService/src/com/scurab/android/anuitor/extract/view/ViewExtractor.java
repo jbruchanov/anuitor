@@ -9,9 +9,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.Translator;
-import com.scurab.android.anuitor.extract.ViewDetailExtractor;
+import com.scurab.android.anuitor.extract.BaseExtractor;
+import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
@@ -28,7 +28,13 @@ public class ViewExtractor extends BaseExtractor<View> {
     private static final int[] POSITION = new int[2];
     private static final Rect RECT = new Rect();
 
+    public ViewExtractor(Translator translator) {
+        super(translator);
+    }
+
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+        Translator translator = getTranslator();
+
         data.put("Type", String.valueOf(v.getClass().getCanonicalName()));
         data.put("Extractor", getClass().getCanonicalName());//TODO: add _ to make it invisible later
 
@@ -55,7 +61,7 @@ public class ViewExtractor extends BaseExtractor<View> {
         data.put("PaddingRight", v.getPaddingRight());
         data.put("PaddingBottom", v.getPaddingBottom());
         data.put("_Visibility", v.getVisibility());
-        data.put("Visibility", Translator.visibility(v.getVisibility()));
+        data.put("Visibility", translator.visibility(v.getVisibility()));
 
         data.put("NextFocusDownId", IdsHelper.getNameForId(v.getNextFocusDownId()));
         data.put("NextFocusLeftId", IdsHelper.getNameForId(v.getNextFocusLeftId()));
@@ -92,7 +98,7 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("TranslationX", v.getTranslationX());
             data.put("TranslationY", v.getTranslationY());
             data.put("IsHWAccelerated", v.isHardwareAccelerated());
-            data.put("LayerType", Translator.layerType(v.getLayerType()));
+            data.put("LayerType", translator.layerType(v.getLayerType()));
             data.put("Matrix", v.getMatrix().toShortString());
             data.put("NextFocusForwardId", IdsHelper.getNameForId(v.getNextFocusForwardId()));
             data.put("X", v.getX());
@@ -107,8 +113,8 @@ public class ViewExtractor extends BaseExtractor<View> {
             if (v.getResources() != null) {
                 data.put("CameraDistance", v.getCameraDistance());
             }
-            data.put("IsImportantForA11Y", Translator.importantForA11Y(v.getImportantForAccessibility()));
-            data.put("LayerDirection", Translator.layoutDirection(v.getLayoutDirection()));
+            data.put("IsImportantForA11Y", translator.importantForA11Y(v.getImportantForAccessibility()));
+            data.put("LayerDirection", translator.layoutDirection(v.getLayoutDirection()));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             data.put("LabelFor", IdsHelper.getNameForId(v.getLabelFor()));
@@ -117,7 +123,7 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("ClipBounds", String.valueOf(v.getClipBounds()));
         }
 
-        boolean isViewGroup = (v instanceof ViewGroup) && !ViewDetailExtractor.VIEWGROUP_IGNORE.contains(v.getClass());
+        boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass());
 //        boolean isVisible = v.isShown();
         Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
         boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
@@ -149,8 +155,8 @@ public class ViewExtractor extends BaseExtractor<View> {
             return data;
         }
 
-        data.put("layout_width", Translator.layoutSize(lp.width));
-        data.put("layout_height", Translator.layoutSize(lp.height));
+        data.put("layout_width", getTranslator().layoutSize(lp.width));
+        data.put("layout_height", getTranslator().layoutSize(lp.height));
         if (lp instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lp;
             data.put("LayoutParams_leftMargin", mlp.leftMargin);
@@ -161,13 +167,13 @@ public class ViewExtractor extends BaseExtractor<View> {
 
         if(lp instanceof FrameLayout.LayoutParams){
             FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) lp;
-            data.put("LayoutParams_layoutGravity", Translator.gravity(flp.gravity));
+            data.put("LayoutParams_layoutGravity", getTranslator().gravity(flp.gravity));
         }
 
         if(lp instanceof LinearLayout.LayoutParams){
             LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) lp;
             data.put("LayoutParams_weight", llp.weight);
-            data.put("LayoutParams_layoutGravity", Translator.gravity(llp.gravity));
+            data.put("LayoutParams_layoutGravity", getTranslator().gravity(llp.gravity));
         }
 
         if (lp instanceof RelativeLayout.LayoutParams) {
@@ -176,14 +182,14 @@ public class ViewExtractor extends BaseExtractor<View> {
             for (int i = 0; i < rules.length; i++) {
                 int rlData = rules[i];
                 if (rlData != 0) {
-                    data.put(Translator.relativeLayoutParamRuleName(i), Translator.relativeLayoutParamRuleValue(rlData));
+                    data.put(getTranslator().relativeLayoutParamRuleName(i), getTranslator().relativeLayoutParamRuleValue(rlData));
                 }
             }
         }
 
         if(lp instanceof ViewPager.LayoutParams){
             ViewPager.LayoutParams vlp = (ViewPager.LayoutParams) lp;
-            data.put("LayoutParams_layoutGravity", Translator.gravity(vlp.gravity));
+            data.put("LayoutParams_layoutGravity", getTranslator().gravity(vlp.gravity));
             data.put("LayoutParams_isDecor", vlp.isDecor);
         }
         return data;

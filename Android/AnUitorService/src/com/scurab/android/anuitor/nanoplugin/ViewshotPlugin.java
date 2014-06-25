@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.scurab.android.anuitor.extract.ViewDetailExtractor;
+import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
@@ -72,7 +72,7 @@ public class ViewshotPlugin extends ActivityPlugin {
             if (qsValue.containsKey(POSITION)) {
                 int position = Integer.parseInt(qsValue.get(POSITION));
                 View view = getCurrentRootView();
-                view = view != null ? ViewDetailExtractor.findViewByPosition(view, position) : null;
+                view = view != null ? DetailExtractor.findViewByPosition(view, position) : null;
                 if (view != null) {
                     float[] scale = getAbsoluteScale(view);
 
@@ -92,7 +92,7 @@ public class ViewshotPlugin extends ActivityPlugin {
                             if (view.getVisibility() == View.VISIBLE) {
 
                                 //just draw viewgroup's background if we have it
-                                if (view instanceof ViewGroup && !ViewDetailExtractor
+                                if (view instanceof ViewGroup && !DetailExtractor
                                         .isExcludedViewGroup(view.getClass())) {
                                     Drawable drawable = view.getBackground();
                                     if (drawable != null) {

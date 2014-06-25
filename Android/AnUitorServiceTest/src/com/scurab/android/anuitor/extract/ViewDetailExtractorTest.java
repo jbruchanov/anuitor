@@ -26,32 +26,31 @@ public class ViewDetailExtractorTest {
 
     @Before
     public void setUp() {
-        ViewDetailExtractor.resetToDefault();
+        DetailExtractor.resetToDefault();
     }
 
     @Test
     public void testGetParentClassExtractor() {
         HelpTextView v = new HelpTextView(Robolectric.application);
-        BaseExtractor<View> extractor = ViewDetailExtractor.getExtractor(v);
+        BaseExtractor<View> extractor = DetailExtractor.getExtractor(v);
         assertEquals(TextViewExtractor.class, extractor.getClass());
     }
 
     @Test
     public void testGetDeeperParentClassExtractor() {
         HelpTextView2 v = new HelpTextView2(Robolectric.application);
-        BaseExtractor<View> extractor = ViewDetailExtractor.getExtractor(v);
+        BaseExtractor<View> extractor = DetailExtractor.getExtractor(v);
         assertEquals(TextViewExtractor.class, extractor.getClass());
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testInfiniteLoopProblem() {
-        ViewDetailExtractor.unregisterExtractor(View.class);
-        ViewDetailExtractor.unregisterExtractor(TextView.class);
+        DetailExtractor.unregisterExtractor(View.class);
+        DetailExtractor.unregisterExtractor(TextView.class);
 
-        BaseExtractor<View> extractor = ViewDetailExtractor.getExtractor(new HelpTextView(Robolectric.application));
-        assertNull(extractor);
+        DetailExtractor.getExtractor(new HelpTextView(Robolectric.application));
 
-        ViewDetailExtractor.resetToDefault();
+        DetailExtractor.resetToDefault();
     }
 
     private static class HelpTextView extends TextView {

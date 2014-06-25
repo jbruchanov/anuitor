@@ -3,16 +3,11 @@ package com.scurab.android.anuitor.nanoplugin;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 
-import com.scurab.android.anuitor.extract.ActivityExtractor;
 import com.scurab.android.anuitor.extract.BaseExtractor;
-import com.scurab.android.anuitor.extract.FragmentActivityExtractor;
-import com.scurab.android.anuitor.extract.ViewDetailExtractor;
+import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.reflect.WindowManagerGlobal;
 import com.scurab.android.anuitor.tools.HttpTools;
 
@@ -73,16 +68,10 @@ public class ScreenStructurePlugin extends BasePlugin {
             resultDataSet.add(data);
 
             if (c instanceof Activity) {
-                ActivityExtractor ae;
-                Activity a = (Activity) c;
-                if (c instanceof FragmentActivity) {
-                    ae = new FragmentActivityExtractor();
-                } else {
-                    ae = new ActivityExtractor();
-                }
-                ae.fillValues(a, data, null);
+                BaseExtractor<Activity> extractor = (BaseExtractor<Activity>) DetailExtractor.getExtractor(c.getClass());
+                extractor.fillValues((Activity)c, data, null);
             } else {
-                BaseExtractor<View> extractor = ViewDetailExtractor.getExtractor(v);
+                BaseExtractor<View> extractor = DetailExtractor.getExtractor(v);
                 extractor.fillValues(v, data, null);
             }
         }

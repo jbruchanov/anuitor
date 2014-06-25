@@ -1,6 +1,11 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract.component;
 
 import android.content.Intent;
+import android.os.Bundle;
+
+import com.scurab.android.anuitor.extract.BaseExtractor;
+import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract.Translator;
 
 import java.util.HashMap;
 
@@ -9,7 +14,9 @@ import java.util.HashMap;
  */
 public class IntentExtractor extends BaseExtractor<Intent> {
 
-    private BundleExtractor mBundleExtractor = new BundleExtractor();
+    public IntentExtractor(Translator translator) {
+        super(translator);
+    }
 
     @Override
     public HashMap<String, Object> fillValues(Intent intent, HashMap<String, Object> data, HashMap<String, Object> contextData) {
@@ -22,7 +29,7 @@ public class IntentExtractor extends BaseExtractor<Intent> {
             data.put("Package", intent.getPackage());
             data.put("Type", intent.getType());
             data.put("Component", intent.getComponent().flattenToString());
-            data.put("Extras", mBundleExtractor.fillValues(intent.getExtras(), new HashMap<String, Object>(), data));
+            data.put("Extras", DetailExtractor.getExtractor(Bundle.class).fillValues(intent.getExtras(), new HashMap<String, Object>(), data));
         }
         return data;
     }

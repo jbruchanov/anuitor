@@ -14,6 +14,10 @@ import java.util.HashMap;
  */
 public class AbsListViewExtractor extends AdapterViewExtractor {
 
+    public AbsListViewExtractor(Translator mTranslator) {
+        super(mTranslator);
+    }
+
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data,
                                               HashMap<String, Object> parentData) {
@@ -22,7 +26,7 @@ public class AbsListViewExtractor extends AdapterViewExtractor {
         AbsListView lv = (AbsListView) v;
 
         //http://developer.android.com/reference/android/widget/AbsListView.html#getChoiceMode() API Level 1 ?!
-        data.put("ChoiceMode", Translator.choiceMode(lv.getChoiceMode()));
+        data.put("ChoiceMode", getTranslator().choiceMode(lv.getChoiceMode()));
 
 
         data.put("TextFilter", lv.getTextFilter());

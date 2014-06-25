@@ -184,26 +184,27 @@ public class DOM2XmlPullBuilder {
         private String translateValue(String attrName, String xmlValue) {
             boolean lower = true;
             try {
+                Translator t = new Translator();//TODO: coupling
                 if ("layout_width".equals(attrName) || "layout_height".equals(attrName)) {
-                    xmlValue = String.valueOf(Translator.layoutSize(Integer.parseInt(xmlValue)));
+                    xmlValue = String.valueOf(t.layoutSize(Integer.parseInt(xmlValue)));
                 } else if ("layout_gravity".equals(attrName) || "gravity".equals(attrName)) {
-                    xmlValue = Translator.gravity(Integer.parseInt(xmlValue.replace("0x", ""), 16));
+                    xmlValue = t.gravity(Integer.parseInt(xmlValue.replace("0x", ""), 16));
                 } else if ("orientation".equals(attrName)) {
-                    xmlValue = String.valueOf(Translator.orientation(Integer.parseInt(xmlValue)));
+                    xmlValue = String.valueOf(t.orientation(Integer.parseInt(xmlValue)));
                 } else if ("visibility".equals(attrName)) {
-                    xmlValue = String.valueOf(Translator.visibility(Integer.parseInt(xmlValue)));
+                    xmlValue = String.valueOf(t.visibility(Integer.parseInt(xmlValue)));
                 } else if ("scaleType".equals(attrName)) {
-                    xmlValue = String.valueOf(Translator.scaleType(Integer.parseInt(xmlValue)));
+                    xmlValue = String.valueOf(t.scaleType(Integer.parseInt(xmlValue)));
                 } else if ("importantForAccessibility".equals(attrName)) {
-                    xmlValue = String.valueOf(Translator.importantForA11Y(Integer.parseInt(xmlValue)));
+                    xmlValue = String.valueOf(t.importantForA11Y(Integer.parseInt(xmlValue)));
                 } else if ("textStyle".equals(attrName)) {
-                    xmlValue = String.valueOf(Translator.textStyle(Integer.parseInt(xmlValue.replace("0x", ""), 16)));
+                    xmlValue = String.valueOf(t.textStyle(Integer.parseInt(xmlValue.replace("0x", ""), 16)));
                 } else if ("inputType".equals(attrName)) {
                     //TODO: pretty big from attrs
                 } else if ("ellipsize".equals(attrName)) {
-                    xmlValue = String.valueOf(Translator.ellipsize(Integer.parseInt(xmlValue)));
+                    xmlValue = String.valueOf(t.ellipsize(Integer.parseInt(xmlValue)));
                 } else if ("shape".equals(attrName)) {
-                    xmlValue = String.valueOf(Translator.shape(Integer.parseInt(xmlValue)));
+                    xmlValue = String.valueOf(t.shape(Integer.parseInt(xmlValue)));
                 } else{
                     lower = false;
                 }

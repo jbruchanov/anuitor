@@ -4,6 +4,7 @@ import android.os.Build;
 import android.webkit.WebView;
 
 import com.scurab.android.anuitor.C;
+import com.scurab.android.anuitor.extract.Translator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +38,7 @@ public class WebViewExtractorTest {
     public void testExtractingInMainThread() throws InterruptedException {
 
         final WebView wv = spy(new WebView(Robolectric.application));
-        final WebViewExtractor wve = new WebViewExtractor();
+        final WebViewExtractor wve = new WebViewExtractor(new Translator());
 
         HashMap<String, Object> data = new HashMap<String, Object>();
         doAnswer(mCheckAnswer).when(wv).getTitle();

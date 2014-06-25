@@ -15,10 +15,16 @@ import java.util.HashMap;
  * Time: 15:10
  */
 public class TextViewExtractor extends ViewExtractor {
+
+    public TextViewExtractor(Translator translator) {
+        super(translator);
+    }
+
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         HashMap<String, Object> values = super.fillValues(v, data, parentData);
         TextView tv = (TextView)v;
+        Translator translator = getTranslator();
 
         values.put("Text", String.valueOf(tv.getText()));
         values.put("TextSize", tv.getTextSize());
@@ -26,10 +32,10 @@ public class TextViewExtractor extends ViewExtractor {
         values.put("HintTextColor", getStringColor(tv.getCurrentHintTextColor()));
         values.put("LinksClickable", tv.getLinksClickable());
         values.put("MovementMethod", String.valueOf(tv.getMovementMethod()));
-        values.put("Gravity", Translator.gravity(tv.getGravity()));
-        values.put("AutoLinkMask",Translator.linkMask(tv.getAutoLinkMask()));
+        values.put("Gravity", translator.gravity(tv.getGravity()));
+        values.put("AutoLinkMask", translator.linkMask(tv.getAutoLinkMask()));
         values.put("Ellipsize", String.valueOf(tv.getEllipsize()));
-        values.put("InputType", Translator.inputType(tv.getInputType()));
+        values.put("InputType", translator.inputType(tv.getInputType()));
         values.put("TextScaleX", tv.getTextScaleX());
         values.put("CompoundDrawablePadding", tv.getCompoundDrawablePadding());
         values.put("CompoundPaddingLeft", tv.getCompoundPaddingLeft());

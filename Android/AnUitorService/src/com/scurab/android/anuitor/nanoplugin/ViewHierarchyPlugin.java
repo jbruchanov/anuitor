@@ -2,7 +2,7 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import android.view.View;
 
-import com.scurab.android.anuitor.extract.ViewDetailExtractor;
+import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.model.ViewNode;
 import com.scurab.android.anuitor.reflect.WindowManager;
 
@@ -39,7 +39,7 @@ public class ViewHierarchyPlugin extends ActivityPlugin {
         String json;
 
         if (view != null) {
-            ViewNode vn = ViewDetailExtractor.parse(view, false);
+            ViewNode vn = DetailExtractor.parse(view, false);
             json = GSON.toJson(vn);
         } else {
             json = "{}";

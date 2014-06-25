@@ -5,6 +5,8 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.scurab.android.anuitor.extract.Translator;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -13,6 +15,10 @@ import java.util.HashMap;
  */
 public class WebViewExtractor extends ViewGroupExtractor {
 
+
+    public WebViewExtractor(Translator translator) {
+        super(translator);
+    }
 
     @Override
     public HashMap<String, Object> fillValues(View v, final HashMap<String, Object> data, final HashMap<String, Object> parentData) {

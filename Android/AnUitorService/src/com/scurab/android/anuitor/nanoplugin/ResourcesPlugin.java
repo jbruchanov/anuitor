@@ -59,11 +59,13 @@ public class ResourcesPlugin extends BasePlugin {
 
     private Resources mRes;
     private ResourcesReflector mHelper;
+    private Translator mTranslator;
 
     private Paint mClearPaint = new Paint();
 
-    public ResourcesPlugin(Resources res) {
+    public ResourcesPlugin(Resources res, Translator translator) {
         mRes = res;
+        mTranslator = translator;
         mHelper = new ResourcesReflector(mRes);
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
@@ -324,7 +326,7 @@ public class ResourcesPlugin extends BasePlugin {
             rr.id = id;
             rr.dataType = "color";
             int[] stateSet = reflector.getColorState(i);
-            rr.context = Translator.stateListFlags(stateSet);
+            rr.context = mTranslator.stateListFlags(stateSet);
             int color = colorStateList.getColorForState(stateSet, Integer.MIN_VALUE);
             rr.data = HttpTools.getStringColor(color);
             if (color == Integer.MIN_VALUE) {
@@ -437,7 +439,7 @@ public class ResourcesPlugin extends BasePlugin {
             rr.dataType = BASE64_PNG;
             int[] stateSet = sldReflector.getStateSet(i);
             state.setState(stateSet);
-            rr.context = Translator.stateListFlags(stateSet);
+            rr.context = mTranslator.stateListFlags(stateSet);
             rr.data = Base64.encodeToString(drawDrawable(sldReflector.getStateDrawable(i), SIZE, SIZE), Base64.NO_WRAP);
             stateImages[i] = rr;
         }
