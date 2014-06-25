@@ -248,6 +248,9 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
      * @param vs
      */
     public void highlightNode(ViewNodeJSO vs) {
+        if (vs == null) {
+            return;
+        }
         String key = "ViewNodeJSO_id_" + vs.hashCode();
         clearHighlightedNode();
         mHighlightedElement = DOM.getElementById(key);
