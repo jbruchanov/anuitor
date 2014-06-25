@@ -18,9 +18,6 @@ public class CompoundButtonExtractor extends TextViewExtractor {
         CompoundButton cb = (CompoundButton) v;
 
         data.put("IsChecked", cb.isChecked());
-        data.put("CompoundPaddingLeft", cb.getCompoundPaddingLeft());
-        data.put("CompoundPaddingRight", cb.getCompoundPaddingRight());
-
         return data;
     }
 }

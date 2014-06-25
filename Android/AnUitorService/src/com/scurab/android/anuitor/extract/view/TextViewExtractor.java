@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.extract.view;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +31,19 @@ public class TextViewExtractor extends ViewExtractor {
         values.put("Ellipsize", String.valueOf(tv.getEllipsize()));
         values.put("InputType", Translator.inputType(tv.getInputType()));
         values.put("TextScaleX", tv.getTextScaleX());
+        values.put("CompoundDrawablePadding", tv.getCompoundDrawablePadding());
+        values.put("CompoundPaddingLeft", tv.getCompoundPaddingLeft());
+        values.put("CompoundPaddingRight", tv.getCompoundPaddingRight());
+        values.put("CompoundPaddingTop", tv.getCompoundPaddingTop());
+        values.put("CompoundPaddingBottom", tv.getCompoundPaddingBottom());
+        Drawable[] compoundDrawables = tv.getCompoundDrawables();
+        if (compoundDrawables != null && compoundDrawables.length >= 4) {
+            values.put("CompoundDrawableLeft", String.valueOf(compoundDrawables[0]));
+            values.put("CompoundDrawableTop", String.valueOf(compoundDrawables[1]));
+            values.put("CompoundDrawableRight", String.valueOf(compoundDrawables[2]));
+            values.put("CompoundDrawableBottom", String.valueOf(compoundDrawables[3]));
+        }
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             values.put("IsTextSelectable", tv.isTextSelectable());
@@ -46,6 +60,15 @@ public class TextViewExtractor extends ViewExtractor {
             values.put("ShadowDY", tv.getShadowDy());
             values.put("ShadowRadius", tv.getShadowRadius());
             values.put("IsCursorVisible", tv.isCursorVisible());
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Drawable[] compoundDrawablesRelative = tv.getCompoundDrawablesRelative();
+            if (compoundDrawablesRelative != null && compoundDrawablesRelative.length >= 4) {
+                values.put("CompoundDrawableRelativeStart", String.valueOf(compoundDrawablesRelative[0]));
+                values.put("CompoundDrawableRelativeTop", String.valueOf(compoundDrawablesRelative[1]));
+                values.put("CompoundDrawableRelativeEnd", String.valueOf(compoundDrawablesRelative[2]));
+                values.put("CompoundDrawableRelativeBottom", String.valueOf(compoundDrawablesRelative[3]));
+            }
         }
 
         return values;
