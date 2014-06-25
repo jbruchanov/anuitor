@@ -55,6 +55,9 @@ public class AnUitorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent == null) {
+            return 0;
+        }
         if (STOP.equals(intent.getAction())) {
             stop();
             return 0;
