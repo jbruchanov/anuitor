@@ -14,10 +14,11 @@
 		padding: 10px;		
 	}
 	
-	.mousePosition{
+	.viewInfo{
 		font: 1.1em "Lucida Console", Monaco, monospace, sans-serif;
 		padding-top: 3px;
 		padding-bottom: 3px;
+		padding-right: 10px;
 	}
 	</ui:style>
 	<g:HTMLPanel styleName="{style.content}">
@@ -26,7 +27,10 @@
 				<g:ScrollPanel>
 					<g:VerticalPanel height="100%" styleName="{style.padding}">
 						<g:VerticalPanel ui:field="topImagePanel">
-							<g:Label text="_" ui:field="mousePosition" styleName="{style.mousePosition}"/>
+							<g:HorizontalPanel>
+								<g:Label text="_" ui:field="mousePosition" styleName="{style.viewInfo}"/>
+								<g:Label ui:field="hoveredViewID" styleName="{style.viewInfo}"/>
+							</g:HorizontalPanel>
 						</g:VerticalPanel>
 						<g:FlowPanel ui:field="flowPanel">																					
 							<g:Image ui:field="image" width="0" height="0" visible="false" />						
@@ -36,8 +40,7 @@
 			</g:west>
 			<g:center size="400">
 				<g:ScrollPanel>
-					<g:VerticalPanel ui:field="testPanel">
-						<g:Label text="New Label" ui:field="text" />
+					<g:VerticalPanel ui:field="centerPanel">						
 					</g:VerticalPanel>
 				</g:ScrollPanel>
 			</g:center>

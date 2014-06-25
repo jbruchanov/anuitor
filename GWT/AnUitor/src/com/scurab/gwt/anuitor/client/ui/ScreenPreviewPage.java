@@ -51,7 +51,7 @@ public class ScreenPreviewPage extends Composite {
     @UiField Label mousePosition;
     @UiField FlowPanel flowPanel;
     @UiField VerticalPanel centerPanel;
-    @UiField Label text;    
+    @UiField Label hoveredViewID;    
     @UiField VerticalPanel topImagePanel;
     @UiField(provided=true) CellTable<Pair> cellTable = new CellTable<Pair>();
 
@@ -168,7 +168,9 @@ public class ScreenPreviewPage extends Composite {
             public void onMouseOut(MouseOutEvent event) {
                 if (!mSelectedView) {
                     clearCanvas();
-                    mTreeViewModel.clearHighlightedNode();
+                    if (mTreeViewModel != null) {
+                        mTreeViewModel.clearHighlightedNode();
+                    }
                 }
             }
         });
@@ -319,7 +321,7 @@ public class ScreenPreviewPage extends Composite {
         if (view == null) {
             return;
         }       
-        text.setText("ID:" + view.getID() + " Name:" + view.getIDName());
+        hoveredViewID.setText("ID:" + view.getID() + " Name:" + view.getIDName());
         CanvasTools.drawRectForView(view, canvas, scale, stroke, fill);
     }
    
