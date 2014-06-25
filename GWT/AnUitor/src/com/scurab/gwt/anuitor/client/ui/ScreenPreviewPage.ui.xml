@@ -16,8 +16,8 @@
 	
 	.viewInfo{
 		font: 1.1em "Lucida Console", Monaco, monospace, sans-serif;
-		padding-top: 3px;
-		padding-bottom: 3px;
+		padding-top: 5px;
+		padding-bottom: 5px;
 		padding-right: 10px;
 	}
 	</ui:style>
