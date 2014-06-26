@@ -146,15 +146,16 @@ public class ScreenPreviewPage extends Composite {
         mCanvas.addMouseMoveHandler(new MouseMoveHandler() {
             @Override
             public void onMouseMove(MouseMoveEvent event) { 
-                if(mTreeViewModel != null && mTreeViewModel.getSelectedNode() != null){
+                if(mSelectedView || mTreeViewModel != null && mTreeViewModel.getSelectedNode() != null){
                     return;//dont do anything here if we have selected node
                 }
                 int x = event.getRelativeX(mCanvas.getElement());
                 int y = event.getRelativeY(mCanvas.getElement());
-                onUpdateImageMousePosition(x, y);
-
                 int scaledX = (int) (x / mScale);
                 int scaledY = (int) (y / mScale);
+                
+                onUpdateImageMousePosition(scaledX, scaledY);
+                
                 onUpdateZoomCanvas(scaledX, scaledY);
                 if (mRoot != null) {
                     mTimer.schedule(scaledX, scaledY);
