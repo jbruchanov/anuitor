@@ -16,6 +16,19 @@ public class Executor {
     public static void runInMainThreadBlocking(final Runnable op) {
         runInMainThreadBlocking(new Handler(Looper.getMainLooper()), op, 2000);
     }
+
+    /**
+     * Run op in main thread with 2s timeout only if it's crashing...
+     * First try is started in current thread
+     * @param op
+     */
+    public static void runInMainThreadBlockingOnlyIfCrashing(final Runnable op) {
+        try {
+            op.run();
+        } catch (Throwable t) {
+            runInMainThreadBlocking(new Handler(Looper.getMainLooper()), op, 2000);
+        }
+    }
     /**
      * Run code in main thread and block current running thread
      * @param handler

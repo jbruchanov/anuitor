@@ -15,6 +15,7 @@ import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
+import com.scurab.android.anuitor.tools.Executor;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -32,7 +33,21 @@ public class ViewExtractor extends BaseExtractor<View> {
         super(translator);
     }
 
-    public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+    public HashMap<String, Object> fillValues(final View v, final HashMap<String, Object> data, final HashMap<String, Object> parentData) {
+        /*
+         * needs to be run sometimes in main thread, specifically when in getPadding... -> resolvePadding() is called
+         * If crashed internally, new fragments were not visible (put app into background and open it again will solve the issue)
+         */
+        Executor.runInMainThreadBlocking(new Runnable() {
+            @Override
+            public void run() {
+                fillValuesImpl(v, data, parentData);
+            }
+        });
+        return data;
+    }
+
+    private HashMap<String, Object> fillValuesImpl(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         Translator translator = getTranslator();
 
         data.put("Type", String.valueOf(v.getClass().getCanonicalName()));
