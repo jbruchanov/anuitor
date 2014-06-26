@@ -5,9 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import com.scurab.android.anuitor.reflect.WindowManager;
+import com.scurab.android.anuitor.tools.Executor;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -78,6 +81,21 @@ public class ScreenViewPlugin extends ActivityPlugin {
 
         NanoHTTPD.Response response = new OKResponse(IMAGE_PNG, resultInputStream);
         return response;
+    }
+
+    private Bitmap renderViewInMainThread(final View view) {
+        final Bitmap[] output = new Bitmap[1];
+        Executor.runInMainThreadBlocking(new Handler(Looper.getMainLooper()), new Runnable() {
+            @Override
+            public void run() {
+                view.destroyDrawingCache();
+                view.buildDrawingCache(false);
+
+                // get bitmap
+                output[0] = view.getDrawingCache();
+            }
+        }, 2000);
+        return output[0];
     }
 
     Canvas onCreateCanvas(Bitmap b) {
