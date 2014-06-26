@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="sample">
+        <item quantity="zero">Zero</item>
+        <item quantity="one">One</item>
+        <item quantity="two">Two</item>
+        <item quantity="few">Few</item>
+        <item quantity="many">Many</item>
+        <item quantity="other">Other</item>
+    </plurals>
+</resources>

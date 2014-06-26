@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:duplicateParentState="true"
+    android:padding="@dimen/gap_small"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="1"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/gap_large"
+        android:background="@drawable/circle"/>
+
+    <TextView
+        android:id="@+id/data"
+        tools:text="@string/lorem_ipsum_long"
+        android:paddingLeft="@dimen/gap_normal"
+        android:paddingRight="@dimen/gap_normal"
+        style="@android:style/TextAppearance.Medium"
+        android:layout_toRightOf="@id/order"
+        android:layout_toLeftOf="@+id/icon"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_launcher"/>
+</RelativeLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="ring" android:innerRadius="0dp" android:thickness="@dimen/text_mid" android:useLevel="false">
+            <solid android:color="@color/stroke_green_light" />
+            <stroke android:width="@dimen/stroke_tiny" android:color="@color/stroke_green" />
+        </shape>
+    </item>
+    <item android:state_checked="true">
+        <shape android:shape="ring" android:innerRadius="0dp" android:thickness="@dimen/text_mid" android:useLevel="false">
+            <solid android:color="@color/stroke_green_dark" />
+            <stroke android:width="@dimen/stroke_tiny" android:color="@color/stroke_green" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="ring" android:innerRadius="0dp" android:thickness="@dimen/text_mid" android:useLevel="false">
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="@dimen/stroke_tiny" android:color="@color/stroke_green" />
+        </shape>
+    </item>
+</selector>

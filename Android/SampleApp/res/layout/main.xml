@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        >
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Hello World, ACTIVITY_ENTRY_NAME"
-            />
-</LinearLayout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+    <com.scurab.android.anuitorsample.widget.SlidingPaneLayout
+        android:id="@+id/sliding_pane_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/fragment_menu"
+            android:name="com.scurab.android.anuitorsample.MenuFragment"
+            android:layout_width="@dimen/left_menu_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="left" />
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_sample"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:alpha="0.1"
+                android:textSize="64dp"
+                android:text="@string/app_name" />
+        </FrameLayout>
+
+    </com.scurab.android.anuitorsample.widget.SlidingPaneLayout>
+</FrameLayout>

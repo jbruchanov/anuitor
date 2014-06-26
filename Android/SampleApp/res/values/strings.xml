@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AnUitor Sample</string>
+
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipicing elit.</string>
+    <string name="lorem_ipsum_short">Lorem ipsum dolor</string>
+    <string name="lorem_ipsum_long">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.</string>
 </resources>

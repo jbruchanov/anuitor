@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.sample;
+package com.scurab.android.anuitorsample;
 
 import android.app.Application;
 import android.content.Intent;
@@ -14,8 +14,6 @@ public class SampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Intent i = new Intent(this, AnUitorService.class);
-        i.setAction(AnUitorService.START);
-        startService(i);
+        AnUitorService.startService(this, R.raw.web, true, null);
     }
 }

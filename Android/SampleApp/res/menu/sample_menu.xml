@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:icon="@android:drawable/ic_menu_camera" android:title="camera" android:showAsAction="ifRoom" />
+    <item android:icon="@android:drawable/ic_menu_add" android:title="add" />
+    <item android:icon="@android:drawable/ic_menu_delete" android:title="delete" android:enabled="false" />
+</menu>

@@ -381,7 +381,8 @@ public class ScreenPreviewPage extends Composite {
                 if (mCellTree != null) {
                     mCellTree.removeFromParent();
                 }
-                mCellTree = new CellTree(mTreeViewModel, null, res);                   
+                mCellTree = new CellTree(mTreeViewModel, null, res);       
+                mCellTree.setDefaultNodeSize(1000);//no show more button
                 centerPanel.add(mCellTree);                
                 CellTreeTools.expandAll(mCellTree.getRootTreeNode());
                 mCellTree.setAnimationEnabled(true);
