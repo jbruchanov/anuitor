@@ -22,6 +22,7 @@ public class MenuFragment extends Fragment {
             ListViewFragment.class,
             ScrollViewFragment.class,
             ViewPagerFragment.class,
+            WidgetsFragment.class
     };
 
     public static final String[] itemFragmentNames;
