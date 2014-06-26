@@ -55,7 +55,7 @@ public class AnUitorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent == null) {
+        if (intent == null) { //called with null intent when the app is killed...
             return 0;
         }
         if (STOP.equals(intent.getAction())) {
