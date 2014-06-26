@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.extract.view;
 
 
 import android.view.View;
+import android.widget.AbsSeekBar;
 import android.widget.SeekBar;
 
 import com.scurab.android.anuitor.extract.Translator;
@@ -21,7 +22,7 @@ public class AbsSeekBarExtractor extends ProgressBarExtractor {
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         super.fillValues(v, data, parentData);
 
-        SeekBar sb = (SeekBar) v;
+        AbsSeekBar sb = (AbsSeekBar) v;
         data.put("ThumbOffset", sb.getThumbOffset());
 
         return data;
