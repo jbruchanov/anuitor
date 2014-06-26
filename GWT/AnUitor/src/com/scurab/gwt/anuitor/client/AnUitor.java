@@ -1,7 +1,6 @@
 package com.scurab.gwt.anuitor.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.dom.client.Style.VerticalAlign;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -10,13 +9,11 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.FileStoragePage;
+import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
