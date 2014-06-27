@@ -52,7 +52,7 @@ public class AnUitor implements EntryPoint {
             toOpen = new ResourcesPage();
         } else if ("FileStorage".equals(screen)) {
             toOpen = new FileStoragePage();
-        } else if ("ScreenStructure".equals(screen)) {
+        } else if ("Windows".equals(screen)) {
             Window.open("/screenstructure.json", "_blank", "");
             return;
         } else if ("Screenshot".equals(screen)) {
@@ -77,7 +77,7 @@ public class AnUitor implements EntryPoint {
         hp.add(createButton("ViewHierarchy"));
         hp.add(createButton("Resources"));
         hp.add(createButton("FileStorage"));
-        hp.add(createButton("ScreenStructure"));
+        hp.add(createButton("Windows"));
         hp.add(createButton("Screenshot"));
 
         return hp;
