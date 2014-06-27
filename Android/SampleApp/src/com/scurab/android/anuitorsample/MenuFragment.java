@@ -19,6 +19,7 @@ public class MenuFragment extends Fragment {
     private ArrayAdapter<String> mMenuAdapter;
 
     public static final Class<?>[] itemFragments = {
+            DialogsFragment.class,
             ListViewFragment.class,
             ScrollViewFragment.class,
             ViewPagerFragment.class,
