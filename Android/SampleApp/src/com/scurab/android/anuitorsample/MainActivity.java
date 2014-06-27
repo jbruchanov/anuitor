@@ -30,6 +30,7 @@ public class MainActivity extends FragmentActivity {
         Resources res = getResources();
         mPaneLayout.setParallaxDistance((int) res.getDimension(R.dimen.left_menu_parallax_distance));
         mPaneLayout.setSliderFadeColor(Color.TRANSPARENT);
+        mPaneLayout.openPane();
 
         View v = findViewById(R.id.txt_sample);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotation);
