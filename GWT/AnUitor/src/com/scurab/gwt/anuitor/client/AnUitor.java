@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -51,7 +52,13 @@ public class AnUitor implements EntryPoint {
             toOpen = new ResourcesPage();
         } else if ("FileStorage".equals(screen)) {
             toOpen = new FileStoragePage();
-        } else {
+        } else if ("ScreenStructure".equals(screen)) {
+            Window.open("/screenstructure.json", "_blank", "");
+            return;
+        } else if ("Screenshot".equals(screen)) {
+            Window.open("/screen.png", "_blank", "");
+            return;
+        }else {
             screen = "";
             toOpen = createSelectionPane();
         }
@@ -69,7 +76,9 @@ public class AnUitor implements EntryPoint {
         hp.add(createButton("3D"));
         hp.add(createButton("ViewHierarchy"));
         hp.add(createButton("Resources"));
-        hp.add(createButton("FileStorage"));       
+        hp.add(createButton("FileStorage"));
+        hp.add(createButton("ScreenStructure"));
+        hp.add(createButton("Screenshot"));
 
         return hp;
     }
