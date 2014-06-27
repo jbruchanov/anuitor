@@ -90,6 +90,6 @@ public class DialogsFragment extends DialogFragment {
     }
 
     protected void onShowTimePickerDialog() {
-        new TimePickerDialog(getActivity(), null, 10, 10, true);
+        new TimePickerDialog(getActivity(), null, 10, 10, true).show();
     }
 }
