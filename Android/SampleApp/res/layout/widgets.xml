@@ -114,6 +114,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/seekBar" />
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <RatingBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,55 +130,13 @@
             android:id="@+id/editText"
             android:layout_gravity="center_horizontal" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text="Name"
-            android:ems="10"
-            android:id="@+id/editText2" />
 
-        <EditText
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/editText3" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberPassword"
-            android:ems="10"
-            android:id="@+id/editText4" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-            android:id="@+id/editText5" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:ems="10"
-            android:id="@+id/editText6" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/editText7" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/editText8" />
+            android:hint="Enter a planet"
+            android:id="@+id/autoCompleteTextView"
+            android:layout_gravity="center_horizontal" />
 
         <DatePicker
             android:layout_width="wrap_content"
@@ -184,5 +147,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/timePicker" />
+
+        <ZoomControls
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/zoomControls"
+            android:layout_gravity="center_horizontal" />
+
+        <QuickContactBadge
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/quickContactBadge"
+            android:layout_gravity="center_horizontal" />
+
+        <ZoomButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/zoomButton"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 </ScrollView>
