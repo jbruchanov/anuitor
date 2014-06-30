@@ -21,4 +21,6 @@
 
     <dimen name="button_min_width">100dp</dimen>
     <dimen name="button_min_height">100dp</dimen>
+    <dimen name="tile_padding_lr">70dp</dimen>
+    <dimen name="tile_padding_tb">100dp</dimen>
 </resources>
