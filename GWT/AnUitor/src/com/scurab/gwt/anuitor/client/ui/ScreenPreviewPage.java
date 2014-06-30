@@ -154,7 +154,10 @@ public class ScreenPreviewPage extends Composite {
                 int scaledX = (int) (x / mScale);
                 int scaledY = (int) (y / mScale);
                 
-                onUpdateImageMousePosition(scaledX, scaledY);
+                ImageData data = mCanvas.getContext2d().getImageData(x, y, 1, 1);
+                String color = HTMLColors.getColorFromImageData(data);
+                
+                onUpdateImageMousePosition(scaledX, scaledY, color);
                 
                 onUpdateZoomCanvas(scaledX, scaledY);
                 if (mRoot != null) {
@@ -331,9 +334,7 @@ public class ScreenPreviewPage extends Composite {
      * @param x
      * @param y
      */
-    protected void onUpdateImageMousePosition(int x, int y) {
-        ImageData data = mCanvas.getContext2d().getImageData(x, y, 1, 1);
-        String color = HTMLColors.getColorFromImageData(data);
+    protected void onUpdateImageMousePosition(int x, int y, String color) {        
         mousePosition.setText("X:" + x + " Y:" + y + " " + color);
     }
    
