@@ -283,7 +283,7 @@ public class ViewExtractor extends BaseExtractor<View> {
                 if (annotation != null) {
                     try {
                         Object o = field.get(v);
-                        data.put(annotation.value(), o);
+                        data.put(annotation.value(), o == null ? null : String.valueOf(o));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
