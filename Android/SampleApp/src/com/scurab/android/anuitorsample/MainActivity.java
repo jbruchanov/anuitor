@@ -12,6 +12,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract.Translator;
+import com.scurab.android.anuitor.extract.view.TextViewExtractor;
+import com.scurab.android.anuitorsample.extract.CustomTextViewExtractor;
+import com.scurab.android.anuitorsample.widget.CustomTextView;
 import com.scurab.android.anuitorsample.widget.SlidingPaneLayout;
 
 /**
@@ -23,6 +28,9 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //register own extractor for specific type
+        DetailExtractor.registerExtractor(CustomTextView.class, new CustomTextViewExtractor(new Translator()));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
