@@ -19,6 +19,7 @@ import com.scurab.android.anuitor.tools.Executor;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * User: jbruchanov
@@ -28,6 +29,15 @@ import java.util.HashMap;
 public class ViewExtractor extends BaseExtractor<View> {
     private static final int[] POSITION = new int[2];
     private static final Rect RECT = new Rect();
+
+    /**
+     * Those values must be present in every View related dataset
+     * ScaleXY, _Visibility, _Position, LocationScreenX, Height, Width  {@link Number}<br/>
+     * _RenderViewContent {@link java.lang.Boolean}<br/>
+     * Type {@link java.lang.String}/>
+     *
+     */
+    public static final String[] MANDATORY_KEYS = {"_ScaleX", "_ScaleY", "_Visibility", "_RenderViewContent", "Position", "LocationScreenX", "LocationScreenY", "Height", "Width", "Type"};
 
     public ViewExtractor(Translator translator) {
         super(translator);

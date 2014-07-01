@@ -1,9 +1,11 @@
 package com.scurab.android.anuitor.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.scurab.android.anuitor.extract.view.ViewExtractor;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,10 +40,8 @@ public class ViewNode {
         mPosition = position;
         mData = data;
 
-        //TODO:remove later
-        if(mData != null){
-            mData.put("Position", mPosition);
-        }
+        mData.put("Position", mPosition);
+        validateDataSet(mData, position);
     }
 
     public void addChild(ViewNode n) {
@@ -73,5 +73,13 @@ public class ViewNode {
 
     public int getPosition() {
         return mPosition;
+    }
+
+    void validateDataSet(HashMap<String, Object> data, int position) {
+        for (String key : ViewExtractor.MANDATORY_KEYS) {
+            if (!data.containsKey(key)) {
+                throw new IllegalStateException(String.format("Missing mandatory field:'%s' on View with position:%s\n\tMandatoryFields:%s", key, position, Arrays.toString(ViewExtractor.MANDATORY_KEYS)));
+            }
+        }
     }
 }
