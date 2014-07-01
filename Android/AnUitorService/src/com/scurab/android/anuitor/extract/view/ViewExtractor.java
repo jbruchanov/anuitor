@@ -264,23 +264,34 @@ public class ViewExtractor extends BaseExtractor<View> {
      * @return
      */
     public static HashMap<String, Object> fillAnnotatedValues(View v, HashMap<String, Object> data) {
-        Field[] fields = v.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-            ExportField annotation = field.getAnnotation(ExportField.class);
-            if (annotation != null) {
-                try {
-                    Object o = field.get(v);
-                    data.put(annotation.value(), o);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+        Class<?> clz = v.getClass();
+        while(clz != View.class) {//we can stop on View.class there is nothing for us
+            Field[] fields = clz.getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                ExportField annotation = field.getAnnotation(ExportField.class);
+                if (annotation != null) {
+                    try {
+                        Object o = field.get(v);
+                        data.put(annotation.value(), o);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            clz = clz.getSuperclass();
         }
         return data;
     }
 
     private static boolean isExportView(View v) {
-        return v.getClass().getAnnotation(ExportView.class) != null;
+        Class<?> clz = v.getClass();
+        while (clz != View.class) {//we can stop on View.class there is nothing for us
+            if (clz.getAnnotation(ExportView.class) != null) {
+                return true;
+            }
+            clz = clz.getSuperclass();
+        }
+        return false;
     }
 }
