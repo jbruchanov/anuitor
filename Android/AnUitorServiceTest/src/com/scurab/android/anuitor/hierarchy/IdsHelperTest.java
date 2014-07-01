@@ -3,7 +3,7 @@ package com.scurab.android.anuitor.hierarchy;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.scurab.android.anuitor.C;
-import com.scurab.android.anuitor.sample.R;
+import com.scurab.android.anuitor.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +56,7 @@ public class IdsHelperTest {
 
     @Test
     public void testGetJsonWithResources() throws NoSuchFieldException, ClassNotFoundException {
-        IdsHelper.loadValues(R.class);
+        IdsHelper.loadValues(com.scurab.android.anuitorsample.R.class);
         String s = IdsHelper.toJson(Robolectric.application.getResources());
         HashMap hashMap = new Gson().fromJson(s, HashMap.class);
         List<LinkedTreeMap> list = (List<LinkedTreeMap>) hashMap.get("R.layout");

@@ -8,4 +8,8 @@ package com.scurab.android.anuitor;
 public final class C {
 
     public static final String MANIFEST = "../SampleApp/AndroidManifest.xml";
+
+    static{
+        TestHelper.initMockito("Mockito-Cache");
+    }
 }
