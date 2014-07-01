@@ -39,8 +39,8 @@ public class TransportServlet extends HttpServlet {
             String newUrl = getContentURL(req.getRequestURI() + (qs == null || qs.length() == 0 ? "" : "?" + req.getQueryString()));
             URL url = new URL(newUrl);
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-            urlc.setConnectTimeout(3000);
-            urlc.setReadTimeout(2000);
+            urlc.setConnectTimeout(5000);
+            urlc.setReadTimeout(5000);
             
             urlc.setDoInput(true);
             urlc.setDoOutput(true);
