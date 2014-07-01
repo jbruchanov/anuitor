@@ -65,6 +65,8 @@ public class ScreenPreviewPage extends Composite {
     private float mScale = 1;
     /* Main canvas widget */
     private Canvas mCanvas;
+    /* Main canvas widget with image, only for getting color for mouse position pixel */
+    private Canvas mCanvasClear;
     /* Preview canvas widget */
     private Canvas mCanvasPreview;
     /* Zoomed canvas preview size, currently disabled */
@@ -111,6 +113,11 @@ public class ScreenPreviewPage extends Composite {
             public void onLoad(LoadEvent event) {                
                 mCanvas.setCoordinateSpaceWidth((mImageWidth = image.getWidth()));
                 mCanvas.setCoordinateSpaceHeight((mImageHeight = image.getHeight()));
+                //init clear canvas for getting colors
+                mCanvasClear.setCoordinateSpaceWidth(mImageWidth);
+                mCanvasClear.setCoordinateSpaceHeight(mImageHeight);
+                mCanvasClear.getContext2d().drawImage(ImageElement.as(image.getElement()), 0, 0, mImageWidth, mImageHeight);
+                
                 int max = Window.getClientHeight() - 80;//top panel + margins
                 //scale if height is bigger then window
                 float scale = 1f;
@@ -135,6 +142,7 @@ public class ScreenPreviewPage extends Composite {
         }); 
         
         mCanvas = Canvas.createIfSupported();
+        mCanvasClear = Canvas.createIfSupported();
         if (mCanvas == null) {
             Window.alert("Canvas is not supported!?");
             return;
@@ -154,10 +162,13 @@ public class ScreenPreviewPage extends Composite {
                 int scaledX = (int) (x / mScale);
                 int scaledY = (int) (y / mScale);
                 
-                ImageData data = mCanvas.getContext2d().getImageData(x, y, 1, 1);
-                String color = HTMLColors.getColorFromImageData(data);
+                String color = null;
+                if (mCanvasClear != null) {
+                    ImageData data = mCanvasClear.getContext2d().getImageData(scaledX, scaledY, 1, 1);
+                    color = HTMLColors.getColorFromImageData(data);
+                }
                 
-                onUpdateImageMousePosition(scaledX, scaledY, color);
+                onUpdateImageMouseColor(scaledX, scaledY, color);
                 
                 onUpdateZoomCanvas(scaledX, scaledY);
                 if (mRoot != null) {
@@ -334,8 +345,8 @@ public class ScreenPreviewPage extends Composite {
      * @param x
      * @param y
      */
-    protected void onUpdateImageMousePosition(int x, int y, String color) {        
-        mousePosition.setText("X:" + x + " Y:" + y + " " + color);
+    protected void onUpdateImageMouseColor(int x, int y, String color) {        
+        mousePosition.setText("X:" + x + " Y:" + y + " " + (color != null ? color : ""));
     }
    
     /**
