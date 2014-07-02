@@ -14,6 +14,5 @@ public class SampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AnUitorService.startService(this, R.raw.web, true, null);
     }
 }

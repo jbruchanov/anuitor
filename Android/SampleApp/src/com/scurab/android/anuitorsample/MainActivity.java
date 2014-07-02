@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.extract.view.TextViewExtractor;
+import com.scurab.android.anuitor.service.AnUitorService;
 import com.scurab.android.anuitorsample.extract.CustomTextViewExtractor;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
 import com.scurab.android.anuitorsample.widget.SlidingPaneLayout;
@@ -66,5 +67,11 @@ public class MainActivity extends FragmentActivity {
                 .replace(R.id.fragment_container, f, f.getClass().getSimpleName())
                 .commit();
         mPaneLayout.closePane();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AnUitorService.startService(this, R.raw.web);
     }
 }
