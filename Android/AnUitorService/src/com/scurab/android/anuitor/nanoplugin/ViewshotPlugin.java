@@ -19,6 +19,7 @@ import com.scurab.android.anuitor.tools.HttpTools;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -36,6 +37,7 @@ import static com.scurab.android.anuitor.tools.HttpTools.MimeType.IMAGE_PNG;
 public class ViewshotPlugin extends ActivityPlugin {
 
     private static final String POSITION = "position";
+    private static final boolean SAVE = false;//save every imageview req to sdcard
 
     public static final String VIEW_PNG = "view.png";
     public static final String PATH = "/" + VIEW_PNG;
@@ -129,7 +131,21 @@ public class ViewshotPlugin extends ActivityPlugin {
                             }
                         }
                         bitmap.compress(Bitmap.CompressFormat.PNG, 20, bos);
-                        resultInputStream = new ByteArrayInputStream(bos.toByteArray());
+                        byte[] image = bos.toByteArray();
+                        resultInputStream = new ByteArrayInputStream(image);
+                        //region collectino purpose only, can be removed
+                        if (SAVE) {
+                            try {
+                                new File("/sdcard/anuitor").mkdir();
+                                String toSave = String.format("/sdcard/anuitor/imageview_%s.png", position);
+                                FileOutputStream fos = new FileOutputStream(toSave);
+                                fos.write(image, 0, image.length);
+                                fos.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        //endregion
                         bitmap.recycle();
                     } catch (Exception e) {
                         Log.e("ViewshotPlugin", e.getMessage());
