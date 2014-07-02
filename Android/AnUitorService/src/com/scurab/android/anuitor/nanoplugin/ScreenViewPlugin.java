@@ -77,9 +77,13 @@ public class ScreenViewPlugin extends ActivityPlugin {
             });
 
             Bitmap b = outBitmap[0];
-            b.compress(Bitmap.CompressFormat.PNG, 100, bos);
-            resultInputStream = new ByteArrayInputStream(bos.toByteArray());
-            b.recycle();
+            if (b == null) {//this can happen if app is not running
+                resultInputStream = new ByteArrayInputStream(new byte[0]);
+            } else {
+                b.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                resultInputStream = new ByteArrayInputStream(bos.toByteArray());
+                b.recycle();
+            }
         } else {
             resultInputStream = new ByteArrayInputStream(new byte[0]);
         }
