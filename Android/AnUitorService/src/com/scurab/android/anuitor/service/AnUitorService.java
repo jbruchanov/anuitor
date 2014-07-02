@@ -63,6 +63,9 @@ public class AnUitorService extends Service {
             return 0;
         } else {
             if (START.equals(intent.getAction())) {
+                if (mServer != null && mServer.isAlive()) {
+                    return 0;//we are already running, do nothing
+                }
                 String folder = intent.getStringExtra(ROOT_FOLDER);
                 start(intent.getIntExtra(PORT, DEFAULT_PORT), folder != null ? folder : DEFAULT_ROOT_FOLDER);
             }
