@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,9 @@ public class FileStoragePlugin extends BasePlugin {
                 path = params.get("path");
                 if (path != null && path.length() == 0) {
                     path = null;
+                }
+                if (path != null) {
+                    path = URLDecoder.decode(path);
                 }
             }
             List<FSItem> files;
