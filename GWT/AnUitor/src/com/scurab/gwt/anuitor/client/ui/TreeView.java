@@ -35,6 +35,7 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 import com.scurab.gwt.anuitor.client.model.ViewTreeNode;
 import com.scurab.gwt.anuitor.client.style.TreeViewResources;
 import com.scurab.gwt.anuitor.client.style.TreeViewStyle;
+import com.scurab.gwt.anuitor.client.util.PBarHelper;
 
 /**
  * Tree view panel for view hierarchy
@@ -85,16 +86,18 @@ public class TreeView extends FlowPanel{
     public TreeView() {
         super();
         TreeViewResources.INSTANCE.css().ensureInjected();  
-        
+        PBarHelper.show();
         DataProvider.getTreeHierarchy(new AsyncCallback<ViewNodeJSO>() {
             @Override
             public void onError(Request r, Throwable t) {
+                PBarHelper.hide();
                 Window.alert(t.getMessage());
             }
             
             @Override
             public void onDownloaded(ViewNodeJSO result) {
                 onDataLoaded(result);
+                PBarHelper.hide();
             };
         });
     }       

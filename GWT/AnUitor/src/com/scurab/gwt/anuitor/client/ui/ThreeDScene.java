@@ -39,6 +39,7 @@ import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper.Action;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
+import com.scurab.gwt.anuitor.client.util.PBarHelper;
 import com.scurab.gwt.anuitor.client.util.ParallaxTools;
 import com.scurab.gwt.anuitor.client.util.ViewMesh;
 
@@ -137,15 +138,17 @@ public class ThreeDScene extends AnimatedScene {
      * Load data from server
      */
     private void loadData() {
+        PBarHelper.show();
         DataProvider.getTreeHierarchy(new AsyncCallback<ViewNodeJSO>() {
             @Override
             public void onError(Request r, Throwable t) {
+                PBarHelper.hide();
                 Window.alert(t.getMessage());
             }
 
             @Override
             public void onDownloaded(ViewNodeJSO result) {
-                onDataLoaded(result);
+                onDataLoaded(result);                
             }
         });
     }
@@ -194,6 +197,8 @@ public class ThreeDScene extends AnimatedScene {
                 e.printStackTrace();
                 continueLoading();
             }
+        } else {
+            PBarHelper.hide();
         }
     }
 

@@ -38,6 +38,7 @@ import com.scurab.gwt.anuitor.client.style.CustomTreeResources;
 import com.scurab.gwt.anuitor.client.util.CanvasTools;
 import com.scurab.gwt.anuitor.client.util.CellTreeTools;
 import com.scurab.gwt.anuitor.client.util.HTMLColors;
+import com.scurab.gwt.anuitor.client.util.PBarHelper;
 import com.scurab.gwt.anuitor.client.util.TableTools;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnSelectionChangedListener;
@@ -356,14 +357,16 @@ public class ScreenPreviewPage extends Composite {
         image.setUrl("/screen.png?time=" + System.currentTimeMillis()); //just to avoid caching
         loadTree();
     }       
-        
+            
     /**
      * Load tree view hierarchy
      */
-    private void loadTree(){
+    private void loadTree(){      
+        PBarHelper.show();
         DataProvider.getTreeHierarchy(new DataProvider.AsyncCallback<ViewNodeJSO>() {
             @Override
             public void onError(Request r, Throwable t) {
+                PBarHelper.hide();
                 Window.alert(t.getMessage());
             }
 
@@ -399,6 +402,7 @@ public class ScreenPreviewPage extends Composite {
                 centerPanel.add(mCellTree);                
                 CellTreeTools.expandAll(mCellTree.getRootTreeNode());
                 mCellTree.setAnimationEnabled(true);
+                PBarHelper.hide();
             }                        
         });
     }    
