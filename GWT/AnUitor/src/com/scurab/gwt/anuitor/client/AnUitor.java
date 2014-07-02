@@ -18,6 +18,7 @@ import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
+import com.scurab.gwt.anuitor.client.util.PBarHelper;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -30,10 +31,9 @@ public class AnUitor implements EntryPoint {
     public void onModuleLoad() {
         History.addValueChangeHandler(new ValueChangeHandler<String>() {
             @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                if (event.getValue().length() == 0) {
-                    openScreen("");
-                }
+            public void onValueChange(ValueChangeEvent<String> event) {                
+                PBarHelper.hide();
+                openScreen(event.getValue());
             }
         });
 
