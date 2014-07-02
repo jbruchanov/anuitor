@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -177,8 +180,13 @@ public class AnUitorService extends Service {
         if (addMsg != null) {
             msg = msg + "\n" + addMsg;
         }
+        String title = "AnUitor";
+        String appTitle = getAppTitle();
+        if (appTitle != null) {
+            title = String.format("%s (%s)", title, appTitle);
+        }
         NotificationCompat.Builder notib = new NotificationCompat.Builder(this)
-                .setContentTitle("AnUitor")
+                .setContentTitle(title)
                 .setAutoCancel(true)
                 .setDefaults(defaults)
                 .setContentText(msg)
@@ -190,6 +198,23 @@ public class AnUitorService extends Service {
             notib.addAction(0, STOP, createStopIntent());
         }
         return notib.build();
+    }
+
+    /**
+     * Returns app title, can return null if any troubles
+     * @return
+     */
+    private String getAppTitle() {
+        try {
+            PackageManager packageManager = getPackageManager();
+            ApplicationInfo appInfo = packageManager.getPackageInfo(getPackageName(), 0).applicationInfo;
+            CharSequence appLabel = packageManager.getApplicationLabel(appInfo);
+            return appLabel.toString();
+        } catch (PackageManager.NameNotFoundException e) {
+            //just ignore it and use default value with no app name...
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
