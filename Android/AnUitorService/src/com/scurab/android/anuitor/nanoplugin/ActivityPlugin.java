@@ -19,6 +19,10 @@ import fi.iki.elonen.NanoHTTPD;
 public abstract class ActivityPlugin extends BasePlugin implements WindowManager {
 
     public static final String APPLICATION_IS_NOT_ACTIVE = "Application is not active";
+
+    private static final NanoHTTPD.Response EMPTY_RESPONSE = new OKResponse(HttpTools.MimeType.TEXT_PLAIN, APPLICATION_IS_NOT_ACTIVE);
+    private static final NanoHTTPD.Response JSON_EMPTY_RESPONSE = new OKResponse(HttpTools.MimeType.APP_JSON, "{}");
+
     private WindowManager mWindowManager;
 
     protected ActivityPlugin(WindowManager windowManager) {
@@ -32,18 +36,14 @@ public abstract class ActivityPlugin extends BasePlugin implements WindowManager
     public final NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         if (getCurrentActivity() == null) {
             if (mimeType.equals(HttpTools.MimeType.APP_JSON)) {
-                return sJsonEmptyResponse;
+                return JSON_EMPTY_RESPONSE;
             } else {
-                return sEmptyResponse;
+                return EMPTY_RESPONSE;
             }
         } else {
             return handleRequest(uri, headers, session, file, mimeType);
         }
     }
-
-    private static final NanoHTTPD.Response sEmptyResponse = new OKResponse(HttpTools.MimeType.TEXT_PLAIN, APPLICATION_IS_NOT_ACTIVE);
-
-    private static final NanoHTTPD.Response sJsonEmptyResponse = new OKResponse(HttpTools.MimeType.APP_JSON, "{}");
 
     public abstract NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType);
 

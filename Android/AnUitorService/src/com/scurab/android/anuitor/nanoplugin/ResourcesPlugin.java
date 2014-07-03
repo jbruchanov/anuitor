@@ -44,18 +44,19 @@ import static com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON;
  */
 public class ResourcesPlugin extends BasePlugin {
 
+    private static final int MAX_9PATCH_SIZE = 600;
+    private static final int MIN_9PATCH_SIZE = 100;
+    private static final int INC_9PATCH_CONST = 3;
+
     private static final String FILE = "resources.json";
     private static final String PATH = "/" + FILE;
     private static final String STRING_DATA_TYPE = "string";
     private static final String STRINGS_DATA_TYPE = "string[]";
-    public static final String BASE64_PNG = "base64_png";
-    private static final int MAX_9PATCH_SIZE = 600;
-    private static final int MIN_9PATCH_SIZE = 100;
-    private static final int INC_9PATCH_CONST = 3;
-    public static final String ARRAY = "array";
-    public static final String XML = "xml";
-    public static final String ID = "id";
-    public static final String NUMBER = "number";
+    private static final String BASE64_PNG = "base64_png";
+    private static final String ARRAY = "array";
+    private static final String XML = "xml";
+    private static final String ID = "id";
+    private static final String NUMBER = "number";
 
     private Resources mRes;
     private ResourcesReflector mHelper;
@@ -302,11 +303,12 @@ public class ResourcesPlugin extends BasePlugin {
             xml.id = id;
 
             ResourceResponse colors = new ResourceResponse();
+            rr[1] = colors;
+
             ColorStateList colorStateList = mRes.getColorStateList(id);
             colors.id = id;
-            rr[1] = colors;
             colors.dataType = ARRAY;
-            handleColorStateList(id, (ColorStateList) colorStateList, colors);
+            handleColorStateList(id, colorStateList, colors);
             return;//just leave everything is rendered now
         }
 
@@ -325,10 +327,13 @@ public class ResourcesPlugin extends BasePlugin {
             ResourceResponse rr = new ResourceResponse();
             rr.id = id;
             rr.dataType = "color";
+
             int[] stateSet = reflector.getColorState(i);
             rr.context = mTranslator.stateListFlags(stateSet);
+
             int color = colorStateList.getColorForState(stateSet, Integer.MIN_VALUE);
             rr.data = HttpTools.getStringColor(color);
+
             if (color == Integer.MIN_VALUE) {
                 int test = colorStateList.getColorForState(stateSet, Integer.MAX_VALUE);
                 if (test == Integer.MAX_VALUE) {
@@ -389,15 +394,18 @@ public class ResourcesPlugin extends BasePlugin {
                        Math.max(MIN_9PATCH_SIZE, Math.min(INC_9PATCH_CONST * w, MAX_9PATCH_SIZE)), h,
                        w, Math.max(MIN_9PATCH_SIZE, Math.min(INC_9PATCH_CONST * h, MAX_9PATCH_SIZE)),
                        Math.max(MIN_9PATCH_SIZE, Math.min(INC_9PATCH_CONST * w, MAX_9PATCH_SIZE)), Math.max(MIN_9PATCH_SIZE, Math.min(INC_9PATCH_CONST * h, MAX_9PATCH_SIZE))};
+
         for (int i = 0; i < images.length; i++) {
-            ResourceResponse rr = new ResourceResponse();
-            rr.id = resId;
-            rr.dataType = BASE64_PNG;
             int tw = sizes[i * 2];
             int th = sizes[(i * 2) + 1];
+
+            ResourceResponse rr = new ResourceResponse();
+            images[i] = rr;
+
+            rr.id = resId;
+            rr.dataType = BASE64_PNG;
             rr.context = String.format("Size: %sx%s %s", tw, th, i == 0 ? "original" : "");
             rr.data = Base64.encodeToString(drawDrawableWithSize(drawable, tw, th), Base64.NO_WRAP);
-            images[i] = rr;
         }
     }
 
@@ -433,15 +441,16 @@ public class ResourcesPlugin extends BasePlugin {
         outResponse.data = stateImages;
         for (int i = 0; i < len; i++) {
             Drawable state = sldReflector.getStateDrawable(i);
-
-            ResourceResponse rr = new ResourceResponse();
-            rr.id = resId;
-            rr.dataType = BASE64_PNG;
             int[] stateSet = sldReflector.getStateSet(i);
             state.setState(stateSet);
+
+            ResourceResponse rr = new ResourceResponse();
+            stateImages[i] = rr;
+
+            rr.id = resId;
+            rr.dataType = BASE64_PNG;
             rr.context = mTranslator.stateListFlags(stateSet);
             rr.data = Base64.encodeToString(drawDrawable(sldReflector.getStateDrawable(i), SIZE, SIZE), Base64.NO_WRAP);
-            stateImages[i] = rr;
         }
     }
 
