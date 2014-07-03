@@ -56,8 +56,6 @@ public class ScreenStructurePlugin extends BasePlugin {
     @Override
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         String[] viewRootNames = mWindowManager.getViewRootNames();
-        String json = "{}";
-
         List<HashMap<String, Object>> resultDataSet = new ArrayList<HashMap<String, Object>>();
 
         for (String rootName : viewRootNames) {
@@ -77,31 +75,8 @@ public class ScreenStructurePlugin extends BasePlugin {
         }
 
         Collections.reverse(resultDataSet);//stack order
-        json =  GSON.toJson(resultDataSet);
+        String json =  GSON.toJson(resultDataSet);
         NanoHTTPD.Response response = new OKResponse(APP_JSON, new ByteArrayInputStream(json.getBytes()));
         return response;
-    }
-
-    public static String describe(Intent intent) {
-        HashMap<String, Object> data = new HashMap<String, Object>();
-        String s = null;
-        if (intent != null) {
-            s = describe(intent.getExtras());
-        }
-        return s;
-    }
-
-    public static String describe(Bundle extras) {
-        HashMap<String, Object> data = new HashMap<String, Object>();
-        String s = null;
-        if (extras != null) {
-            Set<String> strings = extras.keySet();
-            for (String key : strings) {
-                Object o = extras.get(key);
-                data.put(key, o);
-            }
-            s = GSON.toJson(data);
-        }
-        return s;
     }
 }
