@@ -133,7 +133,7 @@ public class ViewshotPlugin extends ActivityPlugin {
                         bitmap.compress(Bitmap.CompressFormat.PNG, 20, bos);
                         byte[] image = bos.toByteArray();
                         resultInputStream = new ByteArrayInputStream(image);
-                        //region collectino purpose only, can be removed
+                        //region collection purpose only, can be removed
                         if (SAVE) {
                             try {
                                 new File("/sdcard/anuitor").mkdir();
