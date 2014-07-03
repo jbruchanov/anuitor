@@ -56,24 +56,12 @@ public class FileStoragePlugin extends BasePlugin {
         String mime;
         String content = null;
         try {
-            String qs = session.getQueryParameterString();
-            int len = qs != null ? qs.length() : 0;
-            String path = null;
-            if (len != 0) {
-                HashMap<String, String> params = HttpTools.parseQueryString(qs);
-                path = params.get("path");
-                if (path != null && path.length() == 0) {
-                    path = null;
-                }
-                if (path != null) {
-                    path = URLDecoder.decode(path);
-                }
-            }
+            String path = getPath(session.getQueryParameterString());
             List<FSItem> files;
             String json;
 
             File f = path != null ? new File(path) : null;
-            if (f != null && f.exists() && f.isFile()) {
+            if (f != null && f.isFile()) {
                 inputStream = new FileInputStream(f);
                 mime = HttpTools.getMimeType(f);//try get proper mime to show it directly in browser, otherwise download
                 content = "inline; filename=" + f.getName();//add download filename
@@ -93,5 +81,25 @@ public class FileStoragePlugin extends BasePlugin {
             response.addHeader("Content-Disposition", content);
         }
         return response;
+    }
+
+    /**
+     * Extract path from query string
+     * @param qs
+     * @return
+     */
+    private static String getPath(String qs) {
+        String path = null;
+        if (qs != null && qs.length() > 0) {
+            HashMap<String, String> params = HttpTools.parseQueryString(qs);
+            path = params.get("path");
+            if (path != null && path.length() == 0) {
+                path = null;
+            }
+            if (path != null) {
+                path = URLDecoder.decode(path);
+            }
+        }
+        return path;
     }
 }
