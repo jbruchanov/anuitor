@@ -108,11 +108,6 @@ public class ViewExtractor extends BaseExtractor<View> {
         v.getHitRect(RECT);
         data.put("HitRect", RECT.toShortString());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-            data.put("MinWidth", v.getMinimumWidth());
-            data.put("MinHeight", v.getMinimumHeight());
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             data.put("Alpha", v.getAlpha());
             data.put("Rotation", v.getRotation());
@@ -140,6 +135,8 @@ public class ViewExtractor extends BaseExtractor<View> {
             }
             data.put("IsImportantForA11Y", translator.importantForA11Y(v.getImportantForAccessibility()));
             data.put("LayerDirection", translator.layoutDirection(v.getLayoutDirection()));
+            data.put("MinWidth", v.getMinimumWidth());
+            data.put("MinHeight", v.getMinimumHeight());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             data.put("LabelFor", IdsHelper.getNameForId(v.getLabelFor()));
@@ -241,6 +238,8 @@ public class ViewExtractor extends BaseExtractor<View> {
      * @return
      */
     public static HashMap<String, Object> fillScale(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+        float sx = 1;
+        float sy = 1;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             data.put("ScaleX", v.getScaleX());
             data.put("ScaleY", v.getScaleY());
@@ -255,14 +254,14 @@ public class ViewExtractor extends BaseExtractor<View> {
                     fy = ofy;
                 }
             }
-
-            float sx = v.getScaleX() * fx;
-            data.put("_ScaleX", sx);
-            float sy = v.getScaleY() * fy;
-            data.put("_ScaleY", sy);
-            data.put("ScaleAbsoluteX", sx);
-            data.put("ScaleAbsoluteY", sy);
+            sx = v.getScaleX() * fx;
+            sy = v.getScaleY() * fy;
         }
+
+        data.put("_ScaleX", sx);
+        data.put("_ScaleY", sy);
+        data.put("ScaleAbsoluteX", sx);
+        data.put("ScaleAbsoluteY", sy);
         return data;
     }
 

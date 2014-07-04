@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.extract.view;
 
+import android.os.Build;
 import android.view.View;
 import android.widget.ScrollView;
 
@@ -24,7 +25,10 @@ public class ScrollViewExtractor extends ViewGroupExtractor {
         data.put("MaxScrollAmount", sv.getMaxScrollAmount());
         data.put("IsFillViewport", sv.isFillViewport());
         data.put("IsSmoothScrolling", sv.isSmoothScrollingEnabled());
-        data.put("DelayChildPressedState", sv.shouldDelayChildPressedState());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            data.put("DelayChildPressedState", sv.shouldDelayChildPressedState());
+        }
 
         return data;
     }

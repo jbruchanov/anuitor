@@ -2,13 +2,11 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
-import com.scurab.android.anuitor.reflect.WindowManagerGlobal;
+import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.ByteArrayInputStream;
@@ -18,7 +16,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import fi.iki.elonen.NanoHTTPD;
 
@@ -32,9 +29,9 @@ public class ScreenStructurePlugin extends BasePlugin {
     public static final String FILE = "screenstructure.json";
     public static final String PATH = "/" + FILE;
 
-    private WindowManagerGlobal mWindowManager;
+    private WindowManager mWindowManager;
 
-    public ScreenStructurePlugin(WindowManagerGlobal windowManager) {
+    public ScreenStructurePlugin(WindowManager windowManager) {
         mWindowManager = windowManager;
     }
 

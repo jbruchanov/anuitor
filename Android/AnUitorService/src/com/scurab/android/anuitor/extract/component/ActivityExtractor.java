@@ -1,8 +1,6 @@
 package com.scurab.android.anuitor.extract.component;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Build;
 
@@ -41,8 +39,8 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
         data.put("IsTaskRoot", activity.isTaskRoot());
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            FragmentManager fragmentManager = activity.getFragmentManager();
-            List<Fragment> fragments = new FragmentManagerReflector(fragmentManager).getFragments();
+            android.app.FragmentManager fragmentManager = activity.getFragmentManager();
+            List<android.app.Fragment> fragments = new FragmentManagerReflector(fragmentManager).getFragments();
             List<HashMap<String, Object>> fragmentsData = handleFragments(fragments, new HashMap<String, Object>());
             data.put("Fragments", fragmentsData);
         }
@@ -61,14 +59,14 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
         return data;
     }
 
-    protected HashMap<String, Object> extractFragments(Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> extractFragments(android.app.Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         if (fragment != null) {
-            BaseExtractor<Fragment> extractor = DetailExtractor.getExtractor(Fragment.class);
+            BaseExtractor<android.app.Fragment> extractor = DetailExtractor.getExtractor(android.app.Fragment.class);
             extractor.fillValues(fragment, data, contextData);
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                FragmentManager childFragmentManager = fragment.getChildFragmentManager();
+                android.app.FragmentManager childFragmentManager = fragment.getChildFragmentManager();
 
-                List<Fragment> childFragments = new FragmentManagerReflector(childFragmentManager).getFragments();
+                List<android.app.Fragment> childFragments = new FragmentManagerReflector(childFragmentManager).getFragments();
                 if (childFragments != null && childFragments.size() > 0) {
                     List<HashMap<String, Object>> fragmentsData = handleFragments(childFragments, new HashMap<String, Object>());
                     data.put("ChildFragments", fragmentsData);
@@ -78,10 +76,10 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
         return data;
     }
 
-    protected List<HashMap<String, Object>> handleFragments(List<Fragment> fragments, HashMap<String, Object> data) {
+    protected List<HashMap<String, Object>> handleFragments(List<android.app.Fragment> fragments, HashMap<String, Object> data) {
         List<HashMap<String, Object>> fragmentsData = new ArrayList<HashMap<String, Object>>();
         if(fragments != null) {
-            for (Fragment fragment : fragments) {
+            for (android.app.Fragment fragment : fragments) {
                 fragmentsData.add(extractFragments(fragment, new HashMap<String, Object>(), data));
             }
         }

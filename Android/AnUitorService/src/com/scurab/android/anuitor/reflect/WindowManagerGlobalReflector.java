@@ -1,7 +1,9 @@
 package com.scurab.android.anuitor.reflect;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 
 import java.lang.reflect.Method;
@@ -11,9 +13,10 @@ import java.util.HashSet;
  * @author jbruchanov
  * @since 2014-05-28 16:34
  */
-public class WindowManagerGlobal extends Reflector<Object> implements WindowManager {
+@TargetApi(value = Build.VERSION_CODES.JELLY_BEAN_MR2)
+public class WindowManagerGlobalReflector extends Reflector<Object> implements WindowManager {
 
-    public WindowManagerGlobal() {
+    public WindowManagerGlobalReflector() {
         super(getRealInstance());
     }
 

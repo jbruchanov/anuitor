@@ -7,14 +7,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
-import com.scurab.android.anuitor.reflect.WindowManagerGlobal;
+import com.scurab.android.anuitor.reflect.WindowManagerGlobalReflector;
+import com.scurab.android.anuitor.reflect.WindowManagerImplReflector;
 import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
 import com.scurab.android.anuitor.tools.ZipTools;
@@ -121,7 +122,7 @@ public class AnUitorService extends Service {
     }
 
     protected AnUiHttpServer onCreateServer(int port, String root) {
-        return new AnUiHttpServer(getApplicationContext(), port, new File(root), true, new WindowManagerGlobal());
+        return new AnUiHttpServer(getApplicationContext(), port, new File(root), true, Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 ? new WindowManagerImplReflector() : new WindowManagerGlobalReflector());
     }
 
     /**

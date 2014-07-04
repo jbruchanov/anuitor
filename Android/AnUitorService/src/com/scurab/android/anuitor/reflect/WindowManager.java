@@ -13,4 +13,8 @@ public interface WindowManager {
     public Activity getCurrentActivity();
 
     public View getCurrentRootView();
+
+    String[] getViewRootNames();
+
+    View getRootView(String rootName);
 }
