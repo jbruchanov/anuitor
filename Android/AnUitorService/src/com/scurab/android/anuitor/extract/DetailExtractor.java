@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.scurab.android.anuitor.extract.component.ActivityExtractor;
@@ -32,6 +31,7 @@ import com.scurab.android.anuitor.extract.component.SupportFragmentExtractor;
 import com.scurab.android.anuitor.extract.view.AbsListViewExtractor;
 import com.scurab.android.anuitor.extract.view.AbsSeekBarExtractor;
 import com.scurab.android.anuitor.extract.view.AdapterViewExtractor;
+import com.scurab.android.anuitor.extract.view.CalendarViewExtractor;
 import com.scurab.android.anuitor.extract.view.CheckedTextViewExtractor;
 import com.scurab.android.anuitor.extract.view.CompoundButtonExtractor;
 import com.scurab.android.anuitor.extract.view.DrawerLayoutExtractor;
@@ -60,12 +60,12 @@ import java.util.HashSet;
  */
 public final class DetailExtractor {
 
-    static final HashMap<Class<?>, BaseExtractor<?>> MAP;
-    static final HashSet<Class<?>> VIEWGROUP_IGNORE;
+    static final HashMap<String, BaseExtractor<?>> MAP;
+    static final HashSet<String> VIEWGROUP_IGNORE;
 
     static {
-        MAP = new HashMap<Class<?>, BaseExtractor<?>>();
-        VIEWGROUP_IGNORE = new HashSet<Class<?>>();
+        MAP = new HashMap<String, BaseExtractor<?>>();
+        VIEWGROUP_IGNORE = new HashSet<String>();
         resetToDefault();
     }
 
@@ -95,11 +95,15 @@ public final class DetailExtractor {
         registerExtractor(ViewStub.class, new ViewStubExtractor(translator));
         registerExtractor(WebView.class, new WebViewExtractor(translator));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            registerExtractor(Switch.class, new SwitchExtractor(translator));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            registerExtractor(android.widget.CalendarView.class, new CalendarViewExtractor(translator));
         }
 
-        VIEWGROUP_IGNORE.add(WebView.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            registerExtractor(android.widget.Switch.class, new SwitchExtractor(translator));
+        }
+
+        VIEWGROUP_IGNORE.add(WebView.class.getName());
         //endregion views
 
         registerExtractor(Activity.class, new ActivityExtractor(translator));
@@ -120,7 +124,28 @@ public final class DetailExtractor {
      * @return overwritten extractor
      */
     public static <T> BaseExtractor<?> registerExtractor(Class<? extends T> clz, BaseExtractor<T> extractor) {
-        return MAP.put(clz, extractor);
+        return registerExtractor(clz.getName(), extractor);
+    }
+
+    /**
+     * Register extractor for particular class.<br/>
+     * Older is overwritten if exists
+     * @param className
+     * @param extractor
+     * @param <T>
+     * @return
+     */
+    public static <T> BaseExtractor<?> registerExtractor(String className, BaseExtractor<T> extractor) {
+        return MAP.put(className, extractor);
+    }
+
+    /**
+     * Unregister extractor
+     * @param className
+     * @return removed extractor
+     */
+    public static BaseExtractor<?> unregisterExtractor(String className) {
+        return MAP.remove(className);
     }
 
     /**
@@ -129,35 +154,35 @@ public final class DetailExtractor {
      * @return removed extractor
      */
     public static BaseExtractor<?> unregisterExtractor(Class<?> clz) {
-        return MAP.remove(clz);
+        return unregisterExtractor(clz.getName());
     }
 
     /**
      * Flag particular class which is {@link android.view.ViewGroup} to behave as like simple {@link android.view.View}<br/>
      * Currently useful only for {@link android.webkit.WebView}
-     * @param clz
+     * @param className
      * @return
      */
-    public static boolean excludeViewGroup(Class<?> clz) {
-        return VIEWGROUP_IGNORE.add(clz);
+    public static boolean excludeViewGroup(String className) {
+        return VIEWGROUP_IGNORE.add(className);
     }
 
     /**
-     * @see {@link #excludeViewGroup(Class)}
-     * @param clz
+     * @see {@link #excludeViewGroup(String)}
+     * @param className
      * @return
      */
-    public static boolean removeExcludeViewGroup(Class<?> clz) {
-        return VIEWGROUP_IGNORE.remove(clz);
+    public static boolean removeExcludeViewGroup(String className) {
+        return VIEWGROUP_IGNORE.remove(className);
     }
 
     /**
-     * @see {@link #excludeViewGroup(Class)}
-     * @param clz
+     * @see {@link #excludeViewGroup(String)}
+     * @param className
      * @return
      */
-    public static boolean isExcludedViewGroup(Class<?> clz) {
-        return VIEWGROUP_IGNORE.contains(clz);
+    public static boolean isExcludedViewGroup(String className) {
+        return VIEWGROUP_IGNORE.contains(className);
     }
 
     /**
@@ -244,13 +269,13 @@ public final class DetailExtractor {
      */
     public static <T> BaseExtractor<T> getExtractor(final Class<T> clazz) {
         Class<?> clz = clazz;
-        BaseExtractor<?> ve = MAP.get(clz);
+        BaseExtractor<?> ve = MAP.get(clz.getName());
         while (ve == null && clz != Object.class) {//object just for sure that View is unregistered
             clz = clz.getSuperclass();
-            ve = MAP.get(clz);
+            ve = MAP.get(clz.getCanonicalName());
         }
         if (ve == null) {
-            throw new IllegalStateException("Not found extractor for type:" + clazz.getCanonicalName());
+            throw new IllegalStateException("Not found extractor for type:" + clazz.getName());
         }
         return (BaseExtractor<T>)ve;
     }

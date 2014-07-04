@@ -52,7 +52,7 @@ public class WindowManagerImplReflector extends Reflector<Object> implements Win
         ViewRootImplReflector[] roots = getRoots();
         String[] result = new String[roots != null ? roots.length : 0];
         for (int i = 0; i < result.length; i++) {
-            result[i] = String.format("%s_%s", i, roots[i].getView().getClass().getCanonicalName());
+            result[i] = String.format("%s_%s", i, roots[i].getView().getClass().getName());
         }
         return result;
     }

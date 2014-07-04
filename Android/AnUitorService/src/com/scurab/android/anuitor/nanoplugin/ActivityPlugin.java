@@ -34,7 +34,8 @@ public abstract class ActivityPlugin extends BasePlugin {
 
     @Override
     public final NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
-        if (mWindowManager.getViewRootNames().length == 0) {
+        String[] viewRootNames = mWindowManager.getViewRootNames();
+        if (viewRootNames == null || viewRootNames.length == 0) {
             if (mimeType.equals(HttpTools.MimeType.APP_JSON)) {
                 return JSON_EMPTY_RESPONSE;
             } else {

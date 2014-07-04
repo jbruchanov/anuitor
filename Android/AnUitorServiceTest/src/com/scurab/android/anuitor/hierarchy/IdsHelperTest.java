@@ -36,8 +36,8 @@ public class IdsHelperTest {
         boolean hasOwn = false;
         for (String s : IdsHelper.VALUES.keySet()) {
             count += IdsHelper.VALUES.get(s).size();
-            hasAndroid |= s.contains("android.R.");
-            hasOwn |= s.startsWith("R.");
+            hasAndroid |= s.contains("android.R$");
+            hasOwn |= s.startsWith("R$");
         }
 
         assertTrue(count > 0);
@@ -59,15 +59,11 @@ public class IdsHelperTest {
         IdsHelper.loadValues(com.scurab.android.anuitorsample.R.class);
         String s = IdsHelper.toJson(Robolectric.application.getResources());
         HashMap hashMap = new Gson().fromJson(s, HashMap.class);
-        List<LinkedTreeMap> list = (List<LinkedTreeMap>) hashMap.get("R.layout");
+        List<LinkedTreeMap> list = (List<LinkedTreeMap>) hashMap.get("R$layout");
 
-        boolean hasSource = false;
         for (LinkedTreeMap v : list) {
             assertNotNull(v.get("Key"));
             assertNotNull(v.get("Value"));
-            hasSource |= v.containsKey("Value1");
         }
-
-        assertTrue(hasSource);
     }
 }

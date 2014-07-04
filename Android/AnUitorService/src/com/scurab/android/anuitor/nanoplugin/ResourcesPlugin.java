@@ -100,7 +100,7 @@ public class ResourcesPlugin extends BasePlugin {
             } catch (Exception e) {
                 ResourceResponse rr = new ResourceResponse();
                 rr.data = (e == null ? "WTF NullException!" : e.getMessage());
-                rr.context = e != null ? e.getClass().getCanonicalName() : null;
+                rr.context = e != null ? e.getClass().getName() : null;
                 rr.dataType = STRING_DATA_TYPE;
                 rr.type = IdsHelper.RefType.unknown;
                 resultInputStream = new ByteArrayInputStream(GSON.toJson(rr).getBytes());

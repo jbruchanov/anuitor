@@ -18,7 +18,7 @@ import org.robolectric.annotation.Config;
 public class ViewExtractingTestsAPI18 {
 
     @Test
-    public void testExtracting(){
+    public void testExtracting() throws ClassNotFoundException {
         new ViewExtractingTests().doTests();
     }
 }

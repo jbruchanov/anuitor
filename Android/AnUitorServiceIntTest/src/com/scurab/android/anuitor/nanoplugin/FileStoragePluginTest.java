@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.nanoplugin;
 import android.test.AndroidTestCase;
 
 import com.google.gson.Gson;
+import com.scurab.android.anuitor.TestHelper;
 import com.scurab.android.anuitor.model.FSItem;
 import com.scurab.android.anuitor.tools.HttpTools;
 
@@ -11,6 +12,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
 
@@ -21,6 +24,11 @@ import static org.mockito.Mockito.mock;
  * Created by jbruchanov on 19/05/2014.
  */
 public class FileStoragePluginTest extends AndroidTestCase {
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
     public void testGetRoot() throws IOException {
         String s = getResponse(null);
@@ -51,7 +59,7 @@ public class FileStoragePluginTest extends AndroidTestCase {
         FSItem item = items[items.length - 1];
         assertEquals("This test needs file...", FSItem.TYPE_FILE, item.getType());
         String fullPath = sdcard + item.getName();
-        NanoHTTPD.Response httpResponse = getHttpResponseResponse(fullPath);
+        NanoHTTPD.Response httpResponse = getHttpResponse(fullPath);
 
         String mime = httpResponse.getMimeType();
         assertTrue(HttpTools.getMimeType(new File(fullPath)).equals(mime));
@@ -74,18 +82,28 @@ public class FileStoragePluginTest extends AndroidTestCase {
     }
 
     private String getResponse(String path) throws IOException {
-        NanoHTTPD.Response httpResponseResponse = getHttpResponseResponse(path);
+        NanoHTTPD.Response httpResponseResponse = getHttpResponse(path);
         return IOUtils.toString(httpResponseResponse.getData());
     }
 
-    private NanoHTTPD.Response getHttpResponseResponse(String path) throws IOException {
+    private NanoHTTPD.Response getHttpResponse(String path) throws IOException {
         if (path != null) {
             path = "path=" + path;
         }
+        final String fPath = path;
         FileStoragePlugin plugin = new FileStoragePlugin(getContext());
 
-        NanoHTTPD.IHTTPSession session = mock(NanoHTTPD.IHTTPSession.class);
-        doReturn(path).when(session).getQueryParameterString();
+        NanoHTTPD.IHTTPSession session = new NanoHTTPD.IHTTPSession() {
+            @Override public void execute() throws IOException { }
+            @Override public Map<String, String> getParms() { return null; }
+            @Override public Map<String, String> getHeaders() { return null; }
+            @Override public String getUri() { return null; }
+            @Override public String getQueryParameterString() { return fPath; }
+            @Override public NanoHTTPD.Method getMethod() { return null; }
+            @Override public InputStream getInputStream() { return null; }
+            @Override public NanoHTTPD.CookieHandler getCookies() { return null; }
+            @Override public void parseBody(Map<String, String> files) throws IOException, NanoHTTPD.ResponseException { }
+        };
 
         NanoHTTPD.Response response = plugin.serveFile(plugin.files()[0], null, session, null, plugin.mimeType());
         return response;

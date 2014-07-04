@@ -27,11 +27,13 @@ public class SwitchExtractor extends CompoundButtonExtractor {
 
         Switch s = (Switch) v;
 
-        data.put("SwitchMinWidth", s.getSwitchMinWidth());
-        data.put("SwitchPadding", s.getSwitchPadding());
         data.put("TextOn", s.getTextOn());
         data.put("TextOff", s.getTextOff());
-        data.put("ThumbTextPadding", s.getThumbTextPadding());
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            data.put("SwitchMinWidth", s.getSwitchMinWidth());
+            data.put("SwitchPadding", s.getSwitchPadding());
+            data.put("ThumbTextPadding", s.getThumbTextPadding());
+        }
 
         return data;
     }

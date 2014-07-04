@@ -60,8 +60,8 @@ public class ViewExtractor extends BaseExtractor<View> {
     private HashMap<String, Object> fillValuesImpl(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         Translator translator = getTranslator();
 
-        data.put("Type", String.valueOf(v.getClass().getCanonicalName()));
-        data.put("Extractor", getClass().getCanonicalName());//TODO: add _ to make it invisible later
+        data.put("Type", String.valueOf(v.getClass().getName()));
+        data.put("Extractor", getClass().getName());
 
         data.put("Baseline", v.getBaseline());
         data.put("Background", String.valueOf(v.getBackground()));
@@ -145,7 +145,7 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("ClipBounds", String.valueOf(v.getClipBounds()));
         }
 
-        boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass());
+        boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass().getName());
 //        boolean isVisible = v.isShown();
         Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
         boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
@@ -171,7 +171,7 @@ public class ViewExtractor extends BaseExtractor<View> {
     public HashMap<String, Object> fillLayoutParams(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         ViewGroup.LayoutParams lp = v.getLayoutParams();
 
-        data.put("LayoutParams", lp != null ? lp.getClass().getCanonicalName() : null);
+        data.put("LayoutParams", lp != null ? lp.getClass().getName() : null);
 
         if (lp == null) {
             return data;

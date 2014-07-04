@@ -59,7 +59,7 @@ public class ActivityPluginTest {
     @Test
     public void testServeCallsHandleWithActivity() throws IOException {
         WindowManager wm = mock(WindowManager.class);
-        doReturn(mock(Activity.class)).when(wm).getCurrentActivity();
+        doReturn(new String[1]).when(wm).getViewRootNames();
 
         ActivityPlugin ap = spy(new TestActivityPlugin(wm));
         String uri = "someuri";

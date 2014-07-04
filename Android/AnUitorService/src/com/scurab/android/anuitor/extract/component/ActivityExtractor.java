@@ -26,7 +26,7 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
     public HashMap<String, Object> fillValues(Activity activity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         BaseExtractor<Intent> extractor = DetailExtractor.getExtractor(Intent.class);
 
-        data.put("Type", activity.getClass().getCanonicalName());
+        data.put("Type", activity.getClass().getName());
         data.put("Intent", extractor.fillValues(activity.getIntent(), new HashMap<String, Object>(), data));
         data.put("StringValue", String.valueOf(activity));
         data.put("Parent", activity.getParent() != null ? activity.getParent() : null);

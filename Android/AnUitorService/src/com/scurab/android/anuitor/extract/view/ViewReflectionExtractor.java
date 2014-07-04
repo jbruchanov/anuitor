@@ -37,7 +37,7 @@ public class ViewReflectionExtractor extends ViewExtractor {
     }
 
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        data.put("Type", String.valueOf(v.getClass().getCanonicalName()));
+        data.put("Type", String.valueOf(v.getClass().getName()));
 
         Class clz = v.getClass();
         Method[] methods = clz.getMethods();

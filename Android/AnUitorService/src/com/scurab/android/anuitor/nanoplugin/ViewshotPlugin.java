@@ -95,7 +95,7 @@ public class ViewshotPlugin extends ActivityPlugin {
 
                                 //just draw viewgroup's background if we have it
                                 if (view instanceof ViewGroup && !DetailExtractor
-                                        .isExcludedViewGroup(view.getClass())) {
+                                        .isExcludedViewGroup(view.getClass().getName())) {
                                     Drawable drawable = view.getBackground();
                                     if (drawable != null) {
                                         bitmap = drawDrawable(drawable, w, h);

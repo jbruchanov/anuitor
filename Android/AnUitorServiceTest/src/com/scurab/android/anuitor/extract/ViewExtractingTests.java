@@ -18,14 +18,15 @@ import static org.mockito.Mockito.spy;
  */
 public class ViewExtractingTests {
 
-    public void doTests() {
+    public void doTests() throws ClassNotFoundException {
         assertTrue(DetailExtractor.MAP.size() > 0);
 
-        for (Class<?> clz : DetailExtractor.MAP.keySet()) {
+        for (String className : DetailExtractor.MAP.keySet()) {
+            Class<?> clz = Class.forName(className);
             if(Modifier.isAbstract(clz.getModifiers()) || !clz.isAssignableFrom(View.class)){
                 continue;
             }
-            BaseExtractor<View> ve = (BaseExtractor<View>) DetailExtractor.MAP.get(clz);
+            BaseExtractor<View> ve = (BaseExtractor<View>) DetailExtractor.MAP.get(clz.getName());
             View v = spy(createView((Class<? extends View>) clz));
 
             HelpHashMap hhm = new HelpHashMap(ve);

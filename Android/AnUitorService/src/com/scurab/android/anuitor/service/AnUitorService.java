@@ -205,7 +205,7 @@ public class AnUitorService extends Service {
      * Returns app title, can return null if any troubles
      * @return
      */
-    private String getAppTitle() {
+    String getAppTitle() {
         try {
             PackageManager packageManager = getPackageManager();
             ApplicationInfo appInfo = packageManager.getPackageInfo(getPackageName(), 0).applicationInfo;
