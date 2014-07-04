@@ -20,7 +20,7 @@ public abstract class Reflector<T> {
     protected final T mReal;
     protected final Class<?> mClass;
 
-    protected Reflector(T real) {
+    public Reflector(T real) {
         mReal = real;
         mClass = mReal.getClass();
     }
