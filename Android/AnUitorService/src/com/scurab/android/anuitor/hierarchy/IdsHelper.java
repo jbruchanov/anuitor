@@ -70,7 +70,7 @@ public class IdsHelper {
     private static void fillClass(Class<?> containerClass, boolean android) {
         SparseArray<String> values = new SparseArray<String>();
         String name = containerClass.getSimpleName();
-        String v = containerClass.getName();
+        String v = containerClass.getCanonicalName();
         if (!android) {
             v = v.replace(containerClass.getPackage().getName(), "").substring(1);
         }
