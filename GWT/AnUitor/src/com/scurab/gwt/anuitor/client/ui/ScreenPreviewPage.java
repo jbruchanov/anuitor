@@ -92,6 +92,8 @@ public class ScreenPreviewPage extends Composite {
     private boolean mSelectedView = false;
     /* Download root for view hierarchy */
     private ViewNodeJSO mRoot;
+    /* show cross base on image, not perfect UX, new canvas just for it would be better... */
+    private boolean mDrawCross = false;
 
     interface TestPageUiBinder extends UiBinder<Widget, ScreenPreviewPage> {
     }
@@ -173,8 +175,10 @@ public class ScreenPreviewPage extends Composite {
                 
                 onUpdateZoomCanvas(scaledX, scaledY);
                 if (mRoot != null) {
-                    mTimer.schedule(scaledX, scaledY);
+                    mTimer.schedule(x, y, mScale);
                 }
+                                
+                onDrawMouseCross(x, y);
             }
         });
         
@@ -218,6 +222,17 @@ public class ScreenPreviewPage extends Composite {
         flowPanel.add(mCanvas);
         onInitZoomCanvas();       
     }        
+    
+    protected void onDrawMouseCross(int x, int y){
+        if(mDrawCross){
+            Context2d context = mCanvas.getContext2d();
+            context.setStrokeStyle("#FF00FF");
+            context.setGlobalAlpha(0.5);
+            CanvasTools.drawVerticalLine(context, x, 0, (int)(mImageHeight * mScale));
+            CanvasTools.drawHorizontalLine(context, 0, y, (int)(mImageHeight * mScale));
+            context.setGlobalAlpha(1);
+        }
+    }
 
     /**
      * Init zoom canvas feature, depends on {@link #ZOOM_CANVAS_FEATURE}
@@ -427,13 +442,18 @@ public class ScreenPreviewPage extends Composite {
     private class MyTimer extends Timer {
         private int mX;
         private int mY;
+        private float mScale;
 
         @Override
         public void run() {
             
+            int scaledX = (int) (mX / mScale);
+            int scaledY = (int) (mY / mScale);
+            
             clearCanvas();
+            onDrawMouseCross(mX, mY);
             if (true) {
-                ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, mX, mY);
+                ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY);
                 drawRectForView(vs, mCanvas, mScale, HTMLColors.RED, COLORS[0]);
                 if (mTreeViewModel != null) {
                     mTreeViewModel.highlightNode(vs);
@@ -442,7 +462,7 @@ public class ScreenPreviewPage extends Composite {
             }
             
             //disabled for now to show rest of views below a cursor TAG_COLORS
-            List<ViewNodeJSO> views = ViewNodeHelper.findViewsByPosition(mRoot, mX, mY);
+            List<ViewNodeJSO> views = ViewNodeHelper.findViewsByPosition(mRoot, scaledX, scaledY);
             
             for (int i = 0, n = views.size(); i < n; i++) {
                 ViewNodeJSO v = views.get(i);                
@@ -450,10 +470,11 @@ public class ScreenPreviewPage extends Composite {
             }
         }
 
-        public void schedule(int x, int y) {
+        public void schedule(int x, int y, float scale) {
             cancel();
             mX = x;
             mY = y;
+            mScale = scale;
             schedule(5);
         }
     };
