@@ -49,14 +49,16 @@ public class AnUitor implements EntryPoint {
         } else if ("ViewHierarchy".equals(screen)) {
             toOpen = new TreeViewPage();
         } else if ("Resources".equals(screen)) {
+            if(sorryDemoNotSupported()){return;}
             toOpen = new ResourcesPage();
         } else if ("FileStorage".equals(screen)) {
+            if(sorryDemoNotSupported()){return;}
             toOpen = new FileStoragePage();
         } else if ("Windows".equals(screen)) {
-            Window.open("/screenstructure.json", "_blank", "");
+            Window.open(DataProvider.SCREEN_SCTRUCTURE, "_blank", "");
             return;
         } else if ("Screenshot".equals(screen)) {
-            Window.open("/screen.png", "_blank", "");
+            Window.open(DataProvider.SCREEN, "_blank", "");
             return;
         }else {
             screen = "";
@@ -99,6 +101,11 @@ public class AnUitor implements EntryPoint {
         }
         mLastScreen = w;
         RootLayoutPanel.get().add(mLastScreen);
+    }
+    
+    private boolean sorryDemoNotSupported() {
+        Window.alert("Sorry, not supported in DEMO!");
+        return DataProvider.DEMO;
     }
 
     private ClickHandler mClickHandler = new ClickHandler() {

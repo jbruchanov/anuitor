@@ -11,7 +11,7 @@ public class PBarHelper {
     public static void show() {
         hide();
         sPopupPanel = new PopupPanel(false, false);
-        sPopupPanel.setWidget(new Image("/loader.gif"));
+        sPopupPanel.setWidget(new Image("loader.gif"));
         //sPopupPanel.center();        
         int left = (Window.getClientWidth()) >> 1;        
         sPopupPanel.setPopupPosition(left, 10);

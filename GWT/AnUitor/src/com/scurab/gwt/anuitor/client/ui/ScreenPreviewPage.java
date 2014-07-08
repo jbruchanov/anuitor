@@ -369,7 +369,7 @@ public class ScreenPreviewPage extends Composite {
      * Called when image is necessary to reload
      */
     protected void onReloadImage() {        
-        image.setUrl("/screen.png?time=" + System.currentTimeMillis()); //just to avoid caching
+        image.setUrl(DataProvider.SCREEN + "?time=" + System.currentTimeMillis()); //just to avoid caching
         loadTree();
     }       
             

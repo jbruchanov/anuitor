@@ -257,7 +257,7 @@ public class ThreeDScene extends AnimatedScene {
         material.setColor(mDefaultColor);
 
         final ViewMesh m = ParallaxTools.meshFromView(view, material, false);
-        final String link = "./view.png?position=" + view.getPosition();
+        final String link = DataProvider.getViewImageLink(view.getPosition());
         Image i = new Image(link);
 
         i.addErrorHandler(new ErrorHandler() {// only way to get error
