@@ -136,7 +136,7 @@ public class IdsHelper {
 
     /**
      * Convert whole dataset of ids into JSON
-     * @see {@link #toJson(android.content.res.Resources)}
+     * {@link #toJson(android.content.res.Resources)}
      * @return
      */
     public static String toJson() {

@@ -31,10 +31,10 @@ public class ViewExtractor extends BaseExtractor<View> {
     private static final Rect RECT = new Rect();
 
     /**
-     * Those values must be present in every View related dataset
-     * ScaleXY, _Visibility, _Position, LocationScreenX, Height, Width  {@link Number}<br/>
-     * _RenderViewContent {@link java.lang.Boolean}<br/>
-     * Type {@link java.lang.String}/>
+     * Those values must be present in every View related dataset<br/>
+     * ScaleXY, _Visibility, _Position, LocationScreenX, Height, Width as {@link Number}<br/>
+     * _RenderViewContent as {@link java.lang.Boolean}<br/>
+     * Type as {@link java.lang.String}
      *
      */
     public static final String[] MANDATORY_KEYS = {"_ScaleX", "_ScaleY", "_Visibility", "_RenderViewContent", "Position", "LocationScreenX", "LocationScreenY", "Height", "Width", "Type"};
