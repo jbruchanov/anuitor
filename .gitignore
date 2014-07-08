@@ -56,3 +56,4 @@ compiler.xml
 .name
 *.symbolMap
 GWT/AnUitor/war/WEB-INF/lib
+Android/jdoc
