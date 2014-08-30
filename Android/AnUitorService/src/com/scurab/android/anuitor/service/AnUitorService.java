@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
+import com.scurab.android.anuitor.R;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.reflect.WindowManagerGlobalReflector;
 import com.scurab.android.anuitor.reflect.WindowManagerImplReflector;
@@ -20,8 +21,12 @@ import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
 import com.scurab.android.anuitor.tools.ZipTools;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * User: jbruchanov
@@ -242,6 +247,14 @@ public class AnUitorService extends Service {
     }
 
     /**
+     * Download web app if necessary and Start service
+     * @param context
+     */
+    public static void startService(Context context) {
+        startService(context, 0, false, null);
+    }
+
+    /**
      * Start service
      *
      * @param context
@@ -253,11 +266,21 @@ public class AnUitorService extends Service {
     }
 
     /**
+     * Async Download & Extract web and start service.
+     * @param context
+     * @param overwriteWebFolder
+     * @param onFinishCallback
+     */
+    public static void startService(Context context, boolean overwriteWebFolder, Runnable onFinishCallback) {
+        startService(context, 0, overwriteWebFolder, onFinishCallback);
+    }
+
+    /**
      * Async Extract web and start service.
      * Throws RuntimeException in async thread if there is an exception from unzip process.
      *
      * @param context
-     * @param rawWebZipFileRes   resource id for zip file of web
+     * @param rawWebZipFileRes   resource id for zip file of web, if 0 {@link R.string.web_app_url} is used as link to download app
      * @param overwriteWebFolder true to delete old web folder and unzip again
      * @param onFinishCallback   called when {@link Context#startService(android.content.Intent)} has been called, can be null, is called in non main thread!
      * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
@@ -273,11 +296,15 @@ public class AnUitorService extends Service {
                     f.mkdir();
                     try {
                         String zipFile = folder + "/web.zip";
-                        if(rawWebZipFileRes != 0) {
+                        if (rawWebZipFileRes == 0) {
+                            new File(zipFile).delete();
+                            URL website = new URL(context.getString(R.string.web_app_url));
+                            FileSystemTools.copyFile(website.openStream(), zipFile);
+                        } else {
                             ZipTools.copyFileIntoInternalStorageIfNecessary(context, rawWebZipFileRes, zipFile);
-                            ZipTools.extractFolder(zipFile, folder);
                         }
-                    } catch (IOException e) {
+                        ZipTools.extractFolder(zipFile, folder);
+                    } catch (Throwable e) {
                         throw new RuntimeException(e);
                     }
                 }

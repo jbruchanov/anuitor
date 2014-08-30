@@ -72,6 +72,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        AnUitorService.startService(this, R.raw.web);
+        AnUitorService.startService(this);
     }
 }
