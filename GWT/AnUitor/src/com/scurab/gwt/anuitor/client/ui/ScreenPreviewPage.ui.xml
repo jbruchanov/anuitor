@@ -1,0 +1,54 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
+	<ui:style>
+	.content {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	.padding{
+		padding: 10px;		
+	}
+	
+	.viewInfo{
+		font: 1.1em "Lucida Console", Monaco, monospace, sans-serif;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-right: 10px;
+	}
+	</ui:style>
+	<g:HTMLPanel styleName="{style.content}">
+		<g:SplitLayoutPanel width="100%" height="100%">
+			<g:west size="768">
+				<g:ScrollPanel>
+					<g:VerticalPanel height="100%" styleName="{style.padding}">
+						<g:VerticalPanel ui:field="topImagePanel">
+							<g:HorizontalPanel>
+								<g:Label text="_" ui:field="mousePosition" styleName="{style.viewInfo}"/>
+								<g:Label ui:field="hoveredViewID" styleName="{style.viewInfo}"/>
+							</g:HorizontalPanel>
+						</g:VerticalPanel>
+						<g:FlowPanel ui:field="flowPanel">																					
+							<g:Image ui:field="image" width="0" height="0" visible="false" />						
+						</g:FlowPanel>						
+					</g:VerticalPanel>
+				</g:ScrollPanel>
+			</g:west>
+			<g:center size="400">
+				<g:ScrollPanel>
+					<g:VerticalPanel ui:field="centerPanel">						
+					</g:VerticalPanel>
+				</g:ScrollPanel>
+			</g:center>
+			<g:east size="600">
+				<g:ScrollPanel>
+					<p1:CellTable ui:field="cellTable" pageSize="500" />
+				</g:ScrollPanel>
+			</g:east>
+		</g:SplitLayoutPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tile_padding_lr">190dp</dimen>
+    <dimen name="tile_padding_tb">20dp</dimen>
+    <dimen name="view_pager_item_margin">-360dp</dimen>
+</resources>

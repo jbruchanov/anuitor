@@ -26,7 +26,33 @@ Thumbs.db
 .project
 
 # Android Studio
-.idea
+
 #.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 .gradle
 build/
+
+
+#GWT
+/build
+/classes
+GWT/AnUitor/war/WEB-INF/*.jar
+*.class
+*~
+*/web-app/gwt
+*/web-app/WEB-INF/classes
+target
+gwt-unitCache/
+.gwt-log
+GWT/AnUitor/war/anuitor/gwt/clean
+GWT/AnUitor/war/anuitor
+GWT/AnUitor/.settings
+out/
+vcs.xml
+profiles_settings.xml
+scope_settings.xml
+misc.xml
+encodings.xml
+compiler.xml
+.name
+*.symbolMap
+GWT/AnUitor/war/WEB-INF/lib
