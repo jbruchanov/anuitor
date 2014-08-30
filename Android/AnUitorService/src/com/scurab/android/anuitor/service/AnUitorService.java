@@ -280,7 +280,7 @@ public class AnUitorService extends Service {
      * Throws RuntimeException in async thread if there is an exception from unzip process.
      *
      * @param context
-     * @param rawWebZipFileRes   resource id for zip file of web, if 0 {@link R.string.web_app_url} is used as link to download app
+     * @param rawWebZipFileRes   resource id for zip file of web, if 0 'http://anuitor.scurab.com/download/anuitor.zip' is used as link to download app
      * @param overwriteWebFolder true to delete old web folder and unzip again
      * @param onFinishCallback   called when {@link Context#startService(android.content.Intent)} has been called, can be null, is called in non main thread!
      * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
@@ -298,7 +298,7 @@ public class AnUitorService extends Service {
                         String zipFile = folder + "/web.zip";
                         if (rawWebZipFileRes == 0) {
                             new File(zipFile).delete();
-                            URL website = new URL(context.getString(R.string.web_app_url));
+                            URL website = new URL("http://anuitor.scurab.com/download/anuitor.zip");
                             FileSystemTools.copyFile(website.openStream(), zipFile);
                         } else {
                             ZipTools.copyFileIntoInternalStorageIfNecessary(context, rawWebZipFileRes, zipFile);
