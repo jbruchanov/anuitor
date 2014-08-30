@@ -41,7 +41,7 @@ public class AggregateMimePlugin extends BasePlugin {
         String mime = mPlugins[0].mimeType();
         for (BasePlugin b : mPlugins) {
             if (!mime.equals(b.mimeType())) {
-                throw new IllegalStateException(String.format("Plugins doesn't have same mime types %s vs %s", mime, b.mimeType()));
+                throw new IllegalStateException(String.format("Plugins don't have same mime types %s vs %s", mime, b.mimeType()));
             }
         }
     }
