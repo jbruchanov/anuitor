@@ -11,15 +11,13 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
+import static com.scurab.android.anuitor.tools.FileSystemTools.BUFFER;
 /**
  * Created by jbruchanov on 21/05/2014.
  *
  * Few help methods for operation with zip files
  */
 public class ZipTools {
-
-    private static final int BUFFER = 16 * 1024;
 
     /**
      * Extract zip file into folder
@@ -56,8 +54,7 @@ public class ZipTools {
 
                 // write the current file to disk
                 FileOutputStream fos = new FileOutputStream(destFile);
-                BufferedOutputStream dest = new BufferedOutputStream(fos,
-                        BUFFER);
+                BufferedOutputStream dest = new BufferedOutputStream(fos,BUFFER);
 
                 // read and write until last byte is encountered
                 while ((currentByte = is.read(data, 0, BUFFER)) != -1) {
@@ -85,15 +82,7 @@ public class ZipTools {
         }
 
         InputStream in = context.getResources().openRawResource(rawRes);
-        FileOutputStream out = new FileOutputStream(targetFile);
-        byte[] buf = new byte[BUFFER];
-        int len;
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf, 0, len);
-        }
-        out.close();
-        in.close();
-
+        FileSystemTools.copyFile(in, targetFile);
         return true;
     }
 }

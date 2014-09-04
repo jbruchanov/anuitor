@@ -9,6 +9,9 @@ import android.os.Environment;
 import com.scurab.android.anuitor.model.FSItem;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.List;
  * Time: 14:18
  */
 public class FileSystemTools {
+
+    public static final int BUFFER = 16 * 1024;
 
     /**
      * Get root folders
@@ -132,5 +137,22 @@ public class FileSystemTools {
             ext = s.substring(i+1).toLowerCase();
         }
         return ext;
+    }
+
+    /**
+     * Copy data from input stream into target file
+     * @param inputStream
+     * @param targetFile
+     * @throws java.io.IOException
+     */
+    public static void copyFile(InputStream inputStream, String targetFile) throws IOException {
+        FileOutputStream out = new FileOutputStream(targetFile);
+        byte[] buf = new byte[BUFFER];
+        int len;
+        while ((len = inputStream.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        out.close();
+        inputStream.close();
     }
 }
