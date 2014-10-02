@@ -168,7 +168,7 @@ public final class DetailExtractor {
     }
 
     /**
-     * @see {@link #excludeViewGroup(String)}
+     * {@link #excludeViewGroup(String)}
      * @param className
      * @return
      */
@@ -177,7 +177,7 @@ public final class DetailExtractor {
     }
 
     /**
-     * @see {@link #excludeViewGroup(String)}
+     * {@link #excludeViewGroup(String)}
      * @param className
      * @return
      */

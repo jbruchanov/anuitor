@@ -84,7 +84,7 @@ public class AnUitorService extends Service {
 
     /**
      * Start service with default values {@link #DEFAULT_PORT}, {@link #DEFAULT_ROOT_FOLDER}
-     * @see {@link #start(int, String)}
+     * {@link #start(int, String)}
      */
     public boolean start()  {
         return start(DEFAULT_PORT, DEFAULT_ROOT_FOLDER);
@@ -157,9 +157,9 @@ public class AnUitorService extends Service {
 
     /**
      * Create notification
+     * {@link #createSimpleNotification(String)}
      *
      * @return
-     * @see {@link #createSimpleNotification(String)}
      */
     private Notification createSimpleNotification() {
         return createSimpleNotification(null);
@@ -259,7 +259,7 @@ public class AnUitorService extends Service {
      *
      * @param context
      * @param rawWebZipFileRes
-     * @see {@link #startService(android.content.Context, int, boolean, Runnable)}
+     * {@link #startService(android.content.Context, int, boolean, Runnable)}
      */
     public static void startService(Context context, int rawWebZipFileRes) {
         startService(context, rawWebZipFileRes, false, null);

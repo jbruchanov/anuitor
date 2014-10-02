@@ -21,11 +21,18 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
  */
 public class DataProvider {
 
-    private static final String VIEW_TREE_HIERARCHY = "/viewhierarchy.json";
+    /* Little different pathes for demo */
+    static final boolean DEMO = false;    
+    
+    private static final String SAMPLE_DATA = "sampledata";
+    private static final String VIEW_TREE_HIERARCHY = (DEMO ? SAMPLE_DATA : "") + "/viewhierarchy.json";    
     private static final String RESOURCES = "/resources.json";
     private static final String RESOURCE_ID_X = "/resources.json?id=";
     private static final String STORAGE = "/storage.json?path=";
     private static final int HTTP_OK = 200;
+    
+    public static final String SCREEN = (DEMO ? SAMPLE_DATA : "") + "/screen.png";
+    public static final String SCREEN_SCTRUCTURE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json";     
 
     /**
      * Generic callback
@@ -112,5 +119,17 @@ public class DataProvider {
                 mCallback.onError(request, exception);
             }
         }
+    }
+    
+    /**
+     * Return proper link for image view
+     * @param position
+     * @return
+     */
+    public static String getViewImageLink(int position){
+        return DEMO
+                ? SAMPLE_DATA + "/imageview_" + position + ".png"
+                : "/view.png?position=" + position;
+                
     }
 }
