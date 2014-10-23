@@ -323,4 +323,26 @@ public class Translator {
                 return String.format("UNKWNOWN (%s)", value);
         }
     }
+
+    public Object showDividers(int showDividers) {
+        if (showDividers == 0) {
+            return "NONE";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if ((showDividers & LinearLayout.SHOW_DIVIDER_BEGINNING) != 0) {
+            sb.append("BEGGINNING|");
+        }
+        if ((showDividers & LinearLayout.SHOW_DIVIDER_END) != 0) {
+            sb.append("END|");
+        }
+        if ((showDividers & LinearLayout.SHOW_DIVIDER_MIDDLE) != 0) {
+            sb.append("MIDDLE|");
+        }
+        int length = sb.length();
+        if (length > 0) {
+            sb.setLength(length - 1);
+        }
+        return sb.toString();
+    }
 }
