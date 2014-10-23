@@ -30,8 +30,10 @@ public class FragmentActivityExtractor extends ActivityExtractor {
         if (fragmentActivity != null) {
             FragmentManager supportFragmentManager = ((FragmentActivity)fragmentActivity).getSupportFragmentManager();
             List<Fragment> fragments = supportFragmentManager.getFragments();
-            List<HashMap<String, Object>> fragmentsData = handleSupportFragments(fragments, new HashMap<String, Object>());
-            data.put("SupportFragments", fragmentsData);
+            if (fragments != null && !fragments.isEmpty()) {
+                List<HashMap<String, Object>> fragmentsData = handleSupportFragments(fragments, new HashMap<String, Object>());
+                data.put("SupportFragments", fragmentsData);
+            }
 
             List<HashMap<String, Object>> backStackEntries = handleSupportBackStackEntries(supportFragmentManager, new HashMap<String, Object>());
             data.put("SupportBackStackEntries", backStackEntries);
