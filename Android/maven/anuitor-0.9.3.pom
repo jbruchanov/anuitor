@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.scurab</groupId>
   <artifactId>anuitor</artifactId>
-  <version>0.9.1</version>
+  <version>0.9.3</version>
   <packaging>jar</packaging>
   <name>AnUitor</name>
   <url>http://anuitor.scurab.com</url>
@@ -32,8 +32,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     </developer>
   </developers>
   <scm>
-	  <connection>scm:git:git@github.com:jbruchanov/AnUitor.git</connection>
-	  <developerConnection>scm:git:git@github.com:jbruchanov/AnUitor.git</developerConnection>
-	  <url>https://github.com/jbruchanov/anuitor</url>
-</scm>
+      <connection>scm:git:https://github.com/jbruchanov/AnUitor</connection>
+      <developerConnection>scm:git:https://github.com/jbruchanov/AnUitor</developerConnection>
+      <url>https://github.com/jbruchanov/anuitor</url>
+  </scm>
 </project>
