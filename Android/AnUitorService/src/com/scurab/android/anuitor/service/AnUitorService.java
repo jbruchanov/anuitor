@@ -9,20 +9,14 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
-import com.scurab.android.anuitor.R;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
-import com.scurab.android.anuitor.reflect.WindowManagerGlobalReflector;
-import com.scurab.android.anuitor.reflect.WindowManagerImplReflector;
+import com.scurab.android.anuitor.reflect.WindowManagerProvider;
 import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
 import com.scurab.android.anuitor.tools.ZipTools;
-
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,7 +121,7 @@ public class AnUitorService extends Service {
     }
 
     protected AnUiHttpServer onCreateServer(int port, String root) {
-        return new AnUiHttpServer(getApplicationContext(), port, new File(root), true, Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 ? new WindowManagerImplReflector() : new WindowManagerGlobalReflector());
+        return new AnUiHttpServer(getApplicationContext(), port, new File(root), true, WindowManagerProvider.getManager());
     }
 
     /**
@@ -251,18 +245,27 @@ public class AnUitorService extends Service {
      * @param context
      */
     public static void startService(Context context) {
-        startService(context, 0, false, null);
+        startService(context, DEFAULT_PORT, 0, false, null);
+    }
+
+    /**
+     * Download web app if necessary and Start service on particular port
+     *
+     * @param context
+     * @param port
+     */
+    public static void startServiceUsingPort(Context context, int port) {
+        startService(context, port, 0, false, null);
     }
 
     /**
      * Start service
      *
      * @param context
-     * @param rawWebZipFileRes
-     * {@link #startService(android.content.Context, int, boolean, Runnable)}
+     * @param rawWebZipFileRes {@link #startService(android.content.Context, int, int, boolean, Runnable)}
      */
     public static void startService(Context context, int rawWebZipFileRes) {
-        startService(context, rawWebZipFileRes, false, null);
+        startService(context, DEFAULT_PORT, rawWebZipFileRes, false, null);
     }
 
     /**
@@ -272,7 +275,7 @@ public class AnUitorService extends Service {
      * @param onFinishCallback
      */
     public static void startService(Context context, boolean overwriteWebFolder, Runnable onFinishCallback) {
-        startService(context, 0, overwriteWebFolder, onFinishCallback);
+        startService(context, DEFAULT_PORT, 0, overwriteWebFolder, onFinishCallback);
     }
 
     /**
@@ -285,7 +288,7 @@ public class AnUitorService extends Service {
      * @param onFinishCallback   called when {@link Context#startService(android.content.Intent)} has been called, can be null, is called in non main thread!
      * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
      */
-    public static void startService(final Context context, final int rawWebZipFileRes, final boolean overwriteWebFolder, final Runnable onFinishCallback) {
+    public static void startService(final Context context, final int port, final int rawWebZipFileRes, final boolean overwriteWebFolder, final Runnable onFinishCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -312,6 +315,7 @@ public class AnUitorService extends Service {
                 Intent i = new Intent(context, AnUitorService.class);
                 i.setAction(AnUitorService.START);
                 i.putExtra(AnUitorService.ROOT_FOLDER, DEFAULT_ROOT_FOLDER);
+                i.putExtra(AnUitorService.PORT, port);
                 context.startService(i);
 
                 if (onFinishCallback != null) {
