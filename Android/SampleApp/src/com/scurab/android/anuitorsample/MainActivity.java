@@ -72,6 +72,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        AnUitorService.startService(this);
+        AnUitorService.startServiceUsingPort(this, 8081);
     }
 }
