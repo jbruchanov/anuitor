@@ -107,7 +107,7 @@ public class ViewshotPlugin extends ActivityPlugin {
                                     view.destroyDrawingCache();
                                     try {
                                         view.buildDrawingCache(false);
-                                    } catch (Exception e) {
+                                    } catch (Throwable e) {
                                         Log.e("ViewshotPlugin", e.getMessage());
                                         e.printStackTrace();
                                     }
