@@ -24,7 +24,7 @@ public class IntentExtractor extends BaseExtractor<Intent> {
             data.put("Action", intent.getAction());
             data.put("Categories", intent.getCategories());//TODO as csv ?
             data.put("Data", intent.getData());
-            data.put("Flags", intent.getFlags());
+            data.put("Flags", getBinaryString(intent.getFlags()));
             data.put("Scheme", intent.getScheme());
             data.put("Package", intent.getPackage());
             data.put("Type", intent.getType());

@@ -170,6 +170,7 @@ public class ResourcesPlugin extends BasePlugin {
                 break;
             case menu:
             case layout:
+            case transition:
                 String load = mHelper.load(id);
                 response.data = load;
                 response.dataType = XML;

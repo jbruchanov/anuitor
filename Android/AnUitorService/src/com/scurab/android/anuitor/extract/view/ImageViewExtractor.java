@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.extract.view;
 
 import android.graphics.Matrix;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -35,6 +36,10 @@ public class ImageViewExtractor extends ViewExtractor {
             data.put("ImageAlpha", iv.getImageAlpha());
             data.put("MaxHeight", iv.getMaxHeight());
             data.put("MaxWidth", iv.getMaxWidth());
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            data.put("ImageTintMode", String.valueOf(iv.getImageTintMode()));
         }
         return data;
     }

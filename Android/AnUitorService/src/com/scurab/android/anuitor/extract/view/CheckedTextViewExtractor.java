@@ -1,5 +1,7 @@
 package com.scurab.android.anuitor.extract.view;
 
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.widget.CheckedTextView;
 
@@ -21,6 +23,10 @@ public class CheckedTextViewExtractor extends TextViewExtractor {
         super.fillValues(v, data, parentData);
         CheckedTextView ctv = (CheckedTextView) v;
         data.put("IsChecked", ctv.isChecked());
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            data.put("CheckMarkTintMode", String.valueOf(ctv.getCheckMarkTintMode()));
+        }
         return data;
     }
 }

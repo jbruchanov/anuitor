@@ -1,5 +1,7 @@
 package com.scurab.android.anuitor.extract.view;
 
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,6 +24,13 @@ public class ViewGroupExtractor extends ViewExtractor {
 
         ViewGroup vg = (ViewGroup)v;
         data.put("ChildCount", vg.getChildCount());
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            data.put("ClipToPadding", vg.getClipToPadding());
+            data.put("NestedScrollAxes", vg.getNestedScrollAxes());
+            data.put("TouchscreenBlocksFocus", vg.getTouchscreenBlocksFocus());
+            data.put("TransitionGroup", vg.isTransitionGroup());
+        }
         return data;
     }
 }

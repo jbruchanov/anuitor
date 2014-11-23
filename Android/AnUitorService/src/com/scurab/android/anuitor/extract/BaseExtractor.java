@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.extract;
 
-import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.util.HashMap;
@@ -27,6 +26,25 @@ public abstract class BaseExtractor<T> {
         return HttpTools.getStringColor(value);
     }
 
+    /**
+     * Get binary string separated by '-' for every 4 bits
+     * @param value
+     * @return
+     */
+    public static String getBinaryString(int value) {
+        if (value == 0) {
+            return "0";
+        }
+
+        StringBuilder sb = new StringBuilder(Integer.toBinaryString(value));
+        while (sb.length() < 32) {
+            sb.insert(0, "0");
+        }
+        for (int i = 1; i < 8; i++) {
+            sb.insert((4 * i) + (i - 1), "-");
+        }
+        return sb.toString();
+    }
     /**
      *
      * @return

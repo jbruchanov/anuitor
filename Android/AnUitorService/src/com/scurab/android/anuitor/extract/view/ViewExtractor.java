@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.extract.view;
 
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,7 @@ public class ViewExtractor extends BaseExtractor<View> {
 
         data.put("ScrollX", v.getScrollX());
         data.put("ScrollY", v.getScrollY());
-        data.put("Tag", v.getTag() != null ? String.valueOf(v.getTag()) : null);
+        data.put("Tag", String.valueOf(v.getTag()));
         data.put("HasFocus", v.hasFocus());
         data.put("HasFocusable", v.hasFocusable());
         data.put("IsOpaque", v.isOpaque());
@@ -143,6 +144,16 @@ public class ViewExtractor extends BaseExtractor<View> {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             data.put("ClipBounds", String.valueOf(v.getClipBounds()));
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            data.put("BackgroundTintMode", String.valueOf(v.getBackgroundTintMode()));
+            data.put("ClipToOutline", v.getClipToOutline());
+            data.put("Elevation", v.getElevation());
+            data.put("TransitionName", v.getTransitionName());
+            data.put("TranslationZ", v.getTranslationZ());
+            data.put("Z", v.getZ());
+            data.put("NestedScrollingParent", v.hasNestedScrollingParent());
         }
 
         boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass().getName());

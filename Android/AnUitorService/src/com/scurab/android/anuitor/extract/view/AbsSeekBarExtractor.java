@@ -1,6 +1,8 @@
 package com.scurab.android.anuitor.extract.view;
 
 
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.widget.AbsSeekBar;
 import android.widget.SeekBar;
@@ -24,6 +26,11 @@ public class AbsSeekBarExtractor extends ProgressBarExtractor {
 
         AbsSeekBar sb = (AbsSeekBar) v;
         data.put("ThumbOffset", sb.getThumbOffset());
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            data.put("SplitTrack", sb.getSplitTrack());
+            data.put("ThumbTintMode", String.valueOf(sb.getThumbTintMode()));
+        }
 
         return data;
     }

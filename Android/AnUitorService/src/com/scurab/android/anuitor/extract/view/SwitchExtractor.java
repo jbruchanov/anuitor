@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.extract.view;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.widget.Switch;
 
@@ -33,6 +34,11 @@ public class SwitchExtractor extends CompoundButtonExtractor {
             data.put("SwitchMinWidth", s.getSwitchMinWidth());
             data.put("SwitchPadding", s.getSwitchPadding());
             data.put("ThumbTextPadding", s.getThumbTextPadding());
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            data.put("ShowText", s.getShowText());
+            data.put("SplitTrack", s.getSplitTrack());
         }
 
         return data;

@@ -36,6 +36,7 @@ public class IdsHelper {
         plurals,
         raw,
         string, style, styleable,
+        transition,
         unknown,
         xml;
     }

@@ -1,5 +1,7 @@
 package com.scurab.android.anuitor.extract.view;
 
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.widget.CompoundButton;
 
@@ -24,6 +26,9 @@ public class CompoundButtonExtractor extends TextViewExtractor {
         CompoundButton cb = (CompoundButton) v;
 
         data.put("IsChecked", cb.isChecked());
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            data.put("ButtonTintMode", String.valueOf(cb.getButtonTintMode()));
+        }
         return data;
     }
 }

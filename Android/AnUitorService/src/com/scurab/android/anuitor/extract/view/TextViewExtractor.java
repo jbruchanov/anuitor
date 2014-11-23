@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.extract.view;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.widget.TextView;
 
@@ -75,6 +76,12 @@ public class TextViewExtractor extends ViewExtractor {
                 values.put("CompoundDrawableRelativeEnd", String.valueOf(compoundDrawablesRelative[2]));
                 values.put("CompoundDrawableRelativeBottom", String.valueOf(compoundDrawablesRelative[3]));
             }
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            values.put("FontFeatureSettings", tv.getFontFeatureSettings());
+            values.put("LetterSpacing", tv.getLetterSpacing());
+            values.put("ShowSoftInputOnFocus", tv.getShowSoftInputOnFocus());
         }
 
         return values;
