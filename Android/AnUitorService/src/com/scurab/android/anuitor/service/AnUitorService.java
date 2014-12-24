@@ -29,7 +29,7 @@ import java.net.URL;
  * Time: 10:27
  */
 public class AnUitorService extends Service {
-
+    private static final String TAG = "AnUitorService";
     public static final String STOP = "STOP";
     public static final String START = "START";
     public static final String PORT = "PORT";
@@ -53,6 +53,8 @@ public class AnUitorService extends Service {
         try {
             IdsHelper.loadValues(Class.forName(getPackageName() + ".R"));
         } catch (Exception e) {
+            Log.e(TAG, "Unable to load Resources, probably R class is not in your packageName => call IdsHelper.loadValues(com.application.R.class);");
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
     }
@@ -311,13 +313,13 @@ public class AnUitorService extends Service {
                     } catch (Throwable e) {
                         Notification notification = new NotificationCompat.Builder(context)
                         .setSmallIcon(ICON_RES_ID)
-                        .setContentTitle("AnUitor Error")
+                        .setContentTitle(TAG + " Error")
                         .setContentText(e.getMessage())
                         .build();
                         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         nm.notify(1, notification);
 
-                        Log.e("AnUitorServicer", e.getMessage());
+                        Log.e(TAG, e.getMessage());
                         e.printStackTrace();
                         f.delete();
                     }
