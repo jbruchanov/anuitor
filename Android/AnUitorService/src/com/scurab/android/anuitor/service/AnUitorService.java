@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.reflect.WindowManagerProvider;
@@ -308,7 +309,17 @@ public class AnUitorService extends Service {
                         }
                         ZipTools.extractFolder(zipFile, folder);
                     } catch (Throwable e) {
-                        throw new RuntimeException(e);
+                        Notification notification = new NotificationCompat.Builder(context)
+                        .setSmallIcon(ICON_RES_ID)
+                        .setContentTitle("AnUitor Error")
+                        .setContentText(e.getMessage())
+                        .build();
+                        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                        nm.notify(1, notification);
+
+                        Log.e("AnUitorServicer", e.getMessage());
+                        e.printStackTrace();
+                        f.delete();
                     }
                 }
 
