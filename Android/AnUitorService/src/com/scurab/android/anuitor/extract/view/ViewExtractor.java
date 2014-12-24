@@ -154,10 +154,10 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("TranslationZ", v.getTranslationZ());
             data.put("Z", v.getZ());
             data.put("NestedScrollingParent", v.hasNestedScrollingParent());
+            data.put("StateListAnimator", v.getStateListAnimator());
         }
 
         boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass().getName());
-//        boolean isVisible = v.isShown();
         Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
         boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
         boolean hasBackground = v.getBackground() != null;
@@ -166,7 +166,6 @@ public class ViewExtractor extends BaseExtractor<View> {
 
         //TODO:remove later
         data.put("RenderViewContent", shouldRender);
-
 
         fillLayoutParams(v, data, parentData);
         fillScale(v, data, parentData);
