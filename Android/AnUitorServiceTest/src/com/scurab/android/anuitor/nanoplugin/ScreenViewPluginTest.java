@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.nanoplugin;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.service.textservice.SpellCheckerService;
 import android.view.View;
 
 import com.scurab.android.anuitor.C;
@@ -57,7 +58,8 @@ public class ScreenViewPluginTest {
         doReturn(null).when(wm).getCurrentRootView();
 
         ScreenViewPlugin svp = new ScreenViewPlugin(wm);
-        NanoHTTPD.Response response = svp.handleRequest(null, null, null, null, null);
+        NanoHTTPD.IHTTPSession session = mock(NanoHTTPD.IHTTPSession.class);
+        NanoHTTPD.Response response = svp.handleRequest(null, null, session, null, null);
         byte[] data = IOUtils.toByteArray(response.getData());
     }
 
@@ -71,7 +73,7 @@ public class ScreenViewPluginTest {
         doReturn(v).when(wm).getCurrentRootView();
 
         ScreenViewPlugin svp = new ScreenViewPlugin(wm);
-        NanoHTTPD.Response response = svp.handleRequest(null, null, null, null, null);
+        NanoHTTPD.Response response = svp.handleRequest(null, null, mock(NanoHTTPD.IHTTPSession.class), null, null);
 
         verify(v).destroyDrawingCache();
         verify(v).buildDrawingCache(anyBoolean());
@@ -103,7 +105,7 @@ public class ScreenViewPluginTest {
             }
         }).when(svp).onCreateCanvas(any(Bitmap.class));
 
-        NanoHTTPD.Response response = svp.handleRequest(null, null, null, null, null);
+        NanoHTTPD.Response response = svp.handleRequest(null, null, mock(NanoHTTPD.IHTTPSession.class), null, null);
 
         final Canvas c = canvas[0];
         InOrder order = inOrder(c, v);

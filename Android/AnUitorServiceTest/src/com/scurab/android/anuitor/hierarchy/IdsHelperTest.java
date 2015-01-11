@@ -36,8 +36,8 @@ public class IdsHelperTest {
         boolean hasOwn = false;
         for (String s : IdsHelper.VALUES.keySet()) {
             count += IdsHelper.VALUES.get(s).size();
-            hasAndroid |= s.contains("android.R$");
-            hasOwn |= s.startsWith("R$");
+            hasAndroid |= s.contains("android.R.");
+            hasOwn |= s.startsWith("R.");
         }
 
         assertTrue(count > 0);
@@ -56,10 +56,10 @@ public class IdsHelperTest {
 
     @Test
     public void testGetJsonWithResources() throws NoSuchFieldException, ClassNotFoundException {
-        IdsHelper.loadValues(com.scurab.android.anuitorsample.R.class);
+        IdsHelper.loadValues(R.class);
         String s = IdsHelper.toJson(Robolectric.application.getResources());
         HashMap hashMap = new Gson().fromJson(s, HashMap.class);
-        List<LinkedTreeMap> list = (List<LinkedTreeMap>) hashMap.get("R$layout");
+        List<LinkedTreeMap> list = (List<LinkedTreeMap>) hashMap.get("android.R.layout");
 
         for (LinkedTreeMap v : list) {
             assertNotNull(v.get("Key"));

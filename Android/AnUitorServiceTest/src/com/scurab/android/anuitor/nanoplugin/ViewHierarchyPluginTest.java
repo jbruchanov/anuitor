@@ -49,7 +49,7 @@ public class ViewHierarchyPluginTest {
         doReturn(null).when(wm).getCurrentRootView();
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
-        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(null, null, null, null, null);
+        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(null, null, mock(NanoHTTPD.IHTTPSession.class), null, null);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
         String data = IOUtils.toString(response.getData());
         assertEquals("{}", data);
@@ -62,7 +62,7 @@ public class ViewHierarchyPluginTest {
         doReturn(inflate).when(wm).getCurrentRootView();
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
-        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(null, null, null, null, null);
+        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(null, null, mock(NanoHTTPD.IHTTPSession.class), null, null);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
         String data = IOUtils.toString(response.getData());
         ViewNode vn = new Gson().fromJson(data, ViewNode.class);
