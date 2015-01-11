@@ -4,10 +4,7 @@
       <root url="file://$PROJECT_DIR$/../SharedLibraries/gson" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="file://$PROJECT_DIR$/../SharedLibraries/gson" />
-    </SOURCES>
+    <SOURCES />
     <jarDirectory url="file://$PROJECT_DIR$/../SharedLibraries/gson" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/../SharedLibraries/gson" recursive="false" type="SOURCES" />
   </library>
 </component>
