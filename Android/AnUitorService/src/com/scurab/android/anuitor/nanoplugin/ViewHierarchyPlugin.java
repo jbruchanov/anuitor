@@ -5,6 +5,7 @@ import android.view.View;
 import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.model.ViewNode;
 import com.scurab.android.anuitor.reflect.WindowManager;
+import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -35,12 +36,16 @@ public class ViewHierarchyPlugin extends ActivityPlugin {
 
     @Override
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
-        View view = getCurrentRootView();
+        View view = getCurrentRootView(HttpTools.parseQueryString(session.getQueryParameterString()));
         String json;
-
         if (view != null) {
             ViewNode vn = DetailExtractor.parse(view, false);
-            json = GSON.toJson(vn);
+            try {
+                json = vn.toJson().toString();
+            } catch (Throwable e) {
+                json = String.format("{\"exception\":\"%s\"}", e.getMessage());
+                e.printStackTrace();
+            }
         } else {
             json = "{}";
         }
