@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName;
 import com.scurab.android.anuitor.extract.view.ViewExtractor;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -81,5 +85,28 @@ public class ViewNode {
                 throw new IllegalStateException(String.format("Missing mandatory field:'%s' on View with position:%s\n\tMandatoryFields:%s", key, position, Arrays.toString(ViewExtractor.MANDATORY_KEYS)));
             }
         }
+    }
+
+    public JSONObject toJson() throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("IDi", mId);
+        obj.put("IDs", mIdReadable);
+        obj.put("Level", mLevel);
+        obj.put("Position", mPosition);
+        if (mData != null) {
+            JSONObject data = new JSONObject();
+            for (String key : mData.keySet()) {
+                data.put(key, mData.get(key));
+            }
+            obj.put("Data", data);
+        }
+        if (mNodes != null) {
+            JSONArray array = new JSONArray();
+            obj.put("Nodes", array);
+            for (ViewNode node : mNodes) {
+                array.put(node.toJson());
+            }
+        }
+        return obj;
     }
 }
