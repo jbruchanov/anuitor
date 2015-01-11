@@ -27,6 +27,7 @@ public class AnUiHttpServer extends SimpleWebServer {
                 new ScreenViewPlugin(windowManager),
                 new ViewshotPlugin(windowManager)));
         registerPluginForMimeType(new AggregateMimePlugin(
+                new ActiveScreensPlugin(windowManager),
                 new ViewHierarchyPlugin(windowManager),
                 new FileStoragePlugin(context),
                 new ResourcesPlugin(context.getResources(), new Translator()),
