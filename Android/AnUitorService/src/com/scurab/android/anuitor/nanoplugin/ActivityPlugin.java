@@ -7,6 +7,7 @@ import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -19,6 +20,7 @@ import fi.iki.elonen.NanoHTTPD;
 public abstract class ActivityPlugin extends BasePlugin {
 
     public static final String APPLICATION_IS_NOT_ACTIVE = "Application is not active";
+    private static final String SCREEN_INDEX = "screenIndex";
 
     private static final NanoHTTPD.Response EMPTY_RESPONSE = new OKResponse(HttpTools.MimeType.TEXT_PLAIN, APPLICATION_IS_NOT_ACTIVE);
     private static final NanoHTTPD.Response JSON_EMPTY_RESPONSE = new OKResponse(HttpTools.MimeType.APP_JSON, "{}");
@@ -53,6 +55,27 @@ public abstract class ActivityPlugin extends BasePlugin {
     }
 
     public View getCurrentRootView() {
-        return mWindowManager.getCurrentRootView();
+        return getCurrentRootView(-1);
+    }
+
+    public View getCurrentRootView(int index) {
+        return index < 0 ? mWindowManager.getCurrentRootView() : mWindowManager.getRootView(index);
+    }
+
+    public View getCurrentRootView(HashMap<String, String> qsValue) {
+        View view;
+        try {
+            if (qsValue.containsKey(SCREEN_INDEX)) {
+                String index = qsValue.get(SCREEN_INDEX);
+                int i = Integer.parseInt(index);
+                view = getCurrentRootView(i);
+            } else {
+                view = getCurrentRootView();
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+            view = null;
+        }
+        return view;
     }
 }

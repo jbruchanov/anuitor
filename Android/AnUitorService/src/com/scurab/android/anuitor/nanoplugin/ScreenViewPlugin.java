@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.Executor;
+import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +48,7 @@ public class ScreenViewPlugin extends ActivityPlugin {
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        final View view = getCurrentRootView();
+        final View view = getCurrentRootView(HttpTools.parseQueryString(session.getQueryParameterString()));
         ByteArrayInputStream resultInputStream = null;
 
         if (view != null) {
