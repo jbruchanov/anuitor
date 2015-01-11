@@ -61,22 +61,20 @@ public class AnUitorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent == null) { //called with null intent when the app is killed...
-            return 0;
-        }
-        if (STOP.equals(intent.getAction())) {
-            stop();
-            return 0;
-        } else {
-            if (START.equals(intent.getAction())) {
-                if (mServer != null && mServer.isAlive()) {
-                    return 0;//we are already running, do nothing
+        if (intent != null) { //called with null intent when the app is killed...
+            if (STOP.equals(intent.getAction())) {
+                stop();
+            } else {
+                if (START.equals(intent.getAction())) {
+                    if (mServer != null && mServer.isAlive()) {
+                        return START_NOT_STICKY;//we are already running, do nothing
+                    }
+                    String folder = intent.getStringExtra(ROOT_FOLDER);
+                    start(intent.getIntExtra(PORT, DEFAULT_PORT), folder != null ? folder : DEFAULT_ROOT_FOLDER);
                 }
-                String folder = intent.getStringExtra(ROOT_FOLDER);
-                start(intent.getIntExtra(PORT, DEFAULT_PORT), folder != null ? folder : DEFAULT_ROOT_FOLDER);
             }
-            return super.onStartCommand(intent, flags, startId);
         }
+        return START_NOT_STICKY;
     }
 
     /**
