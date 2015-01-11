@@ -79,4 +79,9 @@ public class WindowManagerGlobalReflector extends Reflector<Object> implements W
         }
         return null;
     }
+
+    @Override
+    public View getRootView(int index) {
+        return WindowManagerProvider.getRootView(this, index);
+    }
 }

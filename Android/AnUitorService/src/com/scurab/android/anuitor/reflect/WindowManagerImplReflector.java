@@ -77,4 +77,9 @@ public class WindowManagerImplReflector extends Reflector<Object> implements Win
         }
         return vrir;
     }
+
+    @Override
+    public View getRootView(int index) {
+        return WindowManagerProvider.getRootView(this, index);
+    }
 }

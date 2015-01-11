@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.reflect;
 
 import android.os.Build;
+import android.view.View;
 
 /**
  * @author jbruchanov
@@ -22,5 +23,13 @@ public class WindowManagerProvider {
             manager = new WindowManagerImplReflector();
         }
         return manager;
+    }
+
+    public static View getRootView(WindowManager manager, int index) {
+        String[] viewRootNames = manager.getViewRootNames();
+        if (index < viewRootNames.length) {
+            return manager.getRootView(viewRootNames[index]);
+        }
+        return null;
     }
 }

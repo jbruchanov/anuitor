@@ -17,4 +17,6 @@ public interface WindowManager {
     String[] getViewRootNames();
 
     View getRootView(String rootName);
+
+    View getRootView(int index);
 }

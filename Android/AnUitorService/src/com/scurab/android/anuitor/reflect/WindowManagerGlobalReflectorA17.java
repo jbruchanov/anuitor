@@ -71,4 +71,9 @@ public class WindowManagerGlobalReflectorA17 extends Reflector<Object> implement
     private View[] getRootViews() {
         return getFieldValue("mViews");
     }
+
+    @Override
+    public View getRootView(int index) {
+        return WindowManagerProvider.getRootView(this, index);
+    }
 }
