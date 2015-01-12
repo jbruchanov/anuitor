@@ -1,0 +1,252 @@
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+}
+body {
+  background-color: #f6f6f6;
+  padding-bottom: 50px;
+  padding-top: 80px;
+}
+
+header {
+  min-height: 80px;
+  color: #f6f6f6;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  background: #107090;
+}
+
+a {
+  color: #206080;
+}
+
+#description {
+  position: absolute;
+  background: #206080;
+  top: 80px;
+  left: 0;
+  right: 0;
+  
+}
+
+.row {
+    margin-left: 10px;
+}
+.inline h1 {
+    display: inline;
+    color: red;
+}
+
+.title{  
+  top: 20px;
+  width:450px;
+}
+
+header menu {
+    float: left;    
+}  
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 820px;
+}
+
+.row .logo {
+    text-align: center;
+}
+
+.spinlike{
+    float: left;    
+    min-height: 1px;
+}
+
+h2 {
+  font-weight: 100;
+  font-size: 22px;
+  line-height: 30px;
+  padding: 10px 0;
+  margin: 0;
+  color: #eee;
+}
+h2 strong {
+  font-weight: 300;
+}
+
+header menu {
+  margin: 20px 0 0;
+  padding: 0;
+  height: 40px;
+}
+
+header menu ul {
+  margin: 0;
+  padding: 0;
+  float: right;
+}
+
+header menu li {
+  list-style: none;
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+
+header menu li a {
+  display: inline-block;
+  height: 40px;
+  font-size: 17px;
+  line-height: 40px;
+  padding: 0 20px;
+  color: #f6f6f6;
+}
+
+header menu li a:hover {
+  color: #f6f6f6;
+  text-decoration: none;
+}
+
+header menu li a img {
+  margin: 0;
+  padding: 5px 0;
+  vertical-align: bottom;
+  width: 30px;
+  height: 30px;
+}
+
+.nav-menu{
+  position: fixed;
+  top: 150px;
+  left: -20px;
+  width: 200px;
+  z-index: 99;
+}
+
+.bodycolumn{
+  width:450px;
+}
+
+.nav > li > a {
+    display: block;
+}
+
+.nav {
+    list-style: none outside none;    
+}
+
+.nav a {
+    text-decoration: none;
+}
+
+.nav-tabs > li > a {    
+    width: 160px;    
+    padding: 5px;    
+    line-height: 20px;
+    border: 1px solid transparent;    
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+    color: rgb(85, 85, 85);
+    background-color: rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    
+    -moz-border-top-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    border-image: none;
+    cursor: default;
+}
+
+.nav-tabs.nav-stacked > li > a {
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 0px;
+}
+
+.nav-stacked > li {
+    float: none;
+}
+.nav-tabs > li {
+    margin-bottom: -1px;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+    text-decoration: none;
+    background-color: rgb(238, 238, 238);
+}
+
+/*  */
+@media (max-width: 1220px) {  
+  .nav-menu {
+    display: none;
+  } 
+}
+
+@media (max-width: 840px) {   
+  .title{  
+    top: 20px;
+    width:200px;
+  }
+
+  .container {    
+    width: 520px;
+  }
+}
+
+.note{
+  font-size: 0.9em;
+  color: gray;
+  font-weight:lighter;
+}
+
+h4 {
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #888;
+  font-size: 15px;
+  padding-top: 5px;
+  margin-bottom:-10px;
+}
+
+pre {
+    display: block;
+    padding: 9.5px;
+    margin: 0px 0px 10px;
+    font-size: 13px;
+    line-height: 20px;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    background-color: rgb(245, 245, 245);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.code{
+  font-size: 13px;
+  padding:10px;
+}
+
+.license{
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: gray;  
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  line-height: 20px;
+  font-weight: normal;
+}
+
+.copyright{
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  font-size: 0.8em;
+  display: block;
+  padding: 9.5px;
+  border: none;
+}
+
+.secondary > li > a:hover{
+  background: transparent;
+  color: #555555;
+}
