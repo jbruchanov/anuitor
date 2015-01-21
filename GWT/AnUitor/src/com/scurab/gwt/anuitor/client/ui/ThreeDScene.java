@@ -62,8 +62,14 @@ public class ThreeDScene extends AnimatedScene {
     /* Last mesh targetted by mouse */
     private ViewMesh mLastMesh;
     
-    private HandlerManager mEventBus = new HandlerManager(this);
+    private HandlerManager mEventBus = new HandlerManager(this);    
 
+    private int mScreenIndex;
+    
+    public ThreeDScene(int screenIndex) {
+        mScreenIndex = screenIndex;
+    }
+    
     @Override
     protected void onStart() {
         initScene();
@@ -139,7 +145,7 @@ public class ThreeDScene extends AnimatedScene {
      */
     private void loadData() {
         PBarHelper.show();
-        DataProvider.getTreeHierarchy(new AsyncCallback<ViewNodeJSO>() {
+        DataProvider.getTreeHierarchy(mScreenIndex, new AsyncCallback<ViewNodeJSO>() {
             @Override
             public void onError(Request r, Throwable t) {
                 PBarHelper.hide();
@@ -257,7 +263,7 @@ public class ThreeDScene extends AnimatedScene {
         material.setColor(mDefaultColor);
 
         final ViewMesh m = ParallaxTools.meshFromView(view, material, false);
-        final String link = DataProvider.getViewImageLink(view.getPosition());
+        final String link = DataProvider.getViewImageLink(view.getPosition(), mScreenIndex);
         Image i = new Image(link);
 
         i.addErrorHandler(new ErrorHandler() {// only way to get error

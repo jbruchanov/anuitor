@@ -1,18 +1,25 @@
 package com.scurab.gwt.anuitor.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.dev.json.JsonArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.scurab.gwt.anuitor.client.DataProvider.AsyncCallback;
 import com.scurab.gwt.anuitor.client.ui.FileStoragePage;
 import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
@@ -24,6 +31,8 @@ import com.scurab.gwt.anuitor.client.util.PBarHelper;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class AnUitor implements EntryPoint {
+    
+    private ListBox mScreenListBox;
     /**
      * This is the entry point method.
      */
@@ -33,21 +42,25 @@ public class AnUitor implements EntryPoint {
             @Override
             public void onValueChange(ValueChangeEvent<String> event) {                
                 PBarHelper.hide();
-                openScreen(event.getValue());
+                openScreen(event.getValue());                
             }
         });
 
         openScreen(History.getToken());
-    }
-
+    }      
+    
     private void openScreen(String screen) {
         IsWidget toOpen = null;
-        if ("ScreenPreview".equals(screen)) {
-            toOpen = new ScreenPreviewPage();
+        int screenIndex = hasIndexInToken() ? getScreenIndexFromToken() : getScreenIndex();
+        if(hasIndexInToken()){
+            screen = screen.substring(0, screen.indexOf(SCREEN_INDEX));
+        }
+        if ("ScreenPreview".equals(screen)) {            
+            toOpen = new ScreenPreviewPage(screenIndex);            
         } else if ("3D".equals(screen)) {
-            toOpen = new ThreeDPage();
+            toOpen = new ThreeDPage(screenIndex);
         } else if ("ViewHierarchy".equals(screen)) {
-            toOpen = new TreeViewPage();
+            toOpen = new TreeViewPage(screenIndex);
         } else if ("Resources".equals(screen)) {
             if(sorryDemoNotSupported()){return;}
             toOpen = new ResourcesPage();
@@ -58,14 +71,15 @@ public class AnUitor implements EntryPoint {
             Window.open(DataProvider.SCREEN_SCTRUCTURE, "_blank", "");
             return;
         } else if ("Screenshot".equals(screen)) {
-            Window.open(DataProvider.SCREEN, "_blank", "");
+            Window.open(DataProvider.SCREEN + DataProvider.SCREEN_INDEX + getScreenIndex(), "_blank", "");
             return;
         }else {
             screen = "";
             toOpen = createSelectionPane();
+            screenIndex = -1;
         }
 
-        openWidget(screen, toOpen);
+        openWidget(screen, screenIndex, toOpen);
     }
 
     private CellPanel createSelectionPane() {
@@ -73,7 +87,8 @@ public class AnUitor implements EntryPoint {
         hp.setWidth("100%");
         hp.setStyleName("mainScreenContent", true);        
         hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-
+            
+        hp.add(mScreenListBox = createListBox());
         hp.add(createButton("ScreenPreview"));
         hp.add(createButton("3D"));
         hp.add(createButton("ViewHierarchy"));
@@ -91,11 +106,33 @@ public class AnUitor implements EntryPoint {
         btn.addClickHandler(mClickHandler);
         return btn;
     }
+    
+    private ListBox createListBox(){
+        final ListBox lb = new ListBox(false);
+        lb.setEnabled(false);
+        lb.addItem("Loading", (String)null);
+        DataProvider.getScreens(new AsyncCallback<JsArrayString>() {            
+            @Override public void onError(Request r, Throwable t) {
+                Window.alert("Unable to load screens:" + t.getMessage());
+            }            
+            @Override
+            public void onDownloaded(JsArrayString result) {
+                lb.clear();
+                lb.setEnabled(true);
+                for (int i = 0, n = result.length(); i < n; i++) {                   
+                   String value = result.get(i);                   
+                   lb.addItem(value, String.valueOf(i));                   
+                }
+                lb.setSelectedIndex(lb.getItemCount() - 1);
+            }
+        });
+        return lb;
+    }
 
     private IsWidget mLastScreen;
 
-    private void openWidget(String v, IsWidget w) {
-        History.newItem(v);
+    private void openWidget(String v, int index, IsWidget w) {
+        History.newItem(v + (index < 0 ? "" : SCREEN_INDEX + index));//just add index if it's valid
         if (mLastScreen != null) {
             RootLayoutPanel.get().remove(mLastScreen);
         }
@@ -103,8 +140,27 @@ public class AnUitor implements EntryPoint {
         RootLayoutPanel.get().add(mLastScreen);
     }
     
+    private static final String SCREEN_INDEX = "_screenIndex=";
+    private boolean hasIndexInToken(){
+        String token = History.getToken();
+        return token != null && token.contains(SCREEN_INDEX);
+    }
+    
+    private int getScreenIndexFromToken(){
+        String token = History.getToken();
+        String index = token != null ? token.substring(token.indexOf(SCREEN_INDEX) + SCREEN_INDEX.length()) : null;
+        return Integer.parseInt(index);
+    }
+    
+    private int getScreenIndex(){
+       String v = mScreenListBox == null ? "0" : mScreenListBox.getValue(mScreenListBox.getSelectedIndex());
+       return v == null ? 0 : Integer.parseInt(v);
+    }
+    
     private boolean sorryDemoNotSupported() {
-        Window.alert("Sorry, not supported in DEMO!");
+        if (DataProvider.DEMO) {
+            Window.alert("Sorry, not supported in DEMO!");
+        }
         return DataProvider.DEMO;
     }
 

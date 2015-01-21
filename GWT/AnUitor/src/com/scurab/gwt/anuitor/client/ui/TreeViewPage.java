@@ -6,10 +6,14 @@ import com.scurab.gwt.anuitor.client.event.ViewNodeClickEventHandler;
 
 public class TreeViewPage extends SplitPanelPage {
 
-    private TreeView mTreeView;      
+    private TreeView mTreeView;    
     
-    private TreeView initTreeView() {
-        TreeView tv = new TreeView();        
+    public TreeViewPage(int screenIndex) {
+        super(screenIndex);        
+    }
+    
+    private TreeView initTreeView(int screenIndex) {
+        TreeView tv = new TreeView(screenIndex);
         tv.addClickHandler(new ViewNodeClickEventHandler() {
             @Override
             public void onViewNodeClick(ViewNodeClickEvent event) {
@@ -20,9 +24,9 @@ public class TreeViewPage extends SplitPanelPage {
     }
 
     @Override
-    public IsWidget getContentPanelWidget() {
+    public IsWidget getContentPanelWidget(int screenIndex) {
         if(mTreeView == null){
-            mTreeView = initTreeView();
+            mTreeView = initTreeView(screenIndex);
         }
         return mTreeView;
     }      

@@ -83,11 +83,11 @@ public class TreeView extends FlowPanel{
     /* EventBus for click/hover events */
     private HandlerManager mEventBus = new HandlerManager(this);
 
-    public TreeView() {
+    public TreeView(int screenIndex) {
         super();
         TreeViewResources.INSTANCE.css().ensureInjected();  
         PBarHelper.show();
-        DataProvider.getTreeHierarchy(new AsyncCallback<ViewNodeJSO>() {
+        DataProvider.getTreeHierarchy(screenIndex, new AsyncCallback<ViewNodeJSO>() {
             @Override
             public void onError(Request r, Throwable t) {
                 PBarHelper.hide();

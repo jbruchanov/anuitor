@@ -2,7 +2,10 @@ package com.scurab.gwt.anuitor.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.dev.json.JsonArray;
+import com.google.gwt.dev.json.JsonObject;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -29,8 +32,10 @@ public class DataProvider {
     private static final String RESOURCES = "/resources.json";
     private static final String RESOURCE_ID_X = "/resources.json?id=";
     private static final String STORAGE = "/storage.json?path=";
+    private static final String SCREENS = "/screens.json";
     private static final int HTTP_OK = 200;
     
+    public static final String SCREEN_INDEX = "?screenIndex=";
     public static final String SCREEN = (DEMO ? SAMPLE_DATA : "") + "/screen.png";
     public static final String SCREEN_SCTRUCTURE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json";     
 
@@ -53,8 +58,8 @@ public class DataProvider {
      * 
      * @param callback
      */
-    public static void getTreeHierarchy(final AsyncCallback<ViewNodeJSO> callback) {
-        sendRequest(VIEW_TREE_HIERARCHY, callback);
+    public static void getTreeHierarchy(int screenIndex, final AsyncCallback<ViewNodeJSO> callback) {
+        sendRequest(VIEW_TREE_HIERARCHY + SCREEN_INDEX + screenIndex, callback);
     }
 
     public static void getResources(final AsyncCallback<ResourcesJSO> callback) {
@@ -67,7 +72,11 @@ public class DataProvider {
     
     public static void getFiles(String folder, AsyncCallback<JsArray<FSItemJSO>> asyncCallback) {        
         sendRequest(STORAGE + folder, asyncCallback);
-    }   
+    }
+    
+    public static void getScreens(AsyncCallback<JsArrayString> asyncCallback) {
+        sendRequest(SCREENS, asyncCallback);
+    }
     
     /**
      * Send GET request
@@ -126,10 +135,10 @@ public class DataProvider {
      * @param position
      * @return
      */
-    public static String getViewImageLink(int position){
+    public static String getViewImageLink(int position, int screenIndex){
         return DEMO
                 ? SAMPLE_DATA + "/imageview_" + position + ".png"
-                : "/view.png?position=" + position;
+                : "/view.png?position=" + position + "&screenIndex=" + screenIndex;
                 
     }
 }

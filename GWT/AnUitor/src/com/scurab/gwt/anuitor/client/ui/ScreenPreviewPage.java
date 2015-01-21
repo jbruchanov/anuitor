@@ -94,13 +94,16 @@ public class ScreenPreviewPage extends Composite {
     private ViewNodeJSO mRoot;
     /* show cross base on image, not perfect UX, new canvas just for it would be better... */
     private boolean mDrawCross = false;
+    
+    private int mScreenId = 0;
 
     interface TestPageUiBinder extends UiBinder<Widget, ScreenPreviewPage> {
     }
 
-    public ScreenPreviewPage() {
+    public ScreenPreviewPage(int screenId) {
         initWidget(uiBinder.createAndBindUi(this));
         image.setVisible(false);
+        mScreenId = screenId;
         
         mScaleSliderBar = new ScaleSliderBar(200 - SCALE_MIN /* max(200) - min(30) = 170 */, "400px");               
         topImagePanel.insert(mScaleSliderBar, 0);
@@ -368,8 +371,9 @@ public class ScreenPreviewPage extends Composite {
     /**
      * Called when image is necessary to reload
      */
-    protected void onReloadImage() {        
-        image.setUrl(DataProvider.SCREEN + "?time=" + System.currentTimeMillis()); //just to avoid caching
+    protected void onReloadImage() {
+        String url = DataProvider.SCREEN + DataProvider.SCREEN_INDEX + mScreenId + "&time=" + System.currentTimeMillis();
+        image.setUrl(url); //just to avoid caching
         loadTree();
     }       
             
@@ -378,7 +382,7 @@ public class ScreenPreviewPage extends Composite {
      */
     private void loadTree(){      
         PBarHelper.show();
-        DataProvider.getTreeHierarchy(new DataProvider.AsyncCallback<ViewNodeJSO>() {
+        DataProvider.getTreeHierarchy(mScreenId, new DataProvider.AsyncCallback<ViewNodeJSO>() {
             @Override
             public void onError(Request r, Throwable t) {
                 PBarHelper.hide();

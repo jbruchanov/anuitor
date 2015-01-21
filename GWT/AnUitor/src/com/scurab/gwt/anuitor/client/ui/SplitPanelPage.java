@@ -30,18 +30,18 @@ public abstract class SplitPanelPage extends Composite {
     
     boolean mFirstClick = true;
 
-    public SplitPanelPage() {
+    public SplitPanelPage(int screenIndex) {
         initWidget(uiBinder.createAndBindUi(this));
         TableTools.initTableForPairs(cellTable);
         splitLayoutPanel.setWidgetSize(contentPanel, Window.getClientWidth() * (shouldHideTableOnStart() ? 0.99 : CONTENT_PERCENT));       
-        contentPanel.add(getContentPanelWidget());
+        contentPanel.add(getContentPanelWidget(screenIndex));
     }        
     
     protected boolean shouldHideTableOnStart() {
         return true;
     }
     
-    public abstract IsWidget getContentPanelWidget();    
+    public abstract IsWidget getContentPanelWidget(int screenIndex);    
 
     protected void dispatchViewNodeClick(ViewNodeJSO view) {
         if(mFirstClick){

@@ -13,16 +13,20 @@ public class ThreeDPage extends SplitPanelPage {
 
     private RenderingPanel mPanel;
     private ThreeDScene mScene;
+    
+    public ThreeDPage(int screenIndex) {
+        super(screenIndex);
+    }
 
     @Override
-    public IsWidget getContentPanelWidget() {
+    public IsWidget getContentPanelWidget(int screenIndex) {
         if (mPanel == null) {
-            mPanel = initScene();
+            mPanel = initScene(screenIndex);
         }
         return mPanel;
     }
 
-    private RenderingPanel initScene() {
+    private RenderingPanel initScene(int screenIndex) {
         Window.addResizeHandler(new ResizeHandler() {
 
             @Override
@@ -33,7 +37,7 @@ public class ThreeDPage extends SplitPanelPage {
         RenderingPanel renderingPanel = new RenderingPanel();
         updateRenderSize(renderingPanel, 0.999);
         renderingPanel.setBackground(0x111111);
-        mScene = new ThreeDScene();
+        mScene = new ThreeDScene(screenIndex);
         mScene.addMeshClickHandler(new ViewNodeClickEventHandler() {
             @Override
             public void onViewNodeClick(ViewNodeClickEvent event) {
