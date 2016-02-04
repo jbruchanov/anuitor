@@ -157,6 +157,14 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("StateListAnimator", v.getStateListAnimator());
         }
 
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.M) {
+            data.put("AccessibilityClassName", v.getAccessibilityClassName());
+            data.put("Foreground", String.valueOf(v.getForeground()));
+            data.put("ForegroundTintMode", String.valueOf(v.getForegroundTintMode()));
+            data.put("IsContextClickable", v.isContextClickable());
+            data.put("ScrollIndicators", getTranslator().scrollIndicators(v.getScrollIndicators()));
+        }
+
         boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass().getName());
         Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
         boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
