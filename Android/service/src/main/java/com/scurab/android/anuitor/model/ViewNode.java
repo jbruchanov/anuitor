@@ -50,7 +50,7 @@ public class ViewNode {
 
     public void addChild(ViewNode n) {
         if(mNodes == null){
-            mNodes = new ArrayList<ViewNode>();
+            mNodes = new ArrayList<>();
         }
         mNodes.add(n);
     }

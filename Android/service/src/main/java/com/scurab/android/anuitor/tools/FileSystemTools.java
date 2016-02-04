@@ -32,7 +32,7 @@ public class FileSystemTools {
      * @return
      */
     public static List<FSItem> get(Context context) {
-        ArrayList<FSItem> result = new ArrayList<FSItem>();
+        ArrayList<FSItem> result = new ArrayList<>();
         File f = new File(String.format("/data/data/%s", context.getPackageName()));
         if (f.exists()) {
             result.add(new FSItem(f.getAbsolutePath(), FSItem.TYPE_FOLDER, 0));
@@ -68,7 +68,7 @@ public class FileSystemTools {
     public static List<FSItem> get(File location) {
         File[] files = location.listFiles();
 
-        ArrayList<FSItem> result = new ArrayList<FSItem>();
+        ArrayList<FSItem> result = new ArrayList<>();
         try {
             if (files != null) { //if we don't have access it's null
                 for (File f : files) {
@@ -91,7 +91,7 @@ public class FileSystemTools {
             try {
                 File[] fs = new File("/storage").listFiles();
                 if (fs.length > 0) {
-                    List<String> dirs = new ArrayList<String>();
+                    List<String> dirs = new ArrayList<>();
                     for (File f : fs) {
                         dirs.add(f.getName());
                     }

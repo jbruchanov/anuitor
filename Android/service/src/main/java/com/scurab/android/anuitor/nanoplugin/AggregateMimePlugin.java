@@ -25,7 +25,7 @@ public class AggregateMimePlugin extends BasePlugin {
     }
 
     private String[] mergeFiles(BasePlugin[] plugins) {
-        HashSet<String> files = new HashSet<String>();
+        HashSet<String> files = new HashSet<>();
         for (BasePlugin b : plugins) {
             for (String file : b.files()) {
                 if(files.contains(file)){

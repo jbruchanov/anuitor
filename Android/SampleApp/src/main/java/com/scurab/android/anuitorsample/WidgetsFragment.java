@@ -38,7 +38,7 @@ public class WidgetsFragment extends Fragment {
     private void initAutoCompleteTextView(View view, Context context) {
         AutoCompleteTextView actv = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
         String[] data = context.getResources().getStringArray(R.array.planets);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, data);
         actv.setAdapter(adapter);
     }
 
@@ -52,7 +52,7 @@ public class WidgetsFragment extends Fragment {
         }
 
         Spinner sp = (Spinner) view.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp.setAdapter(adapter);
     }

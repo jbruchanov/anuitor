@@ -77,7 +77,7 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
     }
 
     protected List<HashMap<String, Object>> handleFragments(List<android.app.Fragment> fragments, HashMap<String, Object> data) {
-        List<HashMap<String, Object>> fragmentsData = new ArrayList<HashMap<String, Object>>();
+        List<HashMap<String, Object>> fragmentsData = new ArrayList<>();
         if(fragments != null) {
             for (android.app.Fragment fragment : fragments) {
                 fragmentsData.add(extractFragments(fragment, new HashMap<String, Object>(), data));

@@ -13,7 +13,7 @@ public class HttpTools {
 
 
     public static HashMap<String, String> parseQueryString(String query) {
-        HashMap<String, String> result = new HashMap<String, String>();
+        HashMap<String, String> result = new HashMap<>();
         if (isEmpty(query)) {
             return result;
         }

@@ -41,7 +41,7 @@ public class MenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.menu, container, false);
         mListView = (ListView) view.findViewById(android.R.id.list);
         String[] items = itemFragmentNames;
-        mMenuAdapter = new ArrayAdapter<String>(getActivity(), R.layout.menu_list_item, items);
+        mMenuAdapter = new ArrayAdapter<>(getActivity(), R.layout.menu_list_item, items);
         mListView.setAdapter(mMenuAdapter);
         mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

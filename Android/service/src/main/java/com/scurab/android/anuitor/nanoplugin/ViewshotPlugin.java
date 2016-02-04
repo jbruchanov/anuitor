@@ -42,7 +42,7 @@ public class ViewshotPlugin extends ActivityPlugin {
     public static final String VIEW_PNG = "view.png";
     public static final String PATH = "/" + VIEW_PNG;
 
-    private static final BlockingQueue<Object> LOCKS = new ArrayBlockingQueue<Object>(3);
+    private static final BlockingQueue<Object> LOCKS = new ArrayBlockingQueue<>(3);
 
     private Paint mClearPaint = new Paint();
 

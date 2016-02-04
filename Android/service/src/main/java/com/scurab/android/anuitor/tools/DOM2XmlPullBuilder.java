@@ -319,7 +319,7 @@ public class DOM2XmlPullBuilder {
 
     private static List<String> getElements(String line){
         Matcher matcher = REGEX.matcher(line);
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         while(matcher.find()){
             String value = matcher.group();
             values.add(value);

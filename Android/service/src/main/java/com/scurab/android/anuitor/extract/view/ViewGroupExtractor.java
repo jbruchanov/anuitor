@@ -22,9 +22,11 @@ public class ViewGroupExtractor extends ViewExtractor {
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         super.fillValues(v, data, parentData);
 
-        ViewGroup vg = (ViewGroup)v;
+        ViewGroup vg = (ViewGroup) v;
         data.put("ChildCount", vg.getChildCount());
-
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
+            data.put("ClipChildren", vg.getClipChildren());
+        }
         if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             data.put("ClipToPadding", vg.getClipToPadding());
             data.put("NestedScrollAxes", vg.getNestedScrollAxes());

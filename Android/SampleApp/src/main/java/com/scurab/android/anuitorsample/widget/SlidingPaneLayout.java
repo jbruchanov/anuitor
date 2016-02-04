@@ -192,7 +192,7 @@ public class SlidingPaneLayout extends ViewGroup {
     private final Rect mTmpRect = new Rect();
 
     private final ArrayList<DisableLayerRunnable> mPostedRunnables =
-            new ArrayList<DisableLayerRunnable>();
+            new ArrayList<>();
 
     static final SlidingPanelLayoutImpl IMPL;
 

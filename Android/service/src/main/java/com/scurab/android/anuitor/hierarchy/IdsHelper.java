@@ -44,7 +44,7 @@ public class IdsHelper {
     static final HashMap<String, SparseArray<String>> VALUES;
 
     static {
-        VALUES = new HashMap<String, SparseArray<String>>();
+        VALUES = new HashMap<>();
     }
 
     /**
@@ -69,7 +69,7 @@ public class IdsHelper {
     }
 
     private static void fillClass(Class<?> containerClass, boolean android) {
-        SparseArray<String> values = new SparseArray<String>();
+        SparseArray<String> values = new SparseArray<>();
         String name = containerClass.getSimpleName();
         String v = containerClass.getCanonicalName();
         if (!android) {
@@ -153,7 +153,7 @@ public class IdsHelper {
     public static String toJson(Resources res) {
         TypedValue tv = new TypedValue();
         CharSequence location = null;
-        HashMap<String, List<Pair<Object, Object>>> result = new HashMap<String, List<Pair<Object, Object>>>();
+        HashMap<String, List<Pair<Object, Object>>> result = new HashMap<>();
         for (String type : VALUES.keySet()) {
             boolean showValue = res != null && ((type.equals("R.drawable") || type.equals("R.layout") || type.equals("R.color")));
             List<Pair<Object, Object>> list = new ArrayList<Pair<Object, Object>>();

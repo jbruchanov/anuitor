@@ -66,8 +66,8 @@ public final class DetailExtractor {
     static final HashSet<String> VIEWGROUP_IGNORE;
 
     static {
-        MAP = new HashMap<String, BaseExtractor<?>>();
-        VIEWGROUP_IGNORE = new HashSet<String>();
+        MAP = new HashMap<>();
+        VIEWGROUP_IGNORE = new HashSet<>();
         resetToDefault();
     }
 

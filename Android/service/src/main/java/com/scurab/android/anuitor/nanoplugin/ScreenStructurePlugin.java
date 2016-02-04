@@ -53,12 +53,12 @@ public class ScreenStructurePlugin extends BasePlugin {
     @Override
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         String[] viewRootNames = mWindowManager.getViewRootNames();
-        List<HashMap<String, Object>> resultDataSet = new ArrayList<HashMap<String, Object>>();
+        List<HashMap<String, Object>> resultDataSet = new ArrayList<>();
 
         for (String rootName : viewRootNames) {
             View v = mWindowManager.getRootView(rootName);
             Context c = v.getContext();
-            HashMap<String, Object> data = new HashMap<String, Object>();
+            HashMap<String, Object> data = new HashMap<>();
             data.put("RootName", rootName);
             resultDataSet.add(data);
 

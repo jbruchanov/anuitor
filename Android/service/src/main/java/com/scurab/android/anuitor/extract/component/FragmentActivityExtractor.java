@@ -59,7 +59,7 @@ public class FragmentActivityExtractor extends ActivityExtractor {
     }
 
     protected List<HashMap<String, Object>> handleSupportBackStackEntries(FragmentManager fragmentManager, HashMap<String, Object> context) {
-        List<HashMap<String, Object>> dataSet = new ArrayList<HashMap<String, Object>>();
+        List<HashMap<String, Object>> dataSet = new ArrayList<>();
         for (int i = 0, n = fragmentManager.getBackStackEntryCount(); i < n; i++) {
             FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
             SupportBackStackEntryReflector sbsef = new SupportBackStackEntryReflector(backStackEntry);
@@ -82,7 +82,7 @@ public class FragmentActivityExtractor extends ActivityExtractor {
     }
 
     protected List<HashMap<String, Object>> handleSupportFragments(List<Fragment> fragments, HashMap<String, Object> data) {
-        List<HashMap<String, Object>> fragmentsData = new ArrayList<HashMap<String, Object>>();
+        List<HashMap<String, Object>> fragmentsData = new ArrayList<>();
         for (Fragment fragment : fragments) {
             fragmentsData.add(extractFragments(fragment, new HashMap<String, Object>(), data));
         }
