@@ -21,5 +21,6 @@ public final class ViewFields {
         public static String SCALE_Y = "_ScaleX";
         public static String VISIBILITY = "_Visibility";        
         public static String RENDERVIEWCONTENT = "_RenderViewContent";
+        public static String RENDER_AREA_RELATIVE = "_RenderAreaRelative";
     }
 }

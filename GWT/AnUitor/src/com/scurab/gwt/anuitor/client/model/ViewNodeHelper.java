@@ -72,7 +72,7 @@ public class ViewNodeHelper {
         if(((int)root.getDouble(ViewFields.Internal.VISIBILITY)) != 0){//not visible
             return null;
         }
-        if (Rect.fromView(root).contains(x, y)) {
+        if (Rect.fromView(root, true, false).contains(x, y)) {
             int n = root.getNodes() != null ? root.getNodes().length() : 0;
             if (n > 0) {
                 for (int i = n - 1; i >= 0; i--) {

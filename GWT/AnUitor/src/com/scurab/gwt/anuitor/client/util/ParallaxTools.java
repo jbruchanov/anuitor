@@ -13,6 +13,7 @@ import thothbot.parallax.core.shared.materials.MeshBasicMaterial;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.Document;
+import com.scurab.gwt.anuitor.client.model.Rect;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 
@@ -34,7 +35,7 @@ public final class ParallaxTools {
     private static final double DEPTH = 0.01;
 
     public static CubeGeometry geometryFromView(ViewNodeJSO view) {
-        return new CubeGeometry(view.getDouble(ViewFields.WIDTH), -view.getDouble(ViewFields.HEIGHT), DEPTH);
+        return new CubeGeometry(view.getWidth(), -view.getHeight(), DEPTH);
     }
 
     public static ViewMesh meshFromView(ViewNodeJSO view, Material material) {
@@ -46,8 +47,9 @@ public final class ParallaxTools {
         double y = view.getDouble(ViewFields.LOCATION_SCREEN_Y);
         double z = LAYER_DISTANCE * view.getLevel() + (int) (view.getPosition() / 5.0);
 
-        double w = view.getDouble(ViewFields.WIDTH);
-        double h = view.getDouble(ViewFields.HEIGHT);
+        double w = view.getWidth();
+        double h = view.getHeight();      
+        
         double d = DEPTH;
 
         // moving coordinates because [0,0,0] is center of gravity for cube

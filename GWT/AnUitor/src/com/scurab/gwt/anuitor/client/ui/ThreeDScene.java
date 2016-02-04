@@ -305,7 +305,7 @@ public class ThreeDScene extends AnimatedScene {
 
         ViewMesh meshFromView = ParallaxTools.meshFromView(view,
                 view.isLeaf() 
-                    ? ParallaxTools.createMaterial(0xFF00FF00) 
+                    ? ParallaxTools.createMaterial(view.hasCustomRenderSize() ? 0xFFFFA500 : 0xFF00FF00) 
                     : ParallaxTools.createMaterial(0xFFFF0000));
 
         getScene().add(meshFromView);

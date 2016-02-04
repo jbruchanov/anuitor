@@ -29,7 +29,7 @@ public class TransportServlet extends HttpServlet {
     }
 
     public String getDeviceAddress() {
-        return "10.0.1.56:8080";
+        return "192.168.168.8:8081";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class TransportServlet extends HttpServlet {
             String newUrl = getContentURL(req.getRequestURI() + (qs == null || qs.length() == 0 ? "" : "?" + req.getQueryString()));
             URL url = new URL(newUrl);
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-            urlc.setConnectTimeout(5000);
+            urlc.setConnectTimeout(15000);
             urlc.setReadTimeout(5000);
             
             urlc.setDoInput(true);

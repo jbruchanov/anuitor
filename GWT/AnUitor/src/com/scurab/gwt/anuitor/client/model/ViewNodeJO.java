@@ -34,10 +34,10 @@ public class ViewNodeJO {
         v.position = obj.getPosition();
         v.isLeaf = obj.isLeaf();
         
-        v.x = (int)obj.getDouble(ViewFields.LOCATION_SCREEN_X);
-        v.y = (int)obj.getDouble(ViewFields.LOCATION_SCREEN_Y);
-        v.width = (int)obj.getDouble(ViewFields.WIDTH);
-        v.height = (int)obj.getDouble(ViewFields.HEIGHT);
+        v.x = (int)obj.getLeft();
+        v.y = (int)obj.getTop();
+        v.width = (int)obj.getWidth();
+        v.height = (int)obj.getHeight();
         
         v.json = obj.toJsonString();
 

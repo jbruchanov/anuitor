@@ -94,6 +94,38 @@ public class ViewNodeJSO extends JavaScriptObject implements HasNodes<ViewNodeJS
 		return this.Data[key];
     }-*/;
 
+    public final double getWidth() {
+        return getWidth(true);
+    }
+    
+    public final double getHeight() {
+        return getHeight(true);
+    }
+    
+    public final double getLeft() {
+        return getLeft(true);
+    }
+    
+    public final double getTop() {
+        return getTop(true);
+    }
+    
+    public final double getWidth(boolean render) {
+        return hasCustomRenderSize() && render ? getRenderWidth() : getDouble(ViewFields.WIDTH);
+    }
+    
+    public final double getHeight(boolean render) {
+        return hasCustomRenderSize() && render ? getRenderWidth() : getDouble(ViewFields.HEIGHT);
+    }
+    
+    public final double getLeft(boolean render) {
+        return getDouble(ViewFields.LOCATION_SCREEN_X) + (render ? getRenderAreaPosition(0) : 0);
+    }
+    
+    public final double getTop(boolean render) {
+        return getDouble(ViewFields.LOCATION_SCREEN_Y) + (render ? getRenderAreaPosition(1) : 0);
+    }
+    
     public final boolean getBoolean(String key) {
         // not sure why native doesnt work :(
         String v = getStringedValue(key);
@@ -146,5 +178,32 @@ public class ViewNodeJSO extends JavaScriptObject implements HasNodes<ViewNodeJS
 
     public final boolean shouldRender() {
         return getBoolean("_RenderViewContent");
+    }
+    
+    public final boolean hasCustomRenderSize(){
+        return hasKey(ViewFields.Internal.RENDER_AREA_RELATIVE);
+    }
+    
+    private final int getRenderAreaPosition(int index) {
+        if(hasCustomRenderSize()){
+            return Integer.parseInt(getString(ViewFields.Internal.RENDER_AREA_RELATIVE).split(",")[index]);
+        }
+        return 0;
+    }
+    
+    private final int getRenderWidth() {
+        return getRenderWidthHeight(0, 2);
+    }
+    
+    private final int getRenderHeight() {
+        return getRenderWidthHeight(1, 3);
+    }
+    
+    private final int getRenderWidthHeight(int i1, int i2) {
+        if(hasCustomRenderSize()){
+            String[] vals = getString(ViewFields.Internal.RENDER_AREA_RELATIVE).split(",");
+            return Integer.parseInt(vals[i2]) - Integer.parseInt(vals[i1]);
+        }
+        return 0;
     }
 }

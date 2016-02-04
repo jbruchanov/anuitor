@@ -43,20 +43,33 @@ public class Rect {
      * @param view
      * @param withScaling true to make rectangle scaled as view is...
      * @return
-     */
+     */    
     public static Rect fromView(ViewNodeJSO view, boolean withScaling) {
-        int x = (int)view.getDouble(ViewFields.LOCATION_SCREEN_X);
-        int y = (int)view.getDouble(ViewFields.LOCATION_SCREEN_Y);
-        int width = (int)view.getDouble(ViewFields.WIDTH);
-        int height = (int)view.getDouble(ViewFields.HEIGHT);
+        return fromView(view, withScaling, true);
+    }
 
+    /**
+     * 
+     * @param view
+     * @param withScaling
+     * @param inclArea
+     * @return
+     */
+    public static Rect fromView(ViewNodeJSO view, boolean withScaling, boolean inclArea) {
+        int x = (int)view.getLeft(inclArea);
+        int y = (int)view.getTop(inclArea);
+        int width = (int)view.getWidth(inclArea);
+        int height = (int)view.getHeight(inclArea);              
+                    
+        double scaleX = 1, scaleY = 1;
         if (withScaling) {            
-            double scaleX = view.hasKey(ViewFields.Internal.SCALE_X) ? view.getDouble(ViewFields.Internal.SCALE_X) : 1.0;
-            double scaleY = view.hasKey(ViewFields.Internal.SCALE_Y) ? view.getDouble(ViewFields.Internal.SCALE_Y) : 1.0;
-            width *= scaleX;
-            height *= scaleY;
+            scaleX = view.hasKey(ViewFields.Internal.SCALE_X) ? view.getDouble(ViewFields.Internal.SCALE_X) : 1.0;
+            scaleY = view.hasKey(ViewFields.Internal.SCALE_Y) ? view.getDouble(ViewFields.Internal.SCALE_Y) : 1.0;            
         }
-
+        
+        width *= scaleX;
+        height *= scaleY;
+        
         Rect r = new Rect(x, y, width, height);
         return r;
     }

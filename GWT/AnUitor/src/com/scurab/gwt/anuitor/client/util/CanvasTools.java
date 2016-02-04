@@ -97,12 +97,12 @@ public final class CanvasTools{
      * @param stroke
      * @param fill
      */
-    public static void drawRectForView(ViewNodeJSO view, Canvas canvas, float scale, String stroke, String fill) {
+    public static void drawRectForView(ViewNodeJSO view, Canvas canvas, float scale, String stroke, String fill, boolean renderArea) {
         if (view == null) {
             return;
         }
 
-        Rect r = Rect.fromView(view);
+        Rect r = Rect.fromView(view, true, renderArea);
         if (scale != 1f) {
             r = r.scale(scale);
         }        

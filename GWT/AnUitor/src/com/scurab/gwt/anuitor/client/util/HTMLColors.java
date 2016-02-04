@@ -15,6 +15,7 @@ public final class HTMLColors {
     public static final String CYAN =       "#00FFFF";
     public static final String MAGENTA =    "#FF00FF";
     public static final String YELLOW =     "#FFFF00";
+    public static final String ORANGE =     "#FFA500";
 
 
     /**

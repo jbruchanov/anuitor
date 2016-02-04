@@ -340,7 +340,10 @@ public class ScreenPreviewPage extends Composite {
      */
     private void drawRectForView(ViewNodeJSO view) {
         clearCanvas();
-        drawRectForView(view, mCanvas, mScale, HTMLColors.RED, HTMLColors.YELLOW);
+        if(view.hasCustomRenderSize()){
+            drawRectForView(view, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);            
+        }
+        drawRectForView(view, mCanvas, mScale, HTMLColors.RED, HTMLColors.YELLOW, false);
     }
 
     /**
@@ -352,11 +355,15 @@ public class ScreenPreviewPage extends Composite {
      * @param fill
      */
     private void drawRectForView(ViewNodeJSO view, Canvas canvas, float scale, String stroke, String fill) {
+        drawRectForView(view, canvas, scale, stroke, fill, true);
+    }
+    
+    private void drawRectForView(ViewNodeJSO view, Canvas canvas, float scale, String stroke, String fill, boolean renderArea) {
         if (view == null) {
             return;
         }       
         hoveredViewID.setText("ID:" + view.getID() + " Name:" + view.getIDName());
-        CanvasTools.drawRectForView(view, canvas, scale, stroke, fill);
+        CanvasTools.drawRectForView(view, canvas, scale, stroke, fill, renderArea);
     }
    
     /**
@@ -458,7 +465,10 @@ public class ScreenPreviewPage extends Composite {
             onDrawMouseCross(mX, mY);
             if (true) {
                 ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY);
-                drawRectForView(vs, mCanvas, mScale, HTMLColors.RED, COLORS[0]);
+                if(vs.hasCustomRenderSize()){
+                    drawRectForView(vs, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);                    
+                }
+                drawRectForView(vs, mCanvas, mScale, HTMLColors.RED, COLORS[0], false);
                 if (mTreeViewModel != null) {
                     mTreeViewModel.highlightNode(vs);
                 }
@@ -469,8 +479,11 @@ public class ScreenPreviewPage extends Composite {
             List<ViewNodeJSO> views = ViewNodeHelper.findViewsByPosition(mRoot, scaledX, scaledY);
             
             for (int i = 0, n = views.size(); i < n; i++) {
-                ViewNodeJSO v = views.get(i);                
-                drawRectForView(v, mCanvas, mScale, HTMLColors.RED, COLORS[i % COLORS.length]);
+                ViewNodeJSO vs = views.get(i);
+                if(vs.hasCustomRenderSize()){
+                    drawRectForView(vs, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);                    
+                }
+                drawRectForView(vs, mCanvas, mScale, HTMLColors.RED, COLORS[0], false);
             }
         }
 
