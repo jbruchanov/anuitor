@@ -345,4 +345,41 @@ public class Translator {
         }
         return sb.toString();
     }
+
+    public Object scrollIndicators(int scrollIndicators) {
+        StringBuilder sb = new StringBuilder();
+
+        if ((scrollIndicators & View.SCROLL_INDICATOR_BOTTOM) == View.SCROLL_INDICATOR_BOTTOM) {
+            sb.append("SCROLL_INDICATOR_BOTTOM|");
+        }
+
+        if ((scrollIndicators & View.SCROLL_INDICATOR_END) == View.SCROLL_INDICATOR_END) {
+            sb.append("SCROLL_INDICATOR_END|");
+        }
+
+        if ((scrollIndicators & View.SCROLL_INDICATOR_LEFT) == View.SCROLL_INDICATOR_LEFT) {
+            sb.append("SCROLL_INDICATOR_LEFT|");
+        }
+
+        if ((scrollIndicators & View.SCROLL_INDICATOR_RIGHT) == View.SCROLL_INDICATOR_RIGHT) {
+            sb.append("SCROLL_INDICATOR_RIGHT|");
+        }
+
+        if ((scrollIndicators & View.SCROLL_INDICATOR_TOP) == View.SCROLL_INDICATOR_TOP) {
+            sb.append("SCROLL_INDICATOR_TOP|");
+        }
+
+        if ((scrollIndicators & View.SCROLL_INDICATOR_START) == View.SCROLL_INDICATOR_START) {
+            sb.append("SCROLL_INDICATOR_START|");
+        }
+
+        int length = sb.length();
+        if (length > 0) {
+            sb.setLength(length - 1);
+        } else {
+            sb.append("None");
+        }
+
+        return sb.toString();
+    }
 }
