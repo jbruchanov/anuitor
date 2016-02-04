@@ -23,7 +23,6 @@ public class LinearLayoutExtractor extends ViewExtractor {
         super.fillValues(v, data, parentData);
 
         LinearLayout ll = (LinearLayout)v;
-        data.put("BaseLine", ll.getBaseline());
         data.put("BaselineAlignedChildIndex", ll.getBaselineAlignedChildIndex());
         data.put("IsBaseAligned", ll.isBaselineAligned());
 

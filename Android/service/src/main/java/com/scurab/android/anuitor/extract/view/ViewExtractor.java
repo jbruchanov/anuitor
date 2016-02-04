@@ -64,7 +64,12 @@ public class ViewExtractor extends BaseExtractor<View> {
         data.put("Type", String.valueOf(v.getClass().getName()));
         data.put("Extractor", getClass().getName());
 
-        data.put("Baseline", v.getBaseline());
+        try {
+            data.put("Baseline", v.getBaseline());
+        } catch (Exception e) {
+            data.put("Baseline", e.getClass().getSimpleName());
+            e.printStackTrace();
+        }
         data.put("Background", String.valueOf(v.getBackground()));
         data.put("Context", String.valueOf(v.getContext()));
         data.put("ContentDescription", String.valueOf(v.getContentDescription()));
