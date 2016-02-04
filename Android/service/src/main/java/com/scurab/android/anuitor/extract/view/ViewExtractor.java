@@ -140,12 +140,12 @@ public class ViewExtractor extends BaseExtractor<View> {
                 data.put("CameraDistance", v.getCameraDistance());
             }
             data.put("IsImportantForA11Y", translator.importantForA11Y(v.getImportantForAccessibility()));
-            data.put("LayerDirection", translator.layoutDirection(v.getLayoutDirection()));
             data.put("MinWidth", v.getMinimumWidth());
             data.put("MinHeight", v.getMinimumHeight());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             data.put("LabelFor", IdsHelper.getNameForId(v.getLabelFor()));
+            data.put("LayerDirection", translator.layoutDirection(v.getLayoutDirection()));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             data.put("ClipBounds", String.valueOf(v.getClipBounds()));
@@ -174,7 +174,7 @@ public class ViewExtractor extends BaseExtractor<View> {
         Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
         boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
         boolean hasBackground = v.getBackground() != null;
-        boolean shouldRender = isVisible && ((isViewGroup && hasBackground) || !isViewGroup);
+        boolean shouldRender = isVisible && v.isShown() && ((isViewGroup && hasBackground) || !isViewGroup);
         data.put("_RenderViewContent", shouldRender);
 
         //TODO:remove later
