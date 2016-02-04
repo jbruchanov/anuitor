@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -52,6 +54,7 @@ import com.scurab.android.anuitor.model.ViewNode;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * User: jbruchanov
@@ -63,10 +66,12 @@ import java.util.HashSet;
 public final class DetailExtractor {
 
     static final HashMap<String, BaseExtractor<?>> MAP;
+    static final HashMap<String, RenderAreaWrapper<?>> RENDER_AREA_MAP;
     static final HashSet<String> VIEWGROUP_IGNORE;
 
     static {
         MAP = new HashMap<>();
+        RENDER_AREA_MAP = new HashMap<>();
         VIEWGROUP_IGNORE = new HashSet<>();
         resetToDefault();
     }
@@ -143,12 +148,53 @@ public final class DetailExtractor {
     }
 
     /**
+     * Register wrapper for particular class.<br/>
+     * Older is overwritten if exists
+     * @param clz
+     * @param wrapper
+     * @return overwritten wrapper
+     */
+    public static <T extends View> RenderAreaWrapper<?> registerRenderArea(Class<? extends T> clz, RenderAreaWrapper<T> wrapper) {
+        return registerRenderArea(clz.getName(), wrapper);
+    }
+
+    /**
+     * Register wrapper for particular class.<br/>
+     * Older is overwritten if exists
+     * @param className
+     * @param wrapper
+     * @param <T>
+     * @return
+     */
+    public static <T extends View> RenderAreaWrapper<?> registerRenderArea(String className, RenderAreaWrapper<T> wrapper) {
+        return RENDER_AREA_MAP.put(className, wrapper);
+    }
+
+    /**
      * Unregister extractor
      * @param className
      * @return removed extractor
      */
     public static BaseExtractor<?> unregisterExtractor(String className) {
         return MAP.remove(className);
+    }
+
+    /**
+     * Unregister extractor
+     * @param clz
+     * @return removed extractor
+     */
+    public static RenderAreaWrapper<?> unregisterRenderArea(Class<?> clz) {
+        return unregisterRenderArea(clz.getName());
+    }
+
+    /**
+     * Unregister extractor
+     * @param className
+     * @return removed extractor
+     */
+    public static RenderAreaWrapper<?> unregisterRenderArea(String className) {
+        return RENDER_AREA_MAP.remove(className);
     }
 
     /**
@@ -264,22 +310,39 @@ public final class DetailExtractor {
     }
 
     /**
+     * Get render size for view if exists
+     * @param object
+     * @return
+     */
+    @Nullable
+    public static RenderAreaWrapper<View> getRenderArea(View object) {
+        return (RenderAreaWrapper<View>) findItemByClassInheritance(object.getClass(), RENDER_AREA_MAP);
+    }
+
+    /**
      * Find generic extractor for particular class
      * @param clazz
      * @param <T>
      * @return
      * @throws IllegalStateException if no extractor is found
      */
+    @NonNull
     public static <T> BaseExtractor<T> getExtractor(final Class<T> clazz) {
-        Class<?> clz = clazz;
-        BaseExtractor<?> ve = MAP.get(clz.getName());
-        while (ve == null && clz != Object.class) {//object just for sure that View is unregistered
-            clz = clz.getSuperclass();
-            ve = MAP.get(clz.getCanonicalName());
-        }
-        if (ve == null) {
+        final BaseExtractor<?> be = findItemByClassInheritance(clazz, MAP);
+        if (be == null) {
             throw new IllegalStateException("Not found extractor for type:" + clazz.getName());
         }
-        return (BaseExtractor<T>)ve;
+        return (BaseExtractor<T>) be;
+    }
+
+    @Nullable
+    private static <T, R> R findItemByClassInheritance(final Class<T> clazz, Map<String, R> data) {
+        Class<?> clz = clazz;
+        R ve = data.get(clz.getName());
+        while (ve == null && clz != Object.class) {//object just for sure that View is unregistered
+            clz = clz.getSuperclass();
+            ve = data.get(clz.getCanonicalName());
+        }
+        return ve;
     }
 }

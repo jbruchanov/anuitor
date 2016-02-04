@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
@@ -43,6 +45,7 @@ public class ViewshotPlugin extends ActivityPlugin {
     public static final String PATH = "/" + VIEW_PNG;
 
     private static final BlockingQueue<Object> LOCKS = new ArrayBlockingQueue<>(3);
+    private Rect mRenderArea = new Rect();
 
     private Paint mClearPaint = new Paint();
 
@@ -83,6 +86,12 @@ public class ViewshotPlugin extends ActivityPlugin {
                         o = LOCKS.take();
                         int w = view.getWidth();
                         int h = view.getHeight();
+                        final RenderAreaWrapper<View> renderSize = DetailExtractor.getRenderArea(view);
+                        boolean differentSize = renderSize != null;
+                        mRenderArea.set(0, 0, w, h);
+                        if (renderSize != null) {
+                            renderSize.getRenderArea(view, mRenderArea);
+                        }
                         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
                         Bitmap bitmap = null;
@@ -104,16 +113,18 @@ public class ViewshotPlugin extends ActivityPlugin {
 
                                 if (bitmap == null) {
                                     // get bitmap
-                                    view.destroyDrawingCache();
-                                    try {
-                                        view.buildDrawingCache(false);
-                                    } catch (Throwable e) {
-                                        Log.e("ViewshotPlugin", e.getMessage());
-                                        e.printStackTrace();
+                                    if (!differentSize) {
+                                        view.destroyDrawingCache();
+                                        try {
+                                            view.buildDrawingCache(false);
+                                        } catch (Throwable e) {
+                                            Log.e("ViewshotPlugin", e.getMessage());
+                                            e.printStackTrace();
+                                        }
+                                        bitmap = view.getDrawingCache();
                                     }
-                                    bitmap = view.getDrawingCache();
                                     if (bitmap == null) {
-                                        bitmap = drawView(view, w, h);
+                                        bitmap = drawView(view, mRenderArea);
                                     }
                                 }
                             } else {
@@ -185,11 +196,12 @@ public class ViewshotPlugin extends ActivityPlugin {
         return scale;
     }
 
-    private Bitmap drawView(View view, int w, int h) {
-        Bitmap b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+    private Bitmap drawView(View view, Rect renderArea) {
+        Bitmap b = Bitmap.createBitmap(renderArea.width(), renderArea.height(), Bitmap.Config.ARGB_8888);
 
         Canvas c = new Canvas(b);
-        c.drawRect(0, 0, w, h, mClearPaint);//clear white background to get transparency
+        c.drawRect(0, 0, b.getWidth(), b.getHeight(), mClearPaint);//clear white background to get transparency
+        c.translate(-renderArea.left, -renderArea.top);
         view.draw(c);
         return b;
     }

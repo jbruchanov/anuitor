@@ -1,8 +1,10 @@
 package com.scurab.android.anuitorsample;
 
 import android.app.Application;
-import android.content.Intent;
-import com.scurab.android.anuitor.service.AnUitorService;
+import android.graphics.Rect;
+
+import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 
 /**
  * Created by jbruchanov@gmail.com
@@ -14,5 +16,12 @@ public class SampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView.class, new RenderAreaWrapper<DrawOutsideBoundsFragment.HelpTextView>() {
+            @Override
+            public void getRenderArea(DrawOutsideBoundsFragment.HelpTextView view, Rect outRect) {
+                view.getDrawingSize(outRect);
+            }
+        });
     }
 }

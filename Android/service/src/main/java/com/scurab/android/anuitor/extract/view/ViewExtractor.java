@@ -4,12 +4,14 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
@@ -20,7 +22,6 @@ import com.scurab.android.anuitor.tools.Executor;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * User: jbruchanov
@@ -180,6 +181,15 @@ public class ViewExtractor extends BaseExtractor<View> {
         //TODO:remove later
         data.put("RenderViewContent", shouldRender);
 
+        final RenderAreaWrapper<View> renderArea = DetailExtractor.getRenderArea(v);
+        if (renderArea != null) {
+            final Rect outRect = new Rect();
+            renderArea.getRenderArea(v, outRect);
+            final String value = toString(outRect);
+            data.put("_RenderAreaRelative", value);
+            data.put("RenderAreaRelative", value);
+        }
+
         fillLayoutParams(v, data, parentData);
         fillScale(v, data, parentData);
         fillLocationValues(v, data, parentData);
@@ -325,5 +335,13 @@ public class ViewExtractor extends BaseExtractor<View> {
             clz = clz.getSuperclass();
         }
         return false;
+    }
+
+    private String toString(Rect rect) {
+        return new StringBuilder()
+                .append(rect.left).append(",")
+                .append(rect.top).append(",")
+                .append(rect.right).append(",")
+                .append(rect.bottom).toString();
     }
 }

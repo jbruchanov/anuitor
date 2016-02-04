@@ -24,7 +24,8 @@ public class MenuFragment extends Fragment {
             ScrollViewFragment.class,
             ViewPagerFragment.class,
             WidgetsFragment.class,
-            CustomWidgetsFragment.class
+            CustomWidgetsFragment.class,
+            DrawOutsideBoundsFragment.class
     };
 
     public static final String[] itemFragmentNames;
