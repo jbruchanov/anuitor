@@ -72,6 +72,7 @@ public class HttpTools {
         public static final String IMAGE_PNG = "image/png";
         public static final String IMAGE_JPG = "image/jpeg";
         public static final String IMAGE_GIF = "image/gif";
+        public static final String PLAIN_TEXT = "text/plain";
     }
 
     private static boolean isEmpty(String value){
