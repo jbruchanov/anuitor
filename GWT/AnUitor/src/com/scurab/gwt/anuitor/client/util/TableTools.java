@@ -39,9 +39,10 @@ public final class TableTools {
             if (key.startsWith("_") || key.equals(ViewFields.TYPE) || key.equals(ViewFields.POSITION)) { // ignore  internal fields and type for now
                 continue;
             }
-            boolean clickable = key.endsWith(":");               
+            boolean clickable = key.indexOf(":") > 0;               
             try {
                 String value = viewNode.getStringedValue(key);
+                clickable &= !"null".equals(value);
                 list.add(new Pair(key, value, clickable, viewNode.getPosition()));
             } catch (Exception e) {
                 sb.append(key).append("\n" + e.getMessage());
@@ -75,15 +76,17 @@ public final class TableTools {
         Column<Pair, String> column = new Column<Pair, String>(new TextCell()) {
             @Override
             public String getValue(Pair p) {
-                return p.key;
+                return p.keyReadable();
             }
             
             @Override
             public void render(Context context, Pair object, SafeHtmlBuilder sb) {
                 if (object.clickable) {                           
-                    String key = object.key.substring(0, object.key.length() - 1);                    
+                    String key = object.keyReadable();                    
                     sb.append(SafeHtmlUtils.fromTrustedString("<a href=\"" + createUrl(object.position, key) + "\" target=\"_blank\">" + key + "</a>"));
-                } else {                    
+                } else if(ViewFields.POSITION.equals(object.key)) { 
+                    sb.append(SafeHtmlUtils.fromTrustedString("<a href=\"/view.png?position=" + object.value + "\" target=\"_blank\">" + object.key + "</a>"));                                        
+                } else {
                     super.render(context, object, sb);                    
                 }
             }
@@ -120,7 +123,7 @@ public final class TableTools {
     
     private static String createUrl(int position, String key) {
         return new StringBuilder()
-        .append("/viewdetail?position=")
+        .append("/viewproperty?position=")
         .append(position).append("&property=")
         .append(key)
         .toString();

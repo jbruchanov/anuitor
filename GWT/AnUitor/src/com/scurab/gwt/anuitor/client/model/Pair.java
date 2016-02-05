@@ -24,4 +24,12 @@ public class Pair implements Comparable<Pair>{
     public int compareTo(Pair o) {            
         return keyCompare.compareTo(o.keyCompare);
     }
+    
+    public String keyReadable(){
+        int i = key.indexOf(":");
+        if(i > 0){
+            return key.substring(0,  i);
+        }
+        return key;
+    }
 }
