@@ -1,8 +1,10 @@
 package com.scurab.android.anuitor.extract.view;
 
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
+import android.text.TextPaint;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,6 +53,9 @@ public class TextViewExtractor extends ViewExtractor {
             values.put("CompoundDrawableBottom", String.valueOf(compoundDrawables[3]));
         }
 
+        final TextPaint paint = tv.getPaint();
+        final BaseExtractor<Paint> extractor = DetailExtractor.getExtractor(Paint.class);
+        extractor.fillValues(paint, values, values);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             values.put("IsTextSelectable", tv.isTextSelectable());

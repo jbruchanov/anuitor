@@ -52,4 +52,10 @@ public abstract class BaseExtractor<T> {
     public Translator getTranslator() {
         return mTranslator;
     }
+
+    protected void appendClassName(String name, Object object, HashMap<String, Object> data) {
+        if (object != null) {
+            data.put(name, object.getClass().getName());
+        }
+    }
 }

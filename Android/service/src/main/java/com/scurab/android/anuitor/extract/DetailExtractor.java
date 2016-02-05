@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.extract;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +31,7 @@ import com.scurab.android.anuitor.extract.component.BundleExtractor;
 import com.scurab.android.anuitor.extract.component.FragmentActivityExtractor;
 import com.scurab.android.anuitor.extract.component.FragmentExtractor;
 import com.scurab.android.anuitor.extract.component.IntentExtractor;
+import com.scurab.android.anuitor.extract.component.PaintExtractor;
 import com.scurab.android.anuitor.extract.component.SupportFragmentExtractor;
 import com.scurab.android.anuitor.extract.view.AbsListViewExtractor;
 import com.scurab.android.anuitor.extract.view.AbsSeekBarExtractor;
@@ -122,6 +124,7 @@ public final class DetailExtractor {
         }
         registerExtractor(android.support.v4.app.Fragment.class, new SupportFragmentExtractor(translator));
         registerExtractor(Intent.class, new IntentExtractor(translator));
+        registerExtractor(Paint.class, new PaintExtractor(translator));
     }
 
     /**
