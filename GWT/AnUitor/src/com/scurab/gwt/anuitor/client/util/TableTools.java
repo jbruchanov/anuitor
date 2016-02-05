@@ -3,8 +3,14 @@ package com.scurab.gwt.anuitor.client.util;
 import java.util.List;
 import java.util.Set;
 
+import thothbot.parallax.core.shared.utils.ColorUtils;
+
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -30,12 +36,16 @@ public final class TableTools {
         StringBuilder sb = new StringBuilder();
         for (String key : keys) {
 
-            if (key.startsWith("_") || key.equals(ViewFields.TYPE)) { // ignore  internal fields and type for now
+            if (key.startsWith("_") || key.equals(ViewFields.TYPE) || key.equals(ViewFields.POSITION)) { // ignore  internal fields and type for now
                 continue;
             }
+            boolean clickable = key.endsWith(":"); 
+            if (clickable) {
+                key = key.substring(0, key.length() - 1);
+            }   
             try {
                 String value = viewNode.getStringedValue(key);
-                list.add(new Pair(key, value));
+                list.add(new Pair(key, value, clickable, viewNode.getPosition()));
             } catch (Exception e) {
                 sb.append(key).append("\n" + e.getMessage());
             }
@@ -46,6 +56,7 @@ public final class TableTools {
         }
         java.util.Collections.sort(list);
 
+        list.add(0, new Pair("Position", viewNode.getPosition()));
         list.add(0, new Pair("Level", viewNode.getLevel()));
         list.add(0, new Pair("IDName", viewNode.getIDName()));
         list.add(0, new Pair("ID", viewNode.getID()));
@@ -59,11 +70,24 @@ public final class TableTools {
      * @param cellTable
      */
     public static void initTableForPairs(CellTable<Pair> cellTable) {
+        initTableForPairs(cellTable, false);
+    }
+    
+    public static void initTableForPairs(CellTable<Pair> cellTable, boolean clickable) {
         cellTable.getLoadingIndicator().setVisible(false);
         Column<Pair, String> column = new Column<Pair, String>(new TextCell()) {
             @Override
             public String getValue(Pair p) {
                 return p.key;
+            }
+            
+            @Override
+            public void render(Context context, Pair object, SafeHtmlBuilder sb) {
+                if (object.clickable) {                    
+                    sb.append(SafeHtmlUtils.fromTrustedString("<a href=\"" + createUrl(object) + "\" target=\"_blank\">" + object.key + "</a>"));
+                } else {                    
+                    super.render(context, object, sb);                    
+                }
             }
         };
         column.setCellStyleNames("tableLabel");
@@ -75,10 +99,37 @@ public final class TableTools {
             public String getValue(Pair object) {
                 return String.valueOf(object.value);
             }
+            
+            @Override
+            public void render(Context context, Pair object, SafeHtmlBuilder sb) {             
+                super.render(context, object, sb);
+                if (object.value instanceof String) {
+                    String value = (String)object.value;
+                    if (value.startsWith("#")) {
+                        try {                                
+                            sb.append(createColorBlock(value));                     
+                        } catch (Throwable t) {
+
+                        }
+                    }
+                }                   
+            }
         };
         column.setCellStyleNames("tableValue");
         cellTable.addColumn(column, "Value");
         cellTable.setColumnWidth(column, "100%");
+    }
+    
+    private static String createUrl(Pair object) {
+        return new StringBuilder()
+        .append("/viewdetail?position=")
+        .append(object.position).append("&property")
+        .append(object.key)
+        .toString();
+    }
+    
+    private static SafeHtml createColorBlock(String color) {
+        return SafeHtmlUtils.fromTrustedString("<span style=\"height:10px;width:50px; margin:0 10px; display:inline-block; border: 1px solid black;\" class=\"transparent\"><span style=\"height:10px; display:block;background:" + HTMLColors.convertColor(color) + "\">&nbsp;</span></span>");
     }
     
     /**

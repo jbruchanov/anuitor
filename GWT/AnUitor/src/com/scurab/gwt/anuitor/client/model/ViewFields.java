@@ -7,7 +7,8 @@ public final class ViewFields {
     public static final String HEIGHT = "Height";
     public static final String WIDTH = "Width";
     public static final String TYPE = "Type";
-    public static final String VISIBILITY = "Visibility";
+    public static final String VISIBILITY = "Visibility";    
+    public static final String POSITION = "Position";
 
     /**
      * Fields which are used for internal purposes only and have meaning only
