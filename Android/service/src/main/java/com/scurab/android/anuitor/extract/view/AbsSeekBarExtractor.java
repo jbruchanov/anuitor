@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.widget.AbsSeekBar;
-import android.widget.SeekBar;
 
 import com.scurab.android.anuitor.extract.Translator;
 

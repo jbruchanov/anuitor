@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.extract.Translator;
-import com.scurab.android.anuitor.extract.view.TextViewExtractor;
 import com.scurab.android.anuitor.service.AnUitorService;
 import com.scurab.android.anuitorsample.extract.CustomTextViewExtractor;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
