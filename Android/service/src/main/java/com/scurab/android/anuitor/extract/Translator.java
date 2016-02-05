@@ -33,11 +33,11 @@ public class Translator {
      */
     public String visibility(int visibility) {
         if (View.VISIBLE == visibility) {
-            return "Visible";
+            return "VISIBLE";
         } else if (1 == visibility || View.INVISIBLE == visibility) { //1 by attrs
-            return "Invisible";
+            return "INVISIBLE";
         } else if (2 == visibility || View.GONE == visibility) {//2 by attrs
-            return "Gone";
+            return "GONE";
         } else {
             return String.format("Unknown value:'%s'", visibility);
         }
@@ -52,25 +52,25 @@ public class Translator {
     public String gravity(int gravity) {
         StringBuilder sb = new StringBuilder();
         if ((gravity & Gravity.CENTER) == Gravity.CENTER) {
-            sb.append("Center");
+            sb.append("CENTER");
         } else {
             if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
-                sb.append("CenterVertical|");
+                sb.append("CENTER_VERTICAL|");
             }
             if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
-                sb.append("CenterHorizontal|");
+                sb.append("CENTER_HORIZONTAL|");
             }
             if ((gravity & Gravity.TOP) == Gravity.TOP) {
-                sb.append("Top|");
+                sb.append("TOP|");
             }
             if ((gravity & Gravity.LEFT) == Gravity.LEFT) {
-                sb.append("Left|");
+                sb.append("LEFT|");
             }
             if ((gravity & Gravity.RIGHT) == Gravity.RIGHT) {
-                sb.append("Right|");
+                sb.append("RIGHT|");
             }
             if ((gravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
-                sb.append("Bottom|");
+                sb.append("BOTTOM|");
             }
             int len = sb.length();
             if (len > 0) {
@@ -136,7 +136,7 @@ public class Translator {
             case View.LAYER_TYPE_SOFTWARE:
                 return "SW";
             case View.LAYER_TYPE_NONE:
-                return "None";
+                return "NONE";
             default:
                 return String.format("UNKWNOWN (%s)", value);
         }
@@ -145,9 +145,9 @@ public class Translator {
     public Object layoutDirection(int value) {
         switch (value) {
             case View.LAYOUT_DIRECTION_INHERIT:
-                return "Inherit";
+                return "INHERIT";
             case View.LAYOUT_DIRECTION_LOCALE:
-                return "Locale";
+                return "LOCALE";
             case View.LAYOUT_DIRECTION_LTR:
                 return "LTR";
             case View.LAYOUT_DIRECTION_RTL:
