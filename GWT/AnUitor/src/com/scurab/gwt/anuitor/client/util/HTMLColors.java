@@ -60,7 +60,7 @@ public final class HTMLColors {
        int r = Integer.parseInt(argb.substring(3, 5), 16);
        int g = Integer.parseInt(argb.substring(5, 7), 16);
        int b = Integer.parseInt(argb.substring(7, 9), 16);
-       float a = Integer.parseInt(argb.substring(1, 3), 16) / 100f;
+       float a = Integer.parseInt(argb.substring(1, 3), 16) / 255f;
        return "rgba(" + r + ", " + g + ", " + b + ", " + a + ");";
     }
 }

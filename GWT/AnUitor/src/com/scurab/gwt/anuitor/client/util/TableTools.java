@@ -39,10 +39,7 @@ public final class TableTools {
             if (key.startsWith("_") || key.equals(ViewFields.TYPE) || key.equals(ViewFields.POSITION)) { // ignore  internal fields and type for now
                 continue;
             }
-            boolean clickable = key.endsWith(":"); 
-            if (clickable) {
-                key = key.substring(0, key.length() - 1);
-            }   
+            boolean clickable = key.endsWith(":");               
             try {
                 String value = viewNode.getStringedValue(key);
                 list.add(new Pair(key, value, clickable, viewNode.getPosition()));
@@ -83,8 +80,9 @@ public final class TableTools {
             
             @Override
             public void render(Context context, Pair object, SafeHtmlBuilder sb) {
-                if (object.clickable) {                    
-                    sb.append(SafeHtmlUtils.fromTrustedString("<a href=\"" + createUrl(object) + "\" target=\"_blank\">" + object.key + "</a>"));
+                if (object.clickable) {                           
+                    String key = object.key.substring(0, object.key.length() - 1);                    
+                    sb.append(SafeHtmlUtils.fromTrustedString("<a href=\"" + createUrl(object.position, key) + "\" target=\"_blank\">" + key + "</a>"));
                 } else {                    
                     super.render(context, object, sb);                    
                 }
@@ -120,11 +118,11 @@ public final class TableTools {
         cellTable.setColumnWidth(column, "100%");
     }
     
-    private static String createUrl(Pair object) {
+    private static String createUrl(int position, String key) {
         return new StringBuilder()
         .append("/viewdetail?position=")
-        .append(object.position).append("&property")
-        .append(object.key)
+        .append(position).append("&property=")
+        .append(key)
         .toString();
     }
     
