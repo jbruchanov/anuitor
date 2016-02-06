@@ -297,7 +297,7 @@ public class ScreenPreviewPage extends Composite {
      * Init table widget
      */
     private void initTable(){
-        TableTools.initTableForPairs(cellTable, true);                    
+        TableTools.initTableForPairs(cellTable, true, mScreenId);                    
     }
     
     /**

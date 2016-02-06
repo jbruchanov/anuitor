@@ -16,6 +16,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.view.client.ListDataProvider;
+import com.scurab.gwt.anuitor.client.DataProvider;
 import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
@@ -72,6 +73,10 @@ public final class TableTools {
     }
     
     public static void initTableForPairs(CellTable<Pair> cellTable, boolean clickable) {
+        initTableForPairs(cellTable, clickable, -1);
+    }
+    
+    public static void initTableForPairs(CellTable<Pair> cellTable, boolean clickable, final int screenIndex) {
         cellTable.getLoadingIndicator().setVisible(false);
         Column<Pair, String> column = new Column<Pair, String>(new TextCell()) {
             @Override
@@ -83,9 +88,9 @@ public final class TableTools {
             public void render(Context context, Pair object, SafeHtmlBuilder sb) {
                 if (object.clickable) {                           
                     String key = object.keyReadable();                    
-                    sb.append(createLink(createUrl(object.position, key), key));
+                    sb.append(createLink(createUrl(object.position, key, screenIndex), key));
                 } else if(ViewFields.POSITION.equals(object.key)) {
-                    sb.append(createLink("/view.png?position=" + object.value, object.key));                                                           
+                    sb.append(createLink("/view.png?" + DataProvider.SCREEN_INDEX + screenIndex + "&position=" + object.value, object.key));                                                           
                 } else {
                     super.render(context, object, sb);                    
                 }
@@ -134,11 +139,12 @@ public final class TableTools {
         cellTable.setColumnWidth(column, "100%");
     }
     
-    private static String createUrl(int position, String key) {
+    private static String createUrl(int position, String key, int screenIndex) {
         return new StringBuilder()
-        .append("/viewproperty?position=")
-        .append(position).append("&property=")
-        .append(key)
+        .append("/viewproperty.json")
+        .append(DataProvider.SCREEN_INDEX).append(screenIndex)
+        .append("&position=").append(position)
+        .append("&property=").append(key)
         .toString();
     }
     
