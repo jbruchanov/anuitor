@@ -83,9 +83,9 @@ public final class TableTools {
             public void render(Context context, Pair object, SafeHtmlBuilder sb) {
                 if (object.clickable) {                           
                     String key = object.keyReadable();                    
-                    sb.append(SafeHtmlUtils.fromTrustedString("<a href=\"" + createUrl(object.position, key) + "\" target=\"_blank\">" + key + "</a>"));
-                } else if(ViewFields.POSITION.equals(object.key)) { 
-                    sb.append(SafeHtmlUtils.fromTrustedString("<a href=\"/view.png?position=" + object.value + "\" target=\"_blank\">" + object.key + "</a>"));                                        
+                    sb.append(createLink(createUrl(object.position, key), key));
+                } else if(ViewFields.POSITION.equals(object.key)) {
+                    sb.append(createLink("/view.png?position=" + object.value, object.key));                                                           
                 } else {
                     super.render(context, object, sb);                    
                 }
@@ -102,18 +102,31 @@ public final class TableTools {
             }
             
             @Override
-            public void render(Context context, Pair object, SafeHtmlBuilder sb) {             
-                super.render(context, object, sb);
+            public void render(Context context, Pair object, SafeHtmlBuilder sb) {
+                if (object.value instanceof String) {
+                    String value = (String) object.value;                    
+                    if (value.startsWith("com.android") || value.startsWith("android.")) {
+                        sb.append(createLink(createGoogle(cleanInstanceHash(value)), value));
+                        return;
+                    } else if (value.startsWith("com.scurab") && !value.contains("anuitorsample")) {
+                        sb.append(createLink(createGithub(cleanInstanceHash(value)), value));
+                        return;
+                    }
+                }                
                 if (object.value instanceof String) {
                     String value = (String)object.value;
                     if (value.startsWith("#")) {
-                        try {                                
-                            sb.append(createColorBlock(value));                     
+                        try {                                                        
+                            sb.append(createLink("http://hslpicker.com/" + HTMLColors.convertColorForHSLPicker(value), value));
+                            String color = HTMLColors.convertColor(value);
+                            sb.append(createColorBlock(color));
+                            return;
                         } catch (Throwable t) {
 
                         }
-                    }
-                }                   
+                    }                 
+                }
+                super.render(context, object, sb);
             }
         };
         column.setCellStyleNames("tableValue");
@@ -130,7 +143,27 @@ public final class TableTools {
     }
     
     private static SafeHtml createColorBlock(String color) {
-        return SafeHtmlUtils.fromTrustedString("<span style=\"height:10px;width:50px; margin:0 10px; display:inline-block; border: 1px solid black;\" class=\"transparent\"><span style=\"height:10px; display:block;background:" + HTMLColors.convertColor(color) + "\">&nbsp;</span></span>");
+        return SafeHtmlUtils.fromTrustedString("<span style=\"height:10px;width:50px; margin:0 10px; display:inline-block; border: 1px solid black;\" class=\"transparent\"><span style=\"height:10px; display:block;background:" + color + "\">&nbsp;</span></span>");
+    }      
+    
+    private static String createGithub(String value) {        
+        return "https://github.com/jbruchanov/AnUitor/blob/develop/Android/service/src/main/java/" + value.replaceAll("\\.", "/") + ".java";
+    }
+    
+    private static String createGoogle(String value) {
+        return "https://developer.android.com/index.html#q=" + value;
+    }
+    
+    private static String cleanInstanceHash(String value){
+        int index = value.indexOf("@");
+        if (index > 0) {
+            value = value.substring(0, index);
+        }
+        return value;
+    }
+    
+    private static SafeHtml createLink(String link, String value){
+        return SafeHtmlUtils.fromTrustedString("<a href=\"" + link + "\" target=\"_blank\">" + value + "</a>");
     }
     
     /**

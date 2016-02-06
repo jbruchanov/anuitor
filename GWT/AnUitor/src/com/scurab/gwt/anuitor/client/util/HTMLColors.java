@@ -63,4 +63,9 @@ public final class HTMLColors {
        float a = Integer.parseInt(argb.substring(1, 3), 16) / 255f;
        return "rgba(" + r + ", " + g + ", " + b + ", " + a + ");";
     }
+    
+    public static String convertColorForHSLPicker(String argb){               
+        float a = Integer.parseInt(argb.substring(1, 3), 16) / 255f;
+        return "#" + argb.substring(3, argb.length()) + "," + a;
+     }
 }
