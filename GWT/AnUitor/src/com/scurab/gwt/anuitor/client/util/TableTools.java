@@ -90,7 +90,7 @@ public final class TableTools {
                     String key = object.keyReadable();                    
                     sb.append(createLink(createUrl(object.position, key, screenIndex), key));
                 } else if(ViewFields.POSITION.equals(object.key)) {
-                    sb.append(createLink("/view.png?" + DataProvider.SCREEN_INDEX + screenIndex + "&position=" + object.value, object.key));                                                           
+                    sb.append(createLink("/view.png" + DataProvider.SCREEN_INDEX + screenIndex + "&position=" + object.value, object.key));                                                           
                 } else {
                     super.render(context, object, sb);                    
                 }
