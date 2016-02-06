@@ -33,7 +33,7 @@ public class WindowManagerGlobalReflector extends Reflector<Object> implements W
             Class<?> clz = Class.forName("android.view.WindowManagerGlobal");
             Method m = clz.getDeclaredMethod("getInstance");
             m.setAccessible(true);
-            return m.invoke(null, null);
+            return m.invoke(null, (Object[])null);
         } catch (Exception e) {
             throw new RuntimeException("Problem with calling android.view.WindowManagerGlobal#getInstance()", e);
         }
