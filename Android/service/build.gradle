@@ -1,3 +1,4 @@
+apply from: 'generator.gradle'
 apply plugin: 'com.android.library'
 
 android {
@@ -17,6 +18,26 @@ android {
         }
     }
 }
+
+task buildHelpClass {
+    doFirst {
+        try {
+            def fsep = System.getProperty("file.separator")
+            def srcFolder = new File(String.format("%s/src/main/java", getProjectDir().absolutePath).replace("/", fsep))
+            if (!srcFolder.exists()) {
+                throw new TaskExecutionException(task(name), new Throwable(String.format("'%s' not found!", srcFolder.getAbsolutePath())));
+            }
+            def classContent = generateHelpClass(srcFolder.absolutePath)
+            def classFile = new File(String.format("%s/src/main/java/com/scurab/android/anuitor/reflect/ReflectionHelper.java", getProjectDir().absolutePath).replace("/", fsep))
+            classFile.delete()
+            classFile.write(classContent, "utf-8")
+        } catch (Throwable t) {
+            throw new TaskExecutionException(task(name), t)
+        }
+    }
+}
+
+preBuild.dependsOn buildHelpClass
 
 dependencies {
     testCompile 'junit:junit:4.12'
