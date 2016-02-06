@@ -38,7 +38,6 @@ import static com.scurab.android.anuitor.tools.HttpTools.MimeType.IMAGE_PNG;
  */
 public class ViewshotPlugin extends ActivityPlugin {
 
-    private static final String POSITION = "position";
     private static final boolean SAVE = false;//save every imageview req to sdcard
 
     public static final String VIEW_PNG = "view.png";

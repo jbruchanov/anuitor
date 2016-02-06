@@ -13,6 +13,10 @@ import fi.iki.elonen.WebServerPlugin;
  */
 public abstract class BasePlugin implements WebServerPlugin {
 
+    protected static final String STRING_DATA_TYPE = "string";
+    protected static final String STRINGS_DATA_TYPE = "string[]";
+    protected static final String BASE64_PNG = "base64_png";
+
     public static final Gson GSON = new Gson();
 
     @Override

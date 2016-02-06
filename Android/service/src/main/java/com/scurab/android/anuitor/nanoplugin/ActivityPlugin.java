@@ -19,6 +19,7 @@ import fi.iki.elonen.NanoHTTPD;
  */
 public abstract class ActivityPlugin extends BasePlugin {
 
+    protected static final String POSITION = "position";
     public static final String APPLICATION_IS_NOT_ACTIVE = "Application is not active";
     private static final String SCREEN_INDEX = "screenIndex";
 
