@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
@@ -50,9 +51,6 @@ public class ResourcesPlugin extends BasePlugin {
 
     private static final String FILE = "resources.json";
     private static final String PATH = "/" + FILE;
-    private static final String STRING_DATA_TYPE = "string";
-    private static final String STRINGS_DATA_TYPE = "string[]";
-    private static final String BASE64_PNG = "base64_png";
     private static final String ARRAY = "array";
     private static final String XML = "xml";
     private static final String ID = "id";
@@ -62,7 +60,7 @@ public class ResourcesPlugin extends BasePlugin {
     private ResourcesReflector mHelper;
     private Translator mTranslator;
 
-    private Paint mClearPaint = new Paint();
+    private final Paint mClearPaint = new Paint();
 
     public ResourcesPlugin(Resources res, Translator translator) {
         mRes = res;
@@ -257,7 +255,7 @@ public class ResourcesPlugin extends BasePlugin {
      * @param xmlH height for xml drawable
      * @return
      */
-    private byte[] drawDrawable(Drawable d, int xmlW, int xmlH) {
+    public static byte[] drawDrawable(Drawable d, int xmlW, int xmlH, Paint clearPaint) {
         int w, h; w = xmlW; h = xmlH;
         int iw = d.getIntrinsicWidth();
         int ih = d.getIntrinsicHeight();
@@ -265,14 +263,25 @@ public class ResourcesPlugin extends BasePlugin {
             w = iw;
             h = ih;
         }
-        return drawDrawableWithSize(d, w, h);
+        return drawDrawableWithSize(d, w, h, clearPaint);
     }
 
-    private byte[] drawDrawableWithSize(Drawable d, int w, int h) {
+    public static byte[] drawDrawableWithBounds(Drawable d, Paint clearPaint) {
+        final Rect bounds = d.getBounds();
+        return drawDrawableWithSize(d, bounds.width(), bounds.height(), false, clearPaint);
+    }
+
+    public static byte[] drawDrawableWithSize(Drawable d, int w, int h, Paint clearPaint) {
+        return drawDrawableWithSize(d, w, h, true, clearPaint);
+    }
+
+    public static byte[] drawDrawableWithSize(Drawable d, int w, int h, boolean setBounds, Paint clearPaint) {
         Bitmap b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        d.setBounds(0, 0, w, h);
+        if (setBounds) {
+            d.setBounds(0, 0, w, h);
+        }
         Canvas c = new Canvas(b);
-        c.drawRect(0, 0, w, h, mClearPaint);
+        c.drawRect(0, 0, w, h, clearPaint);
         d.draw(c);
         ByteArrayOutputStream baos = new ByteArrayOutputStream(16 * 1024);
         b.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -381,7 +390,7 @@ public class ResourcesPlugin extends BasePlugin {
             outResponse = image;//assign image as outResponse to fill ours, not real one
         }
 
-        outResponse.data = Base64.encodeToString(drawDrawable(drawable, SIZE, SIZE), Base64.NO_WRAP);
+        outResponse.data = Base64.encodeToString(drawDrawable(drawable, SIZE, SIZE, mClearPaint), Base64.NO_WRAP);
         outResponse.dataType = BASE64_PNG;
     }
 
@@ -406,7 +415,7 @@ public class ResourcesPlugin extends BasePlugin {
             rr.id = resId;
             rr.dataType = BASE64_PNG;
             rr.context = String.format("Size: %sx%s %s", tw, th, i == 0 ? "original" : "");
-            rr.data = Base64.encodeToString(drawDrawableWithSize(drawable, tw, th), Base64.NO_WRAP);
+            rr.data = Base64.encodeToString(drawDrawableWithSize(drawable, tw, th, mClearPaint), Base64.NO_WRAP);
         }
     }
 
@@ -422,7 +431,7 @@ public class ResourcesPlugin extends BasePlugin {
             rr.dataType = BASE64_PNG;
 
             rr.context = String.format("Frame:%s", i);
-            rr.data = Base64.encodeToString(drawDrawable(frame, SIZE, SIZE), Base64.NO_WRAP);
+            rr.data = Base64.encodeToString(drawDrawable(frame, SIZE, SIZE, mClearPaint), Base64.NO_WRAP);
             frames[i] = rr;
         }
     }
@@ -451,7 +460,7 @@ public class ResourcesPlugin extends BasePlugin {
             rr.id = resId;
             rr.dataType = BASE64_PNG;
             rr.context = mTranslator.stateListFlags(stateSet);
-            rr.data = Base64.encodeToString(drawDrawable(sldReflector.getStateDrawable(i), SIZE, SIZE), Base64.NO_WRAP);
+            rr.data = Base64.encodeToString(drawDrawable(sldReflector.getStateDrawable(i), SIZE, SIZE, mClearPaint), Base64.NO_WRAP);
         }
     }
 
