@@ -1,5 +1,8 @@
 package com.scurab.android.anuitor.reflect;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.scurab.android.anuitor.tools.DOM2XmlPullBuilder;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -26,8 +29,13 @@ public abstract class Reflector<T> {
     }
 
     protected <T> T callByReflection(Object... params) {
-        String methodName = getCalleeMethod();
+        return callMethodByReflection(null, params);
+    }
 
+    protected <T> T callMethodByReflection(@Nullable String methodName, @NonNull Object... params) {
+        if (methodName == null) {
+            methodName = getCalleeMethod();
+        }
         Class<?>[] clzs = new Class<?>[params.length];
         for (int i = 0; i < params.length; i++) {
             clzs[i] = params[i].getClass();
@@ -47,9 +55,13 @@ public abstract class Reflector<T> {
         throw new RuntimeException("Unable to find method: " + methodName + "(" + Arrays.toString(clzs) + ")");
     }
 
-    protected String getCalleeMethod() {
+    private String getCalleeMethod() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        return stackTrace[4].getMethodName();//getThreadStackTrace, getCalleeMethod, callByReflection, our method
+        String methodName = stackTrace[4].getMethodName();
+        if ("callByReflection".equals(methodName)) {
+            methodName = stackTrace[5].getMethodName();
+        }
+        return methodName;//getThreadStackTrace, getCalleeMethod, callByReflection, our method
     }
 
     protected <T> T getFieldValue(String fieldName) {
@@ -69,25 +81,29 @@ public abstract class Reflector<T> {
     //FIXME: naive, if there is nonPrimitive as param, it will fail
     protected void fixAutoboxing(Class<?>[] params) {
         for (int i = 0; params != null && i < params.length; i++) {
-            Class<?> clz = params[i];
-            if (clz == Integer.class) {
-                params[i] = int.class;
-            } else if (clz == Boolean.class) {
-                params[i] = boolean.class;
-            } else if (clz == Short.class) {
-                params[i] = short.class;
-            } else if (clz == Character.class) {
-                params[i] = char.class;
-            } else if (clz == Byte.class) {
-                params[i] = byte.class;
-            } else if (clz == Long.class) {
-                params[i] = long.class;
-            } else if (clz == Double.class) {
-                params[i] = double.class;
-            } else if (clz == Float.class) {
-                params[i] = float.class;
-            }
+            params[i] = fixAutoboxing(params[i]);
         }
+    }
+
+    public static Class fixAutoboxing(Class<?> clz) {
+        if (clz == Integer.class) {
+            return int.class;
+        } else if (clz == Boolean.class) {
+            return boolean.class;
+        } else if (clz == Short.class) {
+            return short.class;
+        } else if (clz == Character.class) {
+            return char.class;
+        } else if (clz == Byte.class) {
+            return byte.class;
+        } else if (clz == Long.class) {
+            return long.class;
+        } else if (clz == Double.class) {
+            return double.class;
+        } else if (clz == Float.class) {
+            return float.class;
+        }
+        return clz;
     }
 
     protected String transformToString(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException, TransformerException {
