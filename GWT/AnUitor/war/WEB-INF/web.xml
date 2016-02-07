@@ -21,6 +21,7 @@
 		<url-pattern>/screenstructure.json</url-pattern>
 		<url-pattern>/screens.json</url-pattern>		
 		<url-pattern>/logcat.txt</url-pattern>
+		<url-pattern>/viewproperty.json</url-pattern>
 	</servlet-mapping>
   
   <!-- Default page to serve -->
