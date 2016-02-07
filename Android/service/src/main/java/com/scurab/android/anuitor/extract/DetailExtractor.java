@@ -62,7 +62,7 @@ import java.util.Map;
  * User: jbruchanov
  * Date: 12/05/2014
  * Time: 13:25
- *
+ * <p/>
  * Base class for working with Extractors.
  */
 public final class DetailExtractor {
@@ -130,6 +130,7 @@ public final class DetailExtractor {
     /**
      * Register extractor for particular class.<br/>
      * Older is overwritten if exists
+     *
      * @param clz
      * @param extractor
      * @return overwritten extractor
@@ -141,6 +142,7 @@ public final class DetailExtractor {
     /**
      * Register extractor for particular class.<br/>
      * Older is overwritten if exists
+     *
      * @param className
      * @param extractor
      * @param <T>
@@ -153,6 +155,7 @@ public final class DetailExtractor {
     /**
      * Register wrapper for particular class.<br/>
      * Older is overwritten if exists
+     *
      * @param clz
      * @param wrapper
      * @return overwritten wrapper
@@ -164,6 +167,7 @@ public final class DetailExtractor {
     /**
      * Register wrapper for particular class.<br/>
      * Older is overwritten if exists
+     *
      * @param className
      * @param wrapper
      * @param <T>
@@ -175,6 +179,7 @@ public final class DetailExtractor {
 
     /**
      * Unregister extractor
+     *
      * @param className
      * @return removed extractor
      */
@@ -184,6 +189,7 @@ public final class DetailExtractor {
 
     /**
      * Unregister extractor
+     *
      * @param clz
      * @return removed extractor
      */
@@ -193,6 +199,7 @@ public final class DetailExtractor {
 
     /**
      * Unregister extractor
+     *
      * @param className
      * @return removed extractor
      */
@@ -202,6 +209,7 @@ public final class DetailExtractor {
 
     /**
      * Unregister extractor
+     *
      * @param clz
      * @return removed extractor
      */
@@ -212,6 +220,7 @@ public final class DetailExtractor {
     /**
      * Flag particular class which is {@link android.view.ViewGroup} to behave as like simple {@link android.view.View}<br/>
      * Currently useful only for {@link android.webkit.WebView}
+     *
      * @param className
      * @return
      */
@@ -221,6 +230,7 @@ public final class DetailExtractor {
 
     /**
      * {@link #excludeViewGroup(String)}
+     *
      * @param className
      * @return
      */
@@ -230,6 +240,7 @@ public final class DetailExtractor {
 
     /**
      * {@link #excludeViewGroup(String)}
+     *
      * @param className
      * @return
      */
@@ -239,8 +250,9 @@ public final class DetailExtractor {
 
     /**
      * Traverse whole view tree hierarchy and extract data
+     *
      * @param rootView
-     * @param lazy if true, childs are ignored
+     * @param lazy     if true, childs are ignored
      * @return
      */
     public static ViewNode parse(View rootView, boolean lazy) {
@@ -276,6 +288,7 @@ public final class DetailExtractor {
 
     /**
      * Find view by Position item from json
+     *
      * @param rootView
      * @param position
      * @return
@@ -304,6 +317,7 @@ public final class DetailExtractor {
 
     /**
      * Get extractor for view
+     *
      * @param object
      * @return
      */
@@ -314,6 +328,7 @@ public final class DetailExtractor {
 
     /**
      * Get render size for view if exists
+     *
      * @param object
      * @return
      */
@@ -324,6 +339,7 @@ public final class DetailExtractor {
 
     /**
      * Find generic extractor for particular class
+     *
      * @param clazz
      * @param <T>
      * @return
@@ -331,11 +347,24 @@ public final class DetailExtractor {
      */
     @NonNull
     public static <T> BaseExtractor<T> getExtractor(final Class<T> clazz) {
-        final BaseExtractor<?> be = findItemByClassInheritance(clazz, MAP);
+        final BaseExtractor<?> be = findExtractor(clazz);
         if (be == null) {
             throw new IllegalStateException("Not found extractor for type:" + clazz.getName());
         }
+        //noinspection unchecked
         return (BaseExtractor<T>) be;
+    }
+
+    /**
+     * Find generic extractor for particular class
+     *
+     * @param clazz
+     * @return
+     * @throws IllegalStateException if no extractor is found
+     */
+    @Nullable
+    public static BaseExtractor<?> findExtractor(final Class clazz) {
+        return findItemByClassInheritance(clazz, MAP);
     }
 
     @Nullable
