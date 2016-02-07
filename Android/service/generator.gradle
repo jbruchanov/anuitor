@@ -70,7 +70,7 @@ def generateHelpClass(String srcLocation) {
     sb.append("import java.util.Map;\n")
     sb.append("import java.util.HashMap;\n")
     sb.append("import java.util.Collections;\n\n")
-    sb.append("/* Auto generated class, do not update !*/\n\n")
+    sb.append("/* Auto generated class, do not update! */\n\n")
     sb.append("public final class ReflectionHelper {\n\n")
     sb.append("\tpublic static final Map<String, Item> ITEMS;\n\n")
     sb.append("\tstatic {\n")
