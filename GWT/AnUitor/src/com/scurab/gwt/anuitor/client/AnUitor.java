@@ -136,7 +136,7 @@ public class AnUitor implements EntryPoint {
     private IsWidget mLastScreen;
 
     private void openWidget(String v, int index, IsWidget w) {
-        History.newItem(v + (index < 0 ? "" : SCREEN_INDEX + index));//just add index if it's valid
+        History.newItem(v + (index < 0 ? "" : SCREEN_INDEX + index), false);//just add index if it's valid
         if (mLastScreen != null) {
             RootLayoutPanel.get().remove(mLastScreen);
         }
