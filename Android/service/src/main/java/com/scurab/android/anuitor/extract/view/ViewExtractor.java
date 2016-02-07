@@ -3,13 +3,9 @@ package com.scurab.android.anuitor.extract.view;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOverlay;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
@@ -202,7 +198,12 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("RenderAreaRelative", value);
         }
 
-        fillLayoutParams(v, data, parentData);
+        data.put("LayoutParams:", v.getLayoutParams() != null ? v.getLayoutParams().getClass().getName() : null);
+        //noinspection unchecked
+        if (v.getLayoutParams() != null) {
+            final BaseExtractor<ViewGroup.LayoutParams> extractor = (BaseExtractor<ViewGroup.LayoutParams>) DetailExtractor.getExtractor(v.getLayoutParams().getClass());
+            extractor.fillValues(v.getLayoutParams(), data, parentData);
+        }
         fillScale(v, data, parentData);
         fillLocationValues(v, data, parentData);
 
@@ -213,54 +214,7 @@ public class ViewExtractor extends BaseExtractor<View> {
         return data;
     }
 
-    public HashMap<String, Object> fillLayoutParams(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        ViewGroup.LayoutParams lp = v.getLayoutParams();
 
-        data.put("LayoutParams:", lp != null ? lp.getClass().getName() : null);
-
-        if (lp == null) {
-            return data;
-        }
-
-        data.put("layout_width", getTranslator().layoutSize(lp.width));
-        data.put("layout_height", getTranslator().layoutSize(lp.height));
-        if (lp instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lp;
-            data.put("LayoutParams_leftMargin", mlp.leftMargin);
-            data.put("LayoutParams_topMargin", mlp.topMargin);
-            data.put("LayoutParams_rightMargin", mlp.rightMargin);
-            data.put("LayoutParams_bottomMargin", mlp.bottomMargin);
-        }
-
-        if(lp instanceof FrameLayout.LayoutParams){
-            FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) lp;
-            data.put("LayoutParams_layoutGravity", getTranslator().gravity(flp.gravity));
-        }
-
-        if(lp instanceof LinearLayout.LayoutParams){
-            LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) lp;
-            data.put("LayoutParams_weight", llp.weight);
-            data.put("LayoutParams_layoutGravity", getTranslator().gravity(llp.gravity));
-        }
-
-        if (lp instanceof RelativeLayout.LayoutParams) {
-            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) lp;
-            int[] rules = rlp.getRules();
-            for (int i = 0; i < rules.length; i++) {
-                int rlData = rules[i];
-                if (rlData != 0) {
-                    data.put(getTranslator().relativeLayoutParamRuleName(i), getTranslator().relativeLayoutParamRuleValue(rlData));
-                }
-            }
-        }
-
-        if(lp instanceof ViewPager.LayoutParams){
-            ViewPager.LayoutParams vlp = (ViewPager.LayoutParams) lp;
-            data.put("LayoutParams_layoutGravity", getTranslator().gravity(vlp.gravity));
-            data.put("LayoutParams_isDecor", vlp.isDecor);
-        }
-        return data;
-    }
 
     public static HashMap<String, Object> fillLocationValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         v.getLocationOnScreen(POSITION);
