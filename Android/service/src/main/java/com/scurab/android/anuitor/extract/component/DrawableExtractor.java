@@ -28,7 +28,7 @@ public class DrawableExtractor extends BaseExtractor<Drawable> {
         data.put("MinimumWidth", d.getMinimumWidth());
         data.put("MinimumHeight", d.getMinimumHeight());
         data.put("Opacity", d.getOpacity());
-        data.put("State", Arrays.toString(d.getState()));
+        data.put("State", getTranslator().drawableStates(d.getState()));
         data.put("TransparentRegion", String.valueOf(d.getTransparentRegion()));
         data.put("IsStateful", d.isStateful());
         data.put("IsVisible", d.isVisible());
@@ -44,7 +44,7 @@ public class DrawableExtractor extends BaseExtractor<Drawable> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             data.put("CanApplyTheme", d.canApplyTheme());
             data.put("ColorFilter", String.valueOf(d.getColorFilter()));
-            data.put("DirtyBounds", d.getDirtyBounds());
+            data.put("DirtyBounds", d.getDirtyBounds().toShortString());
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
