@@ -1,15 +1,16 @@
 package com.scurab.gwt.anuitor.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
-import com.google.gwt.dev.json.JsonArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -28,7 +29,6 @@ import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
 import com.scurab.gwt.anuitor.client.ui.ViewPropertyPage;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
 
-import static com.scurab.gwt.anuitor.client.DataProvider.SCREEN_INDEX;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -51,9 +51,11 @@ public class AnUitor implements EntryPoint {
         openScreen(History.getToken());
     }      
     
+    private static final String SCREEN_INDEX = "_" + DataProvider.QRY_PARAM_SCREEN_INDEX;
     private void openScreen(String screen) {
+        boolean updateHistory = true;
         IsWidget toOpen = null;
-        int screenIndex = hasIndexInToken() ? getScreenIndexFromToken() : getScreenIndex();
+        int screenIndex = hasIndexInToken() ? getScreenIndexFromToken() : getScreenIndex();        
         if(hasIndexInToken()){
             screen = screen.substring(0, screen.indexOf(SCREEN_INDEX));
         }
@@ -75,15 +77,19 @@ public class AnUitor implements EntryPoint {
         } else if ("Screenshot".equals(screen)) {
             Window.open(DataProvider.SCREEN + DataProvider.SCREEN_INDEX_QRY + getScreenIndex(), "_blank", "");
             return;
-        } else if ("ViewProperty".startsWith(screen)) {
-            toOpen = new ViewPropertyPage(screenIndex);
+        } else if (screen != null && screen.startsWith("ViewProperty")) {          
+            Map<String, String> queryString = buildHashParameterMap();
+            int position = Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_POSITION));
+            String property = queryString.get(DataProvider.QRY_PARAM_PROPERTY);
+            toOpen = new ViewPropertyPage(screenIndex, position, property);
+            updateHistory = false;
         } else {
             screen = "";
             toOpen = createSelectionPane();
             screenIndex = -1;
         }
 
-        openWidget(screen, screenIndex, toOpen);
+        openWidget(screen, screenIndex, toOpen, updateHistory);
     }
 
     private CellPanel createSelectionPane() {
@@ -135,8 +141,10 @@ public class AnUitor implements EntryPoint {
 
     private IsWidget mLastScreen;
 
-    private void openWidget(String v, int index, IsWidget w) {
-        History.newItem(v + (index < 0 ? "" : SCREEN_INDEX + index), false);//just add index if it's valid
+    private void openWidget(String v, int index, IsWidget w, boolean updateHistory) {
+        if (updateHistory) {
+            History.newItem(v + (index < 0 ? "" : SCREEN_INDEX + index), false);// just add index if it's valid
+        }
         if (mLastScreen != null) {
             RootLayoutPanel.get().remove(mLastScreen);
         }
@@ -152,8 +160,8 @@ public class AnUitor implements EntryPoint {
     private int getScreenIndexFromToken(){
         String token = History.getToken();
         int start = token.indexOf(SCREEN_INDEX) + SCREEN_INDEX.length();
-        int end = token.indexOf("%", start);
-        if (end < 0) {
+        int end = Math.min(token.indexOf("&", start), token.indexOf("?", start));
+        if (end < 0) {            
             end = token.length();
         }
         String index = token != null ? token.substring(start, end) : null;
@@ -178,4 +186,22 @@ public class AnUitor implements EntryPoint {
             openScreen(((Button) event.getSource()).getText());
         }
     };
+    
+    private static Map<String, String> buildHashParameterMap() {
+        String historyToken = History.getToken();
+        historyToken = historyToken.substring(historyToken.indexOf("?") + 1);
+        Map<String, String> paramMap = new HashMap<String, String>();
+        if (historyToken != null && historyToken.length() > 1) {
+            for (String kvPair : historyToken.split("&")) {
+                String[] kv = kvPair.split("=", 2);
+                if (kv.length > 1) {
+                    paramMap.put(kv[0], URL.decodeQueryString(kv[1]));
+                } else {
+                    paramMap.put(kv[0], "");
+                }
+            }
+        }
+
+        return paramMap;
+    }
 }
