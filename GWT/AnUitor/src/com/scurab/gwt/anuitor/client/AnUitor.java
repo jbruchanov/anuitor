@@ -77,6 +77,9 @@ public class AnUitor implements EntryPoint {
         } else if ("Screenshot".equals(screen)) {
             Window.open(DataProvider.SCREEN + DataProvider.SCREEN_INDEX_QRY + getScreenIndex(), "_blank", "");
             return;
+        } else if ("LogCat".equals(screen)) {
+            Window.open("/logcat.txt", "_blank", "");
+            return;
         } else if (screen != null && screen.startsWith("ViewProperty")) {          
             Map<String, String> queryString = buildHashParameterMap();
             int position = Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_POSITION));
@@ -106,6 +109,7 @@ public class AnUitor implements EntryPoint {
         hp.add(createButton("FileStorage"));
         hp.add(createButton("Windows"));
         hp.add(createButton("Screenshot"));
+        hp.add(createButton("LogCat"));
 
         return hp;
     }
