@@ -60,7 +60,7 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
     private HashMap<String, Object> fillValues(Object o, HashMap<String, Object> data, HashMap<String, Object> contextData, HashSet<Object> cycleHandler, int deep) {
         data.put("Type", String.valueOf(o.getClass().getName()));
         Class clz = o.getClass();
-        Method[] methods = clz.getMethods();
+        List<Method> methods = getAllMethods(new ArrayList<Method>(), clz);
         for (Method method : methods) {
             String name = method.getName();
             if (ignoreMethod(name)) {
@@ -124,5 +124,13 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
             fields = getAllFields(fields, type.getSuperclass());
         }
         return fields;
+    }
+
+    private static List<Method> getAllMethods(List<Method> methods, Class<?> type) {
+        methods.addAll(Arrays.asList(type.getDeclaredMethods()));
+        if (type.getSuperclass() != null) {
+            methods = getAllMethods(methods, type.getSuperclass());
+        }
+        return methods;
     }
 }
