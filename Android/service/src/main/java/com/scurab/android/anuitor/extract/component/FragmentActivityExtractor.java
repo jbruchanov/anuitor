@@ -64,7 +64,7 @@ public class FragmentActivityExtractor extends ActivityExtractor {
             FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
             SupportBackStackEntryReflector sbsef = new SupportBackStackEntryReflector(backStackEntry);
             //TODO own extractor
-            HashMap<String, Object> data = new HashMap<String, Object>();
+            HashMap<String, Object> data = new HashMap<>();
             data.put("Name", backStackEntry.getName());
             data.put("ID", backStackEntry.getId());
             data.put("EnterAnim", IdsHelper.getNameForId(sbsef.getEnterAnim()));
