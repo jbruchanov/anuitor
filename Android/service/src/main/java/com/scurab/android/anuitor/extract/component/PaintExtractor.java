@@ -40,7 +40,7 @@ public class PaintExtractor extends BaseExtractor<Paint> {
             data.put("TextScaleX", paint.getTextScaleX());
             data.put("TextSize", paint.getTextSize());
             data.put("TextSkewX", paint.getTextSkewX());
-            data.put("Typeface", paint.getTypeface());
+            data.put("Typeface", String.valueOf(paint.getTypeface()));
             appendClassName("XFermode", paint.getXfermode(), data);
             data.put("IsAntiAlias", paint.isAntiAlias());
             data.put("IsDither", paint.isDither());
@@ -49,7 +49,6 @@ public class PaintExtractor extends BaseExtractor<Paint> {
             data.put("IsLinearText", paint.isLinearText());
             data.put("IsStrikeThruText", paint.isStrikeThruText());
             data.put("IsSubpixelText", paint.isSubpixelText());
-            data.put("IsUnderlineText", paint.isUnderlineText());
             data.put("IsUnderlineText", paint.isUnderlineText());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
