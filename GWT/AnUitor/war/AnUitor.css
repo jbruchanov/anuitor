@@ -82,3 +82,7 @@ h1 {
 	padding: 15px;
 	border-spacing:5px;
 }
+
+.propertyPreview:HOVER {
+	border:solid red thin;
+}
