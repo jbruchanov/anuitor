@@ -25,8 +25,10 @@ import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
+import com.scurab.gwt.anuitor.client.ui.ViewPropertyPage;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
 
+import static com.scurab.gwt.anuitor.client.DataProvider.SCREEN_INDEX;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -73,7 +75,9 @@ public class AnUitor implements EntryPoint {
         } else if ("Screenshot".equals(screen)) {
             Window.open(DataProvider.SCREEN + DataProvider.SCREEN_INDEX_QRY + getScreenIndex(), "_blank", "");
             return;
-        }else {
+        } else if ("ViewProperty".startsWith(screen)) {
+            toOpen = new ViewPropertyPage(screenIndex);
+        } else {
             screen = "";
             toOpen = createSelectionPane();
             screenIndex = -1;
@@ -139,8 +143,7 @@ public class AnUitor implements EntryPoint {
         mLastScreen = w;
         RootLayoutPanel.get().add(mLastScreen);
     }
-    
-    private static final String SCREEN_INDEX = "_screenIndex=";
+        
     private boolean hasIndexInToken(){
         String token = History.getToken();
         return token != null && token.contains(SCREEN_INDEX);
@@ -148,7 +151,12 @@ public class AnUitor implements EntryPoint {
     
     private int getScreenIndexFromToken(){
         String token = History.getToken();
-        String index = token != null ? token.substring(token.indexOf(SCREEN_INDEX) + SCREEN_INDEX.length()) : null;
+        int start = token.indexOf(SCREEN_INDEX) + SCREEN_INDEX.length();
+        int end = token.indexOf("%", start);
+        if (end < 0) {
+            end = token.length();
+        }
+        String index = token != null ? token.substring(start, end) : null;
         return Integer.parseInt(index);
     }
     
