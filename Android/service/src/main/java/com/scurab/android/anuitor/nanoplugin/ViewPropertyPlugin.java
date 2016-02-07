@@ -74,7 +74,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                     if (item.arrayIndex >= 0) {
                         propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
                     }
-                    final DataResponse response = handleObject(propertyValue, reflection, property, item.methodName);
+                    final DataResponse response = handleObject(propertyValue, reflection, view.getClass().getName(), property, item.methodName);
                     return new OKResponse(HttpTools.MimeType.APP_JSON, GSON.toJson(response));
                 }
             }
@@ -87,21 +87,22 @@ public class ViewPropertyPlugin extends ActivityPlugin {
     }
 
     @SuppressWarnings("unchecked")
-    protected DataResponse handleObject(Object object, boolean reflection, String name, String methodName) {
+    protected DataResponse handleObject(Object object, boolean reflection, String parentType, String name, String methodName) {
         DataResponse response = new DataResponse();
         if (object != null) {
             BaseExtractor extractor = reflection ? null : DetailExtractor.findExtractor(object.getClass());
             if (extractor == null) {
                 if (mReflectionExtractor == null) {
-                    mReflectionExtractor = new ReflectionExtractor(new Translator(), true);
+                    mReflectionExtractor = new ReflectionExtractor(new Translator(), false);
                 }
                 extractor = mReflectionExtractor;
             }
             final HashMap data = extractor.fillValues(object, new HashMap<String, Object>(), null);
             data.put("Type", object.getClass().getName());
-            data.put("Name", name);
-            data.put("MethodName", methodName);
-            data.put("Extractor", extractor.getClass().getName());
+            data.put("1ParentType", parentType);
+            data.put("2Name", name);
+            data.put("3MethodName", methodName);
+            data.put("4Extractor", extractor.getClass().getName());
             response.context = data;
 
             if (object instanceof Drawable) {
