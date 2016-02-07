@@ -15,6 +15,7 @@ import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.reflect.ViewOverlayReflector;
+import com.scurab.android.anuitor.reflect.ViewReflector;
 import com.scurab.android.anuitor.tools.Executor;
 
 import java.lang.reflect.Field;
@@ -99,7 +100,10 @@ public class ViewExtractor extends BaseExtractor<View> {
 
         data.put("ScrollX", v.getScrollX());
         data.put("ScrollY", v.getScrollY());
-        data.put("Tag", String.valueOf(v.getTag()));
+        data.put("Tag:", String.valueOf(v.getTag()));
+        data.put("Tag:", String.valueOf(v.getTag(1)));
+        final ViewReflector reflector = new ViewReflector(v);
+        data.put("Tags:", String.valueOf(reflector.getKeyedTags()));
         data.put("HasFocus", v.hasFocus());
         data.put("HasFocusable", v.hasFocusable());
         data.put("IsOpaque", v.isOpaque());

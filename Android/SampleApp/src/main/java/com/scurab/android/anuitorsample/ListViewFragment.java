@@ -63,6 +63,7 @@ public class ListViewFragment extends Fragment {
                 tag = (Tag) convertView.getTag();
             }
 
+            convertView.setTag(R.id.tag_position, position);
             tag.order.setText(String.valueOf(position + 1));
             tag.data.setText(mSamples[position % mSamples.length]);
             return convertView;

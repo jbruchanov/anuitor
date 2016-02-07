@@ -14,6 +14,7 @@ import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
 import com.scurab.android.anuitor.model.DataResponse;
 import com.scurab.android.anuitor.reflect.ObjectReflector;
 import com.scurab.android.anuitor.reflect.ReflectionHelper;
+import com.scurab.android.anuitor.reflect.ViewReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
@@ -70,7 +71,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 view = view != null ? DetailExtractor.findViewByPosition(view, position) : null;
                 final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
                 if (view != null && item != null) {
-                    Object propertyValue = new ObjectReflector(view).callMethod(item.methodName);
+                    Object propertyValue = new ViewReflector(view).callMethod(item.methodName);
                     if (item.arrayIndex >= 0) {
                         propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
                     }
@@ -93,7 +94,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
             BaseExtractor extractor = reflection ? null : DetailExtractor.findExtractor(object.getClass());
             if (extractor == null) {
                 if (mReflectionExtractor == null) {
-                    mReflectionExtractor = new ReflectionExtractor(new Translator(), false);
+                    mReflectionExtractor = new ReflectionExtractor(new Translator(), true);
                 }
                 extractor = mReflectionExtractor;
             }
