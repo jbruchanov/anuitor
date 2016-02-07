@@ -6,6 +6,7 @@ import android.os.Build.VERSION_CODES;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOverlay;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,6 +18,7 @@ import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
+import com.scurab.android.anuitor.reflect.ViewOverlayReflector;
 import com.scurab.android.anuitor.tools.Executor;
 
 import java.lang.reflect.Field;
@@ -70,8 +72,8 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("Baseline", e.getClass().getSimpleName());
             e.printStackTrace();
         }
-        data.put("Background", String.valueOf(v.getBackground()));
-        data.put("Context", String.valueOf(v.getContext()));
+        data.put("Background:", String.valueOf(v.getBackground()));
+        data.put("Context:", String.valueOf(v.getContext()));
         data.put("ContentDescription", String.valueOf(v.getContentDescription()));
         data.put("IsClickable", v.isClickable());
         data.put("IsLongClickable", v.isLongClickable());
@@ -149,6 +151,17 @@ public class ViewExtractor extends BaseExtractor<View> {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             data.put("ClipBounds", String.valueOf(v.getClipBounds()));
+            final ViewOverlay overlay = v.getOverlay();
+            final ViewOverlayReflector viewOverlayReflector = new ViewOverlayReflector(overlay);
+            data.put("Overlay", String.valueOf(overlay));
+            data.put("OverlayChildCount", viewOverlayReflector.getChildCount());
+            if (viewOverlayReflector.getChildCount() > 0) {
+                data.put("OverlayViewGroup:", String.valueOf(viewOverlayReflector.getOverlayViewGroup()));
+            }
+                data.put("OverlayDrawableCount", viewOverlayReflector.getOverlayDrawablesCount());
+            if (viewOverlayReflector.getOverlayDrawablesCount() > 0) {
+                data.put("OverlayDrawables:", String.valueOf(viewOverlayReflector.getOverlayDrawables()));
+            }
         }
 
         if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -164,7 +177,7 @@ public class ViewExtractor extends BaseExtractor<View> {
 
         if (Build.VERSION.SDK_INT >= VERSION_CODES.M) {
             data.put("AccessibilityClassName", v.getAccessibilityClassName());
-            data.put("Foreground", String.valueOf(v.getForeground()));
+            data.put("Foreground:", String.valueOf(v.getForeground()));
             data.put("ForegroundTintMode", String.valueOf(v.getForegroundTintMode()));
             data.put("IsContextClickable", v.isContextClickable());
             data.put("ScrollIndicators", getTranslator().scrollIndicators(v.getScrollIndicators()));
@@ -203,7 +216,7 @@ public class ViewExtractor extends BaseExtractor<View> {
     public HashMap<String, Object> fillLayoutParams(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         ViewGroup.LayoutParams lp = v.getLayoutParams();
 
-        data.put("LayoutParams", lp != null ? lp.getClass().getName() : null);
+        data.put("LayoutParams:", lp != null ? lp.getClass().getName() : null);
 
         if (lp == null) {
             return data;

@@ -8,6 +8,8 @@ import android.text.TextPaint;
 import android.view.View;
 import android.widget.TextView;
 
+import com.scurab.android.anuitor.extract.BaseExtractor;
+import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.extract.Translator;
 
 import java.util.HashMap;
@@ -47,15 +49,13 @@ public class TextViewExtractor extends ViewExtractor {
         values.put("CompoundPaddingBottom", tv.getCompoundPaddingBottom());
         Drawable[] compoundDrawables = tv.getCompoundDrawables();
         if (compoundDrawables != null && compoundDrawables.length >= 4) {
-            values.put("CompoundDrawableLeft", String.valueOf(compoundDrawables[0]));
-            values.put("CompoundDrawableTop", String.valueOf(compoundDrawables[1]));
-            values.put("CompoundDrawableRight", String.valueOf(compoundDrawables[2]));
-            values.put("CompoundDrawableBottom", String.valueOf(compoundDrawables[3]));
+            values.put("CompoundDrawableLeft:", String.valueOf(tv.getCompoundDrawables()[0]));
+            values.put("CompoundDrawableTop:", String.valueOf(tv.getCompoundDrawables()[1]));
+            values.put("CompoundDrawableRight:", String.valueOf(tv.getCompoundDrawables()[2]));
+            values.put("CompoundDrawableBottom:", String.valueOf(tv.getCompoundDrawables()[3]));
         }
 
-        final TextPaint paint = tv.getPaint();
-        final BaseExtractor<Paint> extractor = DetailExtractor.getExtractor(Paint.class);
-        extractor.fillValues(paint, values, values);
+        values.put("Paint:", tv.getPaint());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             values.put("IsTextSelectable", tv.isTextSelectable());
@@ -76,10 +76,10 @@ public class TextViewExtractor extends ViewExtractor {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             Drawable[] compoundDrawablesRelative = tv.getCompoundDrawablesRelative();
             if (compoundDrawablesRelative != null && compoundDrawablesRelative.length >= 4) {
-                values.put("CompoundDrawableRelativeStart", String.valueOf(compoundDrawablesRelative[0]));
-                values.put("CompoundDrawableRelativeTop", String.valueOf(compoundDrawablesRelative[1]));
-                values.put("CompoundDrawableRelativeEnd", String.valueOf(compoundDrawablesRelative[2]));
-                values.put("CompoundDrawableRelativeBottom", String.valueOf(compoundDrawablesRelative[3]));
+                values.put("CompoundDrawableRelativeStart:", String.valueOf(tv.getCompoundDrawablesRelative()[0]));
+                values.put("CompoundDrawableRelativeTop:", String.valueOf(tv.getCompoundDrawablesRelative()[1]));
+                values.put("CompoundDrawableRelativeEnd:", String.valueOf(tv.getCompoundDrawablesRelative()[2]));
+                values.put("CompoundDrawableRelativeBottom:", String.valueOf(tv.getCompoundDrawablesRelative()[3]));
             }
         }
 
