@@ -23,5 +23,12 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
+    def supportLib = "23.1.1"
+    compile "com.android.support:recyclerview-v7:${supportLib}"
+    compile "com.android.support:cardview-v7:${supportLib}"
+    compile "com.android.support:gridlayout-v7:${supportLib}"
+    compile "com.android.support:design:${supportLib}"
+    compile "com.android.support:percent:${supportLib}"
+
     compile project(":service")
 }
