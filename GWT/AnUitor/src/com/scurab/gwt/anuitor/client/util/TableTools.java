@@ -20,6 +20,8 @@ import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 
+import static com.scurab.gwt.anuitor.client.util.GenericTools.*;
+
 public final class TableTools {
 
     /**
@@ -63,18 +65,26 @@ public final class TableTools {
     }
     
     /**
+     * Create data model for tableview based on data
+     * 
+     * @param data
+     * @return
+     */
+    public static ListDataProvider<Pair> createDataProvider(List<Pair> data) {
+        ListDataProvider<Pair> dataProvider = new ListDataProvider<Pair>();
+        dataProvider.getList().addAll(data);                       
+        return dataProvider;
+    }
+    
+    /**
      * Init table by adding 2columns
      * @param cellTable
-     */
+     */     
     public static void initTableForPairs(CellTable<Pair> cellTable) {
-        initTableForPairs(cellTable, false);
+        initTableForPairs(cellTable, -1);
     }
     
-    public static void initTableForPairs(CellTable<Pair> cellTable, boolean clickable) {
-        initTableForPairs(cellTable, clickable, -1);
-    }
-    
-    public static void initTableForPairs(CellTable<Pair> cellTable, boolean clickable, final int screenIndex) {
+    public static void initTableForPairs(CellTable<Pair> cellTable, final int screenIndex) {
         cellTable.getLoadingIndicator().setVisible(false);
         Column<Pair, String> column = new Column<Pair, String>(new TextCell()) {
             @Override
@@ -86,7 +96,7 @@ public final class TableTools {
             public void render(Context context, Pair object, SafeHtmlBuilder sb) {
                 if (object.clickable) {                           
                     String key = object.keyReadable();                    
-                    sb.append(createLink(createUrl(object.position, key, screenIndex), key));
+                    sb.append(createLink(createPropertyHistoryToken(object.position, key, screenIndex), key));
                 } else if(ViewFields.POSITION.equals(object.key)) {
                     sb.append(createLink("/view.png" + DataProvider.SCREEN_INDEX_QRY + screenIndex + "&position=" + object.value, object.key));                                                           
                 } else {
@@ -137,38 +147,7 @@ public final class TableTools {
         cellTable.setColumnWidth(column, "100%");
     }
     
-    private static String createUrl(int position, String key, int screenIndex) {
-        return new StringBuilder()
-        .append("/viewproperty.json")
-        .append(DataProvider.SCREEN_INDEX).append(screenIndex)
-        .append("&position=").append(position)
-        .append("&property=").append(key)
-        .toString();
-    }
     
-    private static SafeHtml createColorBlock(String color) {
-        return SafeHtmlUtils.fromTrustedString("<span style=\"height:10px;width:50px; margin:0 10px; display:inline-block; border: 1px solid black;\" class=\"transparent\"><span style=\"height:10px; display:block;background:" + color + "\">&nbsp;</span></span>");
-    }      
-    
-    private static String createGithub(String value) {        
-        return "https://github.com/jbruchanov/AnUitor/blob/develop/Android/service/src/main/java/" + value.replaceAll("\\.", "/") + ".java";
-    }
-    
-    private static String createGoogle(String value) {
-        return "https://developer.android.com/index.html#q=" + value;
-    }
-    
-    private static String cleanInstanceHash(String value){
-        int index = value.indexOf("@");
-        if (index > 0) {
-            value = value.substring(0, index);
-        }
-        return value;
-    }
-    
-    private static SafeHtml createLink(String link, String value){
-        return SafeHtmlUtils.fromTrustedString("<a href=\"" + link + "\" target=\"_blank\">" + value + "</a>");
-    }
     
     /**
      * Init table by adding 2columns
