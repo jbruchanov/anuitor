@@ -4,16 +4,13 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.dev.json.JsonArray;
-import com.google.gwt.dev.json.JsonObject;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
-import com.scurab.gwt.anuitor.client.DataProvider.AsyncCallback;
 import com.scurab.gwt.anuitor.client.model.FSItemJSO;
+import com.scurab.gwt.anuitor.client.model.ObjectJSO;
 import com.scurab.gwt.anuitor.client.model.ResourceDetailJSO;
-import com.scurab.gwt.anuitor.client.model.ResourcesJSO;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 
 /**
@@ -60,10 +57,10 @@ public class DataProvider {
      * @param callback
      */
     public static void getTreeHierarchy(int screenIndex, final AsyncCallback<ViewNodeJSO> callback) {
-        sendRequest(VIEW_TREE_HIERARCHY + SCREEN_INDEX + screenIndex, callback);
+        sendRequest(VIEW_TREE_HIERARCHY + SCREEN_INDEX_QRY + screenIndex, callback);
     }
 
-    public static void getResources(final AsyncCallback<ResourcesJSO> callback) {
+    public static void getResources(final AsyncCallback<ObjectJSO> callback) {
         sendRequest(RESOURCES, callback);
     }
 
@@ -77,6 +74,10 @@ public class DataProvider {
     
     public static void getScreens(AsyncCallback<JsArrayString> asyncCallback) {
         sendRequest(SCREENS, asyncCallback);
+    }
+    
+    public static void getViewProperty(final AsyncCallback<ObjectJSO> callback) {
+        sendRequest(RESOURCES, callback);
     }
     
     /**

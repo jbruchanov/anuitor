@@ -3,9 +3,9 @@ package com.scurab.gwt.anuitor.client.model;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 
-public class ResourcesJSO extends JavaScriptObject {
+public class ObjectJSO extends JavaScriptObject {
 
-    protected ResourcesJSO() {
+    protected ObjectJSO() {
 
     }
 

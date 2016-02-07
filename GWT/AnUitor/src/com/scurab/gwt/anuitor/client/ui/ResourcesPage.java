@@ -25,9 +25,9 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.scurab.gwt.anuitor.client.DataProvider;
 import com.scurab.gwt.anuitor.client.DataProvider.AsyncCallback;
+import com.scurab.gwt.anuitor.client.model.ObjectJSO;
 import com.scurab.gwt.anuitor.client.model.ResourceDetailJSO;
 import com.scurab.gwt.anuitor.client.model.ResourceItemJSO;
-import com.scurab.gwt.anuitor.client.model.ResourcesJSO;
 
 /**
  * Resources page
@@ -80,14 +80,14 @@ public class ResourcesPage extends Composite {
      * Load list from server
      */
     protected void loadData() {
-        DataProvider.getResources(new AsyncCallback<ResourcesJSO>() {
+        DataProvider.getResources(new AsyncCallback<ObjectJSO>() {
             @Override
             public void onError(Request r, Throwable t) {
                 Window.alert(t.getMessage());
             }
 
             @Override
-            public void onDownloaded(ResourcesJSO result) {
+            public void onDownloaded(ObjectJSO result) {
                 HashMap<String, HashMap<String, ResourceItemJSO>> transformed = convertData(result);
                 onDataLoaded(transformed);
             }
@@ -112,7 +112,7 @@ public class ResourcesPage extends Composite {
      * @param result
      * @return
      */
-    private static HashMap<String, HashMap<String, ResourceItemJSO>> convertData(ResourcesJSO result) {
+    private static HashMap<String, HashMap<String, ResourceItemJSO>> convertData(ObjectJSO result) {
         HashMap<String, HashMap<String, ResourceItemJSO>> transformed = new HashMap<String, HashMap<String, ResourceItemJSO>>();
         String[] keys = result.getFieldsAsStrings();
 

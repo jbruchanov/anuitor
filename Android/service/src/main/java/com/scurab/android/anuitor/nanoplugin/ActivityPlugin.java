@@ -20,8 +20,8 @@ import fi.iki.elonen.NanoHTTPD;
 public abstract class ActivityPlugin extends BasePlugin {
 
     protected static final String POSITION = "position";
+    protected static final String SCREEN_INDEX = "screenIndex";
     public static final String APPLICATION_IS_NOT_ACTIVE = "Application is not active";
-    private static final String SCREEN_INDEX = "screenIndex";
 
     private static final NanoHTTPD.Response EMPTY_RESPONSE = new OKResponse(HttpTools.MimeType.TEXT_PLAIN, APPLICATION_IS_NOT_ACTIVE);
     private static final NanoHTTPD.Response JSON_EMPTY_RESPONSE = new OKResponse(HttpTools.MimeType.APP_JSON, "{}");
