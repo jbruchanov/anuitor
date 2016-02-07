@@ -29,7 +29,7 @@ public class TransportServlet extends HttpServlet {
     }
 
     public String getDeviceAddress() {
-        return "192.168.168.8:8081";
+        return "testanuitor:8081";
     }
 
     @Override
