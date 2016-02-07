@@ -34,6 +34,7 @@ import com.scurab.android.anuitor.extract.component.DrawableExtractor;
 import com.scurab.android.anuitor.extract.component.FragmentActivityExtractor;
 import com.scurab.android.anuitor.extract.component.FragmentExtractor;
 import com.scurab.android.anuitor.extract.component.IntentExtractor;
+import com.scurab.android.anuitor.extract.component.LayoutParamsExtractor;
 import com.scurab.android.anuitor.extract.component.PaintExtractor;
 import com.scurab.android.anuitor.extract.component.SupportFragmentExtractor;
 import com.scurab.android.anuitor.extract.view.AbsListViewExtractor;
@@ -145,6 +146,7 @@ public final class DetailExtractor {
         registerExtractor(Intent.class, new IntentExtractor(translator));
         registerExtractor(Paint.class, new PaintExtractor(translator));
         registerExtractor(Drawable.class, new DrawableExtractor(translator));
+        registerExtractor(ViewGroup.LayoutParams.class, new LayoutParamsExtractor(translator));
     }
 
     /**
