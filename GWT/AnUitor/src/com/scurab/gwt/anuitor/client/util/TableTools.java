@@ -3,8 +3,6 @@ package com.scurab.gwt.anuitor.client.util;
 import java.util.List;
 import java.util.Set;
 
-import thothbot.parallax.core.shared.utils.ColorUtils;
-
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.JsArray;
@@ -90,7 +88,7 @@ public final class TableTools {
                     String key = object.keyReadable();                    
                     sb.append(createLink(createUrl(object.position, key, screenIndex), key));
                 } else if(ViewFields.POSITION.equals(object.key)) {
-                    sb.append(createLink("/view.png" + DataProvider.SCREEN_INDEX + screenIndex + "&position=" + object.value, object.key));                                                           
+                    sb.append(createLink("/view.png" + DataProvider.SCREEN_INDEX_QRY + screenIndex + "&position=" + object.value, object.key));                                                           
                 } else {
                     super.render(context, object, sb);                    
                 }

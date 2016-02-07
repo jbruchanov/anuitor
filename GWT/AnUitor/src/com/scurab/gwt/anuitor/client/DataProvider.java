@@ -35,7 +35,8 @@ public class DataProvider {
     private static final String SCREENS = "/screens.json";
     private static final int HTTP_OK = 200;
     
-    public static final String SCREEN_INDEX = "?screenIndex=";
+    public static final String SCREEN_INDEX = "screenIndex";
+    public static final String SCREEN_INDEX_QRY = "?" + SCREEN_INDEX + "=";
     public static final String SCREEN = (DEMO ? SAMPLE_DATA : "") + "/screen.png";
     public static final String SCREEN_SCTRUCTURE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json";     
 

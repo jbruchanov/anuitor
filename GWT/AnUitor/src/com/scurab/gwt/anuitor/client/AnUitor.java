@@ -71,7 +71,7 @@ public class AnUitor implements EntryPoint {
             Window.open(DataProvider.SCREEN_SCTRUCTURE, "_blank", "");
             return;
         } else if ("Screenshot".equals(screen)) {
-            Window.open(DataProvider.SCREEN + DataProvider.SCREEN_INDEX + getScreenIndex(), "_blank", "");
+            Window.open(DataProvider.SCREEN + DataProvider.SCREEN_INDEX_QRY + getScreenIndex(), "_blank", "");
             return;
         }else {
             screen = "";
