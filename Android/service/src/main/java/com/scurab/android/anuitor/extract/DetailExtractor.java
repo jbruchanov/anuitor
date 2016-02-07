@@ -156,7 +156,7 @@ public final class DetailExtractor {
      * @return overwritten extractor
      */
     public static <T> BaseExtractor<?> registerExtractor(Class<? extends T> clz, BaseExtractor<T> extractor) {
-        return registerExtractor(clz.getName(), extractor);
+        return registerExtractor(clz.getCanonicalName(), extractor);
     }
 
     /**
