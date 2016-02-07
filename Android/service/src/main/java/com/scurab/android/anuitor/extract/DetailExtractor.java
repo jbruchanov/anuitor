@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.extract;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 
 import com.scurab.android.anuitor.extract.component.ActivityExtractor;
 import com.scurab.android.anuitor.extract.component.BundleExtractor;
+import com.scurab.android.anuitor.extract.component.DrawableExtractor;
 import com.scurab.android.anuitor.extract.component.FragmentActivityExtractor;
 import com.scurab.android.anuitor.extract.component.FragmentExtractor;
 import com.scurab.android.anuitor.extract.component.IntentExtractor;
@@ -37,14 +40,18 @@ import com.scurab.android.anuitor.extract.view.AbsListViewExtractor;
 import com.scurab.android.anuitor.extract.view.AbsSeekBarExtractor;
 import com.scurab.android.anuitor.extract.view.AdapterViewExtractor;
 import com.scurab.android.anuitor.extract.view.CalendarViewExtractor;
+import com.scurab.android.anuitor.extract.view.CardViewExtractor;
 import com.scurab.android.anuitor.extract.view.CheckedTextViewExtractor;
 import com.scurab.android.anuitor.extract.view.CompoundButtonExtractor;
 import com.scurab.android.anuitor.extract.view.DrawerLayoutExtractor;
+import com.scurab.android.anuitor.extract.view.GridLayoutExtractor;
 import com.scurab.android.anuitor.extract.view.ImageViewExtractor;
 import com.scurab.android.anuitor.extract.view.LinearLayoutExtractor;
 import com.scurab.android.anuitor.extract.view.ListViewExtractor;
 import com.scurab.android.anuitor.extract.view.ProgressBarExtractor;
+import com.scurab.android.anuitor.extract.view.RecyclerViewExtractor;
 import com.scurab.android.anuitor.extract.view.ScrollViewExtractor;
+import com.scurab.android.anuitor.extract.view.SlidingPaneLayoutExtractor;
 import com.scurab.android.anuitor.extract.view.SwitchExtractor;
 import com.scurab.android.anuitor.extract.view.TextViewExtractor;
 import com.scurab.android.anuitor.extract.view.ViewExtractor;
@@ -97,6 +104,7 @@ public final class DetailExtractor {
         registerExtractor(ListView.class, new ListViewExtractor(translator));
         registerExtractor(ProgressBar.class, new ProgressBarExtractor(translator));
         registerExtractor(ScrollView.class, new ScrollViewExtractor(translator));
+        registerExtractor(SlidingPaneLayout.class, new SlidingPaneLayoutExtractor(translator));
         registerExtractor(TextView.class, new TextViewExtractor(translator));
         registerExtractor(View.class, new ViewExtractor(translator));
         registerExtractor(ViewGroup.class, new ViewGroupExtractor(translator));
@@ -104,6 +112,17 @@ public final class DetailExtractor {
         registerExtractor(ViewPager.class, new ViewPagerExtractor(translator));
         registerExtractor(ViewStub.class, new ViewStubExtractor(translator));
         registerExtractor(WebView.class, new WebViewExtractor(translator));
+
+        //optionals
+        try {
+            registerExtractor(android.support.v7.widget.RecyclerView.class, new RecyclerViewExtractor(translator));
+        } catch (Throwable e) { /*not included in project*/ }
+        try {
+            registerExtractor(android.support.v7.widget.CardView.class, new CardViewExtractor(translator));
+        } catch (Throwable e) { /*not included in project*/ }
+        try {
+            registerExtractor(android.support.v7.widget.GridLayout.class, new GridLayoutExtractor(translator));
+        } catch (Throwable e) { /*not included in project*/ }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             registerExtractor(android.widget.CalendarView.class, new CalendarViewExtractor(translator));
@@ -125,6 +144,7 @@ public final class DetailExtractor {
         registerExtractor(android.support.v4.app.Fragment.class, new SupportFragmentExtractor(translator));
         registerExtractor(Intent.class, new IntentExtractor(translator));
         registerExtractor(Paint.class, new PaintExtractor(translator));
+        registerExtractor(Drawable.class, new DrawableExtractor(translator));
     }
 
     /**
