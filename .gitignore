@@ -57,3 +57,4 @@ compiler.xml
 *.symbolMap
 GWT/AnUitor/war/WEB-INF/lib
 Android/jdoc
+Android/service/src/main/java/com/scurab/android/anuitor/reflect/ReflectionHelper.java
