@@ -8,6 +8,7 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
+import com.scurab.gwt.anuitor.client.model.DataResponseJSO;
 import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.ObjectJSO;
 import com.scurab.gwt.anuitor.client.model.ResourceDetailJSO;
@@ -30,12 +31,16 @@ public class DataProvider {
     private static final String RESOURCE_ID_X = "/resources.json?id=";
     private static final String STORAGE = "/storage.json?path=";
     private static final String SCREENS = "/screens.json";
+    private static final String VIEW_PROPERTY = "/viewproperty.json";
     private static final int HTTP_OK = 200;
     
-    public static final String SCREEN_INDEX = "screenIndex";
-    public static final String SCREEN_INDEX_QRY = "?" + SCREEN_INDEX + "=";
+    public static final String QRY_PARAM_SCREEN_INDEX = "screenIndex";
+    public static final String SCREEN_INDEX_QRY = "?" + QRY_PARAM_SCREEN_INDEX + "=";
     public static final String SCREEN = (DEMO ? SAMPLE_DATA : "") + "/screen.png";
-    public static final String SCREEN_SCTRUCTURE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json";     
+    public static final String SCREEN_SCTRUCTURE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json";
+    
+    public static final String QRY_PARAM_POSITION = "position";
+    public static final String QRY_PARAM_PROPERTY = "property";    
 
     /**
      * Generic callback
@@ -76,8 +81,16 @@ public class DataProvider {
         sendRequest(SCREENS, asyncCallback);
     }
     
-    public static void getViewProperty(final AsyncCallback<ObjectJSO> callback) {
-        sendRequest(RESOURCES, callback);
+    public static void getViewProperty(int screen, int position, String property, final AsyncCallback<DataResponseJSO> callback) {
+        sendRequest(buildViewPropertyUrl(screen, position, property), callback);
+    }
+    
+    private static String buildViewPropertyUrl(int screen, int position, String property) {
+        return new StringBuilder(VIEW_PROPERTY)
+                .append("?").append(QRY_PARAM_SCREEN_INDEX).append("=").append(screen)
+                .append("&").append(QRY_PARAM_POSITION).append("=").append(position)
+                .append("&").append(QRY_PARAM_PROPERTY).append("=").append(property)                
+                .toString();
     }
     
     /**

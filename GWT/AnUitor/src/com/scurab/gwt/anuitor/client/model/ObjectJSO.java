@@ -28,7 +28,13 @@ public class ObjectJSO extends JavaScriptObject {
         return data;
     }
 
-    public final native JavaScriptObject getField(String key)/*-{
+    public final native JavaScriptObject getField(String key)
+    /*-{
 		return this[key];
+    }-*/;
+    
+    public final native String getFieldValue(String key)
+    /*-{
+        return String(this[key]);
     }-*/;
 }
