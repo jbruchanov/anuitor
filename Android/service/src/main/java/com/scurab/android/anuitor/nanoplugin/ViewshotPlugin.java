@@ -8,6 +8,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +70,7 @@ public class ViewshotPlugin extends ActivityPlugin {
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session,
                                             File file, String mimeType) {
         String queryString = session.getQueryParameterString();
-        int len = queryString != null ? queryString.length() : 0;
+        final int len = queryString != null ? queryString.length() : 0;
         ByteArrayInputStream resultInputStream = null;
 
         if (len > 0) {
@@ -114,8 +116,21 @@ public class ViewshotPlugin extends ActivityPlugin {
                                     // get bitmap
                                     if (!differentSize) {
                                         view.destroyDrawingCache();
+                                        final Object lock = new Object();
                                         try {
-                                            view.buildDrawingCache(false);
+                                            final View finalView = view;
+                                            view.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    finalView.buildDrawingCache(false);
+                                                    synchronized (lock) {
+                                                        lock.notifyAll();
+                                                    }
+                                                }
+                                            });
+                                            synchronized (lock) {
+                                                lock.wait(500);
+                                            }
                                         } catch (Throwable e) {
                                             Log.e("ViewshotPlugin", e.getMessage());
                                             e.printStackTrace();
@@ -123,12 +138,14 @@ public class ViewshotPlugin extends ActivityPlugin {
                                         bitmap = view.getDrawingCache();
                                     }
                                     if (bitmap == null) {
-                                        bitmap = drawView(view, mRenderArea);
+                                        bitmap = drawViewBlocking(view, mRenderArea, mClearPaint);
                                     }
                                 }
-                            } else {
-                                bitmap = getEmptyBitmap();
                             }
+                        }
+
+                        if (bitmap == null) {
+                            bitmap = getEmptyBitmap();
                         }
 
                         if (scale[0] != 0f || scale[1] != 0f && (bitmap.getWidth() > 0 && bitmap.getHeight() > 0)) {
@@ -176,6 +193,7 @@ public class ViewshotPlugin extends ActivityPlugin {
 
     /**
      * Travesre view hierarchy predecessors to get absolute scale of this view
+     *
      * @param view
      * @return
      */
@@ -195,11 +213,37 @@ public class ViewshotPlugin extends ActivityPlugin {
         return scale;
     }
 
-    private Bitmap drawView(View view, Rect renderArea) {
+    @Nullable
+    public static Bitmap drawViewBlocking(final View view, final Rect renderArea, final Paint clearPaint) {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            final Bitmap[] lock = new Bitmap[1];
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+                    lock[0] = drawView(view, renderArea, clearPaint);
+                    synchronized (lock) {
+                        lock.notifyAll();
+                    }
+                }
+            });
+            synchronized (lock) {
+                try {
+                    lock.wait(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return lock[0];
+        } else {
+            return drawView(view, renderArea, clearPaint);
+        }
+    }
+
+    public static Bitmap drawView(View view, Rect renderArea, Paint clearPaint) {
         Bitmap b = Bitmap.createBitmap(renderArea.width(), renderArea.height(), Bitmap.Config.ARGB_8888);
 
         Canvas c = new Canvas(b);
-        c.drawRect(0, 0, b.getWidth(), b.getHeight(), mClearPaint);//clear white background to get transparency
+        c.drawRect(0, 0, b.getWidth(), b.getHeight(), clearPaint);//clear white background to get transparency
         c.translate(-renderArea.left, -renderArea.top);
         view.draw(c);
         return b;
@@ -226,12 +270,11 @@ public class ViewshotPlugin extends ActivityPlugin {
 
     @Override
     public String[] files() {
-        return new String[] {VIEW_PNG};
+        return new String[]{VIEW_PNG};
     }
 
     @Override
     public String mimeType() {
         return IMAGE_PNG;
     }
-
 }
