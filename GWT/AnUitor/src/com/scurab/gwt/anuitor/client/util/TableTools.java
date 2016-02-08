@@ -137,7 +137,10 @@ public final class TableTools {
                         } catch (Throwable t) {
 
                         }
-                    }                 
+                    } else if(object.clickable && value.length() > 100){
+                        sb.append(SafeHtmlUtils.fromString(value.substring(0, 100) + "..."));
+                        return;
+                    }
                 }
                 super.render(context, object, sb);
             }
