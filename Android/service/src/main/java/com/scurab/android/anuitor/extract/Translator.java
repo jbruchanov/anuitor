@@ -384,17 +384,19 @@ public class Translator {
     }
 
     public Object drawableStates(int[] state) {
-        String[] result = null;
+        StringBuilder sb = new StringBuilder();
         if (state != null) {
-            result = new String[state.length];
             for (int i = 0, n = state.length; i < n; i++) {
+                if (sb.length() != 0) {
+                    sb.append(", ");
+                }
                 if (state[i] == 0) {
-                    result[i] = "default";
+                    sb.append("default");
                 } else {
-                    result[i] = IdsHelper.getNameForId(state[i]);
+                    sb.append(IdsHelper.getNameForId(state[i]));
                 }
             }
         }
-        return result;
+        return sb.toString();
     }
 }
