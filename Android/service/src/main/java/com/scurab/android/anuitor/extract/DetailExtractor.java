@@ -133,7 +133,7 @@ public final class DetailExtractor {
             registerExtractor(android.widget.Switch.class, new SwitchExtractor(translator));
         }
 
-        VIEWGROUP_IGNORE.add(WebView.class.getName());
+        VIEWGROUP_IGNORE.add(WebView.class.getCanonicalName());
         //endregion views
 
         registerExtractor(Activity.class, new ActivityExtractor(translator));
@@ -183,7 +183,7 @@ public final class DetailExtractor {
      * @return overwritten wrapper
      */
     public static <T extends View> RenderAreaWrapper<?> registerRenderArea(Class<? extends T> clz, RenderAreaWrapper<T> wrapper) {
-        return registerRenderArea(clz.getName(), wrapper);
+        return registerRenderArea(clz.getCanonicalName(), wrapper);
     }
 
     /**
@@ -216,7 +216,7 @@ public final class DetailExtractor {
      * @return removed extractor
      */
     public static RenderAreaWrapper<?> unregisterRenderArea(Class<?> clz) {
-        return unregisterRenderArea(clz.getName());
+        return unregisterRenderArea(clz.getCanonicalName());
     }
 
     /**
@@ -236,7 +236,7 @@ public final class DetailExtractor {
      * @return removed extractor
      */
     public static BaseExtractor<?> unregisterExtractor(Class<?> clz) {
-        return unregisterExtractor(clz.getName());
+        return unregisterExtractor(clz.getCanonicalName());
     }
 
     /**
@@ -371,7 +371,7 @@ public final class DetailExtractor {
     public static <T> BaseExtractor<T> getExtractor(final Class<T> clazz) {
         final BaseExtractor<?> be = findExtractor(clazz);
         if (be == null) {
-            throw new IllegalStateException("Not found extractor for type:" + clazz.getName());
+            throw new IllegalStateException("Not found extractor for type:" + clazz.getCanonicalName());
         }
         //noinspection unchecked
         return (BaseExtractor<T>) be;
@@ -392,7 +392,7 @@ public final class DetailExtractor {
     @Nullable
     private static <T, R> R findItemByClassInheritance(final Class<T> clazz, Map<String, R> data) {
         Class<?> clz = clazz;
-        R ve = data.get(clz.getName());
+        R ve = data.get(clz.getCanonicalName());
         while (ve == null && clz != Object.class) {//object just for sure that View is unregistered
             clz = clz.getSuperclass();
             ve = data.get(clz.getCanonicalName());
