@@ -12,7 +12,7 @@ import java.util.HashMap;
 /**
  * Created by jbruchanov on 05/06/2014.
  */
-public class LinearLayoutExtractor extends ViewExtractor {
+public class LinearLayoutExtractor extends ViewGroupExtractor {
 
     public LinearLayoutExtractor(Translator translator) {
         super(translator);
@@ -35,7 +35,7 @@ public class LinearLayoutExtractor extends ViewExtractor {
         }
 
         if(VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-            data.put("DividerDrawable", String.valueOf(ll.getDividerDrawable()));
+            data.put("DividerDrawable:", String.valueOf(ll.getDividerDrawable()));
             data.put("Dividers", getTranslator().showDividers(ll.getShowDividers()));
         }
 
