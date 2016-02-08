@@ -35,10 +35,13 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
     public static Pattern[] IGNORE_PATTERNS = new Pattern[]{
             Pattern.compile("add.*", 0),
             Pattern.compile("call.*", 0),
+            Pattern.compile("create.*", 0),
+            Pattern.compile("find.*", 0),
             Pattern.compile("gen.*", 0),
             Pattern.compile("on.*", 0),
             Pattern.compile("perform.*", 0),
             Pattern.compile("request.*", 0),
+            Pattern.compile("resolve.*", 0),
             Pattern.compile("show.*", 0),
             Pattern.compile("will.*", 0)
     };
