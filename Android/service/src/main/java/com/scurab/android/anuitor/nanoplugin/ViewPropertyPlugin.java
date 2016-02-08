@@ -1,14 +1,17 @@
 package com.scurab.android.anuitor.nanoplugin;
 
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
 import com.scurab.android.anuitor.model.DataResponse;
@@ -18,6 +21,7 @@ import com.scurab.android.anuitor.reflect.ViewReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -37,6 +41,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
     private static final String PATH = "/" + FILE;
     private final Paint mClearPaint = new Paint();
     private ReflectionExtractor mReflectionExtractor;
+    private Rect mRenderArea = new Rect();
 
     public ViewPropertyPlugin(WindowManager windowManager) {
         super(windowManager);
@@ -109,6 +114,20 @@ public class ViewPropertyPlugin extends ActivityPlugin {
             if (object instanceof Drawable) {
                 response.data = Base64.encodeToString(ResourcesPlugin.drawDrawableWithBounds((Drawable) object, mClearPaint), Base64.NO_WRAP);
                 response.dataType = BASE64_PNG;
+            } else if (object instanceof View) {
+                View view = (View) object;
+                final RenderAreaWrapper<View> renderSize = DetailExtractor.getRenderArea(view);
+                mRenderArea.set(0, 0, view.getWidth(), view.getHeight());
+                if (renderSize != null) {
+                    renderSize.getRenderArea(view, mRenderArea);
+                }
+                final Bitmap bitmap = ViewshotPlugin.drawViewBlocking(view, mRenderArea, mClearPaint);
+                if (bitmap != null) {
+                    final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    response.data = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
+                    response.dataType = BASE64_PNG;
+                }
             }
         } else {
             response.context = "Null object";
