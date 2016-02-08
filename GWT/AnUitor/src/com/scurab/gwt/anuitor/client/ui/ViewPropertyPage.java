@@ -83,9 +83,18 @@ public class ViewPropertyPage extends Composite {
         });
     }
     
+    /**
+     * Update scrollpanel height based on current window size
+     */
+    private void updateScrollContentHeight(){
+        String h = Window.getClientHeight() + "px";        
+        dataScrollPanel.setHeight(h);        
+    }
+    
     protected void onDataDownloaded(DataResponseJSO result, List<Pair> dataitems) {        
         TableTools.createDataProvider(dataitems).addDataDisplay(cellTable);
         onShowData(result.getDataType(), result.getData());
+        updateScrollContentHeight();
     }
     
     protected void onShowData(String type, String data) {
