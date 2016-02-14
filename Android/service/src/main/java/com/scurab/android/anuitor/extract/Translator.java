@@ -399,4 +399,15 @@ public class Translator {
         }
         return sb.toString();
     }
+
+    public Object layoutMode(int layoutMode) {
+        switch (layoutMode){
+            case ViewGroup.LAYOUT_MODE_CLIP_BOUNDS:
+                return "LAYOUT_MODE_CLIP_BOUNDS";
+            case ViewGroup.LAYOUT_MODE_OPTICAL_BOUNDS:
+                return "LAYOUT_MODE_OPTICAL_BOUNDS";
+            default:
+                return "UNKNOWN";
+        }
+    }
 }
