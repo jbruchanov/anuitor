@@ -2,7 +2,9 @@ package com.scurab.android.anuitor.extract;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.scurab.android.anuitor.extract.component.ActivityExtractor;
+import com.scurab.android.anuitor.extract.component.BitmapExtractor;
 import com.scurab.android.anuitor.extract.component.BundleExtractor;
 import com.scurab.android.anuitor.extract.component.DrawableExtractor;
 import com.scurab.android.anuitor.extract.component.FragmentActivityExtractor;
@@ -40,6 +43,7 @@ import com.scurab.android.anuitor.extract.component.SupportFragmentExtractor;
 import com.scurab.android.anuitor.extract.view.AbsListViewExtractor;
 import com.scurab.android.anuitor.extract.view.AbsSeekBarExtractor;
 import com.scurab.android.anuitor.extract.view.AdapterViewExtractor;
+import com.scurab.android.anuitor.extract.component.BitmapDrawableExtractor;
 import com.scurab.android.anuitor.extract.view.CalendarViewExtractor;
 import com.scurab.android.anuitor.extract.view.CardViewExtractor;
 import com.scurab.android.anuitor.extract.view.CheckedTextViewExtractor;
@@ -146,6 +150,8 @@ public final class DetailExtractor {
         registerExtractor(Intent.class, new IntentExtractor(translator));
         registerExtractor(Paint.class, new PaintExtractor(translator));
         registerExtractor(Drawable.class, new DrawableExtractor(translator));
+        registerExtractor(BitmapDrawable.class, new BitmapDrawableExtractor(translator));
+        registerExtractor(Bitmap.class, new BitmapExtractor(translator));
         registerExtractor(ViewGroup.LayoutParams.class, new LayoutParamsExtractor(translator));
     }
 
