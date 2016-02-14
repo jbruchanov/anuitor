@@ -423,4 +423,15 @@ public class Translator {
                 return "UNKNOWN";
         }
     }
+
+    public Object gridLayoutOrientation(int orientation) {
+        switch (orientation) {
+            case android.support.v7.widget.GridLayout.VERTICAL:
+                return "VERTICAL";
+            case android.support.v7.widget.RecyclerView.HORIZONTAL:
+                return "HORIZONTAL";
+            default:
+                return "UNKNOWN";
+        }
+    }
 }
