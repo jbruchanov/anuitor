@@ -27,7 +27,7 @@ public class AbsListViewExtractor extends AdapterViewExtractor {
         //http://developer.android.com/reference/android/widget/AbsListView.html#getChoiceMode() API Level 1 ?!
         data.put("ChoiceMode", getTranslator().choiceMode(lv.getChoiceMode()));
 
-
+        data.put("Adapter:", lv.getAdapter());
         data.put("TextFilter", lv.getTextFilter());
         data.put("HasTextFilter", lv.hasTextFilter());
         data.put("IsTextFilterEnabled", lv.isTextFilterEnabled());
