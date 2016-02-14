@@ -23,9 +23,7 @@ class CodePiece {
 
     @Override
     boolean equals(Object obj) {
-        if (obj == this) {
-            return true
-        } else if (obj instanceof CodePiece) {
+        if (obj instanceof CodePiece) {
             return method.equals(obj.method) && arrayIndex == obj.arrayIndex
         }
         return false
