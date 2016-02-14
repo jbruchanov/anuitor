@@ -1,7 +1,6 @@
 package com.scurab.android.anuitor.extract.view;
 
 import android.os.Build;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AbsListView;
 
@@ -40,8 +39,7 @@ public class AbsListViewExtractor extends AdapterViewExtractor {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             data.put("CheckedItemCount", lv.getCheckedItemCount());
-            SparseBooleanArray checkedItemPositions = lv.getCheckedItemPositions();
-            data.put("CheckedItemPositions", checkedItemPositions != null ? checkedItemPositions.toString() : null);
+            data.put("CheckedItemPositions", String.valueOf(lv.getCheckedItemPositions()));
             data.put("IsFastScrollAlwaysVisible", lv.isFastScrollAlwaysVisible());
         }
         return data;

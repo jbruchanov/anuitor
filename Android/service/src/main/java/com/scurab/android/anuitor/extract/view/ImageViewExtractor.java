@@ -28,6 +28,7 @@ public class ImageViewExtractor extends ViewExtractor {
         Matrix imageMatrix = iv.getImageMatrix();
         data.put("ImageMatrix", imageMatrix != null ? imageMatrix.toShortString() : null);
         data.put("ScaleType", String.valueOf(iv.getScaleType()));
+        data.put("Drawable:", String.valueOf(iv.getDrawable()));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             data.put("OverlappingRendering", iv.hasOverlappingRendering());

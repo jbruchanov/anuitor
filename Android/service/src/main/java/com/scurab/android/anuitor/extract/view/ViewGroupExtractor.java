@@ -24,8 +24,19 @@ public class ViewGroupExtractor extends ViewExtractor {
 
         ViewGroup vg = (ViewGroup) v;
         data.put("ChildCount", vg.getChildCount());
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
+            data.put("LayoutTransition", String.valueOf(vg.getLayoutTransition()));
+            data.put("IsMotionEventSplittingEnabled", vg.isMotionEventSplittingEnabled());
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.ICE_CREAM_SANDWICH) {
+            data.put("ShouldDelayChildPressedState", vg.shouldDelayChildPressedState());
+        }
+
         if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
             data.put("ClipChildren", vg.getClipChildren());
+            data.put("LayoutMode", getTranslator().layoutMode(vg.getLayoutMode()));
         }
         if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             data.put("ClipToPadding", vg.getClipToPadding());
@@ -33,6 +44,16 @@ public class ViewGroupExtractor extends ViewExtractor {
             data.put("TouchscreenBlocksFocus", vg.getTouchscreenBlocksFocus());
             data.put("TransitionGroup", vg.isTransitionGroup());
         }
+
+        data.put("DescendantFocusability", vg.getDescendantFocusability());
+        data.put("FocusedChild", String.valueOf(vg.getFocusedChild()));
+        data.put("LayoutAnimation", String.valueOf(vg.getLayoutAnimation()));
+        data.put("LayoutAnimationListener", String.valueOf(vg.getLayoutAnimationListener()));
+        data.put("PersistentDrawingCache", vg.getPersistentDrawingCache());
+
+        data.put("IsAlwaysDrawnWithCacheEnabled", vg.isAlwaysDrawnWithCacheEnabled());
+        data.put("IsAnimationCacheEnabled", vg.isAnimationCacheEnabled());
+
         return data;
     }
 }

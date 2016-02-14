@@ -26,6 +26,7 @@ public class ProgressBarExtractor extends ViewExtractor {
 
         data.put("Max", pb.getMax());
         data.put("Progress", pb.getProgress());
+        data.put("ProgressDrawable:", pb.getProgressDrawable());
         data.put("ProgressSecondary", pb.getSecondaryProgress());
         data.put("IsIndeterminate", pb.isIndeterminate());
 

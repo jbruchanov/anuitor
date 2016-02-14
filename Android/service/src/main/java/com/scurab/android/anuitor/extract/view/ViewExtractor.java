@@ -19,6 +19,7 @@ import com.scurab.android.anuitor.reflect.ViewReflector;
 import com.scurab.android.anuitor.tools.Executor;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -28,7 +29,6 @@ import java.util.HashMap;
  */
 public class ViewExtractor extends BaseExtractor<View> {
     private static final int[] POSITION = new int[2];
-    private static final Rect RECT = new Rect();
 
     /**
      * Those values must be present in every View related dataset<br/>
@@ -101,7 +101,6 @@ public class ViewExtractor extends BaseExtractor<View> {
         data.put("ScrollX", v.getScrollX());
         data.put("ScrollY", v.getScrollY());
         data.put("Tag:", String.valueOf(v.getTag()));
-        data.put("Tag:", String.valueOf(v.getTag(1)));
         final ViewReflector reflector = new ViewReflector(v);
         data.put("Tags:", String.valueOf(reflector.getKeyedTags()));
         data.put("HasFocus", v.hasFocus());
@@ -113,8 +112,9 @@ public class ViewExtractor extends BaseExtractor<View> {
         data.put("WillNotDraw", v.willNotDraw());
         data.put("WillNotCacheDrawing", v.willNotCacheDrawing());
 
-        v.getHitRect(RECT);
-        data.put("HitRect", RECT.toShortString());
+        final Rect rect = new Rect();
+        v.getHitRect(rect);
+        data.put("HitRect", rect.toShortString());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             data.put("Alpha", v.getAlpha());
@@ -131,6 +131,18 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("NextFocusForwardId", IdsHelper.getNameForId(v.getNextFocusForwardId()));
             data.put("X", v.getX());
             data.put("Y", v.getY());
+            data.put("MeasuredHeightAndState", v.getMeasuredHeightAndState());
+            data.put("MeasuredState", v.getMeasuredState());
+            data.put("MeasuredWidthAndState", v.getMeasuredWidthAndState());
+            data.put("SystemUiVisibility", v.getSystemUiVisibility());//11
+            data.put("VerticalScrollbarPosition", v.getVerticalScrollbarPosition());//11
+            data.put("IsActivated", v.isActivated());//11
+            data.put("IsDirty", v.isDirty());//11
+            data.put("IsSaveFromParentEnabled", v.isSaveFromParentEnabled());//11
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            data.put("IsHovered", v.isHovered());//14
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
@@ -138,17 +150,33 @@ public class ViewExtractor extends BaseExtractor<View> {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if (v.getResources() != null) {
-                data.put("CameraDistance", v.getCameraDistance());
-            }
+            data.put("CameraDistance", v.getCameraDistance());
             data.put("IsImportantForA11Y", translator.importantForA11Y(v.getImportantForAccessibility()));
             data.put("MinWidth", v.getMinimumWidth());
             data.put("MinHeight", v.getMinimumHeight());
+            data.put("AccessibilityNodeProvider", String.valueOf(v.getAccessibilityNodeProvider()));
+            data.put("FitsSystemWindows", v.getFitsSystemWindows());
+            data.put("ScrollBarDefaultDelayBeforeFade", v.getScrollBarDefaultDelayBeforeFade());
+            data.put("ScrollBarFadeDuration", v.getScrollBarFadeDuration());
+            data.put("ScrollBarSize", v.getScrollBarSize());
+            data.put("IsScrollContainer", v.isScrollContainer());
+            data.put("ParentForAccessibility", String.valueOf(v.getParentForAccessibility()));//16
+            data.put("WindowSystemUiVisibility", v.getWindowSystemUiVisibility());//16;
+            data.put("HasOverlappingRendering", v.hasOverlappingRendering());//16
+            data.put("HasTransientState", v.hasTransientState());//16
         }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             data.put("LabelFor", IdsHelper.getNameForId(v.getLabelFor()));
             data.put("LayerDirection", translator.layoutDirection(v.getLayoutDirection()));
+            data.put("Display:", String.valueOf(v.getDisplay()));
+            data.put("PaddingEnd", v.getPaddingEnd());
+            data.put("PaddingStart", v.getPaddingStart());
+            data.put("TextAlignment", v.getTextAlignment());//17
+            data.put("TextDirection", v.getTextDirection());//17
+            data.put("IsPaddingRelative", v.isPaddingRelative());//17
         }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             data.put("ClipBounds", String.valueOf(v.getClipBounds()));
             final ViewOverlay overlay = v.getOverlay();
@@ -162,9 +190,24 @@ public class ViewExtractor extends BaseExtractor<View> {
             if (viewOverlayReflector.getOverlayDrawablesCount() > 0) {
                 data.put("OverlayDrawables:", String.valueOf(viewOverlayReflector.getOverlayDrawables()));
             }
+            data.put("WindowId:", String.valueOf(v.getWindowId()));//18
+            data.put("IsInLayout", v.isInLayout());//18
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+            data.put("CanResolveLayoutDirection", v.canResolveLayoutDirection());
+            data.put("CanResolveTextAlignment", v.canResolveTextAlignment());
+            data.put("CanResolveTextDirection", v.canResolveTextDirection());
+            data.put("AccessibilityLiveRegion", v.getAccessibilityLiveRegion());
+            data.put("IsTextAlignmentResolved", v.isTextAlignmentResolved());
+            data.put("IsTextDirectionResolved", v.isTextDirectionResolved());
+            data.put("IsAttachedToWindow", v.isAttachedToWindow());//19
+            data.put("IsLaidOut", v.isLaidOut());//19
+            data.put("IsLayoutDirectionResolved", v.isLayoutDirectionResolved());//19
         }
 
         if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            data.put("BackgroundTintList", String.valueOf(v.getBackgroundTintList()));
             data.put("BackgroundTintMode", String.valueOf(v.getBackgroundTintMode()));
             data.put("ClipToOutline", v.getClipToOutline());
             data.put("Elevation", v.getElevation());
@@ -173,6 +216,15 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("Z", v.getZ());
             data.put("NestedScrollingParent", v.hasNestedScrollingParent());
             data.put("StateListAnimator", v.getStateListAnimator());
+            data.put("OutlineProvider", String.valueOf(v.getOutlineProvider()));
+            data.put("IsAccessibilityFocused", v.isAccessibilityFocused());//21
+            data.put("IsImportantForAccessibility", v.isImportantForAccessibility());//21
+            data.put("IsNestedScrollingEnabled", v.isNestedScrollingEnabled());//21
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1) {
+            data.put("AccessibilityTraversalAfter", v.getAccessibilityTraversalAfter());
+            data.put("AccessibilityTraversalBefore", v.getAccessibilityTraversalBefore());
         }
 
         if (Build.VERSION.SDK_INT >= VERSION_CODES.M) {
@@ -181,6 +233,9 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("ForegroundTintMode", String.valueOf(v.getForegroundTintMode()));
             data.put("IsContextClickable", v.isContextClickable());
             data.put("ScrollIndicators", getTranslator().scrollIndicators(v.getScrollIndicators()));
+            data.put("ForegroundGravity", getTranslator().gravity(v.getForegroundGravity()));
+            data.put("ForegroundTintList", String.valueOf(v.getForegroundTintList()));
+            data.put("RootWindowInsets:", String.valueOf(v.getRootWindowInsets()));
         }
 
         boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass().getName());
@@ -193,11 +248,53 @@ public class ViewExtractor extends BaseExtractor<View> {
         //TODO:remove later
         data.put("RenderViewContent", shouldRender);
 
+        //region data by reflection
+
+
+        data.put("Animation", String.valueOf(v.getAnimation()));
+        data.put("ApplicationWindowToken:", String.valueOf(v.getApplicationWindowToken()));
+        data.put("DrawableState", getTranslator().drawableStates(v.getDrawableState()));
+        data.put("DrawingCache", String.valueOf(v.getDrawingCache()));
+        data.put("DrawingCacheBackgroundColor", getStringColor(v.getDrawingCacheBackgroundColor()));
+        data.put("DrawingCacheQuality", v.getDrawingCacheQuality());
+        data.put("DrawingTime", v.getDrawingTime());
+        data.put("FilterTouchesWhenObscured", v.getFilterTouchesWhenObscured());
+        data.put("HorizontalFadingEdgeLength", v.getHorizontalFadingEdgeLength());
+        data.put("MeasuredHeight", v.getMeasuredHeight());
+        data.put("MeasuredWidth", v.getMeasuredWidth());
+        data.put("OnFocusChangeListener", String.valueOf(v.getOnFocusChangeListener()));
+        data.put("OverScrollMode", v.getOverScrollMode());
+        data.put("Parent:", String.valueOf(v.getParent()));
+        data.put("RootView:", String.valueOf(v.getRootView()));
+        data.put("ScrollBarStyle", v.getScrollBarStyle());
+        data.put("SolidColor", getStringColor(v.getSolidColor()));
+        data.put("VerticalScrollbarWidth", v.getVerticalScrollbarWidth());
+        //data.put("ViewTreeObserver", String.valueOf(v.getViewTreeObserver()));
+        data.put("WindowToken:", String.valueOf(v.getWindowToken()));
+        data.put("WindowVisibility", getTranslator().visibility(v.getWindowVisibility()));
+        data.put("HasWindowFocus", v.hasWindowFocus());
+        data.put("IsDrawingCacheEnabled", v.isDrawingCacheEnabled());
+        data.put("IsFocused", v.isFocused());
+        data.put("IsHapticFeedbackEnabled", v.isHapticFeedbackEnabled());
+        data.put("IsHorizontalFadingEdgeEnabled", v.isHorizontalFadingEdgeEnabled());
+        data.put("IsHorizontalScrollBarEnabled", v.isHorizontalScrollBarEnabled());
+        data.put("IsInEditMode", v.isInEditMode());
+        data.put("IsInTouchMode", v.isInTouchMode());
+        data.put("IsLayoutRequested", v.isLayoutRequested());
+        data.put("IsSaveEnabled", v.isSaveEnabled());
+        data.put("IsScrollbarFadingEnabled", v.isScrollbarFadingEnabled());
+        data.put("IsVerticalFadingEdgeEnabled", v.isVerticalFadingEdgeEnabled());
+        data.put("IsVerticalScrollBarEnabled", v.isVerticalScrollBarEnabled());
+        data.put("TouchDelegate", String.valueOf(v.getTouchDelegate()));
+        final ArrayList<View> touchables = v.getTouchables();
+        data.put("TouchablesCount", touchables != null ? touchables.size() : 0);
+        data.put("VerticalFadingEdgeLength", v.getVerticalFadingEdgeLength());
+
+
         final RenderAreaWrapper<View> renderArea = DetailExtractor.getRenderArea(v);
         if (renderArea != null) {
-            final Rect outRect = new Rect();
-            renderArea.getRenderArea(v, outRect);
-            final String value = toString(outRect);
+            renderArea.getRenderArea(v, rect);
+            final String value = toString(rect);
             data.put("_RenderAreaRelative", value);
             data.put("RenderAreaRelative", value);
         }
