@@ -22,18 +22,29 @@ public class ViewExtractingTests {
         assertTrue(DetailExtractor.MAP.size() > 0);
 
         for (String className : DetailExtractor.MAP.keySet()) {
-            Class<?> clz = Class.forName(className);
-            if(Modifier.isAbstract(clz.getModifiers()) || !clz.isAssignableFrom(View.class)){
-                continue;
+            try {
+                Class<?> clz = null;
+                try {
+                    clz = Class.forName(className);
+                } catch (ClassNotFoundException e) {
+                    System.err.println(e.getMessage());
+                    continue;
+                }
+                if(Modifier.isAbstract(clz.getModifiers()) || !clz.isAssignableFrom(View.class)){
+                    continue;
+                }
+                BaseExtractor<View> ve = (BaseExtractor<View>) DetailExtractor.MAP.get(clz.getName());
+                View v = spy(createView((Class<? extends View>) clz));
+
+                HelpHashMap hhm = new HelpHashMap(ve);
+                ve.fillValues(v, hhm, null);
+
+                //TODO: is there any way how to test methods have been called at most 1 time ?
+                assertTrue(hhm.size() > 0);
+            } catch (Throwable e) {
+                System.err.println(e.getMessage());
+                e.printStackTrace();
             }
-            BaseExtractor<View> ve = (BaseExtractor<View>) DetailExtractor.MAP.get(clz.getName());
-            View v = spy(createView((Class<? extends View>) clz));
-
-            HelpHashMap hhm = new HelpHashMap(ve);
-            ve.fillValues(v, hhm, null);
-
-            //TODO: is there any way how to test methods have been called at most 1 time ?
-            assertTrue(hhm.size() > 0);
         }
     }
 
