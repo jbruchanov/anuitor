@@ -1,20 +1,16 @@
 package com.scurab.android.anuitor.extract.view;
 
 import android.util.Log;
-import android.view.View;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.Translator;
-import com.scurab.android.anuitor.hierarchy.ExportView;
 import com.scurab.android.anuitor.reflect.Reflector;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +35,7 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
             Pattern.compile("create.*", 0),
             Pattern.compile("find.*", 0),
             Pattern.compile("gen.*", 0),
+            Pattern.compile("mutate.*", 0),
             Pattern.compile("on.*", 0),
             Pattern.compile("perform.*", 0),
             Pattern.compile("request.*", 0),
@@ -85,7 +82,7 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
                 }
             }
         }
-        if (mUseFields && deep < 5) {
+        if (mUseFields && deep < 2) {
             final List<Field> fields = getAllFields(new ArrayList<Field>(), o.getClass());
             for (Field f : fields) {
                 String name = f.getName();
