@@ -84,5 +84,9 @@ h1 {
 }
 
 .propertyPreview:HOVER {
+	border:solid white thin;
+}
+
+.propertyPreview:HOVER {
 	border:solid red thin;
 }
