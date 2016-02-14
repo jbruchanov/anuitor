@@ -23,7 +23,7 @@
 	</ui:style>
 	<g:HTMLPanel styleName="{style.content}">
 		<g:SplitLayoutPanel width="100%" height="100%">
-			<g:west size="768">
+			<g:west size="1000">
 				<g:ScrollPanel>
 					<g:VerticalPanel height="100%" styleName="{style.padding}">
 						<g:VerticalPanel ui:field="topImagePanel">
@@ -39,13 +39,13 @@
 					</g:VerticalPanel>
 				</g:ScrollPanel>
 			</g:west>
-			<g:center size="400">
+			<g:center size="300">
 				<g:ScrollPanel>
 					<g:VerticalPanel ui:field="centerPanel">						
 					</g:VerticalPanel>
 				</g:ScrollPanel>
 			</g:center>
-			<g:east size="600">
+			<g:east size="500">
 				<g:ScrollPanel>
 					<p1:CellTable ui:field="cellTable" pageSize="500" />
 				</g:ScrollPanel>
