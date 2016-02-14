@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.nanoplugin;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Map;
 
@@ -17,7 +18,13 @@ public abstract class BasePlugin implements WebServerPlugin {
     protected static final String STRINGS_DATA_TYPE = "string[]";
     protected static final String BASE64_PNG = "base64_png";
 
-    public static final Gson GSON = new Gson();
+    public static final Gson GSON;
+
+    static {
+        GsonBuilder builder = new GsonBuilder();
+        builder.serializeSpecialFloatingPointValues();
+        GSON = builder.create();
+    }
 
     @Override
     public void initialize(Map<String, String> commandLineOptions) {
@@ -27,4 +34,5 @@ public abstract class BasePlugin implements WebServerPlugin {
     public abstract String[] files();
 
     public abstract String mimeType();
+
 }
