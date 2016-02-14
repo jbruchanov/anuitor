@@ -41,7 +41,6 @@ public class ViewPropertyPlugin extends ActivityPlugin {
     private static final String PATH = "/" + FILE;
     private final Paint mClearPaint = new Paint();
     private ReflectionExtractor mReflectionExtractor;
-    private Rect mRenderArea = new Rect();
 
     public ViewPropertyPlugin(WindowManager windowManager) {
         super(windowManager);
@@ -117,11 +116,12 @@ public class ViewPropertyPlugin extends ActivityPlugin {
             } else if (object instanceof View) {
                 View view = (View) object;
                 final RenderAreaWrapper<View> renderSize = DetailExtractor.getRenderArea(view);
-                mRenderArea.set(0, 0, view.getWidth(), view.getHeight());
+                Rect renderArea = new Rect();
+                renderArea.set(0, 0, view.getWidth(), view.getHeight());
                 if (renderSize != null) {
-                    renderSize.getRenderArea(view, mRenderArea);
+                    renderSize.getRenderArea(view, renderArea);
                 }
-                final Bitmap bitmap = ViewshotPlugin.drawViewBlocking(view, mRenderArea, mClearPaint);
+                final Bitmap bitmap = ViewshotPlugin.drawViewBlocking(view, renderArea, mClearPaint);
                 if (bitmap != null) {
                     final ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
