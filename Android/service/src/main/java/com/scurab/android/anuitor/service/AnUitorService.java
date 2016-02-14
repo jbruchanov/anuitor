@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.scurab.android.anuitor.R;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.reflect.WindowManagerProvider;
 import com.scurab.android.anuitor.tools.FileSystemTools;
@@ -284,7 +285,7 @@ public class AnUitorService extends Service {
      * Throws RuntimeException in async thread if there is an exception from unzip process.
      *
      * @param context
-     * @param rawWebZipFileRes   resource id for zip file of web, if 0 'http://anuitor.scurab.com/download/anuitor.zip' is used as link to download app
+     * @param rawWebZipFileRes   resource id for zip file of web, if -1 'http://anuitor.scurab.com/download/anuitor.zip' is used as link to download app, 0 is used default included zip, otherwise your own asset file
      * @param overwriteWebFolder true to delete old web folder and unzip again
      * @param onFinishCallback   called when {@link Context#startService(android.content.Intent)} has been called, can be null, is called in non main thread!
      * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
@@ -300,12 +301,16 @@ public class AnUitorService extends Service {
                     f.mkdir();
                     try {
                         String zipFile = folder + "/web.zip";
-                        if (rawWebZipFileRes == 0) {
+                        if (rawWebZipFileRes == -1) {
                             new File(zipFile).delete();
                             URL website = new URL("http://anuitor.scurab.com/download/anuitor.zip");
                             FileSystemTools.copyFile(website.openStream(), zipFile);
                         } else {
-                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, rawWebZipFileRes, zipFile);
+                            int resId = rawWebZipFileRes;
+                            if (resId == 0) {
+                                resId = R.raw.anuitor;
+                            }
+                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, resId, zipFile);
                         }
                         ZipTools.extractFolder(zipFile, folder);
                     } catch (Throwable e) {
