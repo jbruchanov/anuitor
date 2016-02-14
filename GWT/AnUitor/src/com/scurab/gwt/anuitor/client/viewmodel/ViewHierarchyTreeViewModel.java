@@ -1,6 +1,8 @@
 package com.scurab.gwt.anuitor.client.viewmodel;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.cell.client.AbstractSafeHtmlCell;
 import com.google.gwt.cell.client.ValueUpdater;
@@ -28,6 +30,7 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 public class ViewHierarchyTreeViewModel implements TreeViewModel {
 
     private static final String CSS_HIGHLIGHTED_NODE = "treeNode_highlighted";
+    private static final String CSS_IGNORED_NODE = "treeNode_ignored";
     
     public interface OnSelectionChangedListener {
         void onSelectionChanged(ViewNodeJSO viewNode, boolean selected);
@@ -43,6 +46,8 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
     private OnSelectionChangedListener mOnSelectionChangedListener;
     
     private OnViewNodeMouseOverListener mOnViewNodeMouseOverListener;
+    
+    private Set<String> mIgnored = new HashSet<String>();
 
     /*
      * Selection Model, must be singleton for whole viewmodel to avoid multiple
@@ -176,11 +181,13 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         @Override
         protected void render(com.google.gwt.cell.client.Cell.Context context, SafeHtml data, SafeHtmlBuilder sb) {
             Object o = context.getKey();
-            int key = 0; 
-            if(o instanceof ViewNodeJSO){
-                key = o.hashCode();
+            String key; 
+            if (o instanceof ViewNodeJSO) {
+                key = getNodeJSOId((ViewNodeJSO) o);
+            } else {
+                key = Long.toString(System.currentTimeMillis());
             }
-            sb.appendHtmlConstant("<label class=\"treeNode\" id=\"ViewNodeJSO_id_" + key + "\">");
+            sb.appendHtmlConstant("<label class=\"treeNode" + (mIgnored.contains(key) ? (" " + CSS_IGNORED_NODE) : "")  + "\" id=\"" + key + "\">");
             if (data != null) {
               sb.append(data);
             }
@@ -204,7 +211,7 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
                     mSelectionModel.clear();
                     //don't call notify now, it's called by selection handler
                 }                                                
-            }            
+            }
         }
     }
     
@@ -271,4 +278,33 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         }
         return false;
     }
+    
+    public void highlightAsIgnoredNode(ViewNodeJSO vs) {
+        if (vs == null) {
+            return;
+        }
+        String key = getNodeJSOId(vs);
+        mIgnored.add(key);
+        Element el = DOM.getElementById(key);
+        if (el != null) {
+            el.addClassName(CSS_IGNORED_NODE);            
+        }
+    }
+        
+    public void clearIgnoredNode(ViewNodeJSO vs){
+        if (vs == null) {
+            return;
+        }
+        String key = getNodeJSOId(vs);
+        mIgnored.remove(key);
+        Element el = DOM.getElementById(key);
+        if (el != null) {
+            el.removeClassName(CSS_IGNORED_NODE);            
+        }
+    }
+    
+    private static String getNodeJSOId(ViewNodeJSO node) {
+        return node == null ? null : "ViewNodeJSO_id_" + node.hashCode();
+    }
+    
 }

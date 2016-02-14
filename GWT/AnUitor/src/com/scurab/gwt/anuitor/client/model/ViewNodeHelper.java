@@ -3,6 +3,7 @@ package com.scurab.gwt.anuitor.client.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
@@ -66,23 +67,29 @@ public class ViewNodeHelper {
      * @param root
      * @param x
      * @param y
+     * @param ignore optional set of views to ignore
      * @return
      */
-    public static ViewNodeJSO findFrontVisibleView(ViewNodeJSO root, int x, int y) {
+    public static ViewNodeJSO findFrontVisibleView(ViewNodeJSO root, int x, int y, Set<ViewNodeJSO> ignore) {
         if(((int)root.getDouble(ViewFields.Internal.VISIBILITY)) != 0){//not visible
             return null;
         }
+        
         if (Rect.fromView(root, true, false).contains(x, y)) {
             int n = root.getNodes() != null ? root.getNodes().length() : 0;
             if (n > 0) {
                 for (int i = n - 1; i >= 0; i--) {
                     ViewNodeJSO child = root.getNodes().get(i);
-                    ViewNodeJSO candidate = findFrontVisibleView(child, x, y);
+                    ViewNodeJSO candidate = findFrontVisibleView(child, x, y, ignore);
                     if (candidate != null) {
                         return candidate;
                     }
                 }
+                
             } 
+            if (ignore != null && ignore.contains(root)) {
+                return null;
+            }
             return root;            
         }
         return null;

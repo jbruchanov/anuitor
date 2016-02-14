@@ -53,11 +53,15 @@ h1 {
   	cursor: pointer;
 }
 
-.treeNode_highlighted{
+.treeNode_highlighted {
 	font-weight: bold;
 	color: red;
 	cursor: hand;
   	cursor: pointer;
+}
+
+.treeNode_ignored {	
+	font-style: italic;
 }
 
 .transparent{

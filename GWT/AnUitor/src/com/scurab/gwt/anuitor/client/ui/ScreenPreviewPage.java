@@ -1,12 +1,16 @@
 package com.scurab.gwt.anuitor.client.ui;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.ImageData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -22,6 +26,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -54,6 +59,7 @@ public class ScreenPreviewPage extends Composite {
     @UiField VerticalPanel centerPanel;
     @UiField Label hoveredViewID;    
     @UiField VerticalPanel topImagePanel;
+    @UiField CheckBox ignoreCheckBox;    
     @UiField(provided=true) CellTable<Pair> cellTable = new CellTable<Pair>();
 
     /* Current color set for highlighting multiple views below the mouse cursor, currently disabled look for TAG_COLORS */
@@ -94,7 +100,8 @@ public class ScreenPreviewPage extends Composite {
     private ViewNodeJSO mRoot;
     /* show cross base on image, not perfect UX, new canvas just for it would be better... */
     private boolean mDrawCross = false;
-    
+    /* ignore for mouse position traversing, e.g. for disabling touch_blockers */
+    private Set<ViewNodeJSO> mIgnored = new HashSet<ViewNodeJSO>();
     private int mScreenId = 0;
 
     interface TestPageUiBinder extends UiBinder<Widget, ScreenPreviewPage> {
@@ -194,6 +201,7 @@ public class ScreenPreviewPage extends Composite {
                     if (mTreeViewModel != null) {
                         mTreeViewModel.clearHighlightedNode();
                     }
+                    ignoreCheckBox.setValue(false, false);
                 }
             }
         });
@@ -207,8 +215,9 @@ public class ScreenPreviewPage extends Composite {
                     int y = event.getRelativeY(mCanvas.getElement());                        
                     int scaledX = (int) (x / mScale);
                     int scaledY = (int) (y / mScale);
-                    ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY);
-                    if (vs != null) {
+                    ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY, mIgnored);
+                    updateIngoredCheckBox(vs);
+                    if (vs != null) {                        
                         if (vs == mTreeViewModel.getSelectedNode()) {
                             mTreeViewModel.clearSelectedNode();
                             mSelectedView = false;
@@ -216,6 +225,26 @@ public class ScreenPreviewPage extends Composite {
                             mTreeViewModel.selectNode(vs);
                             mSelectedView = true;
                         }
+                    }
+                }
+            }
+        });
+        
+        ignoreCheckBox.addClickHandler(new ClickHandler() {           
+            @Override
+            public void onClick(ClickEvent event) {
+                if (mTreeViewModel != null) {
+                    ViewNodeJSO node = mTreeViewModel.getSelectedNode();
+                    if (node == null) {
+                        return;// dont do anything here if we have selected node
+                    }
+                    
+                    if (ignoreCheckBox.getValue()) {
+                        mIgnored.add(node);
+                        mTreeViewModel.highlightAsIgnoredNode(node);
+                    } else {
+                        mIgnored.remove(node);
+                        mTreeViewModel.clearIgnoredNode(node);
                     }
                 }
             }
@@ -308,6 +337,7 @@ public class ScreenPreviewPage extends Composite {
     protected void onViewTreeNodeSelectionChanged(ViewNodeJSO viewNode, boolean selected){
         clearCanvas();
         mSelectedView = selected;
+        updateIngoredCheckBox(viewNode);
         if (selected) {            
             onShowTableDetail(viewNode);
             drawRectForView(viewNode);
@@ -382,7 +412,11 @@ public class ScreenPreviewPage extends Composite {
         String url = DataProvider.SCREEN + DataProvider.SCREEN_INDEX_QRY + mScreenId + "&time=" + System.currentTimeMillis();
         image.setUrl(url); //just to avoid caching
         loadTree();
-    }       
+    }
+    
+    private void updateIngoredCheckBox(ViewNodeJSO node) {
+        ignoreCheckBox.setValue(node != null && mIgnored.contains(node), false);
+    }
             
     /**
      * Load tree view hierarchy
@@ -415,6 +449,7 @@ public class ScreenPreviewPage extends Composite {
                     public void onMouseOver(ViewNodeJSO viewNode) {
                         if (mTreeViewModel.getSelectedNode() == null) {
                             clearCanvas();
+                            updateIngoredCheckBox(viewNode);
                             drawRectForView(viewNode);
                         }
                     }
@@ -464,11 +499,12 @@ public class ScreenPreviewPage extends Composite {
             clearCanvas();
             onDrawMouseCross(mX, mY);
             if (true) {
-                ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY);
+                ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY, mIgnored);
                 if(vs.hasCustomRenderSize()){
                     drawRectForView(vs, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);                    
                 }
                 drawRectForView(vs, mCanvas, mScale, HTMLColors.RED, COLORS[0], false);
+                updateIngoredCheckBox(vs);
                 if (mTreeViewModel != null) {
                     mTreeViewModel.highlightNode(vs);
                 }
