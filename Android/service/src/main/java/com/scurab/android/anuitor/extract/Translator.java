@@ -410,4 +410,17 @@ public class Translator {
                 return "UNKNOWN";
         }
     }
+
+    public Object scrollState(int scrollState) {
+        switch (scrollState){
+            case android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING:
+                return "SCROLL_STATE_DRAGGING";
+            case android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE:
+                return "SCROLL_STATE_IDLE";
+            case android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING:
+                return "SCROLL_STATE_SETTLING";
+            default:
+                return "UNKNOWN";
+        }
+    }
 }
