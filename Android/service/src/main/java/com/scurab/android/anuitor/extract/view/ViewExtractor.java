@@ -150,7 +150,9 @@ public class ViewExtractor extends BaseExtractor<View> {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            data.put("CameraDistance", v.getCameraDistance());
+            if (v.getResources() != null) {//viewstub doesn't have to have res
+                data.put("CameraDistance", v.getCameraDistance());
+            }
             data.put("IsImportantForA11Y", translator.importantForA11Y(v.getImportantForAccessibility()));
             data.put("MinWidth", v.getMinimumWidth());
             data.put("MinHeight", v.getMinimumHeight());
