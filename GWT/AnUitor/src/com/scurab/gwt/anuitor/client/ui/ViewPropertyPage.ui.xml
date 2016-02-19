@@ -2,19 +2,24 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
 	<ui:style>
-	.propertyPreview {
-		margin: 10px;		
+	.propertyPreview {		
+		padding: 5px;
 	}
+	
+	.dataScrollPanel {
+		min-width: 450px;
+	}
+		
 	</ui:style>
 	<g:HTMLPanel>
 		<g:HorizontalPanel height="100%" width="100%">
-			<g:ScrollPanel ui:field="dataScrollPanel">
+			<g:ScrollPanel ui:field="dataScrollPanel" styleName="{style.dataScrollPanel}">
 				<g:VerticalPanel width="100%">
 					<g:Button ui:field="rawJson" text="Raw JSON" />
 					<p1:CellTable ui:field="cellTable" height="100%" />
 				</g:VerticalPanel>
 			</g:ScrollPanel>
-			<g:ScrollPanel ui:field="detailScrollPanel" width="100%">
+			<g:ScrollPanel ui:field="detailScrollPanel" width="100%" alwaysShowScrollBars="true">
 				<g:VerticalPanel ui:field="detailVerticalPanel"
 					styleName="{style.propertyPreview}" />
 			</g:ScrollPanel>

@@ -58,6 +58,8 @@ public class ViewPropertyPage extends Composite {
         mProperty = property;
         initDataTable();
         loadData();
+        detailScrollPanel.setHeight((Window.getClientHeight()) + "px");
+        detailScrollPanel.setWidth((Window.getClientWidth() - 450) + "px");
         rawJson.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
