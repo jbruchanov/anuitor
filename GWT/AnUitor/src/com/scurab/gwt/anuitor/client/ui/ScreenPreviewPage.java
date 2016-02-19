@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.kiouri.sliderbar.client.event.BarValueChangedEvent;
@@ -59,7 +60,8 @@ public class ScreenPreviewPage extends Composite {
     @UiField VerticalPanel centerPanel;
     @UiField Label hoveredViewID;    
     @UiField VerticalPanel topImagePanel;
-    @UiField CheckBox ignoreCheckBox;    
+    @UiField CheckBox ignoreCheckBox;
+    @UiField SplitLayoutPanel splitLayoutPanel;    
     @UiField(provided=true) CellTable<Pair> cellTable = new CellTable<Pair>();
 
     /* Current color set for highlighting multiple views below the mouse cursor, currently disabled look for TAG_COLORS */
@@ -68,6 +70,8 @@ public class ScreenPreviewPage extends Composite {
     private static final boolean ZOOM_CANVAS_FEATURE = false;
     /* Zoom canvas scale constant */
     private static final double ZOOM_CANVAS_SCALE = 1.5;    
+    /* Percent part for image preview */
+    private static final double PREVIEW_SCREEN_WITH_PERC = 0.55;
     /* Main canvas scale */
     private float mScale = 1;
     /* Main canvas widget */
@@ -120,7 +124,11 @@ public class ScreenPreviewPage extends Composite {
         onReloadImage();                              
     }
 
-    private void bind() {
+    private void bind() {        
+        int dw = Window.getClientWidth();
+        splitLayoutPanel.setWidgetSize(splitLayoutPanel.getWidget(0), (int)(dw * PREVIEW_SCREEN_WITH_PERC));//screenshot
+        splitLayoutPanel.setWidgetSize(splitLayoutPanel.getWidget(2), (int)(dw * 0.25));//properties
+        
         image.addLoadHandler(new LoadHandler() {
             @Override
             public void onLoad(LoadEvent event) {                
@@ -131,11 +139,15 @@ public class ScreenPreviewPage extends Composite {
                 mCanvasClear.setCoordinateSpaceHeight(mImageHeight);
                 mCanvasClear.getContext2d().drawImage(ImageElement.as(image.getElement()), 0, 0, mImageWidth, mImageHeight);
                 
-                int max = Window.getClientHeight() - 80;//top panel + margins
+                int maxH = Window.getClientHeight() - 80;//top panel + margins                
                 //scale if height is bigger then window
                 float scale = 1f;
-                if(mImageHeight > max){
-                    scale = max / (float)mImageHeight;
+                if (mImageWidth > mImageHeight) {
+                    int maxW = ((int) (Window.getClientWidth() * PREVIEW_SCREEN_WITH_PERC)) - 20;//margins
+                    scale = maxW / (float)mImageWidth;
+                    scale = Math.max(SCALE_MIN/100f, scale);
+                } else if(mImageHeight > maxH){
+                    scale = maxH / (float)mImageHeight;
                     scale = Math.max(SCALE_MIN/100f, scale);                   
                 }
                 //update slider
