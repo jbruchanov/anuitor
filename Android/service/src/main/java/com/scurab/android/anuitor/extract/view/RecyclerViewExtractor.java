@@ -21,13 +21,14 @@ public class RecyclerViewExtractor extends ViewGroupExtractor {
         super.fillValues(v, data, parentData);
 
         RecyclerView rv = (RecyclerView) v;
-
-        data.put("ComputeHorizontalScrollExtent", rv.computeHorizontalScrollExtent());
-        data.put("ComputeHorizontalScrollOffset", rv.computeHorizontalScrollOffset());
-        data.put("ComputeHorizontalScrollRange", rv.computeHorizontalScrollRange());
-        data.put("ComputeVerticalScrollExtent", rv.computeVerticalScrollExtent());
-        data.put("ComputeVerticalScrollOffset", rv.computeVerticalScrollOffset());
-        data.put("ComputeVerticalScrollRange", rv.computeVerticalScrollRange());
+        if (rv.getLayoutManager() != null) {
+            data.put("ComputeHorizontalScrollExtent", rv.computeHorizontalScrollExtent());
+            data.put("ComputeHorizontalScrollOffset", rv.computeHorizontalScrollOffset());
+            data.put("ComputeHorizontalScrollRange", rv.computeHorizontalScrollRange());
+            data.put("ComputeVerticalScrollExtent", rv.computeVerticalScrollExtent());
+            data.put("ComputeVerticalScrollOffset", rv.computeVerticalScrollOffset());
+            data.put("ComputeVerticalScrollRange", rv.computeVerticalScrollRange());
+        }
         data.put("Adapter:", String.valueOf(rv.getAdapter()));
         data.put("Baseline", rv.getBaseline());
         data.put("CompatAccessibilityDelegate", String.valueOf(rv.getCompatAccessibilityDelegate()));
