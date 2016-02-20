@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
  * Time: 14:20
  */
 public class ReflectionExtractor extends BaseExtractor<Object> {
-    public static final String GET = "get";
     private boolean mUseFields;
 
     /**
@@ -97,6 +96,17 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
                         final Class<?> aClass = Reflector.fixAutoboxing(value.getClass());
                         if (aClass.isPrimitive() || aClass == String.class) {
                             data.put(name, value);
+                        } else if (value instanceof Object[]) {
+                            List<Object> result = new ArrayList<>();
+                            for (Object v : (Object[]) value) {
+                                final Class<?> vClass = Reflector.fixAutoboxing(v.getClass());
+                                if (vClass.isPrimitive() || vClass == String.class) {
+                                    result.add(v);
+                                } else {
+                                    result.add(fillValues(v, new HashMap<String, Object>(), data, cycleHandler, deep + 1));
+                                }
+                            }
+                            data.put(name, result);
                         } else {
                             data.put(name, fillValues(value, new HashMap<String, Object>(), data, cycleHandler, deep + 1));
                         }
