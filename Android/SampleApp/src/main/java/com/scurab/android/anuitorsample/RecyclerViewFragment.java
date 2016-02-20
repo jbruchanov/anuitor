@@ -1,7 +1,6 @@
 package com.scurab.android.anuitorsample;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,10 +34,10 @@ public class RecyclerViewFragment extends Fragment {
     static class SampleAdapter extends RecyclerView.Adapter<SampleViewHolder> {
 
         private String[] mSamples;
-        private Context mContext;
+        private LayoutInflater mInflater;
 
         public SampleAdapter(Context context) {
-            mContext = context;
+            mInflater = LayoutInflater.from(context);
             mSamples = new String[3];
             mSamples[0] = context.getString(R.string.lorem_ipsum);
             mSamples[1] = context.getString(R.string.lorem_ipsum_short);
@@ -47,7 +46,7 @@ public class RecyclerViewFragment extends Fragment {
 
         @Override
         public SampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new SampleViewHolder(View.inflate(mContext, R.layout.card_view_list_item, null));
+            return new SampleViewHolder(mInflater.inflate(R.layout.card_view_list_item, parent, false));
         }
 
         @Override
