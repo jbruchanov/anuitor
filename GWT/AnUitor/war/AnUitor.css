@@ -87,7 +87,7 @@ h1 {
 	border-spacing:5px;
 }
 
-.propertyPreview:HOVER {
+.propertyPreview {
 	border:solid white thin;
 }
 
