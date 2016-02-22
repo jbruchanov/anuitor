@@ -15,6 +15,7 @@ import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
 import com.scurab.android.anuitor.model.DataResponse;
+import com.scurab.android.anuitor.model.OutRef;
 import com.scurab.android.anuitor.reflect.ObjectReflector;
 import com.scurab.android.anuitor.reflect.ReflectionHelper;
 import com.scurab.android.anuitor.reflect.ViewReflector;
@@ -25,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,13 +75,23 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 String property = qsValue.get(PROPERTY);
                 View view = getCurrentRootView(qsValue);
                 view = view != null ? DetailExtractor.findViewByPosition(view, position) : null;
-                final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
-                if (view != null && item != null) {
-                    Object propertyValue = new ViewReflector(view).callMethod(item.methodName);
-                    if (item.arrayIndex >= 0) {
-                        propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
+                if (view != null) {
+                    final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
+                    Object propertyValue;
+                    String methodName;
+                    final ViewReflector reflector = new ViewReflector(view);
+                    if (item != null) {
+                        propertyValue = reflector.callMethod(item.methodName);
+                        if (item.arrayIndex >= 0) {
+                            propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
+                        }
+                        methodName = item.methodName;
+                    } else {
+                        OutRef<String> oMethodName = new OutRef<>();
+                        propertyValue = tryGetValue(reflector, property, oMethodName);
+                        methodName = oMethodName.getValue();
                     }
-                    final DataResponse response = handleObject(propertyValue, reflection, view.getClass().getName(), property, item.methodName);
+                    DataResponse response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName);
                     return new OKResponse(HttpTools.MimeType.APP_JSON, GSON.toJson(response));
                 }
             }
@@ -89,6 +101,21 @@ public class ViewPropertyPlugin extends ActivityPlugin {
             e.printStackTrace(new PrintWriter(stringWriter));
             return new OKResponse(HttpTools.MimeType.TEXT_PLAIN, e.getMessage() + "\n" + stringWriter.toString());
         }
+    }
+
+    private static Object tryGetValue(ViewReflector reflector, String property, OutRef<String> outMethodName) {
+        String subName = Character.toUpperCase(property.charAt(0)) + property.substring(1);
+        String[] methods = new String[]{property, "get" + subName, subName};
+        for (String s : methods) {
+            try {
+                outMethodName.setValue(s);
+                return reflector.callMethod(s);
+            } catch (Throwable t) {
+                outMethodName.setValue(null);
+                //ignore
+            }
+        }
+        throw new IllegalStateException(String.format("Not found methods for property:'%s' tried:%s", property, Arrays.toString(methods)));
     }
 
     @SuppressWarnings("unchecked")
