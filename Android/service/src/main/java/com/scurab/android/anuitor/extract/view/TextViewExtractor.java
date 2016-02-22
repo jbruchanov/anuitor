@@ -28,7 +28,7 @@ public class TextViewExtractor extends ViewExtractor {
         TextView tv = (TextView) v;
         Translator translator = getTranslator();
 
-        values.put("Text", String.valueOf(tv.getText()));
+        values.put("Text", escapeString(tv.getText().toString()));
         values.put("TextSize", tv.getTextSize());
         values.put("TextColor", getStringColor(tv.getCurrentTextColor()));
         values.put("HintTextColor", getStringColor(tv.getCurrentHintTextColor()));
@@ -108,8 +108,12 @@ public class TextViewExtractor extends ViewExtractor {
         data.put("Baseline", tv.getBaseline());
         data.put("EditableText", String.valueOf(tv.getEditableText()));
         data.put("Error", String.valueOf(tv.getError()));
-        data.put("ExtendedPaddingBottom", tv.getExtendedPaddingBottom());
-        data.put("ExtendedPaddingTop", tv.getExtendedPaddingTop());
+        try {
+            data.put("ExtendedPaddingBottom", tv.getExtendedPaddingBottom());
+            data.put("ExtendedPaddingTop", tv.getExtendedPaddingTop());
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         data.put("FiltersCount", tv.getFilters() != null ? tv.getFilters().length : 0);
         data.put("FreezesText", tv.getFreezesText());
         data.put("Hint", String.valueOf(tv.getHint()));

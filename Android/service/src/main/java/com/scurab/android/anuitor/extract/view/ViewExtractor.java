@@ -413,4 +413,29 @@ public class ViewExtractor extends BaseExtractor<View> {
                 .append(rect.right).append(",")
                 .append(rect.bottom).toString();
     }
+
+    protected static String escapeString(String value) {
+        if (value == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder(value.length());
+        for (char c : value.toCharArray()) {
+            if (Character.isWhitespace(c)) {
+                switch (c) {
+                    case ' ':sb.append(" ");break;
+                    case '\n':sb.append("\\n");break;
+                    case '\t':sb.append("\\t");break;
+                    case '\r':sb.append("\\r");break;
+                    case '\b':sb.append("\\b");break;
+                    case '\f':sb.append("\\f");break;
+                    default:
+                        sb.append("{0x").append(Integer.toHexString((int) c)).append("}");
+                        break;
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
 }
