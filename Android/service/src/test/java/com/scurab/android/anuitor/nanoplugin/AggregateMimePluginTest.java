@@ -3,6 +3,8 @@ package com.scurab.android.anuitor.nanoplugin;
 import com.scurab.android.anuitor.tools.HttpTools;
 
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.io.File;
 import java.util.Arrays;
@@ -14,8 +16,10 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -67,6 +71,7 @@ public class AggregateMimePluginTest {
     public void testPluginSelectsRightPlugin() {
         BasePlugin bp1 = createBasePlugin("/f1");
         BasePlugin bp2 = createBasePlugin("/f2");
+        assertTrue(bp1.canServeUri("/f1", null));
 
         AggregateMimePlugin aggregateMimePlugin = new AggregateMimePlugin(bp1, bp2);
         assertNull(aggregateMimePlugin.getServeCandidate("/f3", null));
@@ -108,6 +113,7 @@ public class AggregateMimePluginTest {
     private BasePlugin createBasePlugin(String mime, String uri) {
         BasePlugin bp = mock(HelpBasePlugin.class);
         doCallRealMethod().when(bp).canServeUri(anyString(), any(File.class));
+        doCallRealMethod().when(bp).canServeUri(anyString(), (File)isNull());
         doReturn(mime).when(bp).mimeType();
         doReturn(new String[]{uri}).when(bp).files();
         return bp;
