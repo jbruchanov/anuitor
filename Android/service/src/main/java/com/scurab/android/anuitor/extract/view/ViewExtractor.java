@@ -240,6 +240,15 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("RootWindowInsets:", String.valueOf(v.getRootWindowInsets()));
         }
 
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.N) {
+            data.put("HasOverlappingRendering", String.valueOf(v.getHasOverlappingRendering()));
+            data.put("IsTemporarilyDetached", String.valueOf(v.isTemporarilyDetached()));
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.N_MR1) {
+            data.put("RevealOnFocusHint", String.valueOf(v.getRevealOnFocusHint()));
+        }
+
         boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass().getName());
         Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
         boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);

@@ -31,6 +31,11 @@ public class AbsSeekBarExtractor extends ProgressBarExtractor {
             data.put("ThumbTintMode", String.valueOf(sb.getThumbTintMode()));
         }
 
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.N) {
+            data.put("TickMark:", sb.getTickMark());
+            data.put("TickMarkTintMode", String.valueOf(sb.getTickMarkTintMode()));
+        }
+
         return data;
     }
 }

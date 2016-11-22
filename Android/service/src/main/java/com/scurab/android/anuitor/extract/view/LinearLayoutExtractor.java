@@ -39,6 +39,10 @@ public class LinearLayoutExtractor extends ViewGroupExtractor {
             data.put("Dividers", getTranslator().showDividers(ll.getShowDividers()));
         }
 
+        if(VERSION.SDK_INT >= VERSION_CODES.N) {
+            data.put("Gravity", String.valueOf(getTranslator().gravity(ll.getGravity())));
+        }
+
         data.put("WeightSum", ll.getWeightSum());
         data.put("Orientation", getTranslator().orientation(ll.getOrientation()));
 
