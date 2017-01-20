@@ -23,7 +23,7 @@ public class ViewPagerExtractor extends ViewGroupExtractor {
 
         ViewPager vp = (ViewPager)v;
         PagerAdapter adapter = vp.getAdapter();
-        data.put("Adapter", String.valueOf(adapter));
+        data.put("Adapter:", String.valueOf(adapter));
         data.put("AdapterItemsCount", adapter != null ? adapter.getCount() : 0);
         data.put("CurrentItem", vp.getCurrentItem());
         data.put("OffscreenPageLimit", vp.getOffscreenPageLimit());

@@ -25,7 +25,7 @@ public class AdapterViewExtractor extends ViewGroupExtractor  {
         AdapterView<?> lv = (AdapterView<?>)v;
 
         Adapter adapter = lv.getAdapter();
-        data.put("Adapter", String.valueOf(adapter));
+        data.put("Adapter:", String.valueOf(adapter));
         data.put("AdapterItemsCount", adapter != null ? adapter.getCount() : 0);
         data.put("EmptyViewId", lv.getEmptyView() != null ? IdsHelper.getNameForId(lv.getEmptyView().getId()) : 0);
         data.put("PositionFirstVisible", lv.getFirstVisiblePosition());

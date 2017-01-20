@@ -10,7 +10,7 @@ import java.util.HashMap;
 /**
  * Created by jbruchanov on 05/06/2014.
  */
-public class ListViewExtractor extends AdapterViewExtractor  {
+public class ListViewExtractor extends AbsListViewExtractor  {
 
     public ListViewExtractor(Translator mTranslator) {
         super(mTranslator);
