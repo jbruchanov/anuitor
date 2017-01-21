@@ -13,7 +13,6 @@ import thothbot.parallax.core.shared.materials.MeshBasicMaterial;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.Document;
-import com.scurab.gwt.anuitor.client.model.Rect;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 

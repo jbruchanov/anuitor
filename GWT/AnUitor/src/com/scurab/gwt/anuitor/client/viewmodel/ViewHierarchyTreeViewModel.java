@@ -31,11 +31,11 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
 
     private static final String CSS_HIGHLIGHTED_NODE = "treeNode_highlighted";
     private static final String CSS_IGNORED_NODE = "treeNode_ignored";
-    
+
     public interface OnSelectionChangedListener {
         void onSelectionChanged(ViewNodeJSO viewNode, boolean selected);
     }
-    
+
     public interface OnViewNodeMouseOverListener {
         void onMouseOver(ViewNodeJSO viewNode);
     }
@@ -44,14 +44,13 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
     private ViewNodeJSO mRoot;
 
     private OnSelectionChangedListener mOnSelectionChangedListener;
-    
+
     private OnViewNodeMouseOverListener mOnViewNodeMouseOverListener;
-    
+
     private Set<String> mIgnored = new HashSet<String>();
 
     /*
-     * Selection Model, must be singleton for whole viewmodel to avoid multiple
-     * selection!
+     * Selection Model, must be singleton for whole viewmodel to avoid multiple selection!
      */
     private SingleSelectionModel<ViewNodeJSO> mSelectionModel = new SingleSelectionModel<ViewNodeJSO>();
 
@@ -61,12 +60,11 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         }
         mRoot = root;
         // add our selection changed handler
-        mSelectionModel.addSelectionChangeHandler(mSelectionChangedHandler);        
+        mSelectionModel.addSelectionChangeHandler(mSelectionChangedHandler);
     }
 
     /**
-     * Get the {@link NodeInfo} that provides the children of the specified
-     * value.
+     * Get the {@link NodeInfo} that provides the children of the specified value.
      */
     public <T> NodeInfo<?> getNodeInfo(T value) {
         ListDataProvider<ViewNodeJSO> dataProvider = new ListDataProvider<ViewNodeJSO>();
@@ -101,8 +99,7 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
     }
 
     /**
-     * Check if the specified value represents a leaf node. Leaf nodes cannot be
-     * opened.
+     * Check if the specified value represents a leaf node. Leaf nodes cannot be opened.
      */
     public boolean isLeaf(Object value) {
         if (value != null) {
@@ -121,8 +118,8 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
     public void setOnSelectionChangedListener(OnSelectionChangedListener onSelectionChangedListener) {
         mOnSelectionChangedListener = onSelectionChangedListener;
     }
-    
-    public void setOnViewNodeMouseOverListener(OnViewNodeMouseOverListener onViewNodeMouseOverListener){
+
+    public void setOnViewNodeMouseOverListener(OnViewNodeMouseOverListener onViewNodeMouseOverListener) {
         mOnViewNodeMouseOverListener = onViewNodeMouseOverListener;
     }
 
@@ -131,9 +128,9 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
             mOnSelectionChangedListener.onSelectionChanged(viewNode, selected);
         }
     }
-    
 
     private SelectionChangeHandler mSelectionChangedHandler = new SelectionChangeHandler();
+
     /**
      * Selection handler implementation to notify listener
      */
@@ -152,22 +149,22 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         }
     };
 
-    private ViewNodeCell mViewNodeCell = new ViewNodeCell();    
-    
+    private ViewNodeCell mViewNodeCell = new ViewNodeCell();
+
     /**
      * Simple ViewNodeJSO -> String rendering
      * 
      * @author jbruchanov
      * 
      */
-    private class ViewNodeCell extends AbstractSafeHtmlCell<ViewNodeJSO> {                
+    private class ViewNodeCell extends AbstractSafeHtmlCell<ViewNodeJSO> {
         private static final String EVENT_MOUSEOVER = "mouseover";
         private static final String EVENT_CLICK = "click";
 
         public ViewNodeCell() {
             super(new SafeHtmlRenderer<ViewNodeJSO>() {
                 @Override
-                public SafeHtml render(ViewNodeJSO object) {                    
+                public SafeHtml render(ViewNodeJSO object) {
                     return SafeHtmlUtils.fromString(object.getSimpleType());
                 }
 
@@ -175,46 +172,47 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
                 public void render(ViewNodeJSO object, SafeHtmlBuilder builder) {
                     builder.append(render(object));
                 }
-            }, EVENT_MOUSEOVER, EVENT_CLICK);                      
+            }, EVENT_MOUSEOVER, EVENT_CLICK);
         }
 
         @Override
         protected void render(com.google.gwt.cell.client.Cell.Context context, SafeHtml data, SafeHtmlBuilder sb) {
             Object o = context.getKey();
-            String key; 
+            String key;
             if (o instanceof ViewNodeJSO) {
                 key = getNodeJSOId((ViewNodeJSO) o);
             } else {
                 key = Long.toString(System.currentTimeMillis());
             }
-            sb.appendHtmlConstant("<label class=\"treeNode" + (mIgnored.contains(key) ? (" " + CSS_IGNORED_NODE) : "")  + "\" id=\"" + key + "\">");
+            sb.appendHtmlConstant("<label class=\"treeNode" + (mIgnored.contains(key) ? (" " + CSS_IGNORED_NODE) : "")
+                    + "\" id=\"" + key + "\">");
             if (data != null) {
-              sb.append(data);
+                sb.append(data);
             }
             sb.appendHtmlConstant("</label>");
         }
-        
+
         @Override
-        public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context, Element parent, ViewNodeJSO value, NativeEvent event,
-                ValueUpdater<ViewNodeJSO> valueUpdater) {
-            
+        public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context, Element parent, ViewNodeJSO value,
+                NativeEvent event, ValueUpdater<ViewNodeJSO> valueUpdater) {
+
             dispatchBrowserEvent(value, event);
             super.onBrowserEvent(context, parent, value, event, valueUpdater);
         }
-        
-        private void dispatchBrowserEvent(ViewNodeJSO value, NativeEvent event){
+
+        private void dispatchBrowserEvent(ViewNodeJSO value, NativeEvent event) {
             String type = event.getType();
             if (EVENT_MOUSEOVER.equals(type) && mOnViewNodeMouseOverListener != null) {
                 mOnViewNodeMouseOverListener.onMouseOver(value);
-            } else if (EVENT_CLICK.equals(type)) { //unselect by click                
+            } else if (EVENT_CLICK.equals(type)) { // unselect by click
                 if (mSelectionChangedHandler.mLastSelected == value) {
                     mSelectionModel.clear();
-                    //don't call notify now, it's called by selection handler
-                }                                                
+                    // don't call notify now, it's called by selection handler
+                }
             }
         }
     }
-    
+
     /**
      * Get current selected node, null if nothing is selected
      * 
@@ -226,6 +224,7 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
 
     /**
      * Select node
+     * 
      * @param vs
      */
     public void selectNode(ViewNodeJSO vs) {
@@ -234,12 +233,13 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         }
         mSelectionModel.setSelected(vs, true);
     }
-    
+
     /**
      * Clear any selected node
+     * 
      * @return true if there was a selection
      */
-    public boolean clearSelectedNode(){
+    public boolean clearSelectedNode() {
         if (mSelectionChangedHandler.mLastSelected != null) {
             mSelectionModel.setSelected(mSelectionChangedHandler.mLastSelected, false);
             return true;
@@ -252,6 +252,7 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
 
     /**
      * Highlight element by viewnode
+     * 
      * @param vs
      */
     public void highlightNode(ViewNodeJSO vs) {
@@ -262,15 +263,16 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         clearHighlightedNode();
         mHighlightedElement = DOM.getElementById(key);
         if (mHighlightedElement != null) {
-            mHighlightedElement.addClassName(CSS_HIGHLIGHTED_NODE);            
+            mHighlightedElement.addClassName(CSS_HIGHLIGHTED_NODE);
         }
     }
-    
+
     /**
      * Remove highlight for any viewnode
+     * 
      * @return true if there was a highlight
      */
-    public boolean clearHighlightedNode(){
+    public boolean clearHighlightedNode() {
         if (mHighlightedElement != null) {
             mHighlightedElement.removeClassName(CSS_HIGHLIGHTED_NODE);
             mHighlightedElement = null;
@@ -278,7 +280,7 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         }
         return false;
     }
-    
+
     public void highlightAsIgnoredNode(ViewNodeJSO vs) {
         if (vs == null) {
             return;
@@ -287,11 +289,11 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         mIgnored.add(key);
         Element el = DOM.getElementById(key);
         if (el != null) {
-            el.addClassName(CSS_IGNORED_NODE);            
+            el.addClassName(CSS_IGNORED_NODE);
         }
     }
-        
-    public void clearIgnoredNode(ViewNodeJSO vs){
+
+    public void clearIgnoredNode(ViewNodeJSO vs) {
         if (vs == null) {
             return;
         }
@@ -299,12 +301,12 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         mIgnored.remove(key);
         Element el = DOM.getElementById(key);
         if (el != null) {
-            el.removeClassName(CSS_IGNORED_NODE);            
+            el.removeClassName(CSS_IGNORED_NODE);
         }
     }
-    
+
     private static String getNodeJSOId(ViewNodeJSO node) {
         return node == null ? null : "ViewNodeJSO_id_" + node.hashCode();
     }
-    
+
 }

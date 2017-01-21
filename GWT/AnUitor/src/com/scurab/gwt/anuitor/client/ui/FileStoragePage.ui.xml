@@ -12,7 +12,7 @@
 			<g:VerticalPanel width="100%">
 				<g:Label text="/" ui:field="currentFolder" styleName="{style.currentFolder}" />
 				<p1:CellTable ui:field="cellTable" pageSize="10000"/>
-		</g:VerticalPanel>
+			</g:VerticalPanel>
 		</g:ScrollPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 
