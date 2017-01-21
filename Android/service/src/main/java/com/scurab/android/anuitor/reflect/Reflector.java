@@ -65,17 +65,7 @@ public abstract class Reflector<T> {
     }
 
     protected <T> T getFieldValue(String fieldName) {
-        Class<?> clz = mClass;
-        while (clz != null) {
-            try {
-                Field f = clz.getDeclaredField(fieldName);
-                f.setAccessible(true);
-                return (T) f.get(mReal);
-            } catch (Exception e) {
-                clz = clz.getSuperclass();
-            }
-        }
-        throw new RuntimeException("Unable to find field:" + fieldName);
+        return getFieldValue(mReal, fieldName);
     }
 
     //FIXME: naive, if there is nonPrimitive as param, it will fail
@@ -108,5 +98,22 @@ public abstract class Reflector<T> {
 
     protected String transformToString(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException, TransformerException {
         return DOM2XmlPullBuilder.transform(xmlPullParser);
+    }
+
+    public static <T> T getFieldValue(Object obj, String fieldName) {
+        return getFieldValue(obj, obj.getClass(), fieldName);
+    }
+
+    public static <T> T getFieldValue(Object obj, Class clz, String fieldName) {
+        while (clz != null) {
+            try {
+                Field f = clz.getDeclaredField(fieldName);
+                f.setAccessible(true);
+                return (T) f.get(obj);
+            } catch (Exception e) {
+                clz = clz.getSuperclass();
+            }
+        }
+        throw new RuntimeException("Unable to find field:" + fieldName);
     }
 }
