@@ -32,6 +32,7 @@ public class DataProvider {
     private static final String STORAGE = "/storage.json?path=";
     private static final String SCREENS = "/screens.json";
     private static final String VIEW_PROPERTY = "/viewproperty.json";
+    private static final String GROOVY = "/groovy";
     private static final int HTTP_OK = 200;
     
     public static final String QRY_PARAM_SCREEN_INDEX = "screenIndex";
@@ -49,7 +50,7 @@ public class DataProvider {
      * 
      * @param <T>
      */
-    public interface AsyncCallback<T extends JavaScriptObject> {
+    public interface AsyncCallback<T> {
 
         public void onDownloaded(T result);
 
@@ -83,6 +84,29 @@ public class DataProvider {
     
     public static void getViewProperty(int screen, int position, String property, final AsyncCallback<DataResponseJSO> callback) {
         sendRequest(buildViewPropertyUrl(screen, position, property), callback);
+    }
+    
+    public static void executeGroovyCode(String code, final AsyncCallback<String> callback){
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, GROOVY);
+        try {
+            builder.setHeader("Content-Type", "text/plain");
+            builder.setHeader("Content-Length", Integer.toString(code.length()));
+            builder.sendRequest(code, new RequestCallback() {
+                
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    callback.onDownloaded(response.getText());
+                    
+                }
+                
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    callback.onError(request, exception);                    
+                }
+            });                      
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     private static String buildViewPropertyUrl(int screen, int position, String property) {

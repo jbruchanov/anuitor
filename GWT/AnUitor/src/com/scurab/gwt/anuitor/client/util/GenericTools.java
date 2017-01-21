@@ -9,8 +9,8 @@ public class GenericTools {
     public static String createPropertyHistoryToken(int position, String key, int screenIndex) {
         return new StringBuilder()
         .append("#ViewProperty")
-        .append("_").append(DataProvider.QRY_PARAM_SCREEN_INDEX).append(screenIndex)
-        .append("?").append(DataProvider.QRY_PARAM_POSITION).append("=").append(position)
+        .append("?").append(DataProvider.QRY_PARAM_SCREEN_INDEX).append("=").append(screenIndex)
+        .append("&").append(DataProvider.QRY_PARAM_POSITION).append("=").append(position)
         .append("&").append(DataProvider.QRY_PARAM_PROPERTY).append("=").append(key)       
         .toString();
     }
@@ -18,9 +18,17 @@ public class GenericTools {
     public static String createPropertyUrl(int position, String key, int screenIndex) {
         return new StringBuilder()
         .append("/viewproperty.json")
-        .append("?").append(DataProvider.QRY_PARAM_SCREEN_INDEX).append(screenIndex)
+        .append("?").append(DataProvider.QRY_PARAM_SCREEN_INDEX).append("=").append(screenIndex)
         .append("&").append(DataProvider.QRY_PARAM_POSITION).append("=").append(position)
         .append("&").append(DataProvider.QRY_PARAM_PROPERTY).append("=").append(key)       
+        .toString();
+    }
+    
+    public static String createGroovyHistoryToken(int position, int screenIndex) {
+        return new StringBuilder()
+        .append("#Groovy")
+        .append("?").append(DataProvider.QRY_PARAM_SCREEN_INDEX).append("=").append(screenIndex)
+        .append("&").append(DataProvider.QRY_PARAM_POSITION).append("=").append(position)               
         .toString();
     }
     

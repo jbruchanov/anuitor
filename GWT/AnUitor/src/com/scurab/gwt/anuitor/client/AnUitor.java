@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.scurab.gwt.anuitor.client.DataProvider.AsyncCallback;
 import com.scurab.gwt.anuitor.client.ui.FileStoragePage;
+import com.scurab.gwt.anuitor.client.ui.GroovyPage;
 import com.scurab.gwt.anuitor.client.ui.ResourcesPage;
 import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
@@ -47,18 +48,24 @@ public class AnUitor implements EntryPoint {
                 openScreen(event.getValue());                
             }
         });
-
-        openScreen(History.getToken());
+        String token = History.getToken();
+        int qmIndex = token.indexOf("?");
+        if(qmIndex > -1) {
+            token = token.substring(0, qmIndex);
+        }
+        openScreen(token);
     }      
     
-    private static final String SCREEN_INDEX = "_" + DataProvider.QRY_PARAM_SCREEN_INDEX;
+    private static final String SCREEN_INDEX = DataProvider.QRY_PARAM_SCREEN_INDEX + "=";
+    private static final String POSITION_INDEX = DataProvider.QRY_PARAM_POSITION + "=";
+    
     private void openScreen(String screen) {
         boolean updateHistory = true;
         IsWidget toOpen = null;
-        int screenIndex = hasIndexInToken() ? getScreenIndexFromToken() : getScreenIndex();        
-        if(hasIndexInToken()){
-            screen = screen.substring(0, screen.indexOf(SCREEN_INDEX));
-        }
+        Map<String, String> queryString = buildHashParameterMap();
+        int screenIndex = queryString.containsKey(DataProvider.QRY_PARAM_SCREEN_INDEX) 
+                ? Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_SCREEN_INDEX)) 
+                : getScreenIndex();               
         if ("ScreenPreview".equals(screen)) {            
             toOpen = new ScreenPreviewPage(screenIndex);            
         } else if ("3D".equals(screen)) {
@@ -71,17 +78,24 @@ public class AnUitor implements EntryPoint {
         } else if ("FileStorage".equals(screen)) {
             if(sorryDemoNotSupported()){return;}
             toOpen = new FileStoragePage();
+        } else if ("Groovy".equals(screen)) {
+            if(sorryDemoNotSupported()){return;}            
+            int position = -1;
+            if(queryString.containsKey(DataProvider.QRY_PARAM_POSITION)){
+                position = Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_POSITION));
+                updateHistory = false;
+            }                                   
+            toOpen = new GroovyPage(screenIndex, position);           
         } else if ("Windows".equals(screen)) {
             Window.open(DataProvider.SCREEN_SCTRUCTURE, "_blank", "");
             return;
         } else if ("Screenshot".equals(screen)) {
-            Window.open(DataProvider.SCREEN + DataProvider.SCREEN_INDEX_QRY + getScreenIndex(), "_blank", "");
+            Window.open(DataProvider.SCREEN + "?" + DataProvider.SCREEN_INDEX_QRY + getScreenIndex(), "_blank", "");
             return;
         } else if ("LogCat".equals(screen)) {
             Window.open("/logcat.txt", "_blank", "");
             return;
-        } else if (screen != null && screen.startsWith("ViewProperty")) {          
-            Map<String, String> queryString = buildHashParameterMap();
+        } else if (screen != null && screen.startsWith("ViewProperty")) {                      
             int position = Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_POSITION));
             String property = queryString.get(DataProvider.QRY_PARAM_PROPERTY);
             toOpen = new ViewPropertyPage(screenIndex, position, property);
@@ -110,6 +124,7 @@ public class AnUitor implements EntryPoint {
         hp.add(createButton("Windows"));
         hp.add(createButton("Screenshot"));
         hp.add(createButton("LogCat"));
+        hp.add(createButton("Groovy"));
 
         return hp;
     }
@@ -147,30 +162,19 @@ public class AnUitor implements EntryPoint {
 
     private void openWidget(String v, int index, IsWidget w, boolean updateHistory) {
         if (updateHistory) {
-            History.newItem(v + (index < 0 ? "" : SCREEN_INDEX + index), false);// just add index if it's valid
+            //History.newItem(v + (index < 0 ? "" : "?" + SCREEN_INDEX + index), false);// just add index if it's valid
+            if (index != -1) {
+                v += "?" + SCREEN_INDEX + index;
+            }
+            History.newItem(v, false);// just add index if it's valid
+            
         }
         if (mLastScreen != null) {
             RootLayoutPanel.get().remove(mLastScreen);
         }
         mLastScreen = w;
         RootLayoutPanel.get().add(mLastScreen);
-    }
-        
-    private boolean hasIndexInToken(){
-        String token = History.getToken();
-        return token != null && token.contains(SCREEN_INDEX);
-    }
-    
-    private int getScreenIndexFromToken(){
-        String token = History.getToken();
-        int start = token.indexOf(SCREEN_INDEX) + SCREEN_INDEX.length();
-        int end = Math.min(token.indexOf("&", start), token.indexOf("?", start));
-        if (end < 0) {            
-            end = token.length();
-        }
-        String index = token != null ? token.substring(start, end) : null;
-        return Integer.parseInt(index);
-    }
+    }        
     
     private int getScreenIndex(){
        String v = mScreenListBox == null ? "0" : mScreenListBox.getValue(mScreenListBox.getSelectedIndex());

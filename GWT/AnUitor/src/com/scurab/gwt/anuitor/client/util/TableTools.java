@@ -1,12 +1,19 @@
 package com.scurab.gwt.anuitor.client.util;
 
+import static com.scurab.gwt.anuitor.client.util.GenericTools.cleanInstanceHash;
+import static com.scurab.gwt.anuitor.client.util.GenericTools.createColorBlock;
+import static com.scurab.gwt.anuitor.client.util.GenericTools.createGithub;
+import static com.scurab.gwt.anuitor.client.util.GenericTools.createGoogle;
+import static com.scurab.gwt.anuitor.client.util.GenericTools.createGroovyHistoryToken;
+import static com.scurab.gwt.anuitor.client.util.GenericTools.createLink;
+import static com.scurab.gwt.anuitor.client.util.GenericTools.createPropertyHistoryToken;
+
 import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -19,8 +26,6 @@ import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
-
-import static com.scurab.gwt.anuitor.client.util.GenericTools.*;
 
 public final class TableTools {
 
@@ -55,6 +60,7 @@ public final class TableTools {
         }
         java.util.Collections.sort(list);
 
+        list.add(0, new Pair("Groovy Console", viewNode.getPosition()));
         list.add(0, new Pair("Position", viewNode.getPosition()));
         list.add(0, new Pair("Level", viewNode.getLevel()));
         list.add(0, new Pair("IDName", viewNode.getIDName()));
@@ -98,7 +104,9 @@ public final class TableTools {
                     String key = object.keyReadable();                    
                     sb.append(createLink(createPropertyHistoryToken(object.position, key, screenIndex), key));
                 } else if(ViewFields.POSITION.equals(object.key)) {
-                    sb.append(createLink("/view.png" + DataProvider.SCREEN_INDEX_QRY + screenIndex + "&position=" + object.value, object.key));                                                           
+                    sb.append(createLink("/view.png" + DataProvider.SCREEN_INDEX_QRY + screenIndex + "&" + DataProvider.QRY_PARAM_POSITION + "=" + object.value, object.key));                                                           
+                } else if(ViewFields.GROOVY_CONSOLE.equals(object.key)) {
+                    sb.append(createLink(createGroovyHistoryToken((Integer)object.value, screenIndex), object.key));                                                                              
                 } else {
                     super.render(context, object, sb);                    
                 }
