@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import groovy.lang.GroovyHelper;
+
 /**
  * This class preloads everything related with IDs.
  * At the beggining just load values by {@link #loadValues(Class)} and pass class for your application R.class
@@ -47,6 +49,8 @@ public class IdsHelper {
         VALUES = new HashMap<>();
     }
 
+    public static Class RClass;
+
     /**
      * Load values
      * @param Rclass must be class of your application R.class
@@ -66,6 +70,7 @@ public class IdsHelper {
         for (Class<?> clz : clzs) {
             fillClass(clz, true);
         }
+        IdsHelper.RClass = Rclass;
     }
 
     private static void fillClass(Class<?> containerClass, boolean android) {

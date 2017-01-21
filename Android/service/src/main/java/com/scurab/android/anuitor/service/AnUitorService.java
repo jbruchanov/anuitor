@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import groovy.lang.GroovyHelper;
+
 /**
  * User: jbruchanov
  * Date: 12/05/2014
@@ -52,8 +54,10 @@ public class AnUitorService extends Service {
     public void onCreate() {
         super.onCreate();
         try {
-            IdsHelper.loadValues(Class.forName(getPackageName() + ".R"));
-        } catch (Exception e) {
+            final String rClassName = getPackageName() + ".R";
+            final Class<?> rclass = Class.forName(rClassName);
+            IdsHelper.loadValues(rclass);
+        } catch (Throwable e) {
             Log.e(TAG, "Unable to load Resources, probably R class is not in your packageName => call IdsHelper.loadValues(com.application.R.class);");
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
