@@ -32,7 +32,7 @@ public abstract class SplitPanelPage extends Composite {
 
     public SplitPanelPage(int screenIndex) {
         initWidget(uiBinder.createAndBindUi(this));
-        TableTools.initTableForPairs(cellTable);
+        TableTools.initTableForPairs(cellTable, screenIndex);
         splitLayoutPanel.setWidgetSize(contentPanel, Window.getClientWidth() * (shouldHideTableOnStart() ? 0.99 : CONTENT_PERCENT));       
         contentPanel.add(getContentPanelWidget(screenIndex));
     }        
