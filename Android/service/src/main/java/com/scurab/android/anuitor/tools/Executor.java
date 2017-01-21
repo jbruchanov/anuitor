@@ -20,6 +20,15 @@ public class Executor {
     }
 
     /**
+     *
+     * @param timeout
+     * @param op
+     */
+    public static void runInMainThreadBlocking(int timeout, final Runnable op) {
+        runInMainThreadBlocking(getHandler(), op, timeout);
+    }
+
+    /**
      * Run op in main thread with 2s timeout only if it's crashing...
      * First try is started in current thread
      *
