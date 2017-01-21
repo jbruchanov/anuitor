@@ -25,6 +25,7 @@
   <inherits name="com.google.gwt.json.JSON" />  
   <inherits name='com.github.gwtd3.D3' />
   <inherits name="com.kiouri.sliderbar.SliderBarMVP" /> 
+  <inherits name='edu.ycp.cs.dh.acegwt.AceGWT' />
   
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.scurab.gwt.anuitor.client.AnUitor'/>
