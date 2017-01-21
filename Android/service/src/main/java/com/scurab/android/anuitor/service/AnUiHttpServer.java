@@ -3,12 +3,23 @@ package com.scurab.android.anuitor.service;
 import android.content.Context;
 
 import com.scurab.android.anuitor.extract.Translator;
-import com.scurab.android.anuitor.nanoplugin.*;
+import com.scurab.android.anuitor.nanoplugin.ActiveScreensPlugin;
+import com.scurab.android.anuitor.nanoplugin.AggregateMimePlugin;
+import com.scurab.android.anuitor.nanoplugin.BasePlugin;
+import com.scurab.android.anuitor.nanoplugin.FileStoragePlugin;
+import com.scurab.android.anuitor.nanoplugin.GroovyPlugin;
+import com.scurab.android.anuitor.nanoplugin.LogCatPlugin;
+import com.scurab.android.anuitor.nanoplugin.ResourcesPlugin;
+import com.scurab.android.anuitor.nanoplugin.ScreenStructurePlugin;
+import com.scurab.android.anuitor.nanoplugin.ScreenViewPlugin;
+import com.scurab.android.anuitor.nanoplugin.ViewHierarchyPlugin;
+import com.scurab.android.anuitor.nanoplugin.ViewPropertyPlugin;
+import com.scurab.android.anuitor.nanoplugin.ViewshotPlugin;
 import com.scurab.android.anuitor.reflect.WindowManager;
 
-import fi.iki.elonen.SimpleWebServer;
-
 import java.io.File;
+
+import fi.iki.elonen.SimpleWebServer;
 
 /**
  * User: jbruchanov

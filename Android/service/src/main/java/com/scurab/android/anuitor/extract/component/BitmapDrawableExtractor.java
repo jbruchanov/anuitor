@@ -8,7 +8,6 @@ import android.os.Build;
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.extract.Translator;
-import com.scurab.android.anuitor.extract.component.DrawableExtractor;
 
 import java.util.HashMap;
 

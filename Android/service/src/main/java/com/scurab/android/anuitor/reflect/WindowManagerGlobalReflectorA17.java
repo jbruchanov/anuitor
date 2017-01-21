@@ -7,7 +7,6 @@ import android.os.Build;
 import android.view.View;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
 
 /**
  * @author jbruchanov

@@ -31,6 +31,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.scurab.android.anuitor.extract.component.ActivityExtractor;
+import com.scurab.android.anuitor.extract.component.BitmapDrawableExtractor;
 import com.scurab.android.anuitor.extract.component.BitmapExtractor;
 import com.scurab.android.anuitor.extract.component.BundleExtractor;
 import com.scurab.android.anuitor.extract.component.DrawableExtractor;
@@ -43,7 +44,6 @@ import com.scurab.android.anuitor.extract.component.SupportFragmentExtractor;
 import com.scurab.android.anuitor.extract.view.AbsListViewExtractor;
 import com.scurab.android.anuitor.extract.view.AbsSeekBarExtractor;
 import com.scurab.android.anuitor.extract.view.AdapterViewExtractor;
-import com.scurab.android.anuitor.extract.component.BitmapDrawableExtractor;
 import com.scurab.android.anuitor.extract.view.CalendarViewExtractor;
 import com.scurab.android.anuitor.extract.view.CardViewExtractor;
 import com.scurab.android.anuitor.extract.view.CheckedTextViewExtractor;

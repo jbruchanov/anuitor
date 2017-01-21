@@ -6,7 +6,6 @@ import android.os.Build;
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.Translator;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**

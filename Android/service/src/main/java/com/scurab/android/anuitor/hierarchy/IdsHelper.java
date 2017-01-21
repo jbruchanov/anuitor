@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import groovy.lang.GroovyHelper;
-
 /**
  * This class preloads everything related with IDs.
  * At the beggining just load values by {@link #loadValues(Class)} and pass class for your application R.class

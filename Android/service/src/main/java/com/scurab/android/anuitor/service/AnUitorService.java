@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import groovy.lang.GroovyHelper;
-
 /**
  * User: jbruchanov
  * Date: 12/05/2014

@@ -16,7 +16,6 @@ import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
 import com.scurab.android.anuitor.model.DataResponse;
 import com.scurab.android.anuitor.model.OutRef;
-import com.scurab.android.anuitor.reflect.ObjectReflector;
 import com.scurab.android.anuitor.reflect.ReflectionHelper;
 import com.scurab.android.anuitor.reflect.ViewReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;

@@ -1,9 +1,9 @@
 package com.scurab.android.anuitor.extract.view;
 
+import android.support.v7.widget.GridLayout;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.Translator;
-import android.support.v7.widget.GridLayout;
 
 import java.util.HashMap;
 
