@@ -643,7 +643,8 @@ public abstract class NanoHTTPD {
                 outputStream.flush();
                 safeClose(data);
             } catch (IOException ioe) {
-                // Couldn't write? No can do.
+                ioe.printStackTrace();
+                System.err.println(ioe);
             }
         }
 
