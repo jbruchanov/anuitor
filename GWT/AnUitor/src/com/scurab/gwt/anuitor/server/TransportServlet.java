@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class TransportServlet extends HttpServlet {
 
+    private static final String CONTENT_TYPE = "Content-Type";
     /**
      * 
      */
@@ -34,32 +35,51 @@ public class TransportServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleRequest(req, resp, "GET");
+    }      
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleRequest(req, resp, "POST"); 
+    }
+    
+    private void handleRequest(HttpServletRequest req, HttpServletResponse resp, String method){
         try {
             String qs = req.getQueryString();            
             String newUrl = getContentURL(req.getRequestURI() + (qs == null || qs.length() == 0 ? "" : "?" + req.getQueryString()));
             URL url = new URL(newUrl);
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+            String contentType = req.getHeader(CONTENT_TYPE);
+            if(contentType != null){
+                urlc.setRequestProperty(CONTENT_TYPE, contentType);
+            }
+            urlc.setRequestMethod(method);
             urlc.setConnectTimeout(15000);
-            urlc.setReadTimeout(5000);
+            urlc.setReadTimeout(50000);
             
             urlc.setDoInput(true);
             urlc.setDoOutput(true);
-            urlc.connect();            
-            InputStream is = urlc.getInputStream();
-            OutputStream os = resp.getOutputStream();
-
-            byte[] buffer = new byte[1024];
-            int len = is.read(buffer);
-            while (len != -1) {
-                os.write(buffer, 0, len);
-                len = is.read(buffer);
+            urlc.connect();                     
+            if ("POST".equals(method)) {               
+                copy(req.getInputStream(), urlc.getOutputStream());
             }
-            is.close();
-            os.close();            
+            copy(urlc.getInputStream(), resp.getOutputStream());                    
         } catch (Exception e) {            
             e.printStackTrace();
         }
-    }      
+    }
+    
+    private static void copy(InputStream is, OutputStream os) throws IOException{
+        StringBuilder sb = new StringBuilder();
+        byte[] buffer = new byte[1024];
+        int len = is.read(buffer);
+        while (len != -1) {
+            os.write(buffer, 0, len);
+            sb.append(new String(buffer, 0, len));
+            len = is.read(buffer);
+        }        
+        System.out.println(sb.toString());
+    }
 }
 
 
