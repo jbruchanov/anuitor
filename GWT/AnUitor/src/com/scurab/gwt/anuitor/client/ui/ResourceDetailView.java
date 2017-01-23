@@ -72,7 +72,7 @@ public class ResourceDetailView extends VerticalPanel {
                 }
             } else if("base64_png".equals(type)) {
                 Image im = new Image("data:image/png;base64," + item.getStringedData());
-                im.setStyleName("transparent");                        
+                im.setStyleName("transparent propertyPreview");                        
                 add(im);
             } else if ("array".equals(type)) {
                 JsArray<ResourceDetailJSO> childs = item.getData().cast();
