@@ -31,6 +31,9 @@ public class DialogsFragment extends DialogFragment {
 
         Button alertDialog = new Button(context);
         alertDialog.setText("Alert");
+        alertDialog.setTag("SimpleTag");
+        alertDialog.setTag(R.id.tag_test1, "ComplexTag1");
+        alertDialog.setTag(R.id.tag_test2, alertDialog);
         alertDialog.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) { onShowAlertDialog(); }
         });
