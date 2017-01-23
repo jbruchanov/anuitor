@@ -29,7 +29,7 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
         data.put("Type", activity.getClass().getName());
         data.put("Intent", extractor.fillValues(activity.getIntent(), new HashMap<String, Object>(), data));
         data.put("StringValue", String.valueOf(activity));
-        data.put("Parent", activity.getParent() != null ? activity.getParent() : null);
+        data.put("Parent:", activity.getParent() != null ? activity.getParent() : null);
         data.put("TaskID", activity.getTaskId());
         data.put("Title", activity.getTitle());
         data.put("TitleColor", getStringColor(activity.getTitleColor()));
