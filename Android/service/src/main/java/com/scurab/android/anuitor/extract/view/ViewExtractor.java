@@ -59,7 +59,7 @@ public class ViewExtractor extends BaseExtractor<View> {
 
     private HashMap<String, Object> fillValuesImpl(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         Translator translator = getTranslator();
-
+        ViewReflector reflector = new ViewReflector(v);
         data.put("Type", String.valueOf(v.getClass().getName()));
         data.put("Extractor", getClass().getName());
 
@@ -70,6 +70,7 @@ public class ViewExtractor extends BaseExtractor<View> {
             e.printStackTrace();
         }
         data.put("Background:", String.valueOf(v.getBackground()));
+        data.put("BackgroundResourceId", reflector.getBackgroundResourceId());
         data.put("Context:", String.valueOf(v.getContext()));
         data.put("ContentDescription", String.valueOf(v.getContentDescription()));
         data.put("IsClickable", v.isClickable());
@@ -101,7 +102,6 @@ public class ViewExtractor extends BaseExtractor<View> {
         data.put("ScrollX", v.getScrollX());
         data.put("ScrollY", v.getScrollY());
         data.put("Tag:", String.valueOf(v.getTag()));
-        final ViewReflector reflector = new ViewReflector(v);
         data.put("Tags:", String.valueOf(reflector.getKeyedTags()));
         data.put("HasFocus", v.hasFocus());
         data.put("HasFocusable", v.hasFocusable());
