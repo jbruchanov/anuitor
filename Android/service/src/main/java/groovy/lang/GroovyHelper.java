@@ -14,11 +14,20 @@ import java.util.List;
 
 /**
  * Created by JBruchanov on 20/01/2017.
+ * Help class for used in groovy scripts
  */
 
 @SuppressWarnings("unused")//used indirectly via groovy scripts
 public class GroovyHelper {
 
+    /**
+     * Get resource id value from string
+     * @param id string value of id, e.g. "R.id.myButton"
+     * @return
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     public static int id(String id) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         int index = id.lastIndexOf(".");
         String fieldName = id.substring(index + 1);
@@ -27,27 +36,62 @@ public class GroovyHelper {
         return clz.getField(fieldName).getInt(null);
     }
 
+    /**
+     * Get Application object instance
+     * @return
+     */
     public static Application getApplication() {
         return new ActivityThreadReflector().getApplication();
     }
 
+    /**
+     * Get list of created activities
+     * @return
+     */
     public static List<Activity> getActivities() {
         return new ActivityThreadReflector().getActivities();
     }
 
+    /**
+     * Get Root view of particular screen
+     * @param index
+     * @return
+     */
     public static View getRootView(int index) {
         return WindowManagerProvider.getManager().getRootView(index);
     }
 
+    /**
+     * Get any view of particular screen
+     * @param rootViewIndex
+     * @param position
+     * @return
+     */
     public static View getView(int rootViewIndex, int position) {
         final View rootView = WindowManagerProvider.getManager().getRootView(rootViewIndex);
         return DetailExtractor.findViewByPosition(rootView, position);
     }
 
+    /**
+     * Get value for any field of object
+     * @param src
+     * @param name
+     * @return
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     public static Object field(Object src, String name) throws NoSuchFieldException, IllegalAccessException {
         return Reflector.getFieldValue(src, name);
     }
 
+    /**
+     * Get value for any field of object
+     * @param clz
+     * @param name
+     * @return
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     public static Object field(Class<?> clz, String name) throws NoSuchFieldException, IllegalAccessException {
         return Reflector.getFieldValue(null, clz, name);
     }
