@@ -2,10 +2,15 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.reflect.ActivityThreadReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
@@ -30,9 +35,11 @@ public class ScreenStructurePlugin extends BasePlugin {
     public static final String PATH = "/" + FILE;
 
     private WindowManager mWindowManager;
+    private ActivityThreadReflector mActivityThread;
 
     public ScreenStructurePlugin(WindowManager windowManager) {
         mWindowManager = windowManager;
+        mActivityThread = new ActivityThreadReflector();
     }
 
     @Override
@@ -50,6 +57,7 @@ public class ScreenStructurePlugin extends BasePlugin {
         return PATH.equals(uri);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         String[] viewRootNames = mWindowManager.getViewRootNames();
@@ -61,13 +69,24 @@ public class ScreenStructurePlugin extends BasePlugin {
             HashMap<String, Object> data = new HashMap<>();
             data.put("RootName", rootName);
             resultDataSet.add(data);
+            Activity activity = getActivity(v);
+            if (activity == null && c instanceof Activity) {
+                activity = (Activity) c;
+            }
 
-            if (c instanceof Activity) {
-                BaseExtractor<Activity> extractor = (BaseExtractor<Activity>) DetailExtractor.getExtractor(c.getClass());
-                extractor.fillValues((Activity)c, data, null);
+            if (activity != null) {
+                fillActivity(activity, data);
             } else {
                 BaseExtractor<View> extractor = DetailExtractor.getExtractor(v);
                 extractor.fillValues(v, data, null);
+                if (c instanceof ContextWrapper) {
+                    c = ((ContextWrapper) c).getBaseContext();
+                    if (c instanceof Activity) {
+                        HashMap<String, Object> sub = new HashMap<>();
+                        data.put("OwnerActivity", sub);
+                        fillActivity((Activity) c, sub);
+                    }
+                }
             }
         }
 
@@ -75,5 +94,22 @@ public class ScreenStructurePlugin extends BasePlugin {
         String json =  GSON.toJson(resultDataSet);
         NanoHTTPD.Response response = new OKResponse(APP_JSON, new ByteArrayInputStream(json.getBytes()));
         return response;
+    }
+
+    private void fillActivity(@Nullable Activity activity, HashMap<String, Object> data){
+        if (activity != null) {
+            BaseExtractor<Activity> extractor = (BaseExtractor<Activity>) DetailExtractor.getExtractor(activity.getClass());
+            extractor.fillValues(activity, data, null);
+        }
+    }
+
+    @Nullable
+    private Activity getActivity(@NonNull View view) {
+        for (Activity activity : mActivityThread.getActivities()) {
+            if (activity.getWindow().getDecorView().getRootView() == view.getRootView()) {
+                return activity;
+            }
+        }
+        return null;
     }
 }
