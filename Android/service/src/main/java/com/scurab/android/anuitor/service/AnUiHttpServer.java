@@ -45,7 +45,11 @@ public class AnUiHttpServer extends SimpleWebServer {
                 new ScreenStructurePlugin(windowManager),
                 new ViewPropertyPlugin(windowManager)));
         registerPluginForMimeType(new LogCatPlugin());
-        registerPluginForMimeType(new GroovyPlugin(context.getCacheDir()));
+        try {
+            registerPluginForMimeType(new GroovyPlugin(context.getCacheDir()));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     public static void registerPluginForMimeType(BasePlugin plugin) {
