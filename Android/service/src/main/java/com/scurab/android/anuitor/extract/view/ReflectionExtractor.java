@@ -39,6 +39,7 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
             Pattern.compile("perform.*", 0),
             Pattern.compile("request.*", 0),
             Pattern.compile("resolve.*", 0),
+            Pattern.compile("select.*", 0),
             Pattern.compile("show.*", 0),
             Pattern.compile("will.*", 0)
     };
@@ -59,6 +60,7 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
 
     private HashMap<String, Object> fillValues(Object o, HashMap<String, Object> data, HashMap<String, Object> contextData, HashSet<Object> cycleHandler, int deep) {
         data.put("Type", String.valueOf(o.getClass().getName()));
+        data.put("ToString", String.valueOf(o));
         Class clz = o.getClass();
         List<Method> methods = getAllMethods(new ArrayList<Method>(), clz);
         for (Method method : methods) {

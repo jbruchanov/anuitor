@@ -19,6 +19,7 @@ import com.scurab.android.anuitor.model.OutRef;
 import com.scurab.android.anuitor.reflect.ReflectionHelper;
 import com.scurab.android.anuitor.reflect.ViewReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;
+import com.scurab.android.anuitor.tools.Executor;
 import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.ByteArrayOutputStream;
@@ -68,29 +69,45 @@ public class ViewPropertyPlugin extends ActivityPlugin {
         try {
             String queryString = session.getQueryParameterString();
             HashMap<String, String> qsValue = HttpTools.parseQueryString(queryString);
-            if (qsValue.containsKey(POSITION) && qsValue.containsKey(PROPERTY)) {
-                boolean reflection = qsValue.containsKey(REFLECTION);
+            if (qsValue.containsKey(POSITION)) {
+                final boolean reflection = qsValue.containsKey(REFLECTION);
                 int position = Integer.parseInt(qsValue.get(POSITION));
-                String property = qsValue.get(PROPERTY);
+                String property = qsValue.containsKey(PROPERTY) ? qsValue.get(PROPERTY) : null;
+                if ("undefined".equalsIgnoreCase(property)) {
+                    property = null;
+                }
                 View view = getCurrentRootView(qsValue);
                 view = view != null ? DetailExtractor.findViewByPosition(view, position) : null;
                 if (view != null) {
-                    final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
-                    Object propertyValue;
-                    String methodName;
-                    final ViewReflector reflector = new ViewReflector(view);
-                    if (item != null) {
-                        propertyValue = reflector.callMethod(item.methodName);
-                        if (item.arrayIndex >= 0) {
-                            propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
+                    DataResponse response;
+                    if (property != null) {
+                        final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
+                        Object propertyValue;
+                        String methodName;
+                        final ViewReflector reflector = new ViewReflector(view);
+                        if (item != null) {
+                            propertyValue = reflector.callMethod(item.methodName);
+                            if (item.arrayIndex >= 0) {
+                                propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
+                            }
+                            methodName = item.methodName;
+                        } else {
+                            OutRef<String> oMethodName = new OutRef<>();
+                            propertyValue = tryGetValue(reflector, property, oMethodName);
+                            methodName = oMethodName.getValue();
                         }
-                        methodName = item.methodName;
+                        response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName);
                     } else {
-                        OutRef<String> oMethodName = new OutRef<>();
-                        propertyValue = tryGetValue(reflector, property, oMethodName);
-                        methodName = oMethodName.getValue();
+                        final OutRef<DataResponse> ref = new OutRef<>();
+                        final View finalView = view;
+                        Executor.runInMainThreadBlocking(30000, new Runnable() {
+                            @Override
+                            public void run() {
+                                ref.setValue(handleObject(finalView, reflection, finalView.getClass().getName(), "", ""));
+                            }
+                        });
+                        response = ref.getValue();
                     }
-                    DataResponse response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName);
                     return new OKResponse(HttpTools.MimeType.APP_JSON, GSON.toJson(response));
                 }
             }
