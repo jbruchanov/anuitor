@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.scurab.android.anuitor.R;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
@@ -189,19 +191,42 @@ public class AnUitorService extends Service {
         if (appTitle != null) {
             title = String.format("%s (%s)", title, appTitle);
         }
-        NotificationCompat.Builder notib = new NotificationCompat.Builder(this)
-                .setContentTitle(title)
-                .setAutoCancel(true)
-                .setDefaults(defaults)
-                .setContentText(msg)
-                .setSmallIcon(ICON_RES_ID)
-                .setContentIntent(createContentIntent())
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
 
-        if(addStopAction){
-            notib.addAction(0, STOP, createStopIntent());
+        try {
+            NotificationCompat.Builder notib = new NotificationCompat.Builder(this)
+                    .setContentTitle(title)
+                    .setAutoCancel(true)
+                    .setDefaults(defaults)
+                    .setContentText(msg)
+                    .setSmallIcon(ICON_RES_ID)
+                    .setContentIntent(createContentIntent())
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
+
+            if(addStopAction){
+                notib.addAction(0, STOP, createStopIntent());
+            }
+            return notib.build();
+        } catch (Throwable e) {
+            //we don't have support library around
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                Notification.Builder builder = new Notification.Builder(this)
+                        .setContentTitle(title)
+                        .setAutoCancel(true)
+                        .setDefaults(defaults)
+                        .setContentText(msg)
+                        .setSmallIcon(ICON_RES_ID)
+                        .setContentIntent(createContentIntent());
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    builder.setStyle(new Notification.BigTextStyle().bigText(msg));
+                }
+                return builder.getNotification();
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            }
+            e.printStackTrace();
         }
-        return notib.build();
+        return null;
     }
 
     /**
