@@ -57,10 +57,14 @@ public class LayoutParamsExtractor extends BaseExtractor<ViewGroup.LayoutParams>
             }
         }
 
-        if (lp instanceof ViewPager.LayoutParams) {
-            ViewPager.LayoutParams vlp = (ViewPager.LayoutParams) lp;
-            data.put("LayoutParams_layoutGravity", getTranslator().gravity(vlp.gravity));
-            data.put("LayoutParams_isDecor", vlp.isDecor);
+        try {
+            if (lp instanceof ViewPager.LayoutParams) {
+                ViewPager.LayoutParams vlp = (ViewPager.LayoutParams) lp;
+                data.put("LayoutParams_layoutGravity", getTranslator().gravity(vlp.gravity));
+                data.put("LayoutParams_isDecor", vlp.isDecor);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         return data;
     }

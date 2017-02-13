@@ -60,9 +60,7 @@ public class ViewExtractor extends BaseExtractor<View> {
     private HashMap<String, Object> fillValuesImpl(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         Translator translator = getTranslator();
         ViewReflector reflector = new ViewReflector(v);
-        data.put("Type", String.valueOf(v.getClass().getName()));
-        data.put("Extractor", getClass().getName());
-
+        fillMandatoryFields(v, data, parentData);
         try {
             data.put("Baseline", v.getBaseline());
         } catch (Exception e) {
@@ -85,8 +83,6 @@ public class ViewExtractor extends BaseExtractor<View> {
         data.put("Top", v.getTop());
         data.put("Right", v.getRight());
         data.put("Bottom", v.getBottom());
-        data.put("Width", v.getWidth());
-        data.put("Height", v.getHeight());
         data.put("PaddingLeft", v.getPaddingLeft());
         data.put("PaddingTop", v.getPaddingTop());
         data.put("PaddingRight", v.getPaddingRight());
@@ -188,7 +184,7 @@ public class ViewExtractor extends BaseExtractor<View> {
             if (viewOverlayReflector.getChildCount() > 0) {
                 data.put("OverlayViewGroup:", String.valueOf(viewOverlayReflector.getOverlayViewGroup()));
             }
-                data.put("OverlayDrawableCount", viewOverlayReflector.getOverlayDrawablesCount());
+            data.put("OverlayDrawableCount", viewOverlayReflector.getOverlayDrawablesCount());
             if (viewOverlayReflector.getOverlayDrawablesCount() > 0) {
                 data.put("OverlayDrawables:", String.valueOf(viewOverlayReflector.getOverlayDrawables()));
             }
@@ -249,19 +245,6 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("RevealOnFocusHint", String.valueOf(v.getRevealOnFocusHint()));
         }
 
-        boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass().getName());
-        Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
-        boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
-        boolean hasBackground = v.getBackground() != null;
-        boolean shouldRender = isVisible && v.isShown() && ((isViewGroup && hasBackground) || !isViewGroup);
-        data.put("_RenderViewContent", shouldRender);
-
-        //TODO:remove later
-        data.put("RenderViewContent", shouldRender);
-
-        //region data by reflection
-
-
         data.put("Animation", String.valueOf(v.getAnimation()));
         data.put("ApplicationWindowToken:", String.valueOf(v.getApplicationWindowToken()));
         data.put("DrawableState", getTranslator().drawableStates(v.getDrawableState()));
@@ -316,13 +299,32 @@ public class ViewExtractor extends BaseExtractor<View> {
             final BaseExtractor<ViewGroup.LayoutParams> extractor = (BaseExtractor<ViewGroup.LayoutParams>) DetailExtractor.getExtractor(v.getLayoutParams().getClass());
             extractor.fillValues(v.getLayoutParams(), data, parentData);
         }
-        fillScale(v, data, parentData);
-        fillLocationValues(v, data, parentData);
+
 
         if (isExportView(v)) {
             fillAnnotatedValues(v, data);
         }
 
+        return data;
+    }
+
+    public HashMap<String, Object> fillMandatoryFields(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+        data.put("Type", String.valueOf(v.getClass().getName()));
+        data.put("Extractor", getClass().getName());
+        data.put("Width", v.getWidth());
+        data.put("Height", v.getHeight());
+
+        boolean isViewGroup = (v instanceof ViewGroup) && !DetailExtractor.isExcludedViewGroup(v.getClass().getName());
+        Integer isParentVisible = parentData == null ? View.VISIBLE : (Integer) parentData.get("_Visibility");
+        boolean isVisible = v.getVisibility() == View.VISIBLE && (isParentVisible == null || View.VISIBLE == isParentVisible);
+        boolean hasBackground = v.getBackground() != null;
+        boolean shouldRender = isVisible && v.isShown() && ((isViewGroup && hasBackground) || !isViewGroup);
+        data.put("_RenderViewContent", shouldRender);
+
+        //TODO:remove later
+        data.put("RenderViewContent", shouldRender);
+        fillScale(v, data, parentData);
+        fillLocationValues(v, data, parentData);
         return data;
     }
 

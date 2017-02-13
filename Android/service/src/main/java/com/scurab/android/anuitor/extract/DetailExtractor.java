@@ -10,10 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SlidingPaneLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -104,17 +101,14 @@ public final class DetailExtractor {
         registerExtractor(AdapterView.class, new AdapterViewExtractor(translator));
         registerExtractor(CheckedTextView.class, new CheckedTextViewExtractor(translator));
         registerExtractor(CompoundButton.class, new CompoundButtonExtractor(translator));
-        registerExtractor(DrawerLayout.class, new DrawerLayoutExtractor(translator));
         registerExtractor(ImageView.class, new ImageViewExtractor(translator));
         registerExtractor(ListView.class, new ListViewExtractor(translator));
         registerExtractor(ProgressBar.class, new ProgressBarExtractor(translator));
         registerExtractor(ScrollView.class, new ScrollViewExtractor(translator));
-        registerExtractor(SlidingPaneLayout.class, new SlidingPaneLayoutExtractor(translator));
         registerExtractor(TextView.class, new TextViewExtractor(translator));
         registerExtractor(View.class, new ViewExtractor(translator));
         registerExtractor(ViewGroup.class, new ViewGroupExtractor(translator));
         registerExtractor(LinearLayout.class, new LinearLayoutExtractor(translator));
-        registerExtractor(ViewPager.class, new ViewPagerExtractor(translator));
         registerExtractor(ViewStub.class, new ViewStubExtractor(translator));
         registerExtractor(WebView.class, new WebViewExtractor(translator));
 
@@ -129,6 +123,17 @@ public final class DetailExtractor {
             registerExtractor(android.support.v7.widget.GridLayout.class, new GridLayoutExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
 
+        try {
+        } catch (Throwable e) { /*not included in project*/ }
+
+        try {
+            registerExtractor(android.support.v4.app.Fragment.class, new SupportFragmentExtractor(translator));
+            registerExtractor(android.support.v4.view.ViewPager.class, new ViewPagerExtractor(translator));
+            registerExtractor(android.support.v4.view.DrawerLayout.class, new DrawerLayoutExtractor(translator));
+            registerExtractor(android.support.v4.view.SlidingPaneLayout.class, new SlidingPaneLayoutExtractor(translator));
+        } catch (Throwable e) { /*not included in project*/ }
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             registerExtractor(android.widget.CalendarView.class, new CalendarViewExtractor(translator));
         }
@@ -142,11 +147,10 @@ public final class DetailExtractor {
 
         registerExtractor(Activity.class, new ActivityExtractor(translator));
         registerExtractor(Bundle.class, new BundleExtractor(translator));
-        registerExtractor(FragmentActivity.class, new FragmentActivityExtractor(translator));
+        registerExtractor(android.support.v4.app.FragmentActivity.class, new FragmentActivityExtractor(translator));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             registerExtractor(android.app.Fragment.class, new FragmentExtractor(translator));
         }
-        registerExtractor(android.support.v4.app.Fragment.class, new SupportFragmentExtractor(translator));
         registerExtractor(Intent.class, new IntentExtractor(translator));
         registerExtractor(Paint.class, new PaintExtractor(translator));
         registerExtractor(Drawable.class, new DrawableExtractor(translator));
@@ -300,12 +304,23 @@ public final class DetailExtractor {
             ViewGroup group = (ViewGroup) rootView;
             for (int i = 0, n = group.getChildCount(); i < n; i++) {
                 View child = group.getChildAt(i);
+                ViewExtractor extractor = (ViewExtractor) getExtractor(child);
+                HashMap<String, Object> result = new HashMap<>();
+                try {
+                    result = lazy ? null : extractor.fillValues(child, result, parentData);
+                } catch (Throwable t) {
+                    String msg = String.valueOf(t.getMessage());
+                    Log.e("DetailExtractor", String.format("Exception:%s for view in position:%s", msg, position[0]));
+                    t.printStackTrace();
+                    result = extractor.fillMandatoryFields(child, result, parentData);
+                    result.put("Exception", msg);
+                }
+
                 ViewNode vn = new ViewNode(
                         child.getId(),
                         level,
                         position[0],
-                        lazy ? null : getExtractor(child).fillValues(child, new HashMap<String, Object>(), parentData)
-                );
+                        result);
 
                 root.addChild(vn);
                 position[0]++;
