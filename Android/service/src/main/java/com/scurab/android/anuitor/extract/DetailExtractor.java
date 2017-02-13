@@ -124,13 +124,13 @@ public final class DetailExtractor {
         } catch (Throwable e) { /*not included in project*/ }
 
         try {
+            registerExtractor(android.support.v4.app.Fragment.class, new SupportFragmentExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
 
         try {
-            registerExtractor(android.support.v4.app.Fragment.class, new SupportFragmentExtractor(translator));
             registerExtractor(android.support.v4.view.ViewPager.class, new ViewPagerExtractor(translator));
-            registerExtractor(android.support.v4.view.DrawerLayout.class, new DrawerLayoutExtractor(translator));
-            registerExtractor(android.support.v4.view.SlidingPaneLayout.class, new SlidingPaneLayoutExtractor(translator));
+            registerExtractor(android.support.v4.widget.DrawerLayout.class, new DrawerLayoutExtractor(translator));
+            registerExtractor(android.support.v4.widget.SlidingPaneLayout.class, new SlidingPaneLayoutExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
 
 

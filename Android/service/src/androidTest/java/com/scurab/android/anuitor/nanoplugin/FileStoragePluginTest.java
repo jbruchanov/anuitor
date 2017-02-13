@@ -1,7 +1,5 @@
 package com.scurab.android.anuitor.nanoplugin;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.test.AndroidTestCase;
 
