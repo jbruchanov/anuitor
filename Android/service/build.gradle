@@ -43,20 +43,20 @@ preBuild.dependsOn buildHelpClass
 dependencies {
     testCompile 'junit:junit:4.12'
     def supportLib = "25.1.1"
-    compile "com.android.support:support-v4:${supportLib}"
+    provided "com.android.support:support-core-ui:${supportLib}"
+    provided "com.android.support:support-fragment:${supportLib}"
     provided "com.android.support:recyclerview-v7:${supportLib}"
     provided "com.android.support:cardview-v7:${supportLib}"
     provided "com.android.support:gridlayout-v7:${supportLib}"
-    provided "com.android.support:design:${supportLib}"
     provided "com.android.support:percent:${supportLib}"
 
-    compile 'com.google.code.gson:gson:2.8.0'
-
+    provided 'com.google.code.gson:gson:2.8.0'
     provided 'com.google.android.tools:dx:1.7'
     provided 'org.codehaus.groovy:groovy:2.4.8'
 
+    //androidTest only, not needed for the lib itself
+    provided 'commons-io:commons-io:2.5'
     testCompile "org.robolectric:robolectric:3.2.2"
     testCompile 'org.mockito:mockito-core:2.2.22'
-    testCompile 'commons-io:commons-io:2.5'
     androidTestCompile 'org.mockito:mockito-core:2.2.22'
 }
