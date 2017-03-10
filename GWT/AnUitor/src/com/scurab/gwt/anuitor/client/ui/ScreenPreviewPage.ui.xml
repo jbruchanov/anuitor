@@ -23,7 +23,7 @@
 	
 	.textGridSize{    
 	    font-size: 12px;
-	    padding: 2px;
+	    padding: 0px;
 	    width: 30px;
 	    font-family: monospace;
 	    text-align: vertical;
