@@ -20,6 +20,15 @@
 		padding-bottom: 5px;
 		padding-right: 10px;
 	}
+	
+	.textGridSize{    
+	    font-size: 12px;
+	    padding: 2px;
+	    width: 30px;
+	    font-family: monospace;
+	    text-align: vertical;
+	    text-align: center;
+	}
 	</ui:style>
 	<g:HTMLPanel styleName="{style.content}">
 		<g:SplitLayoutPanel width="100%" height="100%" ui:field="splitLayoutPanel">
@@ -27,10 +36,14 @@
 				<g:ScrollPanel>
 					<g:VerticalPanel height="100%" styleName="{style.padding}">
 						<g:VerticalPanel ui:field="topImagePanel">
+							<g:HorizontalPanel ui:field="topRow">
+							<g:CheckBox ui:field="ignoreCheckBox" text="PointerIgnore" styleName="{style.viewInfo}"/>
+								<g:CheckBox ui:field="showGridCheckbox" text="Grid[px]" styleName="{style.viewInfo}"/>
+								<g:TextBox ui:field="gridSize" visible="false" styleName="{style.textGridSize}"></g:TextBox>
+							</g:HorizontalPanel>
 							<g:HorizontalPanel>
 								<g:Label text="_" ui:field="mousePosition" styleName="{style.viewInfo}"/>
-								<g:Label ui:field="hoveredViewID" styleName="{style.viewInfo}"/>
-								<g:CheckBox ui:field="ignoreCheckBox" text="PointerIgnore" styleName="{style.viewInfo}"/>
+								<g:Label ui:field="hoveredViewID" styleName="{style.viewInfo}"/>															
 							</g:HorizontalPanel>
 						</g:VerticalPanel>
 						<g:FlowPanel ui:field="flowPanel">																					

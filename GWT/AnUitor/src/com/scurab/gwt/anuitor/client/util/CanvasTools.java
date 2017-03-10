@@ -43,7 +43,7 @@ public final class CanvasTools{
      * @param canvas
      * @param step pixels between lines
      */
-    public static void drawGrid(Canvas canvas, int step) {
+    public static void drawGrid(Canvas canvas, double step) {
         Context2d c = canvas.getContext2d();
         int w = canvas.getCoordinateSpaceWidth();
         int h = canvas.getCoordinateSpaceHeight();
@@ -52,7 +52,7 @@ public final class CanvasTools{
         c.setGlobalAlpha(0.5);
         c.setStrokeStyle(HTMLColors.RED);
 
-        for (int i = step; i < h; i += step) {
+        for (double i = step; i < h; i += step) {
             drawHorizontalLine(c, 0, i, w);
             drawVerticalLine(c, i, 0, h);
         }
@@ -66,7 +66,7 @@ public final class CanvasTools{
      * @param y start point
      * @param height
      */
-    public static void drawVerticalLine(Context2d c, int x, int y, int height) {        
+    public static void drawVerticalLine(Context2d c, double x, double y, double height) {        
         c.beginPath();
         c.moveTo(x, y);
         c.lineTo(x, y + height);
@@ -81,7 +81,7 @@ public final class CanvasTools{
      * @param y start point
      * @param width
      */
-    public static void drawHorizontalLine(Context2d c, int x, int y, int width) {        
+    public static void drawHorizontalLine(Context2d c, double x, double y, double width) {        
         c.beginPath();
         c.moveTo(x, y);
         c.lineTo(x + width, y);

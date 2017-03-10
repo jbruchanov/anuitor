@@ -94,3 +94,8 @@ h1 {
 .propertyPreview:HOVER {
 	border:solid red thin;
 }
+
+.canvas-grid {
+	position:absolute;
+	left:0px;
+}
