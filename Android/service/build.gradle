@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 10
@@ -42,7 +42,7 @@ preBuild.dependsOn buildHelpClass
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    def supportLib = "25.1.1"
+    def supportLib = "25.2.0"
     provided "com.android.support:support-core-ui:${supportLib}"
     provided "com.android.support:support-fragment:${supportLib}"
     provided "com.android.support:recyclerview-v7:${supportLib}"
