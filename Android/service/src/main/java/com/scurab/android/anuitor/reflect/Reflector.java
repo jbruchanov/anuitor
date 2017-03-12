@@ -33,6 +33,10 @@ public abstract class Reflector<T> {
     }
 
     protected <T> T callMethodByReflection(@Nullable String methodName, @NonNull Object... params) {
+        return callMethodByReflection(mClass, this, methodName, params);
+    }
+
+    protected static <T> T callMethodByReflection(@NonNull Class<?> clazz, @Nullable Object receiver, @Nullable String methodName, @NonNull Object... params) {
         if (methodName == null) {
             methodName = getCalleeMethod();
         }
@@ -42,12 +46,12 @@ public abstract class Reflector<T> {
         }
         fixAutoboxing(clzs);
 
-        Class<?> clz = mClass;
+        Class<?> clz = clazz;
         while (clz != null) {
             try {
                 Method m = clz.getDeclaredMethod(methodName, clzs);
                 m.setAccessible(true);
-                return (T) m.invoke(mReal, params);
+                return (T) m.invoke(receiver, params);
             } catch (Exception e) {
                 clz = clz.getSuperclass();
             }
@@ -55,7 +59,7 @@ public abstract class Reflector<T> {
         throw new RuntimeException("Unable to find method: " + methodName + "(" + Arrays.toString(clzs) + ")");
     }
 
-    private String getCalleeMethod() {
+    private static String getCalleeMethod() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         String methodName = stackTrace[4].getMethodName();
         if ("callByReflection".equals(methodName)) {
@@ -69,7 +73,7 @@ public abstract class Reflector<T> {
     }
 
     //FIXME: naive, if there is nonPrimitive as param, it will fail
-    protected void fixAutoboxing(Class<?>[] params) {
+    protected static void fixAutoboxing(Class<?>[] params) {
         for (int i = 0; params != null && i < params.length; i++) {
             params[i] = fixAutoboxing(params[i]);
         }

@@ -20,7 +20,7 @@ public class ActivityThreadReflector extends Reflector<Object> {
     private static Object getInstance() {
         try {
             Class clz = Class.forName("android.app.ActivityThread");
-            return getFieldValue(null, clz, "sCurrentActivityThread");
+            return callMethodByReflection(clz, null, "currentActivityThread");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new Error(e);
