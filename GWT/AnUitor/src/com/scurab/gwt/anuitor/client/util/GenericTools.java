@@ -41,7 +41,7 @@ public class GenericTools {
     }
     
     public static String createGoogle(String value) {
-        return "https://developer.android.com/index.html#q=" + value;
+        return "https://developer.android.com/index.html?q=" + value;
     }
     
     public static String cleanInstanceHash(String value){
