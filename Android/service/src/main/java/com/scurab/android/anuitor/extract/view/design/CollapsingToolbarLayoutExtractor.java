@@ -20,25 +20,25 @@ public class CollapsingToolbarLayoutExtractor extends ViewGroupExtractor {
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        final HashMap<String, Object> result = super.fillValues(v, data, parentData);
+        super.fillValues(v, data, parentData);
 
         CollapsingToolbarLayout view = (CollapsingToolbarLayout) v;
 
-        result.put("CollapsedTitleGravity", getTranslator().gravity(view.getCollapsedTitleGravity()));
-        result.put("CollapsedTitleTypeface:", view.getCollapsedTitleTypeface());
-        result.put("ContentScrim:", view.getContentScrim());
-        result.put("CollapsedTitleGravity", getTranslator().gravity(view.getExpandedTitleGravity()));
-        result.put("ExpandedTitleMarginBottom", view.getExpandedTitleMarginBottom());
-        result.put("ExpandedTitleMarginEnd", view.getExpandedTitleMarginEnd());
-        result.put("ExpandedTitleMarginStart", view.getExpandedTitleMarginStart());
-        result.put("ExpandedTitleMarginTop", view.getExpandedTitleMarginTop());
-        result.put("ExpandedTitleTypeface:", view.getExpandedTitleTypeface());
-        result.put("ScrimAnimationDuration", view.getScrimAnimationDuration());
-        result.put("ScrimVisibleHeightTrigger", view.getScrimVisibleHeightTrigger());
-        result.put("StatusBarScrim:", view.getStatusBarScrim());
-        result.put("Title", view.getTitle());
-        result.put("IsTitleEnabled", view.isTitleEnabled());
+        data.put("CollapsedTitleGravity", getTranslator().gravity(view.getCollapsedTitleGravity()));
+        data.put("CollapsedTitleTypeface:", view.getCollapsedTitleTypeface());
+        data.put("ContentScrim:", view.getContentScrim());
+        data.put("CollapsedTitleGravity", getTranslator().gravity(view.getExpandedTitleGravity()));
+        data.put("ExpandedTitleMarginBottom", view.getExpandedTitleMarginBottom());
+        data.put("ExpandedTitleMarginEnd", view.getExpandedTitleMarginEnd());
+        data.put("ExpandedTitleMarginStart", view.getExpandedTitleMarginStart());
+        data.put("ExpandedTitleMarginTop", view.getExpandedTitleMarginTop());
+        data.put("ExpandedTitleTypeface:", view.getExpandedTitleTypeface());
+        data.put("ScrimAnimationDuration", view.getScrimAnimationDuration());
+        data.put("ScrimVisibleHeightTrigger", view.getScrimVisibleHeightTrigger());
+        data.put("StatusBarScrim:", view.getStatusBarScrim());
+        data.put("Title", view.getTitle());
+        data.put("IsTitleEnabled", view.isTitleEnabled());
 
-        return result;
+        return data;
     }
 }

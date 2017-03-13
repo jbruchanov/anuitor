@@ -24,7 +24,7 @@ public class LayoutParamsExtractor extends BaseExtractor<ViewGroup.LayoutParams>
         if (lp == null) {
             return data;
         }
-
+        data.put("Layout_Inheritance", getInheritance(lp));
         data.put("layout_width", getTranslator().layoutSize(lp.width));
         data.put("layout_height", getTranslator().layoutSize(lp.height));
         if (lp instanceof ViewGroup.MarginLayoutParams) {

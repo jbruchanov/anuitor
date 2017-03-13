@@ -24,6 +24,7 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
 
     @Override
     public HashMap<String, Object> fillValues(Activity activity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+        super.fillValues(activity, data, contextData);
         BaseExtractor<Intent> extractor = DetailExtractor.getExtractor(Intent.class);
 
         data.put("Type", activity.getClass().getName());

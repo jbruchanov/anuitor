@@ -20,18 +20,18 @@ public class FloatingActionButtonExtractor extends ImageViewExtractor {
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        final HashMap<String, Object> result = super.fillValues(v, data, parentData);
+        super.fillValues(v, data, parentData);
 
         FloatingActionButton view = (FloatingActionButton) v;
 
-        result.put("BackgroundTintList", String.valueOf(view.getBackgroundTintList()));
-        result.put("BackgroundTintMode", String.valueOf(view.getBackgroundTintMode()));
-        result.put("CompatElevation", view.getCompatElevation());
-        result.put("ContentBackground:", view.getContentBackground());
-        result.put("RippleColor", getStringColor(view.getRippleColor()));
-        result.put("Size", view.getSize());
-        result.put("UseCompatPadding", view.getUseCompatPadding());
+        data.put("BackgroundTintList", String.valueOf(view.getBackgroundTintList()));
+        data.put("BackgroundTintMode", String.valueOf(view.getBackgroundTintMode()));
+        data.put("CompatElevation", view.getCompatElevation());
+        data.put("ContentBackground:", view.getContentBackground());
+        data.put("RippleColor", getStringColor(view.getRippleColor()));
+        data.put("Size", view.getSize());
+        data.put("UseCompatPadding", view.getUseCompatPadding());
 
-        return result;
+        return data;
     }
 }

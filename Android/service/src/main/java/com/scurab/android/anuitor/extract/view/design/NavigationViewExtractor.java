@@ -20,14 +20,14 @@ public class NavigationViewExtractor extends ViewGroupExtractor {
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        final HashMap<String, Object> result = super.fillValues(v, data, parentData);
+        super.fillValues(v, data, parentData);
 
         NavigationView view = (NavigationView) v;
-        result.put("HeaderCount", view.getHeaderCount());
-        result.put("ItemBackground:", view.getItemBackground());
-        result.put("ItemIconTintList", String.valueOf(view.getItemIconTintList()));
-        result.put("ItemTextColor", String.valueOf(view.getItemTextColor()));
-        result.put("Menu:", view.getMenu());
-        return result;
+        data.put("HeaderCount", view.getHeaderCount());
+        data.put("ItemBackground:", view.getItemBackground());
+        data.put("ItemIconTintList", String.valueOf(view.getItemIconTintList()));
+        data.put("ItemTextColor", String.valueOf(view.getItemTextColor()));
+        data.put("Menu:", view.getMenu());
+        return data;
     }
 }

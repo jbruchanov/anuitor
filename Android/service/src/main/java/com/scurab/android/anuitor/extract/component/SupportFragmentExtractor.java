@@ -22,6 +22,7 @@ public class SupportFragmentExtractor extends BaseExtractor<Fragment> {
 
     @Override
     public HashMap<String, Object> fillValues(Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+        super.fillValues(fragment, data, contextData);
         data.put("Type", fragment.getClass().getName());
         data.put("IDi", fragment.getId());
         data.put("IDs", IdsHelper.getNameForId(fragment.getId()));

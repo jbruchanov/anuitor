@@ -21,14 +21,14 @@ public class BottomNavigationViewExtractor extends ViewGroupExtractor {
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        final HashMap<String, Object> result = super.fillValues(v, data, parentData);
+        super.fillValues(v, data, parentData);
 
         BottomNavigationView view = (BottomNavigationView) v;
-        result.put("ItemBackgroundResource", IdsHelper.getNameForId(view.getItemBackgroundResource()));
+        data.put("ItemBackgroundResource", IdsHelper.getNameForId(view.getItemBackgroundResource()));
         data.put("ItemIconTintList", String.valueOf(view.getItemIconTintList()));
         data.put("ItemTextColor", String.valueOf(view.getItemTextColor()));
         data.put("MaxItemCount", view.getMaxItemCount());
         data.put("Menu:", view.getMenu());
-        return result;
+        return data;
     }
 }

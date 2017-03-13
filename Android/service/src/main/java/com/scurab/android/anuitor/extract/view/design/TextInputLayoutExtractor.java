@@ -20,21 +20,21 @@ public class TextInputLayoutExtractor extends LinearLayoutExtractor {
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        final HashMap<String, Object> result = super.fillValues(v, data, parentData);
+        super.fillValues(v, data, parentData);
 
         TextInputLayout view = (TextInputLayout) v;
 
-        result.put("Error", view.getError());
-        result.put("Hint", view.getHint());
-        result.put("PasswordVisibilityToggleContentDescription", view.getPasswordVisibilityToggleContentDescription());
-        result.put("PasswordVisibilityToggleDrawable:", view.getPasswordVisibilityToggleDrawable());
-        result.put("Typeface:", view.getTypeface());
-        result.put("IsCounterEnabled", view.isCounterEnabled());
-        result.put("IsErrorEnabled", view.isErrorEnabled());
-        result.put("IsHintAnimationEnabled", view.isHintAnimationEnabled());
-        result.put("IsHintEnabled", view.isHintEnabled());
-        result.put("IsPasswordVisibilityToggleEnabled", view.isPasswordVisibilityToggleEnabled());
+        data.put("Error", view.getError());
+        data.put("Hint", view.getHint());
+        data.put("PasswordVisibilityToggleContentDescription", view.getPasswordVisibilityToggleContentDescription());
+        data.put("PasswordVisibilityToggleDrawable:", view.getPasswordVisibilityToggleDrawable());
+        data.put("Typeface:", view.getTypeface());
+        data.put("IsCounterEnabled", view.isCounterEnabled());
+        data.put("IsErrorEnabled", view.isErrorEnabled());
+        data.put("IsHintAnimationEnabled", view.isHintAnimationEnabled());
+        data.put("IsHintEnabled", view.isHintEnabled());
+        data.put("IsPasswordVisibilityToggleEnabled", view.isPasswordVisibilityToggleEnabled());
 
-        return result;
+        return data;
     }
 }

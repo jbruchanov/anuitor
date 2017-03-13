@@ -15,7 +15,27 @@ public abstract class BaseExtractor<T> {
         mTranslator = translator;
     }
 
-    public abstract HashMap<String, Object> fillValues(T t, HashMap<String, Object> data, HashMap<String, Object> contextData);
+    public HashMap<String, Object> fillValues(T t, HashMap<String, Object> data, HashMap<String, Object> contextData){
+        data.put("Inheritance", getInheritance(t));
+        return data;
+    }
+
+    public static String getInheritance(Object object) {
+        if (object == null) {
+            return null;
+        }
+        final StringBuilder sb = new StringBuilder();
+        Class<?> clz = object.getClass();
+        while (clz != null) {
+            sb.append(clz.getName()).append("\n");
+            clz = clz.getSuperclass();
+        }
+        final int len = sb.length();
+        if (len > 0) {
+            sb.setLength(len - 1);
+        }
+        return sb.toString();
+    }
 
     /**
      * Convert int value into hex #AARRGGBB format

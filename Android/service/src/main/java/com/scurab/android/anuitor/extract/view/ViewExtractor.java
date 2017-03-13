@@ -58,6 +58,8 @@ public class ViewExtractor extends BaseExtractor<View> {
     }
 
     private HashMap<String, Object> fillValuesImpl(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+        super.fillValues(v, data, parentData);
+
         Translator translator = getTranslator();
         ViewReflector reflector = new ViewReflector(v);
         fillMandatoryFields(v, data, parentData);

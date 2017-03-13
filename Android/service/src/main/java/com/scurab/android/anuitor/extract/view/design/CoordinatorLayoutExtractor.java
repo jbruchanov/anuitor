@@ -19,13 +19,13 @@ public class CoordinatorLayoutExtractor extends ViewGroupExtractor {
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        final HashMap<String, Object> result = super.fillValues(v, data, parentData);
+        super.fillValues(v, data, parentData);
 
         CoordinatorLayout view = (CoordinatorLayout) v;
 
-        result.put("NestedScrollAxes", view.getNestedScrollAxes());
-        result.put("StatusBarBackground:", view.getStatusBarBackground());
+        data.put("NestedScrollAxes", view.getNestedScrollAxes());
+        data.put("StatusBarBackground:", view.getStatusBarBackground());
 
-        return result;
+        return data;
     }
 }

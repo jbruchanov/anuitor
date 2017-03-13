@@ -19,6 +19,7 @@ public class DrawableExtractor extends BaseExtractor<Drawable> {
 
     @Override
     public HashMap<String, Object> fillValues(Drawable d, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+        super.fillValues(d, data, contextData);
         data.put("Bounds", d.getBounds().toShortString());
         data.put("ChangingConfigurations", getBinaryString(d.getChangingConfigurations()));
         data.put("IntrinsicWidth", d.getIntrinsicWidth());

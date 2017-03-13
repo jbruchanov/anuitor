@@ -20,11 +20,11 @@ public class AppBarLayoutExtractor extends LinearLayoutExtractor {
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        final HashMap<String, Object> result = super.fillValues(v, data, parentData);
+        super.fillValues(v, data, parentData);
 
         AppBarLayout view = (AppBarLayout) v;
-        result.put("TotalScrollRange", view.getTotalScrollRange());
+        data.put("TotalScrollRange", view.getTotalScrollRange());
 
-        return result;
+        return data;
     }
 }

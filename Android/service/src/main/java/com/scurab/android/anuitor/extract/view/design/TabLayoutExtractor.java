@@ -20,17 +20,17 @@ public class TabLayoutExtractor extends ViewGroupExtractor {
 
     @Override
     public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
-        final HashMap<String, Object> result = super.fillValues(v, data, parentData);
+        super.fillValues(v, data, parentData);
 
         TabLayout view = (TabLayout) v;
 
-        result.put("SelectedTabPosition", view.getSelectedTabPosition());
-        result.put("TabCount", view.getTabCount());
-        result.put("TabGravity", getTranslator().gravity(view.getTabGravity()));
-        result.put("TabMode", getTranslator().tabMode(view.getTabMode()));
-        result.put("TabTextColors", String.valueOf(view.getTabTextColors()));
-        result.put("ShouldDelayChildPressedState", view.shouldDelayChildPressedState());
+        data.put("SelectedTabPosition", view.getSelectedTabPosition());
+        data.put("TabCount", view.getTabCount());
+        data.put("TabGravity", getTranslator().gravity(view.getTabGravity()));
+        data.put("TabMode", getTranslator().tabMode(view.getTabMode()));
+        data.put("TabTextColors", String.valueOf(view.getTabTextColors()));
+        data.put("ShouldDelayChildPressedState", view.shouldDelayChildPressedState());
 
-        return result;
+        return data;
     }
 }
