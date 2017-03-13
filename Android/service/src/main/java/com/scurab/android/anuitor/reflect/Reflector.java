@@ -33,7 +33,7 @@ public abstract class Reflector<T> {
     }
 
     protected <T> T callMethodByReflection(@Nullable String methodName, @NonNull Object... params) {
-        return callMethodByReflection(mClass, this, methodName, params);
+        return callMethodByReflection(mClass, mReal, methodName, params);
     }
 
     protected static <T> T callMethodByReflection(@NonNull Class<?> clazz, @Nullable Object receiver, @Nullable String methodName, @NonNull Object... params) {
@@ -64,6 +64,9 @@ public abstract class Reflector<T> {
         String methodName = stackTrace[4].getMethodName();
         if ("callByReflection".equals(methodName)) {
             methodName = stackTrace[5].getMethodName();
+        }
+        if ("callMethodByReflection".equals(methodName)) {
+            methodName = stackTrace[6].getMethodName();
         }
         return methodName;//getThreadStackTrace, getCalleeMethod, callByReflection, our method
     }
