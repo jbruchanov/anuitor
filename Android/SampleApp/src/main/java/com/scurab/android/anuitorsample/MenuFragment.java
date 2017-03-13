@@ -26,7 +26,9 @@ public class MenuFragment extends Fragment {
             WidgetsFragment.class,
             CustomWidgetsFragment.class,
             DrawOutsideBoundsFragment.class,
-            RecyclerViewFragment.class
+            RecyclerViewFragment.class,
+            CoordinatorLayoutFragment.class,
+            NavigationViewFragment.class
     };
 
     public static final String[] itemFragmentNames;
