@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@android:drawable/ic_menu_compass"
+            android:title="@string/nav_home"/>
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@android:drawable/ic_menu_call"
+            android:title="@string/nav_about"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@android:drawable/ic_menu_camera"
+            android:title="@string/nav_settings"/>
+
+        <item
+            android:id="@+id/navigation_subheader"
+            android:title="@string/nav_sub_header">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/navigation_sub_item_1"
+                        android:icon="@android:drawable/ic_menu_gallery"
+                        android:title="@string/nav_sub_item_1"/>
+                    <item
+                        android:id="@+id/navigation_sub_item_2"
+                        android:icon="@android:drawable/ic_menu_month"
+                        android:title="@string/nav_sub_item_2"/>
+                </group>
+            </menu>
+        </item>
+    </group>
+</menu>
