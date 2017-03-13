@@ -6,7 +6,12 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.TextViewCompat;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +72,13 @@ public class DialogsFragment extends DialogFragment {
         });
         ll.addView(timeDialog);
 
+        Button bottomSheetDialog = new Button(context);
+        bottomSheetDialog.setText("BottomSheetDialog");
+        bottomSheetDialog.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { onShowBottomSheetDialog(); }
+        });
+        ll.addView(bottomSheetDialog);
+
         return ll;
     }
 
@@ -94,5 +106,15 @@ public class DialogsFragment extends DialogFragment {
 
     protected void onShowTimePickerDialog() {
         new TimePickerDialog(getActivity(), null, 10, 10, true).show();
+    }
+
+    protected void onShowBottomSheetDialog() {
+        final FragmentActivity context = getActivity();
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        final AppCompatTextView textViewCompat = new AppCompatTextView(context);
+        textViewCompat.setText(R.string.lorem_ipsum_huge);
+        textViewCompat.setTextColor(ContextCompat.getColor(context, R.color.black));
+        bottomSheetDialog.setContentView(textViewCompat);
+        bottomSheetDialog.show();
     }
 }
