@@ -56,6 +56,8 @@ import com.scurab.android.anuitor.extract.view.ScrollViewExtractor;
 import com.scurab.android.anuitor.extract.view.SlidingPaneLayoutExtractor;
 import com.scurab.android.anuitor.extract.view.SwitchExtractor;
 import com.scurab.android.anuitor.extract.view.TextViewExtractor;
+import com.scurab.android.anuitor.extract.view.ToolbarExtractor;
+import com.scurab.android.anuitor.extract.view.ToolbarSupportExtractor;
 import com.scurab.android.anuitor.extract.view.ViewExtractor;
 import com.scurab.android.anuitor.extract.view.ViewGroupExtractor;
 import com.scurab.android.anuitor.extract.view.ViewPagerExtractor;
@@ -124,6 +126,10 @@ public final class DetailExtractor {
         } catch (Throwable e) { /*not included in project*/ }
 
         try {
+            registerExtractor(android.support.v7.widget.Toolbar.class, new ToolbarSupportExtractor(translator));
+        } catch (Throwable e) { /*not included in project*/ }
+
+        try {
             registerExtractor(android.support.v4.app.Fragment.class, new SupportFragmentExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
 
@@ -143,6 +149,10 @@ public final class DetailExtractor {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             registerExtractor(android.widget.Switch.class, new SwitchExtractor(translator));
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            registerExtractor(android.widget.Toolbar.class, new ToolbarExtractor(translator));
         }
 
         VIEWGROUP_IGNORE.add(WebView.class.getCanonicalName());
