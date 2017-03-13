@@ -434,4 +434,45 @@ public class Translator {
                 return "UNKNOWN";
         }
     }
+
+    public Object tabMode(int tabMode) {
+        switch (tabMode) {
+            case android.support.design.widget.TabLayout.MODE_FIXED:
+                return "MODE_FIXED";
+            case android.support.design.widget.TabLayout.MODE_SCROLLABLE:
+                return "MODE_SCROLLABLE";
+            default:
+                return "UNKNOWN";
+        }
+    }
+
+    public Object appBarLayoutScrollFlags(int scrollFlags) {
+        switch (scrollFlags){
+            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS:
+                return "SCROLL_FLAG_ENTER_ALWAYS";
+            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED:
+                return "SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED";
+            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED:
+                return "SCROLL_FLAG_EXIT_UNTIL_COLLAPSED";
+            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL:
+                return "SCROLL_FLAG_SCROLL";
+            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP:
+                return "SCROLL_FLAG_SNAP";
+            default:
+                return "UNKNOWN";
+        }
+    }
+
+    public Object collapseMode(int collapseMode) {
+        switch (collapseMode) {
+            case android.support.design.widget.CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF:
+                return "COLLAPSE_MODE_OFF";
+            case android.support.design.widget.CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX:
+                return "COLLAPSE_MODE_PARALLAX";
+            case android.support.design.widget.CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN:
+                return "COLLAPSE_MODE_PIN";
+            default:
+                return "UNKNOWN";
+        }
+    }
 }

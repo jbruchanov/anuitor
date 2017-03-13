@@ -133,6 +133,9 @@ public final class DetailExtractor {
             registerExtractor(android.support.v4.widget.SlidingPaneLayout.class, new SlidingPaneLayoutExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
 
+        try {
+            DesignLibDetailExtractor.registerExtractors(translator);
+        } catch (Throwable e) { /*not included in project*/ }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             registerExtractor(android.widget.CalendarView.class, new CalendarViewExtractor(translator));

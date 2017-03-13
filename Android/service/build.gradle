@@ -49,6 +49,7 @@ dependencies {
     provided "com.android.support:cardview-v7:${supportLib}"
     provided "com.android.support:gridlayout-v7:${supportLib}"
     provided "com.android.support:percent:${supportLib}"
+    provided "com.android.support:design:${supportLib}"
 
     provided 'com.google.code.gson:gson:2.8.0'
     provided 'com.google.android.tools:dx:1.7'
