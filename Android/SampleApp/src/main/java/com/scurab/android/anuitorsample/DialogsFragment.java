@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 /**
  * Created by jbruchanov on 27/06/2014.
@@ -79,6 +81,13 @@ public class DialogsFragment extends DialogFragment {
         });
         ll.addView(bottomSheetDialog);
 
+        Button snackBar = new Button(context);
+        snackBar.setText("SnackBar");
+        snackBar.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { onShowSnackBar(); }
+        });
+        ll.addView(snackBar);
+
         return ll;
     }
 
@@ -113,8 +122,21 @@ public class DialogsFragment extends DialogFragment {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         final AppCompatTextView textViewCompat = new AppCompatTextView(context);
         textViewCompat.setText(R.string.lorem_ipsum_huge);
+        int gap = context.getResources().getDimensionPixelSize(R.dimen.gap_normal);
+        textViewCompat.setPadding(gap, gap, gap, gap);
         textViewCompat.setTextColor(ContextCompat.getColor(context, R.color.black));
         bottomSheetDialog.setContentView(textViewCompat);
         bottomSheetDialog.show();
+    }
+
+    protected void onShowSnackBar() {
+        Snackbar.make(getView(), R.string.app_name, Snackbar.LENGTH_LONG)
+                .setAction(R.string.title_home, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(), "Click", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
     }
 }
