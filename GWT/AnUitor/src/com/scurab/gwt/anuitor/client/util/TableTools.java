@@ -125,9 +125,14 @@ public final class TableTools {
             @Override
             public void render(Context context, Pair object, SafeHtmlBuilder sb) {
                 if (object.value instanceof String) {
+                    boolean isInheritance = object.key != null && object.key.contains("Inheritance");
                     String value = (String) object.value;                    
                     if (value.startsWith("com.android") || value.startsWith("android.")) {
-                        sb.append(createLink(createGoogle(cleanInstanceHash(value)), value));
+                        if (isInheritance) {
+                            sb.append(SafeHtmlUtils.fromTrustedString(value.replaceAll("\\n", "<br/>")));
+                        } else {
+                            sb.append(createLink(createGoogle(cleanInstanceHash(value)), value));
+                        }
                         return;
                     } else if (value.startsWith("com.scurab") && !value.contains("anuitorsample")) {
                         sb.append(createLink(createGithub(cleanInstanceHash(value)), value));
