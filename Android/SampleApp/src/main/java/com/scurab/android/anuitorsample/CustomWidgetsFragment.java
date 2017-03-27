@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.scurab.android.anuitorsample.widget.CustomButton;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
@@ -27,7 +28,9 @@ public class CustomWidgetsFragment extends Fragment {
 
     private View buildContent() {
         Context context = getActivity();
+        ScrollView sv = new ScrollView(context);
         LinearLayout ll = new LinearLayout(context);
+        sv.addView(ll);
         ll.setOrientation(LinearLayout.VERTICAL);
 
         int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, context.getResources().getDisplayMetrics());
@@ -58,6 +61,6 @@ public class CustomWidgetsFragment extends Fragment {
         scb.setPadding(padding,padding,padding,padding);
         ll.addView(scb);
 
-        return ll;
+        return sv;
     }
 }
