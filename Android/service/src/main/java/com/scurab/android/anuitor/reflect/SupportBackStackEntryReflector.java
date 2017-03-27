@@ -3,6 +3,7 @@ package com.scurab.android.anuitor.reflect;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class SupportBackStackEntryReflector extends Reflector<FragmentManager.Ba
         return getFieldValue("mPopExitAnim");
     }
 
-    public boolean addToBackStack() {
+    public boolean isAddToBackStack() {
         return getFieldValue("mAddToBackStack");
     }
 
@@ -38,8 +39,24 @@ public class SupportBackStackEntryReflector extends Reflector<FragmentManager.Ba
         return getFieldValue("mSharedElementSourceNames");
     }
 
+    public String getSharedElementSourceNamesValue() {
+        final List<String> elems = getSharedElementSourceNames();
+        if (elems != null) {
+            return Arrays.toString(elems.toArray());
+        }
+        return null;
+    }
+
     public List<String> getSharedElementTargetNames() {
         return getFieldValue("mSharedElementTargetNames");
+    }
+
+    public String getSharedElementTargetNamesValue() {
+        final List<String> elems = getSharedElementTargetNames();
+        if (elems != null) {
+            return Arrays.toString(elems.toArray());
+        }
+        return null;
     }
 
     private static class OpReflector extends Reflector<Object> {

@@ -71,11 +71,9 @@ public class FragmentActivityExtractor extends ActivityExtractor {
             data.put("ExitAnim", IdsHelper.getNameForId(sbsef.getExitAnim()));
             data.put("PopEnterAnim", IdsHelper.getNameForId(sbsef.getPopEnterAnim()));
             data.put("PopExitAnim", IdsHelper.getNameForId(sbsef.getPopExitAnim()));
-
-            Fragment head = sbsef.getHeadFragment();
-            Fragment tail = sbsef.getTailFragment();
-            data.put("HeadFragment", head != null ? head.toString() : null);
-            data.put("TailFragment", tail != null ? tail.toString() : null);
+            data.put("AddToBackStack", sbsef.isAddToBackStack());
+            data.put("SharedElementSourceNamesValue", sbsef.getSharedElementSourceNamesValue());
+            data.put("SharedElementTargetNamesValue", sbsef.getSharedElementTargetNamesValue());
             dataSet.add(data);
         }
         return dataSet;
