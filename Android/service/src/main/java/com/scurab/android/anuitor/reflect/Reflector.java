@@ -108,10 +108,10 @@ public abstract class Reflector<T> {
     }
 
     public static <T> T getFieldValue(Object obj, String fieldName) {
-        return getFieldValue(obj, obj.getClass(), fieldName);
+        return getFieldValue(obj, obj.getClass(), fieldName, false);
     }
 
-    public static <T> T getFieldValue(Object obj, Class clz, String fieldName) {
+    public static <T> T getFieldValue(Object obj, Class clz, String fieldName, boolean crashIfNotFound) {
         while (clz != null) {
             try {
                 Field f = clz.getDeclaredField(fieldName);
@@ -121,6 +121,9 @@ public abstract class Reflector<T> {
                 clz = clz.getSuperclass();
             }
         }
-        throw new RuntimeException("Unable to find field:" + fieldName);
+        if (crashIfNotFound) {
+            throw new RuntimeException("Unable to find field:" + fieldName);
+        }
+        return null;
     }
 }

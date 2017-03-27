@@ -20,7 +20,7 @@ public class BitmapDrawableExtractor extends DrawableExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Drawable d, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Drawable d, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         super.fillValues(d, data, contextData);
 
         BitmapDrawable bd = (BitmapDrawable) d;
@@ -29,7 +29,7 @@ public class BitmapDrawableExtractor extends DrawableExtractor {
         if (bitmap != null) {
             final BaseExtractor<Bitmap> extractor = (BaseExtractor<Bitmap>) DetailExtractor.getExtractor(bitmap.getClass());
             if (extractor != null) {
-                extractor.fillValues(bitmap, data, contextData);
+                extractor.onFillValues(bitmap, data, contextData);
             }
         }
         data.put("Gravity", getTranslator().gravity(bd.getGravity()));

@@ -54,7 +54,7 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Object o, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Object o, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         return fillValues(o, data, contextData, new HashSet<>(), 0);
     }
 

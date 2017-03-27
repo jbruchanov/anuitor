@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.extract;
 
 import com.scurab.android.anuitor.tools.HttpTools;
+import com.scurab.android.anuitor.tools.LogCatProvider;
 
 import java.util.HashMap;
 
@@ -9,13 +10,30 @@ import java.util.HashMap;
  */
 public abstract class BaseExtractor<T> {
 
+    public static final String KEY_ERROR_CLASS = "_!ErrorClass";
+
     private Translator mTranslator;
 
     public BaseExtractor(Translator translator) {
         mTranslator = translator;
     }
 
-    public HashMap<String, Object> fillValues(T t, HashMap<String, Object> data, HashMap<String, Object> contextData){
+    public HashMap<String, Object> onFillValues(T t, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+        try {
+            return fillValues(t, data, contextData);
+        } catch (Exception e) {
+            if (data == null) {
+                data = new HashMap<>();
+            }
+            appendClassName(KEY_ERROR_CLASS, e, data);
+            data.put("_!ErrorMessage", e.getMessage());
+            data.put("_!ErrorStack", LogCatProvider.getStackTrace(e));
+            appendClassName("ObjectClass", t, data);
+            return data;
+        }
+    }
+
+    protected HashMap<String, Object> fillValues(T t, HashMap<String, Object> data, HashMap<String, Object> contextData){
         data.put("Inheritance", getInheritance(t));
         return data;
     }

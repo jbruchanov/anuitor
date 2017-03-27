@@ -43,7 +43,16 @@ public class ViewExtractor extends BaseExtractor<View> {
         super(translator);
     }
 
-    public HashMap<String, Object> fillValues(final View v, final HashMap<String, Object> data, final HashMap<String, Object> parentData) {
+    @Override
+    public HashMap<String, Object> onFillValues(View view, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+        final HashMap<String, Object> result = super.onFillValues(view, data, contextData);
+        if (result.containsKey(KEY_ERROR_CLASS)) {
+            fillMandatoryFields(view, data, contextData);
+        }
+        return result;
+    }
+
+    protected HashMap<String, Object> fillValues(final View v, final HashMap<String, Object> data, final HashMap<String, Object> parentData) {
         /*
          * needs to be run sometimes in main thread, specifically when in getPadding... -> resolvePadding() is called
          * If crashed internally, new fragments were not visible (put app into background and open it again will solve the issue)
@@ -299,7 +308,7 @@ public class ViewExtractor extends BaseExtractor<View> {
         //noinspection unchecked
         if (v.getLayoutParams() != null) {
             final BaseExtractor<ViewGroup.LayoutParams> extractor = (BaseExtractor<ViewGroup.LayoutParams>) DetailExtractor.getExtractor(v.getLayoutParams().getClass());
-            extractor.fillValues(v.getLayoutParams(), data, parentData);
+            extractor.onFillValues(v.getLayoutParams(), data, parentData);
         }
 
 

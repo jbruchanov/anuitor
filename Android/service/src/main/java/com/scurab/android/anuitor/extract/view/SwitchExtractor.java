@@ -22,7 +22,7 @@ public class SwitchExtractor extends CompoundButtonExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data,
+    protected HashMap<String, Object> fillValues(View v, HashMap<String, Object> data,
                                               HashMap<String, Object> parentData) {
         super.fillValues(v, data, parentData);
 

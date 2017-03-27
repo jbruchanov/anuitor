@@ -24,7 +24,7 @@ public class FragmentExtractor extends BaseExtractor<Fragment> {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         data.put("Type", fragment.getClass().getName());
         data.put("IDi", fragment.getId());
         data.put("IDs", IdsHelper.getNameForId(fragment.getId()));
@@ -37,7 +37,7 @@ public class FragmentExtractor extends BaseExtractor<Fragment> {
         data.put("IsRemoving", fragment.isRemoving());
         data.put("IsResumed", fragment.isResumed());
         data.put("IsVisible", fragment.isVisible());
-        data.put("Arguments", DetailExtractor.getExtractor(Bundle.class).fillValues(fragment.getArguments(), new HashMap<String, Object>(), data));
+        data.put("Arguments", DetailExtractor.getExtractor(Bundle.class).onFillValues(fragment.getArguments(), new HashMap<String, Object>(), data));
 
         FragmentReflector sfr = new FragmentReflector(fragment);
         data.put("State", getTranslator().fragmentState(sfr.getState()));

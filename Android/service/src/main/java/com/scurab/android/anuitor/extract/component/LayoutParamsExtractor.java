@@ -20,7 +20,7 @@ public class LayoutParamsExtractor extends BaseExtractor<ViewGroup.LayoutParams>
         super(translator);
     }
 
-    public HashMap<String, Object> fillValues(ViewGroup.LayoutParams lp, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+    protected HashMap<String, Object> fillValues(ViewGroup.LayoutParams lp, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         if (lp == null) {
             return data;
         }

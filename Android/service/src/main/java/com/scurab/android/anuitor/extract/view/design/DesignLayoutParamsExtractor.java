@@ -23,7 +23,7 @@ public class DesignLayoutParamsExtractor extends LayoutParamsExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(ViewGroup.LayoutParams lp, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+    protected HashMap<String, Object> fillValues(ViewGroup.LayoutParams lp, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         super.fillValues(lp, data, parentData);
 
         if (lp instanceof AppBarLayout.LayoutParams) {

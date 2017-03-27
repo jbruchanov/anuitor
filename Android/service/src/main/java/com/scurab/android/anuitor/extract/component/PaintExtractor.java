@@ -18,7 +18,7 @@ public class PaintExtractor extends BaseExtractor<Paint> {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Paint paint, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Paint paint, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         if (paint != null && data != null) {
             data.put("Color", getStringColor(paint.getColor()));
             data.put("Ascent", paint.ascent());

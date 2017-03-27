@@ -21,7 +21,7 @@ public class WebViewExtractor extends ViewGroupExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(View v, final HashMap<String, Object> data, final HashMap<String, Object> parentData) {
+    protected HashMap<String, Object> fillValues(View v, final HashMap<String, Object> data, final HashMap<String, Object> parentData) {
         super.fillValues(v, data, parentData);
 
         final Object lock = new Object();

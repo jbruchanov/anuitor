@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
@@ -78,7 +77,7 @@ public class ScreenStructurePlugin extends BasePlugin {
                 fillActivity(activity, data);
             } else {
                 BaseExtractor<View> extractor = DetailExtractor.getExtractor(v);
-                extractor.fillValues(v, data, null);
+                extractor.onFillValues(v, data, null);
                 if (c instanceof ContextWrapper) {
                     c = ((ContextWrapper) c).getBaseContext();
                     if (c instanceof Activity) {
@@ -99,7 +98,7 @@ public class ScreenStructurePlugin extends BasePlugin {
     private void fillActivity(@Nullable Activity activity, HashMap<String, Object> data){
         if (activity != null) {
             BaseExtractor<Activity> extractor = (BaseExtractor<Activity>) DetailExtractor.getExtractor(activity.getClass());
-            extractor.fillValues(activity, data, null);
+            extractor.onFillValues(activity, data, null);
         }
     }
 

@@ -17,7 +17,7 @@ public class ViewReflectionExtractor extends ReflectionExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Object o, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Object o, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         data = super.fillValues(o, data, contextData);
 
         View v = (View) o;

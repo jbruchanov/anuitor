@@ -19,7 +19,7 @@ public class AppBarLayoutExtractor extends LinearLayoutExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+    protected HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         super.fillValues(v, data, parentData);
 
         AppBarLayout view = (AppBarLayout) v;

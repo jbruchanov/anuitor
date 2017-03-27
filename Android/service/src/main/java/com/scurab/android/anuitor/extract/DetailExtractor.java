@@ -319,14 +319,10 @@ public final class DetailExtractor {
                 View child = group.getChildAt(i);
                 ViewExtractor extractor = (ViewExtractor) getExtractor(child);
                 HashMap<String, Object> result = new HashMap<>();
-                try {
-                    result = lazy ? null : extractor.fillValues(child, result, parentData);
-                } catch (Throwable t) {
-                    String msg = String.valueOf(t.getMessage());
-                    Log.e("DetailExtractor", String.format("Exception:%s for view in position:%s", msg, position[0]));
-                    t.printStackTrace();
-                    result = extractor.fillMandatoryFields(child, result, parentData);
-                    result.put("Exception", msg);
+
+                result = lazy ? null : extractor.onFillValues(child, result, parentData);
+                if (result != null && result.containsKey(ViewExtractor.KEY_ERROR_CLASS)) {
+                    Log.e("DetailExtractor", String.format("Exception for view in position:%s", position[0]));
                 }
 
                 ViewNode vn = new ViewNode(

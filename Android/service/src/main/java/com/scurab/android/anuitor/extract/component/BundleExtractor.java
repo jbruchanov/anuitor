@@ -18,7 +18,7 @@ public class BundleExtractor extends BaseExtractor<Bundle> {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Bundle bundle, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Bundle bundle, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         if (bundle != null) {
             Set<String> keys = bundle.keySet();
             for (String key : keys) {

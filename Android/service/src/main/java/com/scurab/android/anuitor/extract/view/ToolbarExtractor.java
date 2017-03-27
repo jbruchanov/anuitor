@@ -21,7 +21,7 @@ public class ToolbarExtractor extends ViewGroupExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+    protected HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         final HashMap<String, Object> result = super.fillValues(v, data, parentData);
 
         Toolbar view = (Toolbar) v;

@@ -18,7 +18,7 @@ public class ViewStubExtractor extends ViewExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+    protected HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         super.fillValues(v, data, parentData);
 
         ViewStub vs = (ViewStub) v;

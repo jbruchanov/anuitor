@@ -23,7 +23,7 @@ public class TextViewExtractor extends ViewExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
+    protected HashMap<String, Object> fillValues(View v, HashMap<String, Object> data, HashMap<String, Object> parentData) {
         HashMap<String, Object> values = super.fillValues(v, data, parentData);
         TextView tv = (TextView) v;
         Translator translator = getTranslator();

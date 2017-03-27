@@ -1,8 +1,10 @@
 package com.scurab.android.anuitor.extract.component;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
@@ -23,12 +25,12 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Activity activity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Activity activity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         super.fillValues(activity, data, contextData);
         BaseExtractor<Intent> extractor = DetailExtractor.getExtractor(Intent.class);
 
         data.put("Type", activity.getClass().getName());
-        data.put("Intent", extractor.fillValues(activity.getIntent(), new HashMap<String, Object>(), data));
+        data.put("Intent", extractor.onFillValues(activity.getIntent(), new HashMap<String, Object>(), data));
         data.put("StringValue", String.valueOf(activity));
         data.put("Parent:", activity.getParent() != null ? activity.getParent() : null);
         data.put("TaskID", activity.getTaskId());
@@ -47,7 +49,7 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            data.put("ParentActivityIntent", extractor.fillValues(activity.getParentActivityIntent(), new HashMap<String, Object>(), data));
+            data.put("ParentActivityIntent", extractor.onFillValues(activity.getParentActivityIntent(), new HashMap<String, Object>(), data));
         }
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -60,10 +62,12 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
         return data;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     protected HashMap<String, Object> extractFragments(android.app.Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         if (fragment != null) {
             BaseExtractor<android.app.Fragment> extractor = DetailExtractor.getExtractor(android.app.Fragment.class);
-            extractor.fillValues(fragment, data, contextData);
+            extractor.onFillValues(fragment, data, contextData);
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 android.app.FragmentManager childFragmentManager = fragment.getChildFragmentManager();
 
@@ -77,6 +81,8 @@ public class ActivityExtractor extends BaseExtractor<Activity> {
         return data;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     protected List<HashMap<String, Object>> handleFragments(List<android.app.Fragment> fragments, HashMap<String, Object> data) {
         List<HashMap<String, Object>> fragmentsData = new ArrayList<>();
         if(fragments != null) {

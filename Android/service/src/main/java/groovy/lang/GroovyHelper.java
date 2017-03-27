@@ -93,6 +93,6 @@ public class GroovyHelper {
      * @throws IllegalAccessException
      */
     public static Object field(Class<?> clz, String name) throws NoSuchFieldException, IllegalAccessException {
-        return Reflector.getFieldValue(null, clz, name);
+        return Reflector.getFieldValue(null, clz, name, true);
     }
 }

@@ -3,6 +3,8 @@ package com.scurab.android.anuitor.reflect;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import java.util.List;
+
 /**
  * Created by jbruchanov on 24/06/2014.
  */
@@ -32,20 +34,12 @@ public class SupportBackStackEntryReflector extends Reflector<FragmentManager.Ba
         return getFieldValue("mAddToBackStack");
     }
 
-    public Object getHead() {
-        return getFieldValue("mHead");
+    public List<String> getSharedElementSourceNames() {
+        return getFieldValue("mSharedElementSourceNames");
     }
 
-    public Object getTail() {
-        return getFieldValue("mTail");
-    }
-
-    public Fragment getHeadFragment() {
-        return new OpReflector(getHead()).getFragment();
-    }
-
-    public Fragment getTailFragment() {
-        return new OpReflector(getTail()).getFragment();
+    public List<String> getSharedElementTargetNames() {
+        return getFieldValue("mSharedElementTargetNames");
     }
 
     private static class OpReflector extends Reflector<Object> {

@@ -25,7 +25,7 @@ public class FragmentActivityExtractor extends ActivityExtractor {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Activity fragmentActivity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Activity fragmentActivity, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         super.fillValues(fragmentActivity, data, contextData);
         if (fragmentActivity != null) {
             FragmentManager supportFragmentManager = ((FragmentActivity)fragmentActivity).getSupportFragmentManager();
@@ -44,7 +44,7 @@ public class FragmentActivityExtractor extends ActivityExtractor {
     protected HashMap<String, Object> extractFragments(Fragment fragment, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         if (fragment != null) {
             BaseExtractor<Fragment> extractor = DetailExtractor.getExtractor(Fragment.class);
-            extractor.fillValues(fragment, data, contextData);
+            extractor.onFillValues(fragment, data, contextData);
             FragmentManager childFragmentManager = fragment.getChildFragmentManager();
 
             List<Fragment> childFragments = childFragmentManager.getFragments();

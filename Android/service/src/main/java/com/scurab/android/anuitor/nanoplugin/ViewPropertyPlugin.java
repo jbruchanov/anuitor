@@ -145,7 +145,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 }
                 extractor = mReflectionExtractor;
             }
-            final HashMap data = extractor.fillValues(object, new HashMap<String, Object>(), null);
+            final HashMap data = extractor.onFillValues(object, new HashMap<String, Object>(), null);
             data.put("Type", object.getClass().getName());
             data.put("1ParentType", parentType);
             data.put("2Name", name);

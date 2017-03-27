@@ -19,7 +19,7 @@ public class BitmapExtractor extends BaseExtractor<Bitmap> {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Bitmap b, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Bitmap b, HashMap<String, Object> data, HashMap<String, Object> contextData) {
 
         data.put("DescribeContents", b.describeContents());
         data.put("Config", String.valueOf(b.getConfig()));

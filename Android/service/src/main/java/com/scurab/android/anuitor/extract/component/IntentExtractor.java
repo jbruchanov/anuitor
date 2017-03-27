@@ -19,7 +19,7 @@ public class IntentExtractor extends BaseExtractor<Intent> {
     }
 
     @Override
-    public HashMap<String, Object> fillValues(Intent intent, HashMap<String, Object> data, HashMap<String, Object> contextData) {
+    protected HashMap<String, Object> fillValues(Intent intent, HashMap<String, Object> data, HashMap<String, Object> contextData) {
         if (intent != null) {
             data.put("Action", intent.getAction());
             data.put("Categories", intent.getCategories());//TODO as csv ?
@@ -29,7 +29,7 @@ public class IntentExtractor extends BaseExtractor<Intent> {
             data.put("Package", intent.getPackage());
             data.put("Type", intent.getType());
             data.put("Component", intent.getComponent().flattenToString());
-            data.put("Extras", DetailExtractor.getExtractor(Bundle.class).fillValues(intent.getExtras(), new HashMap<String, Object>(), data));
+            data.put("Extras", DetailExtractor.getExtractor(Bundle.class).onFillValues(intent.getExtras(), new HashMap<String, Object>(), data));
         }
         return data;
     }
