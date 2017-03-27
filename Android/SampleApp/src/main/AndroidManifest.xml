@@ -24,6 +24,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".AnotherActivity"
+            android:label="@string/app_name" />
+
         <!--
             inherited from lib
             <service android:name="com.scurab.android.anuitor.service.AnUitorService"/>

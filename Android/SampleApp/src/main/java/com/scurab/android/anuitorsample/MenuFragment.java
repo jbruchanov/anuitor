@@ -9,6 +9,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Created by jbruchanov on 26/06/2014.
@@ -54,16 +55,17 @@ public class MenuFragment extends Fragment {
                 Class<?> clz = itemFragments[i];
                 try {
                     Fragment f = (Fragment) clz.newInstance();
-                    getMainActivity().openFragment(f);
+                    final BaseActivity activity = getBaseActivity();
+                    activity.openFragment(f, activity instanceof AnotherActivity);
                 } catch (Exception e) {
-                    getMainActivity().showToast(e);
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
         return view;
     }
 
-    public MainActivity getMainActivity() {
-        return (MainActivity) getActivity();
+    public BaseActivity getBaseActivity() {
+        return (BaseActivity) getActivity();
     }
 }
