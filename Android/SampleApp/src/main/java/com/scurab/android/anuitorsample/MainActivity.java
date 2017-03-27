@@ -22,7 +22,7 @@ import com.scurab.android.anuitorsample.widget.SlidingPaneLayout;
 /**
  * Created by jbruchanov on 15.5.14.
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseActivity {
 
     private SlidingPaneLayout mPaneLayout;
 
@@ -52,25 +52,15 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
-    public void showToast(Throwable t) {
-        showToast(t.getMessage());
-    }
-
-    public void showToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-    }
-
-    public void openFragment(Fragment f) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, f, f.getClass().getSimpleName())
-                .commit();
-        mPaneLayout.closePane();
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
         AnUitorService.startService(this, 8081, 0, true, null);
+    }
+
+    @Override
+    public void openFragment(Fragment f, boolean add) {
+        super.openFragment(f, add);
+        mPaneLayout.closePane();
     }
 }
