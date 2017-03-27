@@ -11,7 +11,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,7 +23,7 @@ import android.widget.Toast;
 /**
  * Created by jbruchanov on 27/06/2014.
  */
-public class DialogsFragment extends DialogFragment {
+public class ComponentsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,11 +87,27 @@ public class DialogsFragment extends DialogFragment {
         });
         ll.addView(snackBar);
 
+        Button anotherActivity = new Button(context);
+        anotherActivity.setText("AnotherActivity");
+        anotherActivity.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { onOpenAnotherActivity(); }
+        });
+        ll.addView(anotherActivity);
+
         return ll;
     }
 
+    protected void onOpenAnotherActivity() {
+        final BaseActivity activity = (BaseActivity) getActivity();
+        if (activity instanceof MainActivity) {
+            activity.startActivity(AnotherActivity.intent(getContext(), MenuFragment.class));
+        } else {
+            activity.openFragment(new MenuFragment(), true);
+        }
+    }
+
     protected void onShowDialogFragment() {
-        DialogsFragment df = new DialogsFragment();
+        ComponentsFragment df = new ComponentsFragment();
         df.show(getActivity().getSupportFragmentManager(), "Dialog");
     }
 
