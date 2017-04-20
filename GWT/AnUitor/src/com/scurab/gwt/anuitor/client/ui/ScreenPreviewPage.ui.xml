@@ -40,6 +40,7 @@
 							<g:CheckBox ui:field="ignoreCheckBox" text="PointerIgnore" styleName="{style.viewInfo}"/>
 								<g:CheckBox ui:field="showGridCheckbox" text="Grid[px]" styleName="{style.viewInfo}"/>
 								<g:TextBox ui:field="gridSize" visible="false" styleName="{style.textGridSize}"></g:TextBox>
+								<g:CheckBox ui:field="gridRenderOutToCenter" visible="false" text="&#8633;" checked="true" styleName="{style.viewInfo}"/>
 							</g:HorizontalPanel>
 							<g:HorizontalPanel>
 								<g:Label text="_" ui:field="mousePosition" styleName="{style.viewInfo}"/>

@@ -83,6 +83,8 @@ public class ScreenPreviewPage extends Composite {
     @UiField
     CheckBox showGridCheckbox;
     @UiField
+    CheckBox gridRenderOutToCenter;
+    @UiField
     TextBox gridSize;
     @UiField
     SplitLayoutPanel splitLayoutPanel;
@@ -307,6 +309,15 @@ public class ScreenPreviewPage extends Composite {
             public void onClick(ClickEvent event) {
                 updateGridCanvas(mScale);
                 gridSize.setVisible(showGridCheckbox.getValue());
+                gridRenderOutToCenter.setVisible(showGridCheckbox.getValue());
+            }
+        });
+        
+        gridRenderOutToCenter.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {           
+                updateGridCanvas(mScale);
             }
         });
 
@@ -615,8 +626,11 @@ public class ScreenPreviewPage extends Composite {
         if (showGridCheckbox.getValue()) {
             mCanvasGrid.setCoordinateSpaceWidth(w);
             mCanvasGrid.setCoordinateSpaceHeight(h);
-
-            CanvasTools.drawGrid(mCanvasGrid, mGridSize * scale);
+            if (gridRenderOutToCenter.getValue()) {
+                CanvasTools.drawGridOuter(mCanvasGrid, mGridSize * scale);
+            } else {
+                CanvasTools.drawGrid(mCanvasGrid, mGridSize * scale);
+            }
         } else {
             mCanvasGrid.getContext2d().clearRect(0, 0, w, h);
         }
