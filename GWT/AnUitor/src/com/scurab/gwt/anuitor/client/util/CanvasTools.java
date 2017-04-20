@@ -60,6 +60,33 @@ public final class CanvasTools{
     }
     
     /**
+     * Draw red grid from outer bounds
+     * @param canvas
+     * @param step pixels between lines
+     */
+    public static void drawGridOuter(Canvas canvas, double step) {
+        Context2d c = canvas.getContext2d();
+        int w = canvas.getCoordinateSpaceWidth();
+        int h = canvas.getCoordinateSpaceHeight();
+
+        c.setLineWidth(1);
+        c.setGlobalAlpha(0.5);
+        c.setStrokeStyle(HTMLColors.RED);
+        
+        //draw horizontal lines
+        for (double i = step, half = h / 2; i < half; i += step) {
+            drawHorizontalLine(c, 0, i, w);
+            drawHorizontalLine(c, 0, h - i, w);
+        }
+        //draw vertical lines
+        for (double i = step, half = w / 2; i < half; i += step) {            
+            drawVerticalLine(c, i, 0, h);
+            drawVerticalLine(c, w - i, 0, h);
+        }
+        c.setGlobalAlpha(1);
+    }
+    
+    /**
      * Draw vertical line
      * @param c
      * @param x start point
