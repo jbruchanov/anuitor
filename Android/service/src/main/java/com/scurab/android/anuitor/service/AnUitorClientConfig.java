@@ -41,11 +41,16 @@ public class AnUitorClientConfig {
         highlights.put(type.getName(), htmlColor);
     }
 
-    public static void addPropertyHighlighting(String name, String htmlColor) {
+    /**
+     * Add property highlight
+     * @param regexp any valid javascript regexp to match properties (everything is lower case)
+     * @param htmlColor any valid html color
+     */
+    public static void addPropertyHighlighting(String regexp, String htmlColor) {
         Map<String, String> highlights = (Map<String, String>) CONFIG.get(PROPERTY_HIGHLIGHTS);
         if (highlights == null) {
             CONFIG.put(PROPERTY_HIGHLIGHTS, highlights = new HashMap<>());
         }
-        highlights.put(name, htmlColor);
+        highlights.put(regexp, htmlColor);
     }
 }

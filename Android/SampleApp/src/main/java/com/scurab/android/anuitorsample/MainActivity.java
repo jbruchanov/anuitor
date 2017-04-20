@@ -10,10 +10,12 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.extract.Translator;
+import com.scurab.android.anuitor.service.AnUitorClientConfig;
 import com.scurab.android.anuitor.service.AnUitorService;
 import com.scurab.android.anuitorsample.extract.CustomTextViewExtractor;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
@@ -56,6 +58,9 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         AnUitorService.startService(this, 8081, 0, true, null);
+        AnUitorClientConfig.addTypeHighlighting(Button.class, "rgba(255, 0, 255, 0.15)");
+        AnUitorClientConfig.addPropertyHighlighting("layout.*", "rgba(0, 0, 255, 1)");
+        AnUitorClientConfig.addPropertyHighlighting("[x|y|z]|measure.*|width|height|.*padding.*|translation.*|scale.*|scroll.|top|left|right|bottom|rotation.?", "rgba(255, 0, 255, 1)");
     }
 
     @Override
