@@ -22,6 +22,7 @@
 		<url-pattern>/screens.json</url-pattern>		
 		<url-pattern>/logcat.txt</url-pattern>
 		<url-pattern>/viewproperty.json</url-pattern>
+		<url-pattern>/config.json</url-pattern>
 		<url-pattern>/groovy</url-pattern>
 	</servlet-mapping>
   
