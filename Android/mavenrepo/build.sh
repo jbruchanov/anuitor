@@ -33,7 +33,7 @@ echo Version:$VERSION
 
 sed -e 's/{VERSION}/'$VERSION'/g' template.pom >> anuitor-$VERSION.pom
 
-#generate nativeimage.aar
+#generate anuitor.aar
 pushd ..
 chmod +x gradlew
 gradlew assembleRelease
