@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -11,6 +12,8 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -35,6 +38,12 @@ import com.scurab.gwt.anuitor.client.util.PBarHelper;
  */
 public class AnUitor implements EntryPoint {
     
+    private static JSONObject sConfig = new JSONObject();
+    
+    public static JSONObject getConfig() {
+        return sConfig;
+    }
+    
     private ListBox mScreenListBox;
     /**
      * This is the entry point method.
@@ -53,7 +62,31 @@ public class AnUitor implements EntryPoint {
         if(qmIndex > -1) {
             token = token.substring(0, qmIndex);
         }
-        openScreen(token);
+        //
+        final String fToken = token;
+        PBarHelper.show();
+        
+        DataProvider.getConfig(new AsyncCallback<JSONValue>() {
+            
+            @Override
+            public void onError(Request r, Throwable t) {
+               PBarHelper.hide();
+               if (sConfig == null) {//something bad happen
+                   sConfig = new JSONObject();
+               }
+               openScreen(fToken);
+            }
+            
+            @Override
+            public void onDownloaded(JSONValue result) {
+                PBarHelper.hide();   
+                sConfig = result.isObject();
+                if (sConfig == null) {//something bad happen
+                    sConfig = new JSONObject();
+                }
+                openScreen(fToken);
+            }
+        });
     }      
     
     private static final String SCREEN_INDEX = DataProvider.QRY_PARAM_SCREEN_INDEX + "=";
