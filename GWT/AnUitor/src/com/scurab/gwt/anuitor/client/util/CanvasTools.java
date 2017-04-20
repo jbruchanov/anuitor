@@ -10,8 +10,8 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
  * @author jbruchanov
  *
  */
-public final class CanvasTools{
-
+public final class CanvasTools {
+ 
     /**
      * Draw custom rectangle
      * @param canvas
