@@ -26,6 +26,7 @@ import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
+import com.scurab.gwt.anuitor.client.AnUitor;
 
 public final class TableTools {
 
@@ -100,6 +101,7 @@ public final class TableTools {
             
             @Override
             public void render(Context context, Pair object, SafeHtmlBuilder sb) {
+                HTMLColors.appendColorHighglightForCell(AnUitor.getConfig(), object.key, sb);                
                 if (object.clickable) {                           
                     String key = object.keyReadable();                    
                     sb.append(createLink(createPropertyHistoryToken(object.position, key, screenIndex), key));
