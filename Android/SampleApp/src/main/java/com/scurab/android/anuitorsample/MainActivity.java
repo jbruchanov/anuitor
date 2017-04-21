@@ -59,8 +59,6 @@ public class MainActivity extends BaseActivity {
         super.onStart();
         AnUitorService.startService(this, 8081, 0, true, null);
         AnUitorClientConfig.addTypeHighlighting(Button.class, "rgba(255, 0, 255, 0.15)");
-        AnUitorClientConfig.addPropertyHighlighting("layout.*", "rgba(0, 0, 255, 1)");
-        AnUitorClientConfig.addPropertyHighlighting("[x|y|z]|measure.*|width|height|.*padding.*|translation.*|scale.*|scroll.|top|left|right|bottom|rotation.?", "rgba(255, 0, 255, 1)");
     }
 
     @Override

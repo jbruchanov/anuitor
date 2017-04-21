@@ -13,8 +13,12 @@ import java.util.Map;
  * Created by jbruchanov on 20/04/2017.
  */
 
+@SuppressWarnings("WeakerAccess")
 public class AnUitorClientConfig {
 
+    static final String COLOR_POSITION = "rgb(44, 107, 153)";
+    static final String COLOR_LAYOUTS = "rgb(76, 153, 44)";
+    static final String COLOR_VISIBILITY = "rgb(198, 21, 21)";
     static final String TYPE_HIGHLIGHTS = "TypeHighlights";
     static final String PROPERTY_HIGHLIGHTS = "PropertyHighlights";
 
@@ -30,7 +34,15 @@ public class AnUitorClientConfig {
         device.put("DisplayDensity", String.format("%.2f", context.getResources().getDisplayMetrics().density));
         device.put("API", Build.VERSION.SDK_INT);
         CONFIG.put("Device", device);
+
+        initDefaultHighlights();
         return CONFIG;
+    }
+
+    public static void initDefaultHighlights() {
+        addPropertyHighlighting("layout.*", COLOR_LAYOUTS);
+        addPropertyHighlighting("[x|y|z]|measure.*|width|height|.*padding.*|translation.*|scale.*|scroll.|top|left|right|bottom|rotation.?", COLOR_POSITION);
+        addPropertyHighlighting(".*visibility|isshown|willnotdraw", COLOR_VISIBILITY);
     }
 
     public static void addTypeHighlighting(Class<? extends View> type, String htmlColor) {
