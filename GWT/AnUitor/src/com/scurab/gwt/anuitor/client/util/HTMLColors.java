@@ -78,15 +78,9 @@ public final class HTMLColors {
     
     public static String colorStyleForType(JSONObject config, String type) {
         if (config != null && type != null) {
-            JSONValue highV = config.get("TypeHighlights");
-            JSONObject colors = highV != null ? highV.isObject() : null;
-            if (colors != null) {
-                JSONValue jsonColorV = colors.get(type);                
-                JSONString jsonColor = jsonColorV != null ? jsonColorV.isString() : null;
-                String color = jsonColor != null ? jsonColor.stringValue() : null;
-                if (color != null) {
-                    return "style=\"background-color:" + color + "\"";
-                }
+           String color = ConfigHelper.colorStyleForType(config, type);
+            if (color != null) {
+                return "style=\"background-color:" + color + "\"";
             }
         }
         return "";
@@ -94,24 +88,10 @@ public final class HTMLColors {
     
     public static void appendColorHighglightForCell(JSONObject config, String key, SafeHtmlBuilder sb) {
         if (config != null && key != null) {
-            JSONValue highV = config.get("PropertyHighlights");
-            JSONObject colors = highV != null ? highV.isObject() : null;
-            if (colors != null) {
-                if (key.charAt(key.length() - 1) == ':') {//remove our click flag if necessary
-                    key = key.substring(0, key.length() - 1);
-                }
-                //key = key.toLowerCase();
-                for (String regexp : colors.keySet()) {
-                    if (key.toLowerCase().matches(regexp)) {
-                        JSONValue jsonColorV = colors.get(regexp);
-                        JSONString jsonColor = jsonColorV != null ? jsonColorV.isString() : null;
-                        String color = jsonColor != null ? jsonColor.stringValue() : null;
-                        if (color != null) {
-                            sb.append(GenericTools.createColorCellHighlight(color));
-                            return;
-                        }
-                    }
-                }
+            String color = ConfigHelper.colorForProperty(config, key);
+            if (color != null) {
+                sb.append(GenericTools.createColorCellHighlight(color));
+                return;
             }
         }
         sb.append(GenericTools.createColorCellHighlight(""));
