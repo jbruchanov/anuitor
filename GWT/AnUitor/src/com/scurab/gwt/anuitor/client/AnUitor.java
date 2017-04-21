@@ -148,7 +148,9 @@ public class AnUitor implements EntryPoint {
         hp.setWidth("100%");
         hp.setStyleName("mainScreenContent", true);        
         hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        hp.add(new Label(ConfigHelper.getDeviceInfo()));
+        Label title = new Label(ConfigHelper.getDeviceInfo());
+        title.setStyleName("deviceTitle");
+        hp.add(title);
         hp.add(mScreenListBox = createListBox());
         hp.add(createButton("ScreenPreview"));
         hp.add(createButton("3D"));
