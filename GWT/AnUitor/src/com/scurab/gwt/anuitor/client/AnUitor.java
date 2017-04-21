@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -30,6 +31,7 @@ import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
 import com.scurab.gwt.anuitor.client.ui.ViewPropertyPage;
+import com.scurab.gwt.anuitor.client.util.ConfigHelper;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
 
 /**
@@ -146,7 +148,7 @@ public class AnUitor implements EntryPoint {
         hp.setWidth("100%");
         hp.setStyleName("mainScreenContent", true);        
         hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-            
+        hp.add(new Label(ConfigHelper.getDeviceInfo()));
         hp.add(mScreenListBox = createListBox());
         hp.add(createButton("ScreenPreview"));
         hp.add(createButton("3D"));
