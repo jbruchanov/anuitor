@@ -21,12 +21,12 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.view.client.ListDataProvider;
+import com.scurab.gwt.anuitor.client.AnUitor;
 import com.scurab.gwt.anuitor.client.DataProvider;
 import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewFields;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
-import com.scurab.gwt.anuitor.client.AnUitor;
 
 public final class TableTools {
 

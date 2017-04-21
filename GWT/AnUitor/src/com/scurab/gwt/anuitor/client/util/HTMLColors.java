@@ -1,7 +1,5 @@
 package com.scurab.gwt.anuitor.client.util;
 
-import java.util.Map;
-
 import com.google.gwt.canvas.dom.client.ImageData;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
