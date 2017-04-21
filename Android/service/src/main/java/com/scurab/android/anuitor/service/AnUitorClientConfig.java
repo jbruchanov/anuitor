@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.scurab.android.anuitor.BuildConfig;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,9 +31,9 @@ public class AnUitorClientConfig {
     static Map<String, Object> init(Context context) {
         CONFIG.put("ServerVersion", BuildConfig.VERSION_CODE);
 
-        HashMap<String, Object> device = new HashMap<>();
-        device.put("DisplayDensity", String.format("%.2f", context.getResources().getDisplayMetrics().density));
+        Map<String, Object> device = getBuildDeviceValues();
         device.put("API", Build.VERSION.SDK_INT);
+        device.put("DisplayDensity", String.format("%.2f", context.getResources().getDisplayMetrics().density));
         CONFIG.put("Device", device);
 
         initDefaultHighlights();
@@ -64,5 +65,19 @@ public class AnUitorClientConfig {
             CONFIG.put(PROPERTY_HIGHLIGHTS, highlights = new HashMap<>());
         }
         highlights.put(regexp, htmlColor);
+    }
+
+    private static Map<String, Object> getBuildDeviceValues() {
+        Map<String, Object> result = new HashMap<>();
+        Field[] declaredFields = Build.class.getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            declaredField.setAccessible(true);
+            try {
+                result.put(declaredField.getName(), declaredField.get(null));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 }
