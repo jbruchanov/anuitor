@@ -52,7 +52,7 @@ public final class CanvasTools {
         c.setGlobalAlpha(0.5);
         c.setStrokeStyle(HTMLColors.RED);
 
-        for (double i = step; i < h; i += step) {
+        for (double i = step; i < Math.max(w,  h); i += step) {
             drawHorizontalLine(c, 0, i, w);
             drawVerticalLine(c, i, 0, h);
         }

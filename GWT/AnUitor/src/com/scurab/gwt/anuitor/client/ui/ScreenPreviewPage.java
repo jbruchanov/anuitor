@@ -372,7 +372,7 @@ public class ScreenPreviewPage extends Composite {
                     int size = Integer.parseInt(text);
                     if (size != mLastGridSize) {
                         String color = "red";
-                        double ratio = (mImageWidth * 0.01);
+                        double ratio = (Math.min(mImageHeight, mImageWidth) * 0.01);
                         if (ratio < size) {
                             mGridSize = size;
                             updateGridCanvas(mScale);
