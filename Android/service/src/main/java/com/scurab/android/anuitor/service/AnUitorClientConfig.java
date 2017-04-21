@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.service;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.scurab.android.anuitor.BuildConfig;
@@ -22,6 +23,8 @@ public class AnUitorClientConfig {
     static final String COLOR_VISIBILITY = "rgb(198, 21, 21)";
     static final String TYPE_HIGHLIGHTS = "TypeHighlights";
     static final String PROPERTY_HIGHLIGHTS = "PropertyHighlights";
+    static final String GRID_STROKE_COLOR = "GridStrokeColor";
+    static final String SELECTION_COLOR = "SelectionColor";
 
     private AnUitorClientConfig() {
     }
@@ -65,6 +68,22 @@ public class AnUitorClientConfig {
             CONFIG.put(PROPERTY_HIGHLIGHTS, highlights = new HashMap<>());
         }
         highlights.put(regexp, htmlColor);
+    }
+
+    /**
+     * Change grid color
+     * @param htmlColor
+     */
+    public static void setGridStrokeColor(@NonNull String htmlColor) {
+        CONFIG.put(GRID_STROKE_COLOR, htmlColor);
+    }
+
+    /**
+     * Change selection color
+     * @param htmlColor
+     */
+    public static void setSelectionColor(@NonNull String htmlColor) {
+        CONFIG.put(SELECTION_COLOR, htmlColor);
     }
 
     private static Map<String, Object> getBuildDeviceValues() {

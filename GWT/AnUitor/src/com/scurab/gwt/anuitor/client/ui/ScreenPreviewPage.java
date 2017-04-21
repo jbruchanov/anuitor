@@ -51,6 +51,7 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 import com.scurab.gwt.anuitor.client.style.CustomTreeResources;
 import com.scurab.gwt.anuitor.client.util.CanvasTools;
 import com.scurab.gwt.anuitor.client.util.CellTreeTools;
+import com.scurab.gwt.anuitor.client.util.ConfigHelper;
 import com.scurab.gwt.anuitor.client.util.HTMLColors;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
 import com.scurab.gwt.anuitor.client.util.TableTools;
@@ -138,6 +139,7 @@ public class ScreenPreviewPage extends Composite {
     /* ignore for mouse position traversing, e.g. for disabling touch_blockers */
     private Set<ViewNodeJSO> mIgnored = new HashSet<ViewNodeJSO>();
     private int mScreenId = 0;
+    private String mSelectionColor;
 
     interface TestPageUiBinder extends UiBinder<Widget, ScreenPreviewPage> {
     }
@@ -146,6 +148,7 @@ public class ScreenPreviewPage extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         image.setVisible(false);
         mScreenId = screenId;
+        mSelectionColor = ConfigHelper.getSelectionColor();
 
         mScaleSliderBar = new ScaleSliderBar(200 - SCALE_MIN /* max(200) - min(30) = 170 */, "400px");
         topRow.insert(mScaleSliderBar, 0);
@@ -487,8 +490,8 @@ public class ScreenPreviewPage extends Composite {
      * @param w
      * @param h
      */
-    public static void drawRectangle(Canvas c, int x, int y, int w, int h) {
-        CanvasTools.drawRectangle(c, x, y, w, h, HTMLColors.RED, HTMLColors.YELLOW);
+    public void drawRectangle(Canvas c, int x, int y, int w, int h) {
+        CanvasTools.drawRectangle(c, x, y, w, h, mSelectionColor, mSelectionColor);
     }
 
     /**
@@ -501,7 +504,7 @@ public class ScreenPreviewPage extends Composite {
         if (view.hasCustomRenderSize()) {
             drawRectForView(view, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);
         }
-        drawRectForView(view, mCanvas, mScale, HTMLColors.RED, HTMLColors.YELLOW, false);
+        drawRectForView(view, mCanvas, mScale, mSelectionColor, mSelectionColor, false);
     }
 
     /**
@@ -658,7 +661,7 @@ public class ScreenPreviewPage extends Composite {
                 if (vs.hasCustomRenderSize()) {
                     drawRectForView(vs, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);
                 }
-                drawRectForView(vs, mCanvas, mScale, HTMLColors.RED, COLORS[0], false);
+                drawRectForView(vs, mCanvas, mScale, mSelectionColor, mSelectionColor, false);
                 updateIngoredCheckBox(vs);
                 if (mTreeViewModel != null) {
                     mTreeViewModel.highlightNode(vs);
@@ -674,7 +677,7 @@ public class ScreenPreviewPage extends Composite {
                 if (vs.hasCustomRenderSize()) {
                     drawRectForView(vs, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);
                 }
-                drawRectForView(vs, mCanvas, mScale, HTMLColors.RED, COLORS[0], false);
+                drawRectForView(vs, mCanvas, mScale, mSelectionColor, COLORS[0], false);
             }
         }
 

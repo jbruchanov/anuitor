@@ -50,7 +50,7 @@ public final class CanvasTools {
 
         c.setLineWidth(1);
         c.setGlobalAlpha(0.5);
-        c.setStrokeStyle(HTMLColors.RED);
+        c.setStrokeStyle(ConfigHelper.getGridColor());
 
         for (double i = step; i < Math.max(w,  h); i += step) {
             drawHorizontalLine(c, 0, i, w);
@@ -71,7 +71,7 @@ public final class CanvasTools {
 
         c.setLineWidth(1);
         c.setGlobalAlpha(0.5);
-        c.setStrokeStyle(HTMLColors.RED);
+        c.setStrokeStyle(ConfigHelper.getGridColor());
         
         //draw horizontal lines
         for (double i = step, half = h / 2; i < half; i += step) {

@@ -54,6 +54,14 @@ public class ConfigHelper {
         return null;
     }
     
+    public static String getGridColor() {
+        return getValue(AnUitor.getConfig(), "GridStrokeColor", HTMLColors.RED);
+    }
+    
+    public static String getSelectionColor() {
+        return getValue(AnUitor.getConfig(), "SelectionColor", null);
+    }
+    
     private static String getValue(JSONObject o, String key, String defValue) {
         JSONString val = null;
         if (o != null && o.containsKey(key) && (val = o.get(key).isString()) != null) {
