@@ -31,7 +31,7 @@ fi
 
 echo Version:$VERSION
 
-sed -e 's/{VERSION}/'$VERSION'/g' template.pom >> anuitor-$VERSION.pom
+sed -e 's/{VERSION}/'$VERSION'/g' template.pom > anuitor-$VERSION.pom
 
 #generate anuitor.aar
 pushd ..
