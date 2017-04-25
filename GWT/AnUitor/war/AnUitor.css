@@ -99,3 +99,9 @@ h1 {
 	position:absolute;
 	left:0px;
 }
+
+.deviceTitle {
+	font-family: monospace;
+	font-weight: bolder;
+	font-size: 1.3em;
+}

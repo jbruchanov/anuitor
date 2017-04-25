@@ -11,12 +11,15 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -28,12 +31,19 @@ import com.scurab.gwt.anuitor.client.ui.ScreenPreviewPage;
 import com.scurab.gwt.anuitor.client.ui.ThreeDPage;
 import com.scurab.gwt.anuitor.client.ui.TreeViewPage;
 import com.scurab.gwt.anuitor.client.ui.ViewPropertyPage;
+import com.scurab.gwt.anuitor.client.util.ConfigHelper;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class AnUitor implements EntryPoint {
+    
+    private static JSONObject sConfig = new JSONObject();
+    
+    public static JSONObject getConfig() {
+        return sConfig;
+    }
     
     private ListBox mScreenListBox;
     /**
@@ -53,7 +63,31 @@ public class AnUitor implements EntryPoint {
         if(qmIndex > -1) {
             token = token.substring(0, qmIndex);
         }
-        openScreen(token);
+        //
+        final String fToken = token;
+        PBarHelper.show();
+        
+        DataProvider.getConfig(new AsyncCallback<JSONValue>() {
+            
+            @Override
+            public void onError(Request r, Throwable t) {
+               PBarHelper.hide();
+               if (sConfig == null) {//something bad happen
+                   sConfig = new JSONObject();
+               }
+               openScreen(fToken);
+            }
+            
+            @Override
+            public void onDownloaded(JSONValue result) {
+                PBarHelper.hide();   
+                sConfig = result.isObject();
+                if (sConfig == null) {//something bad happen
+                    sConfig = new JSONObject();
+                }
+                openScreen(fToken);
+            }
+        });
     }      
     
     private static final String SCREEN_INDEX = DataProvider.QRY_PARAM_SCREEN_INDEX + "=";
@@ -114,7 +148,9 @@ public class AnUitor implements EntryPoint {
         hp.setWidth("100%");
         hp.setStyleName("mainScreenContent", true);        
         hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-            
+        Label title = new Label(ConfigHelper.getDeviceInfo());
+        title.setStyleName("deviceTitle");
+        hp.add(title);
         hp.add(mScreenListBox = createListBox());
         hp.add(createButton("ScreenPreview"));
         hp.add(createButton("3D"));

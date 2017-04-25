@@ -8,6 +8,8 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import com.scurab.gwt.anuitor.client.model.DataResponseJSO;
 import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.ObjectJSO;
@@ -31,6 +33,7 @@ public class DataProvider {
     private static final String RESOURCE_ID_X = "/resources.json?id=";
     private static final String STORAGE = "/storage.json?path=";
     private static final String SCREENS = "/screens.json";
+    private static final String CONFIG = "/config.json";
     private static final String VIEW_PROPERTY = "/viewproperty.json";
     private static final String GROOVY = "/groovy";
     private static final int HTTP_OK = 200;
@@ -82,6 +85,15 @@ public class DataProvider {
         sendRequest(SCREENS, asyncCallback);
     }
     
+    public static void getConfig(AsyncCallback<JSONValue> callback) {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, CONFIG);
+        try {
+            builder.sendRequest(null, new ReqJsonCallback(callback));                      
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void getViewProperty(int screen, int position, String property, final AsyncCallback<DataResponseJSO> callback) {
         sendRequest(buildViewPropertyUrl(screen, position, property), callback);
     }
@@ -129,7 +141,6 @@ public class DataProvider {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     
     /**
@@ -150,8 +161,45 @@ public class DataProvider {
         public void onResponseReceived(Request request, Response response) {
             if (HTTP_OK == response.getStatusCode()) {
                 try {
-                    String value = response.getText();
+                    String value = response.getText();                 
                     T t = JsonUtils.safeEval(value);
+                    mCallback.onDownloaded(t);
+                } catch (Exception e) {
+                    mCallback.onError(request, e);
+                }
+            } else {
+                mCallback.onError(request, new Exception("ErrCode:" + response.getStatusCode()));
+            }
+        }
+
+        @Override
+        public void onError(Request request, Throwable exception) {
+            if(mCallback != null){
+                mCallback.onError(request, exception);
+            }
+        }
+    }
+    
+    /**
+     * Generic Request callback
+     * @author jbruchanov
+     *
+     * @param <T>
+     */
+    private static class ReqJsonCallback implements RequestCallback {
+
+        private AsyncCallback<JSONValue> mCallback;
+
+        public ReqJsonCallback(AsyncCallback<JSONValue> callback) {
+            mCallback = callback;
+        }
+
+        @Override
+        public void onResponseReceived(Request request, Response response) {
+            if (HTTP_OK == response.getStatusCode()) {
+                try {
+                    String json = response.getText();                 
+                    JSONValue t = JSONParser.parseStrict(json);
                     mCallback.onDownloaded(t);
                 } catch (Exception e) {
                     mCallback.onError(request, e);

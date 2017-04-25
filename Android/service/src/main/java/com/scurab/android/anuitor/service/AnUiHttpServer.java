@@ -6,6 +6,7 @@ import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.nanoplugin.ActiveScreensPlugin;
 import com.scurab.android.anuitor.nanoplugin.AggregateMimePlugin;
 import com.scurab.android.anuitor.nanoplugin.BasePlugin;
+import com.scurab.android.anuitor.nanoplugin.ConfigClientPlugin;
 import com.scurab.android.anuitor.nanoplugin.FileStoragePlugin;
 import com.scurab.android.anuitor.nanoplugin.GroovyPlugin;
 import com.scurab.android.anuitor.nanoplugin.LogCatPlugin;
@@ -38,6 +39,7 @@ public class AnUiHttpServer extends SimpleWebServer {
                 new ScreenViewPlugin(windowManager),
                 new ViewshotPlugin(windowManager)));
         registerPluginForMimeType(new AggregateMimePlugin(
+                new ConfigClientPlugin(AnUitorClientConfig.init(context)),
                 new ActiveScreensPlugin(windowManager),
                 new ViewHierarchyPlugin(windowManager),
                 new FileStoragePlugin(context),

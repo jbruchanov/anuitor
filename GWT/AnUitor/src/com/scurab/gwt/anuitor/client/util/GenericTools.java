@@ -36,6 +36,10 @@ public class GenericTools {
         return SafeHtmlUtils.fromTrustedString("<span style=\"height:10px;width:50px; margin:0 10px; display:inline-block; border: 1px solid black;\" class=\"transparent\"><span style=\"height:10px; display:block;background:" + color + "\">&nbsp;</span></span>");
     }      
     
+    public static SafeHtml createColorCellHighlight(String color) {
+        return SafeHtmlUtils.fromTrustedString("<span style=\"position:absolute; left:5px; height:10px;width:10px;background:" + color + "\"></span>&nbsp;");
+    }
+    
     public static String createGithub(String value) {        
         return "https://github.com/jbruchanov/AnUitor/blob/develop/Android/service/src/main/java/" + value.replaceAll("\\.", "/") + ".java";
     }

@@ -19,7 +19,9 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
+import com.scurab.gwt.anuitor.client.AnUitor;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
+import com.scurab.gwt.anuitor.client.util.HTMLColors;
 
 /**
  * Tree view model for tree view hieararchy control
@@ -179,13 +181,17 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         protected void render(com.google.gwt.cell.client.Cell.Context context, SafeHtml data, SafeHtmlBuilder sb) {
             Object o = context.getKey();
             String key;
+            String type = null;
             if (o instanceof ViewNodeJSO) {
-                key = getNodeJSOId((ViewNodeJSO) o);
+                ViewNodeJSO n = (ViewNodeJSO) o;
+                key = getNodeJSOId(n);
+                type = n.getType();
             } else {
                 key = Long.toString(System.currentTimeMillis());
             }
-            sb.appendHtmlConstant("<label class=\"treeNode" + (mIgnored.contains(key) ? (" " + CSS_IGNORED_NODE) : "")
-                    + "\" id=\"" + key + "\">");
+            String cssIgnoreClass = (mIgnored.contains(key) ? (" " + CSS_IGNORED_NODE) : "");
+            String colorStyle = HTMLColors.colorStyleForType(AnUitor.getConfig(), type);
+            sb.appendHtmlConstant("<label class=\"treeNode" + cssIgnoreClass + "\" id=\"" + key + "\" " + colorStyle + ">");
             if (data != null) {
                 sb.append(data);
             }
