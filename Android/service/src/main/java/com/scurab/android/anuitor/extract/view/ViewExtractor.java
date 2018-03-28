@@ -20,6 +20,7 @@ import com.scurab.android.anuitor.tools.Executor;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -254,6 +255,15 @@ public class ViewExtractor extends BaseExtractor<View> {
 
         if (Build.VERSION.SDK_INT >= VERSION_CODES.N_MR1) {
             data.put("RevealOnFocusHint", String.valueOf(v.getRevealOnFocusHint()));
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.O) {
+            data.put("AutofillHints", Arrays.toString(v.getAutofillHints()));
+            data.put("DefaultFocusHighlightEnabled", v.getDefaultFocusHighlightEnabled());
+            data.put("Focusable", translator.focusable(v.getFocusable()));
+            data.put("ImportantForAutofill", translator.importantForAutoFill(v.getImportantForAutofill()));
+            data.put("DefaultFocusHighlightEnabled", v.getDefaultFocusHighlightEnabled());
+            data.put("ImportantForAutofill", v.getImportantForAutofill());
         }
 
         data.put("Animation", String.valueOf(v.getAnimation()));

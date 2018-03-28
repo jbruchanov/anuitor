@@ -29,7 +29,6 @@ public class PaintExtractor extends BaseExtractor<Paint> {
             data.put("FontSpacing", paint.getFontSpacing());
             appendClassName("MaskFilter", paint.getMaskFilter(), data);
             appendClassName("PathEffect", paint.getPathEffect(), data);
-            appendClassName("Rasterizer", paint.getRasterizer(), data);
             appendClassName("Shader", paint.getShader(), data);
             data.put("StrokeCap", paint.getStrokeCap().name());
             data.put("StrokeJoin", paint.getStrokeJoin().name());

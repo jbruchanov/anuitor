@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,10 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -145,6 +148,17 @@ public class AnUitorService extends Service {
      * Start service in foreground
      */
     protected void startForeground() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            String channelId = "AnUitor";
+            CharSequence channelName = "AnUitor";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
         startForeground(NOTIF_ID, createSimpleNotification());
     }
 
@@ -193,7 +207,7 @@ public class AnUitorService extends Service {
         }
 
         try {
-            NotificationCompat.Builder notib = new NotificationCompat.Builder(this)
+            NotificationCompat.Builder notib = new NotificationCompat.Builder(this, "AnUitor")
                     .setContentTitle(title)
                     .setAutoCancel(true)
                     .setDefaults(defaults)
@@ -220,6 +234,11 @@ public class AnUitorService extends Service {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     builder.setStyle(new Notification.BigTextStyle().bigText(msg));
                 }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    builder.setChannelId("AnUitor");
+                }
+
                 return builder.getNotification();
             } else {
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show();

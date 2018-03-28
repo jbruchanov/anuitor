@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
@@ -471,6 +472,36 @@ public class Translator {
                 return "COLLAPSE_MODE_PARALLAX";
             case android.support.design.widget.CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN:
                 return "COLLAPSE_MODE_PIN";
+            default:
+                return "UNKNOWN";
+        }
+    }
+
+    public Object focusable(int focusable) {
+        switch (focusable) {
+            case View.FOCUSABLE:
+                return "FOCUSABLE";
+            case View.NOT_FOCUSABLE:
+                return "NOT_FOCUSABLE";
+            case View.FOCUSABLE_AUTO:
+                return "FOCUSABLE_AUTO";
+            default:
+                return "UNKNOWN";
+        }
+    }
+
+    public Object importantForAutoFill(int importantForAutofill) {
+        switch (importantForAutofill) {
+            case View.IMPORTANT_FOR_AUTOFILL_AUTO:
+                return "IMPORTANT_FOR_AUTOFILL_AUTO";
+            case View.IMPORTANT_FOR_AUTOFILL_YES:
+                return "IMPORTANT_FOR_AUTOFILL_YES";
+            case View.IMPORTANT_FOR_AUTOFILL_NO:
+                return "IMPORTANT_FOR_AUTOFILL_NO";
+            case View.IMPORTANT_FOR_AUTOFILL_YES_EXCLUDE_DESCENDANTS:
+                return "IMPORTANT_FOR_AUTOFILL_YES_EXCLUDE_DESCENDANTS";
+            case View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS:
+                return "IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS";
             default:
                 return "UNKNOWN";
         }
