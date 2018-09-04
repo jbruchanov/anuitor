@@ -4,14 +4,13 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.scurab.android.anuitor.extract.DetailExtractor;
 import com.scurab.android.anuitor.extract.Translator;
@@ -19,7 +18,6 @@ import com.scurab.android.anuitor.service.AnUitorClientConfig;
 import com.scurab.android.anuitor.service.AnUitorService;
 import com.scurab.android.anuitorsample.extract.CustomTextViewExtractor;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
-import com.scurab.android.anuitorsample.widget.SlidingPaneLayout;
 
 /**
  * Created by jbruchanov on 15.5.14.
