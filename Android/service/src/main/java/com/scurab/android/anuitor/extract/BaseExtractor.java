@@ -45,12 +45,12 @@ public abstract class BaseExtractor<T> {
         final StringBuilder sb = new StringBuilder();
         Class<?> clz = object.getClass();
         while (clz != null) {
-            sb.append(clz.getName()).append("\n");
+            sb.append(clz.getName()).append(" > ");
             clz = clz.getSuperclass();
         }
         final int len = sb.length();
-        if (len > 0) {
-            sb.setLength(len - 1);
+        if (len > 3) {
+            sb.setLength(len - 3);
         }
         return sb.toString();
     }
