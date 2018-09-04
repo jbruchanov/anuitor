@@ -59,7 +59,7 @@ public class ConfigHelper {
     }
     
     public static String getSelectionColor() {
-        return getValue(AnUitor.getConfig(), "SelectionColor", null);
+        return getValue(AnUitor.getConfig(), "SelectionColor", HTMLColors.YELLOW);
     }
     
     private static String getValue(JSONObject o, String key, String defValue) {
