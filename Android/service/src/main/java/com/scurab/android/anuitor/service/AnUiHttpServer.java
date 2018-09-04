@@ -35,11 +35,19 @@ public class AnUiHttpServer extends SimpleWebServer {
     }
 
     protected void initPlugins(Context context, WindowManager windowManager) {
+        boolean hasGroovySupport = false;
+        try {
+            registerPluginForMimeType(new GroovyPlugin(context.getCacheDir()));
+            hasGroovySupport = true;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
         registerPluginForMimeType(new AggregateMimePlugin(
                 new ScreenViewPlugin(windowManager),
                 new ViewshotPlugin(windowManager)));
         registerPluginForMimeType(new AggregateMimePlugin(
-                new ConfigClientPlugin(AnUitorClientConfig.init(context)),
+                new ConfigClientPlugin(AnUitorClientConfig.init(context, hasGroovySupport)),
                 new ActiveScreensPlugin(windowManager),
                 new ViewHierarchyPlugin(windowManager),
                 new FileStoragePlugin(context),
@@ -47,11 +55,6 @@ public class AnUiHttpServer extends SimpleWebServer {
                 new ScreenStructurePlugin(windowManager),
                 new ViewPropertyPlugin(windowManager)));
         registerPluginForMimeType(new LogCatPlugin());
-        try {
-            registerPluginForMimeType(new GroovyPlugin(context.getCacheDir()));
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
     }
 
     public static void registerPluginForMimeType(BasePlugin plugin) {

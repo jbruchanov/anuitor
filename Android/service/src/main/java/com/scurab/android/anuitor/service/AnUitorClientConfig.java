@@ -31,13 +31,14 @@ public class AnUitorClientConfig {
 
     private static final Map<String, Object> CONFIG = new HashMap<>();
 
-    static Map<String, Object> init(Context context) {
+    static Map<String, Object> init(Context context, boolean hasGroovySupport) {
         CONFIG.put("ServerVersion", BuildConfig.VERSION_CODE);
 
         Map<String, Object> device = getBuildDeviceValues();
         device.put("API", Build.VERSION.SDK_INT);
         device.put("DisplayDensity", String.format("%.2f", context.getResources().getDisplayMetrics().density));
         CONFIG.put("Device", device);
+        CONFIG.put("Groovy", hasGroovySupport);
 
         initDefaultHighlights();
         return CONFIG;

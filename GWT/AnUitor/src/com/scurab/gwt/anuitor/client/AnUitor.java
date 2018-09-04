@@ -160,7 +160,9 @@ public class AnUitor implements EntryPoint {
         hp.add(createButton("Windows"));
         hp.add(createButton("Screenshot"));
         hp.add(createButton("LogCat"));
-        hp.add(createButton("Groovy"));
+        if (ConfigHelper.isGroovyEnabled()) {
+            hp.add(createButton("Groovy"));
+        }
 
         return hp;
     }

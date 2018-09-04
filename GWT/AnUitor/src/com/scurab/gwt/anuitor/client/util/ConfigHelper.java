@@ -1,5 +1,6 @@
 package com.scurab.gwt.anuitor.client.util;
 
+import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -62,6 +63,10 @@ public class ConfigHelper {
         return getValue(AnUitor.getConfig(), "SelectionColor", HTMLColors.YELLOW);
     }
     
+    public static boolean isGroovyEnabled() {
+        return getValue(AnUitor.getConfig(), "Groovy", false);
+    }
+    
     private static String getValue(JSONObject o, String key, String defValue) {
         JSONString val = null;
         if (o != null && o.containsKey(key) && (val = o.get(key).isString()) != null) {
@@ -74,6 +79,14 @@ public class ConfigHelper {
         JSONNumber val = null;
         if (o != null && o.containsKey(key) && (val = o.get(key).isNumber()) != null) {
             return val.doubleValue();
+        }
+        return defValue;
+    }
+    
+    private static boolean getValue(JSONObject o, String key, boolean defValue) {
+        JSONBoolean val = null;
+        if (o != null && o.containsKey(key) && (val = o.get(key).isBoolean()) != null) {
+            return val.booleanValue();
         }
         return defValue;
     }
