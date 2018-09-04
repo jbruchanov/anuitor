@@ -11,6 +11,9 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+        if (groovyEnabled) {
+            multiDexEnabled true
+        }
     }
     buildTypes {
         release {
@@ -32,6 +35,10 @@ dependencies {
     implementation "com.android.support:slidingpanelayout:${supportLib}"
 
     implementation "com.google.code.gson:gson:${gson}"
+    if (groovyEnabled) {
+        implementation "com.google.android.tools:dx:${dx}"
+        implementation "org.codehaus.groovy:groovy:${groovy}"
+    }
 
     implementation project(":service")
 }

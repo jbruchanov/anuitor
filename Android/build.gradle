@@ -10,8 +10,9 @@ project.ext {
     robolectric = "3.6.1"
     mockito = "2.11.0"
     commonsIo = "2.5"
+    groovyEnabled = minSdk >= 26 && targetSdk >= 26
     dx = "1.7"
-    groovy = "3.0.0-alpha-3"
+    groovy = "2.4.8"
 }
 
 
