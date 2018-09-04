@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion compileSdk
+    buildToolsVersion buildTools
 
     defaultConfig {
         applicationId "com.scurab.android.anuitorsample"
-        minSdkVersion 10
-        targetSdkVersion 25
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -21,19 +21,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
 
-    def supportLib = "25.3.1"
-    compile "com.android.support:recyclerview-v7:${supportLib}"
-    compile "com.android.support:cardview-v7:${supportLib}"
-    compile "com.android.support:gridlayout-v7:${supportLib}"
-    compile "com.android.support:design:${supportLib}"
-    compile "com.android.support:percent:${supportLib}"
+    implementation "com.android.support:recyclerview-v7:${supportLib}"
+    implementation "com.android.support:cardview-v7:${supportLib}"
+    implementation "com.android.support:gridlayout-v7:${supportLib}"
+    implementation "com.android.support:design:${supportLib}"
+    implementation "com.android.support:percent:${supportLib}"
+    implementation "com.android.support:slidingpanelayout:${supportLib}"
 
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.google.android.tools:dx:1.7'
-    compile 'org.codehaus.groovy:groovy:2.4.8'
+    implementation "com.google.code.gson:gson:${gson}"
 
-    compile project(":service")
+    implementation project(":service")
 }

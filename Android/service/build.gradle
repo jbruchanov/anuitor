@@ -2,12 +2,12 @@ apply from: 'generator.gradle'
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion compileSdk
+    buildToolsVersion buildTools
 
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 25//keep it below M, tests+permission don't work
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk//keep it below M, tests+permission don't work
 
         versionCode 1
         versionName "1.0"
@@ -42,22 +42,22 @@ preBuild.dependsOn buildHelpClass
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    def supportLib = "25.2.0"
-    provided "com.android.support:support-core-ui:${supportLib}"
-    provided "com.android.support:support-fragment:${supportLib}"
-    provided "com.android.support:recyclerview-v7:${supportLib}"
-    provided "com.android.support:cardview-v7:${supportLib}"
-    provided "com.android.support:gridlayout-v7:${supportLib}"
-    provided "com.android.support:percent:${supportLib}"
-    provided "com.android.support:design:${supportLib}"
 
-    provided 'com.google.code.gson:gson:2.8.0'
-    provided 'com.google.android.tools:dx:1.7'
-    provided 'org.codehaus.groovy:groovy:2.4.8'
+    compileOnly "com.android.support:support-core-ui:${supportLib}"
+    compileOnly "com.android.support:support-fragment:${supportLib}"
+    compileOnly "com.android.support:recyclerview-v7:${supportLib}"
+    compileOnly "com.android.support:cardview-v7:${supportLib}"
+    compileOnly "com.android.support:gridlayout-v7:${supportLib}"
+    compileOnly "com.android.support:percent:${supportLib}"
+    compileOnly "com.android.support:design:${supportLib}"
+
+    compileOnly "com.google.code.gson:gson:${gson}"
+    compileOnly "com.google.android.tools:dx:${dx}"
+    compileOnly "org.codehaus.groovy:groovy:${groovy}"
 
     //androidTest only, not needed for the lib itself
-    provided 'commons-io:commons-io:2.5'
-    testCompile "org.robolectric:robolectric:3.2.2"
-    testCompile 'org.mockito:mockito-core:2.2.22'
-    androidTestCompile 'org.mockito:mockito-core:2.2.22'
+    compileOnly "commons-io:commons-io:${commonsIo}"
+    testCompile "org.robolectric:robolectric:${robolectric}"
+    testCompile "org.mockito:mockito-core:${mockito}"
+    androidTestCompile "org.mockito:mockito-core:${mockito}"
 }
