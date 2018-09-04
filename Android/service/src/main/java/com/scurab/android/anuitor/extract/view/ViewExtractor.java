@@ -3,9 +3,11 @@ package com.scurab.android.anuitor.extract.view;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOverlay;
+import android.view.autofill.AutofillId;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
@@ -20,6 +22,7 @@ import com.scurab.android.anuitor.tools.Executor;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -256,6 +259,31 @@ public class ViewExtractor extends BaseExtractor<View> {
             data.put("RevealOnFocusHint", String.valueOf(v.getRevealOnFocusHint()));
         }
 
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.O) {
+            data.put("AccessibilityPaneTitle", toString(v.getAutofillHints()));
+            data.put("AutofillType", v.getAutofillType());
+            data.put("AutofillValue", String.valueOf(v.getAutofillValue()));
+            data.put("DefaultFocusHighlightEnabled", String.valueOf(v.getDefaultFocusHighlightEnabled()));
+            data.put("Focusable", translator.focusable(v.getFocusable()));
+            data.put("ImportantForAutofill", String.valueOf(v.getImportantForAutofill()));
+            data.put("NextClusterForwardId", IdsHelper.getNameForId(v.getNextClusterForwardId()));
+            data.put("TooltipText", String.valueOf(v.getTooltipText()));
+            data.put("HasExplicitFocusable", String.valueOf(v.hasExplicitFocusable()));
+            data.put("HasPointerCapture", String.valueOf(v.hasPointerCapture()));
+            data.put("IsFocusedByDefault", String.valueOf(v.isFocusedByDefault()));
+            data.put("IsImportantForAutofill", String.valueOf(v.isImportantForAutofill()));
+            data.put("IsKeyboardNavigationCluster", String.valueOf(v.isKeyboardNavigationCluster()));
+        }
+
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.P) {
+            data.put("AccessibilityPaneTitle", String.valueOf(v.getAccessibilityPaneTitle()));
+            data.put("OutlineAmbientShadowColor", getStringColor(v.getOutlineAmbientShadowColor()));
+            data.put("OutlineSpotShadowColor", getStringColor(v.getOutlineSpotShadowColor()));
+            data.put("IsAccessibilityHeading", String.valueOf(v.isAccessibilityHeading()));
+            data.put("IsPivotSet", String.valueOf(v.isPivotSet()));
+            data.put("IsScreenReaderFocusable", String.valueOf(v.isScreenReaderFocusable()));
+        }
+
         data.put("Animation", String.valueOf(v.getAnimation()));
         data.put("ApplicationWindowToken:", String.valueOf(v.getApplicationWindowToken()));
         data.put("DrawableState", getTranslator().drawableStates(v.getDrawableState()));
@@ -415,6 +443,14 @@ public class ViewExtractor extends BaseExtractor<View> {
             clz = clz.getSuperclass();
         }
         return data;
+    }
+
+    @Nullable
+    public static String toString(@Nullable Object[] items) {
+        if (items == null) {
+            return null;
+        }
+        return Arrays.toString(items);
     }
 
     private static boolean isExportView(View v) {

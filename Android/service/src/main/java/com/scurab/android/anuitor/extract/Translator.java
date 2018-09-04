@@ -475,4 +475,17 @@ public class Translator {
                 return "UNKNOWN";
         }
     }
+
+    public Object focusable(int focusable) {
+        switch (focusable) {
+            case View.FOCUSABLE_AUTO:
+                return "FOCUSABLE_AUTO";
+            case View.FOCUSABLE:
+                return "FOCUSABLE";
+            case View.NOT_FOCUSABLE:
+                return "NOT_FOCUSABLE";
+            default:
+                return "UNKNOWN";
+        }
+    }
 }
