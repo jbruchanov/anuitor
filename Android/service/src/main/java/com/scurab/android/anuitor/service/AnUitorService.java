@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -11,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import java.net.URL;
  */
 public class AnUitorService extends Service {
     private static final String TAG = "AnUitorService";
+    private static final String TITLE = "AnUitor";
     public static final String STOP = "STOP";
     public static final String START = "START";
     public static final String PORT = "PORT";
@@ -145,6 +148,9 @@ public class AnUitorService extends Service {
      * Start service in foreground
      */
     protected void startForeground() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel();
+        }
         startForeground(NOTIF_ID, createSimpleNotification());
     }
 
@@ -186,14 +192,14 @@ public class AnUitorService extends Service {
         if (addMsg != null) {
             msg = msg + "\n" + addMsg;
         }
-        String title = "AnUitor";
+        String title = TITLE;
         String appTitle = getAppTitle();
         if (appTitle != null) {
             title = String.format("%s (%s)", title, appTitle);
         }
 
         try {
-            NotificationCompat.Builder notib = new NotificationCompat.Builder(this)
+            NotificationCompat.Builder notib = new NotificationCompat.Builder(this, TAG)
                     .setContentTitle(title)
                     .setAutoCancel(true)
                     .setDefaults(defaults)
@@ -202,7 +208,7 @@ public class AnUitorService extends Service {
                     .setContentIntent(createContentIntent())
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
 
-            if(addStopAction){
+            if (addStopAction) {
                 notib.addAction(0, STOP, createStopIntent());
             }
             return notib.build();
@@ -219,6 +225,9 @@ public class AnUitorService extends Service {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     builder.setStyle(new Notification.BigTextStyle().bigText(msg));
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    builder.setChannelId(TAG);
                 }
                 return builder.getNotification();
             } else {
@@ -267,6 +276,14 @@ public class AnUitorService extends Service {
         Intent i = new Intent(this, AnUitorService.class);
         i.setAction(STOP);
         return PendingIntent.getService(this, (int) System.currentTimeMillis(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private void createNotificationChannel() {
+        NotificationChannel chan = new NotificationChannel(TAG, TITLE, NotificationManager.IMPORTANCE_NONE);
+        NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert service != null;
+        service.createNotificationChannel(chan);
     }
 
     /**
