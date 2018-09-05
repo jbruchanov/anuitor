@@ -54,12 +54,12 @@ dependencies {
     compileOnly "com.android.support:percent:${supportLib}"
     compileOnly "com.android.support:design:${supportLib}"
 
-    compileOnly "com.google.code.gson:gson:${gson}"
+    compile "com.google.code.gson:gson:${gson}"
     compileOnly "com.google.android.tools:dx:${dx}"
     compileOnly "org.codehaus.groovy:groovy:${groovy}"
 
     //androidTest only, not needed for the lib itself
-    compileOnly "commons-io:commons-io:${commonsIo}"
+    testCompile "commons-io:commons-io:${commonsIo}"
     testCompile "org.robolectric:robolectric:${robolectric}"
     testCompile "org.mockito:mockito-core:${mockito}"
     androidTestCompile "org.mockito:mockito-core:${mockito}"
