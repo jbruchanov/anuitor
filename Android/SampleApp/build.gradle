@@ -39,7 +39,10 @@ dependencies {
     implementation "com.android.support:percent:${supportLib}"
     implementation "com.android.support:slidingpanelayout:${supportLib}"
 
+
     implementation "com.google.code.gson:gson:${gson}"
+    //implementation "com.fasterxml.jackson.core:jackson-databind:${jackson}"
+
     if (groovyEnabled) {
         implementation "com.google.android.tools:dx:${dx}"
         implementation "org.codehaus.groovy:groovy:${groovy}"
