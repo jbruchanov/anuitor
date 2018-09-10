@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.model;
 
-import com.google.gson.annotations.SerializedName;
 import com.scurab.android.anuitor.extract.view.ViewExtractor;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
@@ -20,63 +19,53 @@ import java.util.List;
  */
 public class ViewNode {
 
-    @SerializedName("Nodes")
-    private List<ViewNode> mNodes;
-
-    @SerializedName("IDi")
-    private int mId;
-    @SerializedName("IDs")
-    private String mIdReadable;
-
-    @SerializedName("Level")
-    private final int mLevel;
-
-    @SerializedName("Position")
-    private final int mPosition;
-
-    @SerializedName("Data")
-    private HashMap<String, Object> mData;
+    private List<ViewNode> Nodes;
+    private int IDi;
+    private String IDs;
+    private final int Level;
+    private final int Position;
+    private HashMap<String, Object> Data;
 
     public ViewNode(int id, int level, int position, HashMap<String, Object> data) {
-        mId = id;
-        mLevel = level;
-        mIdReadable = IdsHelper.getNameForId(mId);
-        mPosition = position;
-        mData = data;
+        IDi = id;
+        Level = level;
+        IDs = IdsHelper.getNameForId(IDi);
+        Position = position;
+        Data = data;
 
-        mData.put("Position", mPosition);
-        validateDataSet(mData, position);
+        Data.put("Position", Position);
+        validateDataSet(Data, position);
     }
 
     public void addChild(ViewNode n) {
-        if(mNodes == null){
-            mNodes = new ArrayList<>();
+        if(Nodes == null){
+            Nodes = new ArrayList<>();
         }
-        mNodes.add(n);
+        Nodes.add(n);
     }
 
     public int getChildCount(){
-        return mNodes != null ? mNodes.size() : 0;
+        return Nodes != null ? Nodes.size() : 0;
     }
 
     public ViewNode getChildAt(int index) {
-        return mNodes.get(index);
+        return Nodes.get(index);
     }
 
     public HashMap<String, Object> getData() {
-        return mData;
+        return Data;
     }
 
     public int getId() {
-        return mId;
+        return IDi;
     }
 
     public int getLevel() {
-        return mLevel;
+        return Level;
     }
 
     public int getPosition() {
-        return mPosition;
+        return Position;
     }
 
     void validateDataSet(HashMap<String, Object> data, int position) {
@@ -89,21 +78,21 @@ public class ViewNode {
 
     public JSONObject toJson() throws JSONException {
         JSONObject obj = new JSONObject();
-        obj.put("IDi", mId);
-        obj.put("IDs", mIdReadable);
-        obj.put("Level", mLevel);
-        obj.put("Position", mPosition);
-        if (mData != null) {
+        obj.put("IDi", IDi);
+        obj.put("IDs", IDs);
+        obj.put("Level", Level);
+        obj.put("Position", Position);
+        if (Data != null) {
             JSONObject data = new JSONObject();
-            for (String key : mData.keySet()) {
-                data.put(key, mData.get(key));
+            for (String key : Data.keySet()) {
+                data.put(key, Data.get(key));
             }
             obj.put("Data", data);
         }
-        if (mNodes != null) {
+        if (Nodes != null) {
             JSONArray array = new JSONArray();
             obj.put("Nodes", array);
-            for (ViewNode node : mNodes) {
+            for (ViewNode node : Nodes) {
                 array.put(node.toJson());
             }
         }

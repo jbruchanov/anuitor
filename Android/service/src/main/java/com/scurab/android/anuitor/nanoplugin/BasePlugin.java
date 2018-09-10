@@ -1,7 +1,10 @@
 package com.scurab.android.anuitor.nanoplugin;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import android.support.annotation.NonNull;
+
+import com.scurab.android.anuitor.json.GsonSerializer;
+import com.scurab.android.anuitor.json.JacksonSerializer;
+import com.scurab.android.anuitor.json.JsonSerializer;
 
 import java.util.Map;
 
@@ -12,18 +15,29 @@ import fi.iki.elonen.WebServerPlugin;
  * Date: 12/05/2014
  * Time: 15:53
  */
+@SuppressWarnings("Convert2MethodRef")
 public abstract class BasePlugin implements WebServerPlugin {
 
     protected static final String STRING_DATA_TYPE = "string";
     protected static final String STRINGS_DATA_TYPE = "string[]";
     protected static final String BASE64_PNG = "base64_png";
 
-    public static final Gson GSON;
+    public static JsonSerializer JSON = null;
 
-    static {
-        GsonBuilder builder = new GsonBuilder();
-        builder.serializeSpecialFloatingPointValues();
-        GSON = builder.create();
+    public BasePlugin() {
+        if (JSON == null) {
+            initJson();
+            throw new IllegalStateException("JsonSerializer not yet created, assign BasePlugin.JSON!");
+        }
+    }
+
+    public static void initJson() {
+        if (JSON == null) {
+            JSON = tryCreateSerializer("com.google.gson.Gson", "GsonSerializer");
+        }
+        if (JSON == null) {
+            JSON = tryCreateSerializer("com.fasterxml.jackson.databind.ObjectMapper", "JacksonSerializer");
+        }
     }
 
     @Override
@@ -35,4 +49,14 @@ public abstract class BasePlugin implements WebServerPlugin {
 
     public abstract String mimeType();
 
+    private static JsonSerializer tryCreateSerializer(@NonNull String className, @NonNull String jsonCreatorClass) {
+        try {
+            if (Class.forName(className) != null) {
+                return (JsonSerializer) Class.forName(String.format("com.scurab.android.anuitor.json.%s", jsonCreatorClass)).newInstance();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

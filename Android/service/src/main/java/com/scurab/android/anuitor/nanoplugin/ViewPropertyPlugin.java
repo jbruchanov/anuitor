@@ -108,7 +108,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                         });
                         response = ref.getValue();
                     }
-                    return new OKResponse(HttpTools.MimeType.APP_JSON, GSON.toJson(response));
+                    return new OKResponse(HttpTools.MimeType.APP_JSON, JSON.toJson(response));
                 }
             }
             return new NanoHTTPD.Response(NanoHTTPD.Response.Status.NO_CONTENT, mimeType, "Missing/Invalid 'position' and/or 'property' query string arguments ");
@@ -151,11 +151,11 @@ public class ViewPropertyPlugin extends ActivityPlugin {
             data.put("2Name", name);
             data.put("3MethodName", methodName);
             data.put("4Extractor", extractor.getClass().getName());
-            response.context = data;
+            response.Context = data;
 
             if (object instanceof Drawable) {
-                response.data = Base64.encodeToString(ResourcesPlugin.drawDrawableWithBounds((Drawable) object, mClearPaint), Base64.NO_WRAP);
-                response.dataType = BASE64_PNG;
+                response.Data = Base64.encodeToString(ResourcesPlugin.drawDrawableWithBounds((Drawable) object, mClearPaint), Base64.NO_WRAP);
+                response.DataType = BASE64_PNG;
             } else if (object instanceof View) {
                 View view = (View) object;
                 final RenderAreaWrapper<View> renderSize = DetailExtractor.getRenderArea(view);
@@ -168,12 +168,12 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 if (bitmap != null) {
                     final ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    response.data = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
-                    response.dataType = BASE64_PNG;
+                    response.Data = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
+                    response.DataType = BASE64_PNG;
                 }
             }
         } else {
-            response.context = "Null object";
+            response.Context = "Null object";
         }
         return response;
     }

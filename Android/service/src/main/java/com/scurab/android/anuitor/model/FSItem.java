@@ -1,7 +1,6 @@
 package com.scurab.android.anuitor.model;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * User: jbruchanov
@@ -14,30 +13,24 @@ public class FSItem implements Comparable<FSItem> {
     public static int TYPE_FILE = 1;
     public static int TYPE_FOLDER = 2;
 
-    @SerializedName("Name")
-    private String mName;
-
-    @SerializedName("Size")
-    private String mStrSize;
-
+    private String Name;
+    private String Size;
     @Expose
     private long mSize;
-
-    @SerializedName("Type")
-    private int mType;
+    private int Type;
 
     public FSItem(String name, int type, long size) {
         if (name == null) {
             throw new IllegalArgumentException("name is null!");
         }
-        mName = name;
+        Name = name;
         mSize = size;
-        mStrSize = String.valueOf(size);
-        mType = type;
+        Size = String.valueOf(size);
+        Type = type;
     }
 
     public String getName() {
-        return mName;
+        return Name;
     }
 
     public long getSize() {
@@ -45,15 +38,15 @@ public class FSItem implements Comparable<FSItem> {
     }
 
     public int getType() {
-        return mType;
+        return Type;
     }
 
     @Override
     public int compareTo(FSItem o) {
-        if (mType == o.mType) {
-            return mName.compareTo(o.mName);
+        if (Type == o.Type) {
+            return Name.compareTo(o.Name);
         } else {
-            return -(mType - o.mType);
+            return -(Type - o.Type);
         }
     }
 }

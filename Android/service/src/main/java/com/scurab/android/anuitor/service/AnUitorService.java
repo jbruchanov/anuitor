@@ -113,8 +113,12 @@ public class AnUitorService extends Service {
             f.mkdirs();
         }
 
-        mServer = onCreateServer(port, absPath);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel();
+        }
+
         try {
+            mServer = onCreateServer(port, absPath);
             mServer.start();
             startForeground();
             return true;
@@ -148,9 +152,6 @@ public class AnUitorService extends Service {
      * Start service in foreground
      */
     protected void startForeground() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel();
-        }
         startForeground(NOTIF_ID, createSimpleNotification());
     }
 
@@ -188,7 +189,7 @@ public class AnUitorService extends Service {
      */
     private Notification createSimpleNotification(String addMsg, boolean addStopAction) {
         int defaults = Notification.DEFAULT_LIGHTS;
-        String msg = String.format("IPs:%s\nPort:%s", NetTools.getLocalIpAddress(), mServer.getListeningPort());
+        String msg = String.format("IPs:%s\nPort:%s", NetTools.getLocalIpAddress(), mServer != null ? mServer.getListeningPort() : "null");
         if (addMsg != null) {
             msg = msg + "\n" + addMsg;
         }
@@ -203,6 +204,7 @@ public class AnUitorService extends Service {
                     .setContentTitle(title)
                     .setAutoCancel(true)
                     .setDefaults(defaults)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentText(msg)
                     .setSmallIcon(ICON_RES_ID)
                     .setContentIntent(createContentIntent())
@@ -221,6 +223,7 @@ public class AnUitorService extends Service {
                         .setDefaults(defaults)
                         .setContentText(msg)
                         .setSmallIcon(ICON_RES_ID)
+                        .setPriority(Notification.PRIORITY_HIGH)
                         .setContentIntent(createContentIntent());
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -263,7 +266,7 @@ public class AnUitorService extends Service {
      */
     private PendingIntent createContentIntent() {
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(String.format("http://127.0.0.1:%s/", mServer.getListeningPort())));
+        i.setData(Uri.parse(String.format("http://127.0.0.1:%s/", mServer == null ? 80 : mServer.getListeningPort())));
         return PendingIntent.getActivity(this, (int) System.currentTimeMillis(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -281,6 +284,7 @@ public class AnUitorService extends Service {
     @RequiresApi(Build.VERSION_CODES.O)
     private void createNotificationChannel() {
         NotificationChannel chan = new NotificationChannel(TAG, TITLE, NotificationManager.IMPORTANCE_NONE);
+        chan.setImportance(NotificationManager.IMPORTANCE_HIGH);
         NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert service != null;
         service.createNotificationChannel(chan);
