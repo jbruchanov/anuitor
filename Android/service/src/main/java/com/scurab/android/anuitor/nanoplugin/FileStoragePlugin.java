@@ -68,7 +68,7 @@ public class FileStoragePlugin extends BasePlugin {
             } else { //folder
                 mime = APP_JSON;
                 files = path == null ? mRootItems : FileSystemTools.get(f);
-                json = GSON.toJson(files);
+                json = JSON.toJson(files);
                 inputStream = new ByteArrayInputStream(json.getBytes());
             }
         } catch (Exception e) {

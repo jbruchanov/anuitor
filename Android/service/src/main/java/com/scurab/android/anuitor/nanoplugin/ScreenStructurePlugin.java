@@ -90,7 +90,7 @@ public class ScreenStructurePlugin extends BasePlugin {
         }
 
         Collections.reverse(resultDataSet);//stack order
-        String json =  GSON.toJson(resultDataSet);
+        String json =  JSON.toJson(resultDataSet);
         NanoHTTPD.Response response = new OKResponse(APP_JSON, new ByteArrayInputStream(json.getBytes()));
         return response;
     }

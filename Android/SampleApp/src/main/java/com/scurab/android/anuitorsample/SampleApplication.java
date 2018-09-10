@@ -17,11 +17,7 @@ public class SampleApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView.class, new RenderAreaWrapper<DrawOutsideBoundsFragment.HelpTextView>() {
-            @Override
-            public void getRenderArea(DrawOutsideBoundsFragment.HelpTextView view, Rect outRect) {
-                view.getDrawingSize(outRect);
-            }
-        });
+        DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView.class,
+                (view, outRect) -> view.getDrawingSize(outRect));
     }
 }

@@ -41,7 +41,7 @@ public class ActiveScreensPlugin extends ActivityPlugin {
 
     @Override
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
-        String json = GSON.toJson(mWindowManager.getViewRootNames());
+        String json = JSON.toJson(mWindowManager.getViewRootNames());
         NanoHTTPD.Response response = new OKResponse(APP_JSON, new ByteArrayInputStream(json.getBytes()));
         return response;
     }

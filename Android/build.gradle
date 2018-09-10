@@ -7,6 +7,7 @@ project.ext {
     buildTools = "28.0.2"
     supportLib = "28.0.0-rc01"
     gson = "2.8.2"
+    jackson = "2.9.2"
     robolectric = "3.6.1"
     mockito = "2.11.0"
     commonsIo = "2.5"

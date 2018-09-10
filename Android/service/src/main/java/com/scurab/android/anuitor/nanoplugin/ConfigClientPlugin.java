@@ -41,6 +41,6 @@ public class ConfigClientPlugin extends BasePlugin {
 
     @Override
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
-        return new OKResponse(HttpTools.MimeType.PLAIN_TEXT, GSON.toJson(mData));
+        return new OKResponse(HttpTools.MimeType.PLAIN_TEXT, JSON.toJson(mData));
     }
 }
