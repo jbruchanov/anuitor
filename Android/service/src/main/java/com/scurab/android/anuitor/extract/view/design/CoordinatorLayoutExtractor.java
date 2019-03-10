@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.extract.view.design;
 
-import android.support.design.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.Translator;

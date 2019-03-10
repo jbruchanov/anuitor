@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.extract.view.design;
 
-import android.support.design.widget.AppBarLayout;
+import com.google.android.material.appbar.AppBarLayout;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.Translator;

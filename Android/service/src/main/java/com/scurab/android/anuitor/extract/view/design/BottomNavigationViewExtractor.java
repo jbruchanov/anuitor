@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.extract.view.design;
 
-import android.support.design.widget.BottomNavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.Translator;

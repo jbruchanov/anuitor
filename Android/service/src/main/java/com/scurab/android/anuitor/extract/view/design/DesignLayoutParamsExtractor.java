@@ -1,8 +1,8 @@
 package com.scurab.android.anuitor.extract.view.design;
 
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.ViewGroup;
 
 import com.scurab.android.anuitor.extract.DetailExtractor;

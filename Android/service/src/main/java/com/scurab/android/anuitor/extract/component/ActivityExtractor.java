@@ -4,7 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;

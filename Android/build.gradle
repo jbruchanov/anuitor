@@ -4,8 +4,7 @@ project.ext {
     minSdk = 14
     compileSdk = 28
     targetSdk = 27 //28 breaks anything with reflection
-    buildTools = "28.0.2"
-    supportLib = "28.0.0-rc01"
+    androidX = "1.0.0"
     gson = "2.8.2"
     jackson = "2.9.2"
     robolectric = "3.6.1"

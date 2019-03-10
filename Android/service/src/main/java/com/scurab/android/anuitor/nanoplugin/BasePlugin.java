@@ -1,9 +1,7 @@
 package com.scurab.android.anuitor.nanoplugin;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import com.scurab.android.anuitor.json.GsonSerializer;
-import com.scurab.android.anuitor.json.JacksonSerializer;
 import com.scurab.android.anuitor.json.JsonSerializer;
 
 import java.util.Map;

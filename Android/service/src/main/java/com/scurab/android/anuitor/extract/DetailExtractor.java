@@ -8,8 +8,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +69,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
+import androidx.viewpager.widget.ViewPager;
+
 /**
  * User: jbruchanov
  * Date: 12/05/2014
@@ -116,27 +125,27 @@ public final class DetailExtractor {
 
         //optionals
         try {
-            registerExtractor(android.support.v7.widget.RecyclerView.class, new RecyclerViewExtractor(translator));
+            registerExtractor(RecyclerView.class, new RecyclerViewExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
         try {
-            registerExtractor(android.support.v7.widget.CardView.class, new CardViewExtractor(translator));
+            registerExtractor(CardView.class, new CardViewExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
         try {
-            registerExtractor(android.support.v7.widget.GridLayout.class, new GridLayoutExtractor(translator));
-        } catch (Throwable e) { /*not included in project*/ }
-
-        try {
-            registerExtractor(android.support.v7.widget.Toolbar.class, new ToolbarSupportExtractor(translator));
+            registerExtractor(GridLayout.class, new GridLayoutExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
 
         try {
-            registerExtractor(android.support.v4.app.Fragment.class, new SupportFragmentExtractor(translator));
+            registerExtractor(androidx.appcompat.widget.Toolbar.class, new ToolbarSupportExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
 
         try {
-            registerExtractor(android.support.v4.view.ViewPager.class, new ViewPagerExtractor(translator));
-            registerExtractor(android.support.v4.widget.DrawerLayout.class, new DrawerLayoutExtractor(translator));
-            registerExtractor(android.support.v4.widget.SlidingPaneLayout.class, new SlidingPaneLayoutExtractor(translator));
+            registerExtractor(Fragment.class, new SupportFragmentExtractor(translator));
+        } catch (Throwable e) { /*not included in project*/ }
+
+        try {
+            registerExtractor(ViewPager.class, new ViewPagerExtractor(translator));
+            registerExtractor(DrawerLayout.class, new DrawerLayoutExtractor(translator));
+            registerExtractor(SlidingPaneLayout.class, new SlidingPaneLayoutExtractor(translator));
         } catch (Throwable e) { /*not included in project*/ }
 
         try {
@@ -160,7 +169,7 @@ public final class DetailExtractor {
 
         registerExtractor(Activity.class, new ActivityExtractor(translator));
         registerExtractor(Bundle.class, new BundleExtractor(translator));
-        registerExtractor(android.support.v4.app.FragmentActivity.class, new FragmentActivityExtractor(translator));
+        registerExtractor(FragmentActivity.class, new FragmentActivityExtractor(translator));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             registerExtractor(android.app.Fragment.class, new FragmentExtractor(translator));
         }

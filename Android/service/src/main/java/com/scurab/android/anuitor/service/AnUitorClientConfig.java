@@ -2,7 +2,7 @@ package com.scurab.android.anuitor.service;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.scurab.android.anuitor.BuildConfig;

@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.extract.view;
 
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.Translator;

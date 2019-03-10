@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.nanoplugin;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.scurab.android.anuitor.tools.HttpTools;
 import com.scurab.android.anuitor.tools.LogCatProvider;

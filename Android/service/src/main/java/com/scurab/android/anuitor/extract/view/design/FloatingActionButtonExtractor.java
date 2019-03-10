@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.extract.view.design;
 
-import android.support.design.widget.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.Translator;

@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.extract.view;
 
-import android.support.v4.widget.SlidingPaneLayout;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.Translator;

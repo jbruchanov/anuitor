@@ -1,25 +1,14 @@
 package com.scurab.android.anuitor.tools;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayout;
-import android.support.v7.widget.RecyclerView;
+import androidx.gridlayout.widget.GridLayout;
+
 import android.test.AndroidTestCase;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.io.input.ReaderInputStream;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;

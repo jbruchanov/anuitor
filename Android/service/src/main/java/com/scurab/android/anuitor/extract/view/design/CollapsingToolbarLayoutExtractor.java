@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.extract.view.design;
 
-import android.support.design.widget.CollapsingToolbarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract.Translator;

@@ -3,7 +3,10 @@ package com.scurab.android.anuitor.extract;
 import android.annotation.TargetApi;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.v4.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.util.Linkify;
@@ -16,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
 import java.lang.reflect.Field;
@@ -413,11 +419,11 @@ public class Translator {
 
     public Object scrollState(int scrollState) {
         switch (scrollState){
-            case android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING:
+            case RecyclerView.SCROLL_STATE_DRAGGING:
                 return "SCROLL_STATE_DRAGGING";
-            case android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE:
+            case RecyclerView.SCROLL_STATE_IDLE:
                 return "SCROLL_STATE_IDLE";
-            case android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING:
+            case RecyclerView.SCROLL_STATE_SETTLING:
                 return "SCROLL_STATE_SETTLING";
             default:
                 return "UNKNOWN";
@@ -426,9 +432,9 @@ public class Translator {
 
     public Object gridLayoutOrientation(int orientation) {
         switch (orientation) {
-            case android.support.v7.widget.GridLayout.VERTICAL:
+            case GridLayout.VERTICAL:
                 return "VERTICAL";
-            case android.support.v7.widget.RecyclerView.HORIZONTAL:
+            case RecyclerView.HORIZONTAL:
                 return "HORIZONTAL";
             default:
                 return "UNKNOWN";
@@ -437,9 +443,9 @@ public class Translator {
 
     public Object tabMode(int tabMode) {
         switch (tabMode) {
-            case android.support.design.widget.TabLayout.MODE_FIXED:
+            case TabLayout.MODE_FIXED:
                 return "MODE_FIXED";
-            case android.support.design.widget.TabLayout.MODE_SCROLLABLE:
+            case TabLayout.MODE_SCROLLABLE:
                 return "MODE_SCROLLABLE";
             default:
                 return "UNKNOWN";
@@ -448,15 +454,15 @@ public class Translator {
 
     public Object appBarLayoutScrollFlags(int scrollFlags) {
         switch (scrollFlags){
-            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS:
+            case AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS:
                 return "SCROLL_FLAG_ENTER_ALWAYS";
-            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED:
+            case AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED:
                 return "SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED";
-            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED:
+            case AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED:
                 return "SCROLL_FLAG_EXIT_UNTIL_COLLAPSED";
-            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL:
+            case AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL:
                 return "SCROLL_FLAG_SCROLL";
-            case android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP:
+            case AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP:
                 return "SCROLL_FLAG_SNAP";
             default:
                 return "UNKNOWN";
@@ -465,11 +471,11 @@ public class Translator {
 
     public Object collapseMode(int collapseMode) {
         switch (collapseMode) {
-            case android.support.design.widget.CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF:
+            case CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF:
                 return "COLLAPSE_MODE_OFF";
-            case android.support.design.widget.CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX:
+            case CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX:
                 return "COLLAPSE_MODE_PARALLAX";
-            case android.support.design.widget.CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN:
+            case CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN:
                 return "COLLAPSE_MODE_PIN";
             default:
                 return "UNKNOWN";

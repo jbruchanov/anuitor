@@ -5,7 +5,7 @@
              android:layout_height="match_parent"
              android:fitsSystemWindows="true">
 
-    <android.support.v4.widget.SlidingPaneLayout
+    <androidx.slidingpanelayout.widget.SlidingPaneLayout
         android:id="@+id/sliding_pane_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,5 +32,5 @@
                 android:textSize="64dp"/>
         </FrameLayout>
 
-    </android.support.v4.widget.SlidingPaneLayout>
+    </androidx.slidingpanelayout.widget.SlidingPaneLayout>
 </FrameLayout>

@@ -1,7 +1,7 @@
 package com.scurab.android.anuitor.extract.component;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;

@@ -3,11 +3,10 @@ package com.scurab.android.anuitor.extract.view;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOverlay;
-import android.view.autofill.AutofillId;
 
 import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.DetailExtractor;
