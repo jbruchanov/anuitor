@@ -3,15 +3,15 @@
     "android.view.View": {
       "parentExtractor": "com.scurab.android.anuitor.extract2.BaseViewExtractor",
       "items": {
-        "0": [
+        "1": [
           {"m": "getBaseline" },
           {
             "m": "getBackground",
             "n": "Background:"
           },
           {
-            "m": "getContext",
-            "n": "Context:"
+            "n": "Context:",
+            "c": "getContext()?.toString()"
           },
           {"m": "getContentDescription" },
           {"m": "isClickable" },
@@ -59,7 +59,10 @@
           {"m": "willNotCacheDrawing" },
           {"m": "getHitRect" },
           {"m": "getAnimation" },
-          {"m": "getApplicationWindowToken" },
+          {
+            "n": "ApplicationWindowToken:",
+            "m": "getApplicationWindowToken"
+          },
           {"m": "getDrawableState" },
           {"m": "getDrawingCache" },
           {"m": "getDrawingCacheBackgroundColor" },
@@ -71,8 +74,14 @@
           {"m": "getMeasuredWidth" },
           {"m": "getOnFocusChangeListener" },
           {"m": "getOverScrollMode" },
-          {"m": "getParent" },
-          {"m": "getRootView" },
+          {
+            "n": "Parent:",
+            "m": "getParent"
+          },
+          {
+            "n": "RootView:",
+            "m": "getRootView"
+          },
           {"m": "getScrollBarStyle" },
           {"m": "getSolidColor" },
           {"m": "getVerticalScrollbarWidth" },
@@ -103,159 +112,171 @@
           {"m": "getVerticalFadingEdgeLength" }
         ],
         "11": [
-            {"m": "getAlpha" },
-            {"m": "getRotation" },
-            {"m": "getRotationX" },
-            {"m": "getRotationY" },
-            {"m": "getPivotX" },
-            {"m": "getPivotY" },
-            {"m": "getTranslationX" },
-            {"m": "getTranslationY" },
-            {"m": "isHardwareAccelerated" },
-            {
-              "m": "getLayerType",
-              "t": "ViewLayerType"
-            },
-            {"m": "getMatrix" },
-            {"m": "getNextFocusForwardId" },
-            {"m": "getX" },
-            {"m": "getY" },
-            {"m": "getMeasuredHeightAndState" },
-            {"m": "getMeasuredState" },
-            {"m": "getMeasuredWidthAndState" },
-            {
-              "m": "getSystemUiVisibility",
-              "t": "Visibility"
-            },
-            {"m": "getVerticalScrollbarPosition" },
-            {"m": "isActivated" },
-            {"m": "isDirty" },
-            {"m": "isSaveFromParentEnabled" }
-          ],
+          {"m": "getAlpha" },
+          {"m": "getRotation" },
+          {"m": "getRotationX" },
+          {"m": "getRotationY" },
+          {"m": "getPivotX" },
+          {"m": "getPivotY" },
+          {"m": "getTranslationX" },
+          {"m": "getTranslationY" },
+          {"m": "isHardwareAccelerated" },
+          {
+            "m": "getLayerType",
+            "t": "ViewLayerType"
+          },
+          {"m": "getMatrix" },
+          {"m": "getNextFocusForwardId" },
+          {"m": "getX" },
+          {"m": "getY" },
+          {"m": "getMeasuredHeightAndState" },
+          {"m": "getMeasuredState" },
+          {"m": "getMeasuredWidthAndState" },
+          {
+            "m": "getSystemUiVisibility",
+            "t": "Visibility"
+          },
+          {"m": "getVerticalScrollbarPosition" },
+          {"m": "isActivated" },
+          {"m": "isDirty" },
+          {"m": "isSaveFromParentEnabled" }
+        ],
         "14": [
-            {"m": "isHovered" }
-          ],
+          {"m": "isHovered" }
+        ],
         "15": [
-            {"m": "hasOnClickListeners" }
-          ],
+          {"m": "hasOnClickListeners" }
+        ],
         "16": [
-            {"m": "getResources" },
-            {"m": "getCameraDistance" },
-            {"m": "getImportantForAccessibility" },
-            {"m": "getMinimumWidth" },
-            {"m": "getMinimumHeight" },
-            {"m": "getAccessibilityNodeProvider" },
-            {"m": "getFitsSystemWindows" },
-            {"m": "getScrollBarDefaultDelayBeforeFade" },
-            {"m": "getScrollBarFadeDuration" },
-            {"m": "getScrollBarSize" },
-            {"m": "isScrollContainer" },
-            {"m": "getParentForAccessibility" },
-            {
-              "m": "getWindowSystemUiVisibility",
-              "t": "Visibility"
-            },
-            {"m": "hasOverlappingRendering" },
-            {"m": "hasTransientState" }
-          ],
+          {"m": "getResources" },
+          {"m": "getCameraDistance" },
+          {"m": "getImportantForAccessibility" },
+          {"m": "getMinimumWidth" },
+          {"m": "getMinimumHeight" },
+          {"m": "getAccessibilityNodeProvider" },
+          {"m": "getFitsSystemWindows" },
+          {"m": "getScrollBarDefaultDelayBeforeFade" },
+          {"m": "getScrollBarFadeDuration" },
+          {"m": "getScrollBarSize" },
+          {"m": "isScrollContainer" },
+          {"m": "getParentForAccessibility" },
+          {
+            "m": "getWindowSystemUiVisibility",
+            "t": "Visibility"
+          },
+          {"m": "hasOverlappingRendering" },
+          {"m": "hasTransientState" }
+        ],
         "17": [
-            {"m": "getLabelFor" },
-            {"m": "getLayoutDirection" },
-            {"m": "getDisplay" },
-            {"m": "getPaddingEnd" },
-            {"m": "getPaddingStart" },
-            {"m": "getTextAlignment" },
-            {"m": "getTextDirection" },
-            {"m": "isPaddingRelative" }
-              ],
+          {"m": "getLabelFor" },
+          {"m": "getLayoutDirection" },
+          {
+            "n": "Display:",
+            "m": "getDisplay"
+          },
+          {"m": "getPaddingEnd" },
+          {"m": "getPaddingStart" },
+          {"m": "getTextAlignment" },
+          {"m": "getTextDirection" },
+          {"m": "isPaddingRelative" }
+        ],
         "18": [
-            {"m": "getClipBounds" },
-            {"m": "getOverlay" },
-            {"m": "getWindowId" },
-            {"m": "isInLayout" }
-          ],
+          {"m": "getClipBounds" },
+          {"m": "getOverlay" },
+          {
+            "n": "WindowId:",
+            "m": "getWindowId"
+          },
+          {"m": "isInLayout" }
+        ],
         "19": [
-            {"m": "canResolveLayoutDirection" },
-            {"m": "canResolveTextAlignment" },
-            {"m": "canResolveTextDirection" },
-            {"m": "getAccessibilityLiveRegion" },
-            {"m": "isTextAlignmentResolved" },
-            {"m": "isTextDirectionResolved" },
-            {"m": "isAttachedToWindow" },
-            {"m": "isLaidOut" },
-            {"m": "isLayoutDirectionResolved" }
-          ],
+          {"m": "canResolveLayoutDirection" },
+          {"m": "canResolveTextAlignment" },
+          {"m": "canResolveTextDirection" },
+          {"m": "getAccessibilityLiveRegion" },
+          {"m": "isTextAlignmentResolved" },
+          {"m": "isTextDirectionResolved" },
+          {"m": "isAttachedToWindow" },
+          {"m": "isLaidOut" },
+          {"m": "isLayoutDirectionResolved" }
+        ],
         "21": [
-            {"m": "getBackgroundTintList" },
-            {"m": "getBackgroundTintMode" },
-            {"m": "getClipToOutline" },
-            {"m": "getElevation" },
-            {"m": "getTransitionName" },
-            {"m": "getTranslationZ" },
-            {"m": "getZ" },
-            {"m": "hasNestedScrollingParent" },
-            {"m": "getStateListAnimator" },
-            {"m": "getOutlineProvider" },
-            {"m": "isAccessibilityFocused" },
-            {"m": "isImportantForAccessibility" },
-            {"m": "isNestedScrollingEnabled" }
+          {"m": "getBackgroundTintList" },
+          {"m": "getBackgroundTintMode" },
+          {"m": "getClipToOutline" },
+          {"m": "getElevation" },
+          {"m": "getTransitionName" },
+          {"m": "getTranslationZ" },
+          {"m": "getZ" },
+          {"m": "hasNestedScrollingParent" },
+          {"m": "getStateListAnimator" },
+          {"m": "getOutlineProvider" },
+          {"m": "isAccessibilityFocused" },
+          {"m": "isImportantForAccessibility" },
+          {"m": "isNestedScrollingEnabled" }
         ],
         "22": [
-            {"m": "getAccessibilityTraversalAfter" },
-            {"m": "getAccessibilityTraversalBefore" }
-          ],
+          {"m": "getAccessibilityTraversalAfter" },
+          {"m": "getAccessibilityTraversalBefore" }
+        ],
         "23": [
-            {"m": "getAccessibilityClassName" },
-            {"m": "getForeground" },
-            {"m": "getForegroundTintMode" },
-            {"m": "isContextClickable" },
-            {"m": "getScrollIndicators" },
+          {"m": "getAccessibilityClassName" },
+          {
+            "n": "Foreground:",
+            "m": "getForeground"
+          },
+          {"m": "getForegroundTintMode" },
+          {"m": "isContextClickable" },
+          {"m": "getScrollIndicators" },
           {
             "m": "getForegroundGravity",
             "t": "Gravity"
           },
-            {"m": "getForegroundTintList" },
-            {"m": "getRootWindowInsets" }
-          ],
+          {"m": "getForegroundTintList" },
+          {
+            "n": "RootWindowInsets:",
+            "m": "getRootWindowInsets"
+          }
+        ],
         "24": [
-            {
-              "n": "getHasOverlappingRendering",
-              "m": "getHasOverlappingRendering"
-            },
-            {"m": "isTemporarilyDetached" }
-          ],
+          {
+            "n": "getHasOverlappingRendering",
+            "m": "getHasOverlappingRendering"
+          },
+          {"m": "isTemporarilyDetached" }
+        ],
         "25": [
-            {"m": "getRevealOnFocusHint" }
-          ],
+          {"m": "getRevealOnFocusHint" }
+        ],
         "26": [
-            {"m": "getAutofillHints" },
-            {"m": "getAutofillType" },
-            {"m": "getAutofillValue" },
-            {"m": "getDefaultFocusHighlightEnabled" },
-            {"m": "getFocusable" },
-            {"m": "getImportantForAutofill" },
-            {"m": "getNextClusterForwardId" },
-            {"m": "getTooltipText" },
-            {"m": "hasExplicitFocusable" },
-            {"m": "hasPointerCapture" },
-            {"m": "isFocusedByDefault" },
-            {"m": "isImportantForAutofill" },
-            {"m": "isKeyboardNavigationCluster" }
-          ],
+          {"m": "getAutofillHints" },
+          {"m": "getAutofillType" },
+          {"m": "getAutofillValue" },
+          {"m": "getDefaultFocusHighlightEnabled" },
+          {"m": "getFocusable" },
+          {"m": "getImportantForAutofill" },
+          {"m": "getNextClusterForwardId" },
+          {"m": "getTooltipText" },
+          {"m": "hasExplicitFocusable" },
+          {"m": "hasPointerCapture" },
+          {"m": "isFocusedByDefault" },
+          {"m": "isImportantForAutofill" },
+          {"m": "isKeyboardNavigationCluster" }
+        ],
         "28": [
-            {"m": "getAccessibilityPaneTitle" },
-            {"m": "getOutlineAmbientShadowColor" },
-            {"m": "getOutlineSpotShadowColor" },
-            {"m": "isAccessibilityHeading" },
-            {"m": "isPivotSet" },
-            {"m": "isScreenReaderFocusable" }
-          ]
+          {"m": "getAccessibilityPaneTitle" },
+          {"m": "getOutlineAmbientShadowColor" },
+          {"m": "getOutlineSpotShadowColor" },
+          {"m": "isAccessibilityHeading" },
+          {"m": "isPivotSet" },
+          {"m": "isScreenReaderFocusable" }
+        ]
       }
     },
     "android.view.ViewGroup": {
       "parent": "android.view.View",
       "items": {
-        "0": [
+        "1": [
           {"m" : "getChildCount"},
           {"m" : "getDescendantFocusability"},
           {"m" : "getFocusedChild"},
@@ -266,31 +287,31 @@
           {"m" : "isAnimationCacheEnabled"}
         ],
         "11": [
-        {"m" : "getLayoutTransition"},
-        {"m" : "isMotionEventSplittingEnabled"}
-      ],
+          {"m" : "getLayoutTransition"},
+          {"m" : "isMotionEventSplittingEnabled"}
+        ],
         "14": [
-        {"m" : "shouldDelayChildPressedState"}
-      ],
+          {"m" : "shouldDelayChildPressedState"}
+        ],
         "18": [
-        {"m" : "getClipChildren"},
-        {
-          "m": "getLayoutMode",
-          "t": "ViewGroupLayoutMode"
-        }
-      ],
-      "21": [
-        {"m" : "getClipToPadding"},
-        {"m" : "getNestedScrollAxes"},
-        {"m" : "getTouchscreenBlocksFocus"},
-        {"m" : "isTransitionGroup"}
-      ]
+          {"m" : "getClipChildren"},
+          {
+            "m": "getLayoutMode",
+            "t": "ViewGroupLayoutMode"
+          }
+        ],
+        "21": [
+          {"m" : "getClipToPadding"},
+          {"m" : "getNestedScrollAxes"},
+          {"m" : "getTouchscreenBlocksFocus"},
+          {"m" : "isTransitionGroup"}
+        ]
       }
     },
     "android.view.ViewStub": {
       "parent": "android.view.View",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getLayoutResource"},
           {
             "n": "LayoutResourceS",
@@ -309,12 +330,19 @@
     "android.widget.AbsListView": {
       "parent": "android.widget.AdapterView",
       "items": {
-        "0": [
+        "1": [
           {
             "m": "getChoiceMode",
             "t": "ChoiceMode"
           },
-          {"m": "getAdapter"},
+          {
+            "n": "Adapter:",
+            "m": "getAdapter"
+          },
+          {
+            "n": "AdapterItemsCount",
+            "c": "getAdapter()?.getCount() ?: 0"
+          },
           {"m": "getTextFilter"},
           {"m": "hasTextFilter"},
           {"m": "isTextFilterEnabled"},
@@ -334,7 +362,7 @@
     "android.widget.AbsSeekBar": {
       "parent": "android.widget.ProgressBar",
       "items": {
-        "0": [
+        "1": [
           {"m": "getThumbOffset"}
         ],
         "21": [
@@ -342,7 +370,10 @@
           {"m": "getThumbTintMode"}
         ],
         "24": [
-          {"m": "getTickMark"},
+          {
+            "n": "TickMark:",
+            "m": "getTickMark"
+          },
           {"m": "getTickMarkTintMode"}
         ]
       }
@@ -351,11 +382,14 @@
       "parent": "android.view.ViewGroup",
       "usingGenerics": true,
       "items": {
-        "0": [
-          {"m": "getAdapter"},
+        "1": [
+          {
+            "n": "Adapter:",
+            "m": "getAdapter"
+          },
           {
             "m": "AdapterItemsCount",
-            "c": "getAdapter()?.getCount() ?: \"null\""
+            "c": "getAdapter()?.getCount() ?: 0"
           },
           {"m": "getEmptyView"},
           {
@@ -376,7 +410,7 @@
     "android.widget.CalendarView": {
       "parent": "android.widget.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getDate"},
           {
             "m": "DateLocaleString",
@@ -407,7 +441,7 @@
     "android.widget.CheckedTextView": {
       "parent": "android.widget.TextView",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "isChecked"}
         ],
         "21" : [
@@ -418,7 +452,7 @@
     "android.widget.CompoundButton": {
       "parent": "android.widget.TextView",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "isChecked"}
         ],
         "21" : [
@@ -445,7 +479,7 @@
     "android.widget.ImageView": {
       "parent": "android.view.View",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "ImageMatrix",
             "c": "getImageMatrix()?.toShortString()"
@@ -472,7 +506,7 @@
     "android.widget.LinearLayout": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getBaselineAlignedChildIndex"},
           {"m": "isBaselineAligned"},
           {"m": "getWeightSum"},
@@ -489,8 +523,8 @@
         ],
         "16" : [
           {
-            "m": "getDividerDrawable",
-            "n": "DividerDrawable:"
+            "n": "DividerDrawable:",
+            "m": "getDividerDrawable"
           },
           {
             "n": "Dividers",
@@ -509,7 +543,7 @@
     "android.widget.ProgressBar": {
       "parent": "android.view.View",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getMax"},
           {"m": "getProgress"},
           {
@@ -528,22 +562,22 @@
       }
     },
     "android.widget.ScrollView": {
-    "parent": "android.widget.ViewGroup",
-    "items": {
-      "0" : [
-        {"m": "getMaxScrollAmount"},
-        {"m": "isFillViewport"},
-        {"m": "isSmoothScrollingEnabled"}
-      ],
-      "14" : [
-        {"m": "getMaxScrollAmount"}
-      ]
-    }
-  },
+      "parent": "android.widget.ViewGroup",
+      "items": {
+        "1" : [
+          {"m": "getMaxScrollAmount"},
+          {"m": "isFillViewport"},
+          {"m": "isSmoothScrollingEnabled"}
+        ],
+        "14" : [
+          {"m": "getMaxScrollAmount"}
+        ]
+      }
+    },
     "android.widget.Switch": {
       "parent": "android.widget.CompoundButton",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getTextOn"},
           {"m": "getTextOff"}
         ],
@@ -561,7 +595,7 @@
     "android.widget.TextView": {
       "parent": "android.view.View",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "getText",
             "c": "getText().escaped()"
@@ -653,7 +687,10 @@
           {"m": "getTotalPaddingRight"},
           {"m": "getTotalPaddingTop"},
           {"m": "getTransformationMethod"},
-          {"m": "getTypeface"},
+          {
+            "n": "Typeface:",
+            "m": "getTypeface"
+          },
           {
             "n": "Urls",
             "c": "java.util.Arrays.toString(getUrls() ?: arrayOf())"
@@ -729,7 +766,7 @@
     "android.widget.Toolbar": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getContentInsetEnd"},
           {"m": "getContentInsetLeft"},
           {"m": "getContentInsetRight"},
@@ -744,7 +781,10 @@
             "m": "getMenu"
           },
           {"m": "getNavigationContentDescription"},
-          {"m": "getNavigationIcon"},
+          {
+            "n": "NavigationIcon:",
+            "m": "getNavigationIcon"
+          },
           {
             "m": "getPopupTheme",
             "i": true
@@ -776,7 +816,7 @@
       "parent": "android.view.ViewGroup",
       "_note": "fillSettings?",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "canGoBack"},
           {"m": "canGoForward"},
           {"m": "getOriginalUrl"},
@@ -795,7 +835,7 @@
     "androidx.appcompat.widget.Toolbar": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getContentInsetEnd"},
           {"m": "getContentInsetLeft"},
           {"m": "getContentInsetRight"},
@@ -810,7 +850,10 @@
             "m": "getMenu"
           },
           {"m": "getNavigationContentDescription"},
-          {"m": "getNavigationIcon"},
+          {
+            "n": "NavigationIcon:",
+            "m": "getNavigationIcon"
+          },
           {"m": "getPopupTheme"},
           {"m": "getSubtitle"},
           {"m": "getTitle"},
@@ -836,7 +879,7 @@
     "androidx.cardview.widget.CardView": {
       "parent": "android.widget.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getCardElevation"},
           {"m": "getContentPaddingBottom"},
           {"m": "getContentPaddingLeft"},
@@ -852,7 +895,7 @@
     "androidx.coordinatorlayout.widget.CoordinatorLayout": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getNestedScrollAxes"},
           {
             "n": "StatusBarBackground:",
@@ -864,7 +907,7 @@
     "androidx.drawerlayout.widget.DrawerLayout": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "DrawerLockModeLeft",
             "c": "getDrawerLockMode(android.view.Gravity.LEFT)",
@@ -897,7 +940,7 @@
     "androidx.gridlayout.widget.GridLayout": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getAlignmentMode"},
           {"m": "getColumnCount"},
           {
@@ -915,7 +958,7 @@
     "androidx.slidingpanelayout.widget.SlidingPaneLayout": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "canSlide"},
           {"m": "isSlideable"},
           {"m": "getCoveredFadeColor"},
@@ -927,8 +970,12 @@
     "androidx.recyclerview.widget.RecyclerView": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
-          {"m": "getLayoutManager"},
+        "1" : [
+          {
+            "n": "LayoutManager:",
+            "m": "getLayoutManager",
+            "c": "getLayoutManager()?.toString()"
+          },
           {"m": "computeHorizontalScrollExtent"},
           {"m": "computeHorizontalScrollOffset"},
           {"m": "computeHorizontalScrollRange"},
@@ -936,8 +983,12 @@
           {"m": "computeVerticalScrollOffset"},
           {"m": "computeVerticalScrollRange"},
           {
-            "m": "getAdapter",
-            "n": "Adapter:"
+            "n": "Adapter:",
+            "m": "getAdapter"
+          },
+          {
+            "n": "AdapterItemsCount",
+            "c": "getAdapter()?.getItemCount() ?: 0"
           },
           {"m": "getCompatAccessibilityDelegate"},
           {"m": "getItemAnimator"},
@@ -963,11 +1014,10 @@
     "androidx.viewpager.widget.ViewPager": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {
             "n": "Adapter:",
-            "m": "adapter",
-            "c": "getAdapter() ?: \"null\""
+            "c": "getAdapter()"
           },
           {
             "n": "AdapterItemsCount",
@@ -982,7 +1032,7 @@
     "com.google.android.material.appbar.AppBarLayout": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getTotalScrollRange"}
         ]
       }
@@ -990,7 +1040,7 @@
     "com.google.android.material.bottomnavigation.BottomNavigationView": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "getItemBackgroundResource",
             "i": true
@@ -1008,13 +1058,19 @@
     "com.google.android.material.appbar.CollapsingToolbarLayout": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "getCollapsedTitleGravity",
             "t": "Gravity"
           },
-          {"m": "getCollapsedTitleTypeface"},
-          {"m": "getContentScrim"},
+          {
+            "n": "CollapsedTitleTypeface:",
+            "m": "getCollapsedTitleTypeface"
+          },
+          {
+            "n": "ContentScrim:",
+            "m": "getContentScrim"
+          },
           {
             "m": "getExpandedTitleGravity",
             "t": "Gravity"
@@ -1023,10 +1079,16 @@
           {"m": "getExpandedTitleMarginEnd"},
           {"m": "getExpandedTitleMarginStart"},
           {"m": "getExpandedTitleMarginTop"},
-          {"m": "getExpandedTitleTypeface"},
+          {
+            "n": "ExpandedTitleTypeface:",
+            "m": "getExpandedTitleTypeface"
+          },
           {"m": "getScrimAnimationDuration"},
           {"m": "getScrimVisibleHeightTrigger"},
-          {"m": "getStatusBarScrim"},
+          {
+            "n": "StatusBarScrim:",
+            "m": "getStatusBarScrim"
+          },
           {"m": "getTitle"},
           {"m": "isTitleEnabled"}
         ]
@@ -1035,7 +1097,7 @@
     "com.google.android.material.floatingactionbutton.FloatingActionButton": {
       "parent": "android.widget.ImageView",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getBackgroundTintList"},
           {"m": "getBackgroundTintMode"},
           {"m": "getCompatElevation"},
@@ -1055,9 +1117,12 @@
     "com.google.android.material.navigation.NavigationView": {
       "parent": "android.view.ViewGroup",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getHeaderCount"},
-          {"m": "getItemBackground"},
+          {
+            "n": "ItemBackground:",
+            "m": "getItemBackground"
+          },
           {"m": "getItemIconTintList"},
           {"m": "getItemTextColor"},
           {
@@ -1070,7 +1135,7 @@
     "com.google.android.material.tabs.TabLayout": {
       "parent": "android.widget.HorizontalScrollView",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getSelectedTabPosition"},
           {"m": "getTabCount"},
           {
@@ -1089,7 +1154,7 @@
     "com.google.android.material.textfield.TextInputLayout": {
       "parent": "android.widget.LinearLayout",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getError"},
           {"m": "getHint"},
           {"m": "getPasswordVisibilityToggleContentDescription"},
@@ -1113,7 +1178,7 @@
   "components" : {
     "android.app.Activity": {
       "items" : {
-        "0": [
+        "1": [
           {
             "m": "getIntent",
             "e": true
@@ -1156,7 +1221,7 @@
     },
     "android.app.Fragment": {
       "items": {
-        "0" : [
+        "1" : [
           {"n": "IDi", "m": "getId"},
           {
             "n": "IDs",
@@ -1207,7 +1272,7 @@
     },
     "android.graphics.drawable.Drawable": {
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getChangingConfigurations", "c": "getChangingConfigurations().binary()"},
           {"m": "getIntrinsicWidth"},
           {"m": "getIntrinsicHeight"},
@@ -1250,7 +1315,7 @@
     "android.graphics.drawable.BitmapDrawable": {
       "parent": "android.graphics.drawable.Drawable",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "getBitmap",
             "e": true
@@ -1271,7 +1336,7 @@
     },
     "android.graphics.Bitmap": {
       "items": {
-        "0" : [
+        "1" : [
           {"m": "describeContents"},
           {"m": "getConfig"},
           {"m": "getHeight"},
@@ -1305,7 +1370,7 @@
     },
     "android.os.Bundle": {
       "items": {
-        "0" : [
+        "1" : [
           {
             "n": "",
             "c": "v.extract(data, contextData)"
@@ -1315,7 +1380,7 @@
     },
     "android.content.Intent": {
       "items": {
-        "0" : [
+        "1" : [
           {"m": "getAction"},
           {"m": "getCategories"},
           {"m": "getData"},
@@ -1341,7 +1406,7 @@
     },
     "android.graphics.Paint": {
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "getColor",
             "c:": "getColor().stringColor()"
@@ -1418,7 +1483,7 @@
     "androidx.appcompat.app.AppCompatActivity": {
       "parent": "android.app.Activity",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "TODO"}
         ]
       }
@@ -1426,7 +1491,7 @@
     "androidx.fragment.app.Fragment": {
       "className" : "AndroidXFragment",
       "items": {
-        "0" : [
+        "1" : [
           {"n": "IDi", "m": "getId"},
           {
             "n": "IDs",
@@ -1468,7 +1533,7 @@
     },
     "android.view.ViewGroup$LayoutParams": {
       "items": {
-        "0" : [
+        "1" : [
           {"m": "width", "p" : true, "t" : "LayoutSize"},
           {"m": "height", "p" : true, "t" : "LayoutSize"}
         ]
@@ -1477,7 +1542,7 @@
     "android.view.ViewGroup$MarginLayoutParams": {
       "parent": "android.view.ViewGroup$LayoutParams",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "leftMargin",
             "p": true
@@ -1500,7 +1565,7 @@
     "android.widget.FrameLayout$LayoutParams": {
       "parent": "android.view.ViewGroup$MarginLayoutParams",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "gravity",
             "p": true,
@@ -1512,7 +1577,7 @@
     "android.widget.LinearLayout$LayoutParams": {
       "parent": "android.view.ViewGroup$LayoutParams",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "weight",
             "p": true
@@ -1528,7 +1593,7 @@
     "android.widget.RelativeLayout$LayoutParams": {
       "parent": "android.view.ViewGroup$LayoutParams",
       "items": {
-        "0" : [
+        "1" : [
           {
             "n": "",
             "m": "getRules",
@@ -1540,7 +1605,7 @@
     "androidx.viewpager.widget.ViewPager$LayoutParams": {
       "parent": "android.view.ViewGroup$LayoutParams",
       "items": {
-        "0" : [
+        "1" : [
           {
             "m": "gravity",
             "p": true,
@@ -1556,7 +1621,7 @@
     "androidx.recyclerview.widget.RecyclerView$LayoutParams": {
       "parent": "android.view.ViewGroup$LayoutParams",
       "items": {
-        "0" : [
+        "1" : [
           {"m": "viewNeedsUpdate"},
           {"m": "isViewInvalid"},
           {"m": "isItemRemoved"},
