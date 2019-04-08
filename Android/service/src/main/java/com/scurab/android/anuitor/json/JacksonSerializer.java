@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.io.IOException;
+
 public class JacksonSerializer implements JsonSerializer {
 
     private final ObjectMapper mObjectMapper;
@@ -24,6 +26,15 @@ public class JacksonSerializer implements JsonSerializer {
         try {
             return mObjectMapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public <T> T fromJson(String json, Class<T> clazz) {
+        try {
+            return mObjectMapper.readValue(json, clazz);
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }

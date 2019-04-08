@@ -23,4 +23,9 @@ public class GsonSerializer implements JsonSerializer {
     public String toJson(Object o) {
         return mGson.toJson(o);
     }
+
+    @Override
+    public <T> T fromJson(String json, Class<T> clazz) {
+        return mGson.fromJson(json, clazz);
+    }
 }
