@@ -2,9 +2,12 @@ package com.scurab.android.anuitor.extract.view;
 
 import android.util.Log;
 
-import com.scurab.android.anuitor.extract.BaseExtractor;
 import com.scurab.android.anuitor.extract.Translator;
+import com.scurab.android.anuitor.extract2.BaseExtractor;
 import com.scurab.android.anuitor.reflect.Reflector;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,6 +17,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -21,7 +26,7 @@ import java.util.regex.Pattern;
  * Date: 12/05/2014
  * Time: 14:20
  */
-public class ReflectionExtractor extends BaseExtractor<Object> {
+public class ReflectionExtractor extends BaseExtractor {
     private boolean mUseFields;
 
     /**
@@ -49,16 +54,16 @@ public class ReflectionExtractor extends BaseExtractor<Object> {
     }
 
     public ReflectionExtractor(Translator translator, boolean useFields) {
-        super(translator);
         mUseFields = useFields;
     }
 
+    @NotNull
     @Override
-    protected HashMap<String, Object> fillValues(Object o, HashMap<String, Object> data, HashMap<String, Object> contextData) {
-        return fillValues(o, data, contextData, new HashSet<>(), 0);
+    protected Map<String, Object> onFillValues(@NotNull Object item, @NotNull Map<String, Object> data, @Nullable Map<String, Object> contextData) {
+        return fillValues(item, data, contextData, new HashSet<>(), 0);
     }
 
-    private HashMap<String, Object> fillValues(Object o, HashMap<String, Object> data, HashMap<String, Object> contextData, HashSet<Object> cycleHandler, int deep) {
+    private Map<String, Object> fillValues(Object o, Map<String, Object> data, Map<String, Object> contextData, Set<Object> cycleHandler, int deep) {
         data.put("Type", String.valueOf(o.getClass().getName()));
         data.put("ToString", String.valueOf(o));
         Class clz = o.getClass();

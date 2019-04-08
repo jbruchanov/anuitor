@@ -1,6 +1,6 @@
 package com.scurab.android.anuitor.model;
 
-import com.scurab.android.anuitor.extract.view.ViewExtractor;
+import com.scurab.android.anuitor.extract2.BaseViewExtractor;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
 import org.json.JSONArray;
@@ -9,8 +9,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: jbruchanov
@@ -24,9 +24,9 @@ public class ViewNode {
     private String IDs;
     private final int Level;
     private final int Position;
-    private HashMap<String, Object> Data;
+    private Map<String, Object> Data;
 
-    public ViewNode(int id, int level, int position, HashMap<String, Object> data) {
+    public ViewNode(int id, int level, int position, Map<String, Object> data) {
         IDi = id;
         Level = level;
         IDs = IdsHelper.getNameForId(IDi);
@@ -52,7 +52,7 @@ public class ViewNode {
         return Nodes.get(index);
     }
 
-    public HashMap<String, Object> getData() {
+    public Map<String, Object> getData() {
         return Data;
     }
 
@@ -68,10 +68,11 @@ public class ViewNode {
         return Position;
     }
 
-    void validateDataSet(HashMap<String, Object> data, int position) {
-        for (String key : ViewExtractor.MANDATORY_KEYS) {
+    void validateDataSet(Map<String, Object> data, int position) {
+        String[] mandatoryKeys = BaseViewExtractor.Companion.getMandatoryKeys();
+        for (String key : mandatoryKeys) {
             if (!data.containsKey(key)) {
-                throw new IllegalStateException(String.format("Missing mandatory field:'%s' on View with position:%s\n\tMandatoryFields:%s", key, position, Arrays.toString(ViewExtractor.MANDATORY_KEYS)));
+                throw new IllegalStateException(String.format("Missing mandatory field:'%s' on View with position:%s\n\tMandatoryFields:%s", key, position, Arrays.toString(mandatoryKeys)));
             }
         }
     }

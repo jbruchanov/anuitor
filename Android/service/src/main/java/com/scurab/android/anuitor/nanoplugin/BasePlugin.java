@@ -25,17 +25,21 @@ public abstract class BasePlugin implements WebServerPlugin {
     public BasePlugin() {
         if (JSON == null) {
             initJson();
-            throw new IllegalStateException("JsonSerializer not yet created, assign BasePlugin.JSON!");
+            if (JSON == null) {
+                throw new IllegalStateException("JsonSerializer not yet created, assign BasePlugin.JSON!");
+            }
         }
     }
 
-    public static void initJson() {
+    public static JsonSerializer initJson() {
         if (JSON == null) {
             JSON = tryCreateSerializer("com.google.gson.Gson", "GsonSerializer");
         }
         if (JSON == null) {
             JSON = tryCreateSerializer("com.fasterxml.jackson.databind.ObjectMapper", "JacksonSerializer");
         }
+
+        return JSON;
     }
 
     @Override

@@ -1,10 +1,8 @@
 package com.scurab.android.anuitorsample;
 
 import android.app.Application;
-import android.graphics.Rect;
 
-import com.scurab.android.anuitor.extract.DetailExtractor;
-import com.scurab.android.anuitor.extract.RenderAreaWrapper;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
 
 /**
  * Created by jbruchanov@gmail.com

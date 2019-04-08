@@ -1,0 +1,37 @@
+package com.scurab.android.anuitor.extract2
+
+import android.os.Build
+import com.scurab.android.anuitor.tools.ise
+
+abstract class BaseExtractor {
+
+    fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
+        return onFillValues(item, data, contextData)
+    }
+
+    protected open fun onFillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
+        data.put("Inheritance", 0, item) { inheritance() }
+        data.put("Type", 0, item) { item.javaClass.name }
+        data.put("StringValue", 0, item) { this.toString() }
+        return data
+    }
+
+    protected inline fun <T> MutableMap<String, Any>.put(name: String, minApi: Int, item: T, function: T.() -> Any?) {
+        if (Build.VERSION.SDK_INT >= minApi) {
+            try {
+                put(name, function(item) ?: "null")
+            } catch (e: Throwable) {
+                put(name, e.message ?: "Null error message")
+            }
+        }
+    }
+
+    protected fun Any?.extract(): Any {
+        if (this == null) {
+            return "null"
+        }
+        return DetailExtractor.findExtractor(this::class.java)
+                ?.fillValues(this, mutableMapOf(), null)
+                ?: ise("Unable to find extractor for ${this::class.java}")
+    }
+}

@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;

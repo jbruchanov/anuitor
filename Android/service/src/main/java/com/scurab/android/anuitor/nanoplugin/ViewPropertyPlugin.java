@@ -9,8 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.View;
 
-import com.scurab.android.anuitor.extract.BaseExtractor;
-import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract2.BaseExtractor;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
@@ -145,7 +145,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 }
                 extractor = mReflectionExtractor;
             }
-            final HashMap data = extractor.onFillValues(object, new HashMap<String, Object>(), null);
+            final Map<String, Object> data = extractor.fillValues(object, new HashMap<>(), null);
             data.put("Type", object.getClass().getName());
             data.put("1ParentType", parentType);
             data.put("2Name", name);

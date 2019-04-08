@@ -2,7 +2,7 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import android.view.View;
 
-import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.model.ViewNode;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
