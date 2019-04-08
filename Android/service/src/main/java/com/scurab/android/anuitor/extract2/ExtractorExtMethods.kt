@@ -63,9 +63,9 @@ fun IntArray.extractRelativeLayoutRules(data: MutableMap<String, Any>): MutableM
         return "layoutParams_" + if (index < relativeLayoutRules.size) relativeLayoutRules[index] else index
     }
 
-    forEach { rule ->
+    forEachIndexed{ i, rule ->
         if(rule != 0) {
-            data[relativeLayoutParamRuleName(rule)] =
+            data[relativeLayoutParamRuleName(i)] =
                     when (rule) {
                         RelativeLayout.TRUE -> true
                         0 -> "false/NO_ID"
