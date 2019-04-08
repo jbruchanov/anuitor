@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.extract;
+package com.scurab.android.anuitor.extract2;
 
 import android.content.Context;
 import android.view.View;
@@ -23,17 +23,15 @@ public class ViewExtractingTests {
 
         for (String className : DetailExtractor.MAP.keySet()) {
             try {
-                Class<?> clz = null;
-                try {
-                    clz = Class.forName(className);
-                } catch (ClassNotFoundException e) {
-                    System.err.println(e.getMessage());
+                Class<?> clz = tryGetClass(className);
+                if (clz == null) {
+                    System.err.println(className);
                     continue;
                 }
                 if(Modifier.isAbstract(clz.getModifiers()) || !clz.isAssignableFrom(View.class)){
                     continue;
                 }
-                BaseExtractor<View> ve = (BaseExtractor<View>) DetailExtractor.MAP.get(clz.getName());
+                BaseExtractor ve = DetailExtractor.MAP.get(clz.getName());
                 View v = spy(createView((Class<? extends View>) clz));
 
                 HelpHashMap hhm = new HelpHashMap(ve);
@@ -48,6 +46,23 @@ public class ViewExtractingTests {
         }
     }
 
+    private Class<?> tryGetClass(String className) {
+        String[] names = new String[]{
+                className,
+                className.substring(0, className.lastIndexOf(".")) + "$" +
+                        className.substring(className.lastIndexOf(".") + 1)
+        };
+        for (String name : names) {
+            try {
+                return Class.forName(name);
+            } catch (ClassNotFoundException e) {
+                //just swallow it
+                continue;
+            }
+        }
+        return null;
+    }
+
     private static View createView(Class<? extends View> clz) {
         try {
             return clz.getConstructor(Context.class).newInstance(RuntimeEnvironment.application);
@@ -59,9 +74,9 @@ public class ViewExtractingTests {
 
     private static class HelpHashMap<K, V> extends HashMap<K, V> {
 
-        private BaseExtractor<View> mViewExtractor;
+        private BaseExtractor mViewExtractor;
 
-        private HelpHashMap(BaseExtractor<View> viewExtractor) {
+        private HelpHashMap(BaseExtractor viewExtractor) {
             mViewExtractor = viewExtractor;
         }
 
