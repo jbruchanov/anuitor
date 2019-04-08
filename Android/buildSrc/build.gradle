@@ -1,0 +1,43 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply from: '../build-versions.gradle'
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21"
+    }
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "com.squareup:kotlinpoet:$kotlin_poet"
+    compile "androidx.annotation:annotation:${androidX}"
+    compile "com.google.code.gson:gson:${gson}"
+
+    testCompile "junit:junit:$junit"
+}

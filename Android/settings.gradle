@@ -1,1 +1,1 @@
-include ':sampleapp', ':service'
+include ':sampleapp', ':service', ':buildSrc'
