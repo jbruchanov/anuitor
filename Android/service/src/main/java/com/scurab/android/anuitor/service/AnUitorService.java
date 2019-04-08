@@ -284,7 +284,7 @@ public class AnUitorService extends Service {
     @RequiresApi(Build.VERSION_CODES.O)
     private void createNotificationChannel() {
         NotificationChannel chan = new NotificationChannel(TAG, TITLE, NotificationManager.IMPORTANCE_NONE);
-        chan.setImportance(NotificationManager.IMPORTANCE_HIGH);
+        chan.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
         NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert service != null;
         service.createNotificationChannel(chan);
