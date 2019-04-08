@@ -1,5 +1,6 @@
 apply from: 'generator.gradle'
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion compileSdk
@@ -20,10 +21,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    android {
-        lintOptions {
-            abortOnError false
-        }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/extractors"
     }
 
     compileOptions {
@@ -52,8 +56,31 @@ task buildHelpClass {
 
 preBuild.dependsOn buildHelpClass
 
+task buildExtractorClasses {
+    doLast {
+        def targetPackage = 'com.scurab.android.anuitor.extract2'
+        def structure = "${project.projectDir}/src/main/assets/structure.json"
+        com.scurab.anutior.buildsrc.Script.generateClasses(targetPackage, structure, "${project.projectDir}/src/extractors")
+    }
+    group = "build"
+}
+preBuild.dependsOn buildExtractorClasses
+
+task cleanExtractorsClasses {
+    doLast {
+        def file = new File("${project.projectDir}/src/extractors")
+        println("Delete" + file.deleteDir())
+        file.mkdirs()
+    }
+    group = "build"
+}
+clean.dependsOn cleanExtractorsClasses
+
+
 dependencies {
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     compileOnly "androidx.legacy:legacy-support-core-ui:${androidX}"
     compileOnly "androidx.fragment:fragment:${androidX}"
