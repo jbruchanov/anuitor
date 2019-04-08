@@ -141,7 +141,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
             BaseExtractor extractor = reflection ? null : DetailExtractor.findExtractor(object.getClass());
             if (extractor == null) {
                 if (mReflectionExtractor == null) {
-                    mReflectionExtractor = new ReflectionExtractor(new Translator(), true);
+                    mReflectionExtractor = new ReflectionExtractor(true);
                 }
                 extractor = mReflectionExtractor;
             }

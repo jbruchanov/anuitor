@@ -49,11 +49,11 @@ public class ReflectionExtractor extends BaseExtractor {
             Pattern.compile("will.*", 0)
     };
 
-    public ReflectionExtractor(Translator translator) {
-        this(translator, false);
+    public ReflectionExtractor() {
+        this(false);
     }
 
-    public ReflectionExtractor(Translator translator, boolean useFields) {
+    public ReflectionExtractor(boolean useFields) {
         mUseFields = useFields;
     }
 
@@ -63,7 +63,7 @@ public class ReflectionExtractor extends BaseExtractor {
         return fillValues(item, data, contextData, new HashSet<>(), 0);
     }
 
-    private Map<String, Object> fillValues(Object o, Map<String, Object> data, Map<String, Object> contextData, Set<Object> cycleHandler, int deep) {
+    private Map<String, Object> fillValues(Object o, Map<String, Object> data, Map<String, Object> contextData, Set<Object> cycleHandler, int depth) {
         data.put("Type", String.valueOf(o.getClass().getName()));
         data.put("ToString", String.valueOf(o));
         Class clz = o.getClass();
@@ -88,11 +88,11 @@ public class ReflectionExtractor extends BaseExtractor {
                 }
             }
         }
-        if (mUseFields && deep < 2) {
+        if (mUseFields && depth < 2) {
             final List<Field> fields = getAllFields(new ArrayList<Field>(), o.getClass());
             for (Field f : fields) {
                 String name = f.getName();
-                if (Modifier.isStatic(f.getModifiers())) {
+                if (Modifier.isStatic(f.getModifiers()) || name.startsWith("shadow$")) {
                     continue;
                 }
                 try {
@@ -110,12 +110,12 @@ public class ReflectionExtractor extends BaseExtractor {
                                 if (vClass.isPrimitive() || vClass == String.class) {
                                     result.add(v);
                                 } else {
-                                    result.add(fillValues(v, new HashMap<String, Object>(), data, cycleHandler, deep + 1));
+                                    result.add(fillValues(v, new HashMap<String, Object>(), data, cycleHandler, depth + 1));
                                 }
                             }
                             data.put(name, result);
                         } else {
-                            data.put(name, fillValues(value, new HashMap<String, Object>(), data, cycleHandler, deep + 1));
+                            data.put(name, fillValues(value, new HashMap<String, Object>(), data, cycleHandler, depth + 1));
                         }
                     }
                 } catch (Throwable t) {

@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.extract2
 
 import android.os.Build
+import com.scurab.android.anuitor.extract.view.ReflectionExtractor
 import com.scurab.android.anuitor.tools.ise
 
 abstract class BaseExtractor {
@@ -16,10 +17,14 @@ abstract class BaseExtractor {
         return data
     }
 
-    protected inline fun <T> MutableMap<String, Any>.put(name: String, minApi: Int, item: T, function: T.() -> Any?) {
+    protected inline fun <T> MutableMap<String, Any>.put(name: String, minApi: Int, item: T, convertToString: Boolean = true, function: T.() -> Any?) {
         if (Build.VERSION.SDK_INT >= minApi) {
             try {
-                put(name, function(item) ?: "null")
+                var result: Any? = function(item)
+                if (convertToString) {
+                    result = result?.toString()
+                }
+                put(name, result ?: "null")
             } catch (e: Throwable) {
                 put(name, e.message ?: "Null error message")
             }
@@ -30,8 +35,7 @@ abstract class BaseExtractor {
         if (this == null) {
             return "null"
         }
-        return DetailExtractor.findExtractor(this::class.java)
-                ?.fillValues(this, mutableMapOf(), null)
-                ?: ise("Unable to find extractor for ${this::class.java}")
+        return (DetailExtractor.findExtractor(this::class.java) ?: ReflectionExtractor(true))
+                .fillValues(this, mutableMapOf(), null)
     }
 }

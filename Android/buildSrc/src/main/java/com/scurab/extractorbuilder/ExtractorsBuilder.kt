@@ -55,13 +55,17 @@ class ExtractorsBuilder {
     private fun String.simpleClassName() = substring(lastIndexOf(".") + 1).replace("$", "")
 
     private fun createPutStatement(mi: Structure.MethodInfo, minApi: Int): String {
+        var convertToString = ""
         val call = when {
             mi.customCode != null && mi.isId -> mi.customCode
             mi.customCode != null -> mi.customCode
             mi.useReflection && mi.translatorMethod != null -> "reflectionInt(\"${mi.methodName}\")"
             mi.useReflection -> "reflection(\"${mi.methodName}\")"
             mi.isId -> "${mi.methodName}().idName()"
-            mi.useExtractor -> "extract()"
+            mi.useExtractor -> {
+                convertToString = ", false"
+                "${mi.methodName}().extract()"
+            }
             else -> {
                 var methodName = mi.methodName
                 if (!(methodName == "this" || mi.isProperty)) {
@@ -74,7 +78,7 @@ class ExtractorsBuilder {
             mi.translatorMethod != null ->
                 "data.put(\"${mi.name}\", $minApi, v) { Translators[TranslatorName.${mi.translatorMethod}].translate($call) }"
             mi.name.isEmpty() -> call
-            else -> "data.put(\"${mi.name}\", $minApi, v) { $call }"
+            else -> "data.put(\"${mi.name}\", $minApi, v$convertToString) { $call }"
         }
     }
 }
