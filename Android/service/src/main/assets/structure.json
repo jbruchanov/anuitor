@@ -218,7 +218,10 @@
             {"m": "getRootWindowInsets" }
           ],
         "24": [
-            {"m": "getHasOverlappingRendering" },
+            {
+              "n": "getHasOverlappingRendering",
+              "m": "getHasOverlappingRendering"
+            },
             {"m": "isTemporarilyDetached" }
           ],
         "25": [
@@ -454,7 +457,6 @@
           }
         ],
         "16" : [
-          {"m": "hasOverlappingRendering"},
           {"m": "getAdjustViewBounds"},
           {"m": "getCropToPadding"},
           {"m": "getImageAlpha"},
@@ -615,7 +617,6 @@
             "m": "getPaint"
           },
           {"m": "didTouchFocusSelect"},
-          {"m": "getBaseline"},
           {"m": "getEditableText"},
           {"m": "getError"},
           {"m": "getExtendedPaddingBottom"},
@@ -716,8 +717,7 @@
           {"m": "getCompoundPaddingStart"},
           {"m": "getTextLocale"},
           {"m": "getTotalPaddingEnd"},
-          {"m": "getTotalPaddingStart"},
-          {"m": "hasOverlappingRendering"}
+          {"m": "getTotalPaddingStart"}
         ],
         "21": [
           {"m": "getFontFeatureSettings"},
@@ -939,7 +939,6 @@
             "m": "getAdapter",
             "n": "Adapter:"
           },
-          {"m": "getBaseline"},
           {"m": "getCompatAccessibilityDelegate"},
           {"m": "getItemAnimator"},
           {"m": "getLayoutManager"},
