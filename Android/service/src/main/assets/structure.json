@@ -1480,11 +1480,29 @@
         ]
       }
     },
-    "androidx.appcompat.app.AppCompatActivity": {
+    "androidx.fragment.app.FragmentActivity": {
       "parent": "android.app.Activity",
       "items": {
         "1" : [
-          {"m": "TODO"}
+          {"m": "getLifecycle"},
+          {
+            "m": "getSupportFragmentManager",
+            "e": true
+          },
+          {"m": "getViewModelStore"}
+        ]
+      }
+    },
+    "androidx.appcompat.app.AppCompatActivity": {
+      "parent": "androidx.fragment.app.FragmentActivity",
+      "items": {
+        "1" : [
+          {"m": "getDelegate"},
+          {"m": "getDrawerToggleDelegate"},
+          {
+            "m": "getSupportParentActivityIntent",
+            "e": true
+          }
         ]
       }
     },
