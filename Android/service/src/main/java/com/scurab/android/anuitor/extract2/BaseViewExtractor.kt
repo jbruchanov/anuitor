@@ -17,8 +17,6 @@ abstract class BaseViewExtractor : BaseExtractor() {
         val v = item as View
         data["LayoutParams:"] = v.layoutParams?.javaClass?.name ?: "null"
         fillMandatoryValues(v, data, contextData)
-        fillScale(v, data, contextData)
-        fillLocationValues(v, data, contextData)
         return super.onFillValues(item, data, contextData)
     }
 
