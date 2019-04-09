@@ -1,10 +1,14 @@
 package com.scurab.android.anuitor.extract2
 
+import android.graphics.Rect
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import com.scurab.android.anuitor.tools.atLeastApi
+
+
+
 
 abstract class BaseViewExtractor : BaseExtractor() {
 
@@ -16,6 +20,14 @@ abstract class BaseViewExtractor : BaseExtractor() {
     override fun onFillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
         val v = item as View
         data["LayoutParams:"] = v.layoutParams?.javaClass?.name ?: "null"
+        DetailExtractor.getRenderArea(v)?.let {
+            val rect = Rect()
+            it.getRenderArea(v, rect)
+            val value = rect.stringSizes()
+            data["_RenderAreaRelative"] = value
+            data["RenderAreaRelative"] = value
+        }
+
         fillMandatoryValues(v, data, contextData)
         return super.onFillValues(item, data, contextData)
     }

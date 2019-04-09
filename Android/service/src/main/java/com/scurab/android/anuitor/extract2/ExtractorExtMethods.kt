@@ -100,6 +100,14 @@ fun View.getHitRect(): Rect {
     return rect
 }
 
+fun Rect.stringSizes(): String {
+    return StringBuilder()
+            .append(left).append(",")
+            .append(top).append(",")
+            .append(right).append(",")
+            .append(bottom).toString()
+}
+
 fun Any.reflection(name: String): Any {
     return try {
         javaClass.getMethod(name).run {
