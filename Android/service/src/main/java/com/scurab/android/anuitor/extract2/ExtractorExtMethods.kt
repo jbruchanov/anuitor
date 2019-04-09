@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
 import com.scurab.android.anuitor.hierarchy.IdsHelper
+import com.scurab.android.anuitor.reflect.Reflector
 import com.scurab.android.anuitor.tools.HttpTools
 
 fun Int.idName() = IdsHelper.getNameForId(this)
@@ -108,20 +109,14 @@ fun Rect.stringSizes(): String {
             .append(bottom).toString()
 }
 
-fun Any.reflection(name: String): Any {
+fun Any.reflection(name: String): Any? {
     return try {
-        javaClass.getMethod(name).run {
-            isAccessible = true
-            invoke(this) ?: "null"
-        }
+        Reflector.callMethodByReflection<Any>(javaClass, this, name)
     } catch (e: Throwable) {
         return try {
-            javaClass.getField(name).run {
-                isAccessible = true
-                get(this) ?: "null"
-            }
+            Reflector.getFieldValue<Any>(this, name)
         } catch (e: Throwable) {
-            "Unable to find method/field"
+            "Unable to find method/field: '$name'"
         }
     }
 }

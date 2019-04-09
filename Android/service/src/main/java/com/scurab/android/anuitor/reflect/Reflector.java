@@ -36,7 +36,7 @@ public abstract class Reflector<T> {
         return callMethodByReflection(mClass, mReal, methodName, params);
     }
 
-    protected static <T> T callMethodByReflection(@NonNull Class<?> clazz, @Nullable Object receiver, @Nullable String methodName, @NonNull Object... params) {
+    public static <T> T callMethodByReflection(@NonNull Class<?> clazz, @Nullable Object receiver, @Nullable String methodName, @NonNull Object... params) {
         if (methodName == null) {
             methodName = getCalleeMethod();
         }
