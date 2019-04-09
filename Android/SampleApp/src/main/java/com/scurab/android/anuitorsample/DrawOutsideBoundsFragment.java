@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -42,7 +43,7 @@ public class DrawOutsideBoundsFragment extends Fragment {
         return frameLayout;
     }
 
-    public static class HelpTextView extends TextView {
+    public static class HelpTextView extends AppCompatTextView {
 
         private Paint mPaint;
 
