@@ -12,11 +12,11 @@ import android.view.View;
 import com.scurab.android.anuitor.extract2.BaseExtractor;
 import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
-import com.scurab.android.anuitor.extract.Translator;
+
 import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
+import com.scurab.android.anuitor.extract2.ReflectionHelper;
 import com.scurab.android.anuitor.model.DataResponse;
 import com.scurab.android.anuitor.model.OutRef;
-import com.scurab.android.anuitor.reflect.ReflectionHelper;
 import com.scurab.android.anuitor.reflect.ViewReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.Executor;

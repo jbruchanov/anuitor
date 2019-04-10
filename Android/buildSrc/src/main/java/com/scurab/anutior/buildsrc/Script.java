@@ -2,6 +2,7 @@ package com.scurab.anutior.buildsrc;
 
 import com.google.gson.Gson;
 import com.scurab.extractorbuilder.ExtractorsBuilder;
+import com.scurab.extractorbuilder.ReflectionHelperBuilder;
 import com.scurab.extractorbuilder.RegisterBuilder;
 import com.scurab.extractorbuilder.Structure;
 import com.squareup.kotlinpoet.FileSpec;
@@ -23,6 +24,7 @@ public class Script {
         File file = new File(filePath);
         ExtractorsBuilder builder = new ExtractorsBuilder();
         Structure structure = gson.fromJson(new FileReader(file), Structure.class);
+
         Map<String, String> extractors = new HashMap<>();
         structure.allItems().forEach((key, structureItem) -> {
             FileSpec fileSpec = builder.build(key, structureItem, targetPackage);
@@ -35,11 +37,17 @@ public class Script {
             }
         });
 
+        File registerFile = new File(targetFolderPath + "/" + targetPackage.replace('.', '/') + "/ExtractorsRegister.kt");
+        writeTo(new RegisterBuilder().build(extractors, targetPackage), registerFile);
+
+        String reflectionBuilderCode = new ReflectionHelperBuilder().build(structure, targetPackage);
+        writeTo(reflectionBuilderCode, new File(targetFolderPath + "/" + targetPackage.replace('.', '/') + "/ReflectionHelper.java"));
+    }
+
+    private static void writeTo(String content, File file) {
         try {
-            String registerCode = new RegisterBuilder().build(extractors, targetPackage);
-            File registerFile = new File(targetFolderPath + "/" + targetPackage.replace('.', '/') + "/ExtractorsRegister.kt");
-            FileWriter fileWriter = new FileWriter(registerFile);
-            fileWriter.write(registerCode);
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(content);
             fileWriter.close();
         } catch (IOException e) {
             throw new IllegalStateException(e);
