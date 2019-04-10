@@ -16,7 +16,8 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.Base64;
 import android.util.TypedValue;
 
-import com.scurab.android.anuitor.extract.Translator;
+import com.scurab.android.anuitor.extract2.TranslatorName;
+import com.scurab.android.anuitor.extract2.Translators;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.model.ResourceResponse;
 import com.scurab.android.anuitor.reflect.ColorStateListReflector;
@@ -58,13 +59,11 @@ public class ResourcesPlugin extends BasePlugin {
 
     private Resources mRes;
     private ResourcesReflector mHelper;
-    private Translator mTranslator;
 
     private final Paint mClearPaint = new Paint();
 
-    public ResourcesPlugin(Resources res, Translator translator) {
+    public ResourcesPlugin(Resources res) {
         mRes = res;
-        mTranslator = translator;
         mHelper = new ResourcesReflector(mRes);
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
@@ -339,7 +338,7 @@ public class ResourcesPlugin extends BasePlugin {
             rr.DataType = "color";
 
             int[] stateSet = reflector.getColorState(i);
-            rr.Context = mTranslator.stateListFlags(stateSet);
+            rr.Context = Translators.INSTANCE.get(TranslatorName.DrawableState).translate(stateSet);
 
             int color = colorStateList.getColorForState(stateSet, Integer.MIN_VALUE);
             rr.Data = HttpTools.getStringColor(color);
@@ -459,7 +458,7 @@ public class ResourcesPlugin extends BasePlugin {
 
             rr.id = resId;
             rr.DataType = BASE64_PNG;
-            rr.Context = mTranslator.stateListFlags(stateSet);
+            rr.Context = Translators.INSTANCE.get(TranslatorName.DrawableState).translate(stateSet);
             rr.Data = Base64.encodeToString(drawDrawable(sldReflector.getStateDrawable(i), SIZE, SIZE, mClearPaint), Base64.NO_WRAP);
         }
     }

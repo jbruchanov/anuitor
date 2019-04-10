@@ -1,12 +1,15 @@
 package com.scurab.android.anuitor.extract2
 
+import android.graphics.Typeface
 import android.os.Build
 import android.text.InputType
+import android.text.TextUtils
 import android.text.util.Linkify
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.gridlayout.widget.GridLayout
@@ -17,6 +20,7 @@ import com.scurab.android.anuitor.extract2.translator.ItemTranslator
 import com.scurab.android.anuitor.extract2.translator.Translator
 import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.tools.atLeastApi
+import kotlin.math.absoluteValue
 
 enum class TranslatorName {
     Visibility,
@@ -37,7 +41,11 @@ enum class TranslatorName {
     TabLayoutTabMode,
     DrawableState,
     FragmentState,
-    LayoutSize
+    LayoutSize,
+    Shape,
+    Ellipsize,
+    TextStyle,
+    ScaleType;
 }
 
 
@@ -57,9 +65,12 @@ object Translators {
             +(View.GONE to "GONE")
         }
 
-        itemTranslator(TranslatorName.LayoutParams) {
-            +(ViewGroup.LayoutParams.MATCH_PARENT to "match_parent")
-            +(ViewGroup.LayoutParams.WRAP_CONTENT to "wrap_content")
+        customTranslator(TranslatorName.LayoutParams) {
+            when (it) {
+                ViewGroup.LayoutParams.MATCH_PARENT -> "match_parent"
+                ViewGroup.LayoutParams.WRAP_CONTENT -> "wrap_content"
+                else -> it.toString()
+            }
         }
 
         atLeastApi(Build.VERSION_CODES.JELLY_BEAN) {
@@ -106,10 +117,12 @@ object Translators {
         }
 
         customTranslator(TranslatorName.DrawableState) { state ->
-            if(state == 0) {
+            if (state == 0) {
                 "default"
             } else {
-                IdsHelper.getNameForId(state)
+                val name = IdsHelper.getNameForId(state.absoluteValue)
+                val isEnabled = state.absoluteValue > 0
+                "$name=$isEnabled"
             }
         }
 
@@ -155,6 +168,33 @@ object Translators {
         itemTranslator(TranslatorName.LinearLayoutOrientation) {
             +(LinearLayout.VERTICAL to "VERTICAL")
             +(LinearLayout.HORIZONTAL to "HORIZONTAL")
+        }
+
+        itemTranslator(TranslatorName.GridLayoutOrientation) {
+            +(GridLayout.VERTICAL to "VERTICAL")
+            +(GridLayout.HORIZONTAL to "HORIZONTAL")
+        }
+
+        itemTranslator(TranslatorName.Shape) {
+            +(0 to "rectangle")
+            +(1 to "oval")
+            +(2 to "line")
+            +(3 to "ring")
+        }
+
+        customTranslator(TranslatorName.Ellipsize) {
+            TextUtils.TruncateAt.values()[it].toString()
+        }
+
+        itemTranslator(TranslatorName.TextStyle) {
+            +(Typeface.NORMAL to "NORMAL")
+            +(Typeface.BOLD to "BOLD")
+            +(Typeface.ITALIC to "ITALIC")
+            +(Typeface.BOLD_ITALIC to "BOLD_ITALIC")
+        }
+
+        customTranslator(TranslatorName.ScaleType) {
+            ImageView.ScaleType.values()[it].toString()
         }
 
         binaryIntTranslator(TranslatorName.LinearLayoutShowDividers) {

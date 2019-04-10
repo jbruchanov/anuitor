@@ -2,7 +2,6 @@ package com.scurab.android.anuitor.extract.view;
 
 import android.util.Log;
 
-import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.extract2.BaseExtractor;
 import com.scurab.android.anuitor.reflect.Reflector;
 

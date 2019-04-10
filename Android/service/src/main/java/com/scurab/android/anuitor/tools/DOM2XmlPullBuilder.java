@@ -4,7 +4,8 @@
 package com.scurab.android.anuitor.tools;
 
 
-import com.scurab.android.anuitor.extract.Translator;
+import com.scurab.android.anuitor.extract2.TranslatorName;
+import com.scurab.android.anuitor.extract2.Translators;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
 import org.w3c.dom.DOMException;
@@ -184,27 +185,28 @@ public class DOM2XmlPullBuilder {
         private String translateValue(String attrName, String xmlValue) {
             boolean lower = true;
             try {
-                Translator t = new Translator();//TODO: coupling
                 if ("layout_width".equals(attrName) || "layout_height".equals(attrName)) {
-                    xmlValue = String.valueOf(t.layoutSize(Integer.parseInt(xmlValue)));
+                    xmlValue = translate(TranslatorName.LayoutSize, xmlValue);
                 } else if ("layout_gravity".equals(attrName) || "gravity".equals(attrName)) {
-                    xmlValue = t.gravity(Integer.parseInt(xmlValue.replace("0x", ""), 16));
+                    int value = Integer.parseInt(xmlValue.replace("0x", ""), 16);
+                    xmlValue = translate(TranslatorName.Gravity, value);
                 } else if ("orientation".equals(attrName)) {
-                    xmlValue = String.valueOf(t.orientation(Integer.parseInt(xmlValue)));
+                    xmlValue = translate(TranslatorName.LinearLayoutOrientation, xmlValue);
                 } else if ("visibility".equals(attrName)) {
-                    xmlValue = String.valueOf(t.visibility(Integer.parseInt(xmlValue)));
+                    xmlValue = translate(TranslatorName.Visibility, xmlValue);
                 } else if ("scaleType".equals(attrName)) {
-                    xmlValue = String.valueOf(t.scaleType(Integer.parseInt(xmlValue)));
+                    xmlValue = translate(TranslatorName.ScaleType, xmlValue);
                 } else if ("importantForAccessibility".equals(attrName)) {
-                    xmlValue = String.valueOf(t.importantForA11Y(Integer.parseInt(xmlValue)));
+                    xmlValue = translate(TranslatorName.ImportantForA11Y, xmlValue);
                 } else if ("textStyle".equals(attrName)) {
-                    xmlValue = String.valueOf(t.textStyle(Integer.parseInt(xmlValue.replace("0x", ""), 16)));
+                    int value = Integer.parseInt(xmlValue.replace("0x", ""), 16);
+                    xmlValue = translate(TranslatorName.TextStyle, value);
                 } else if ("inputType".equals(attrName)) {
                     //TODO: pretty big from attrs
                 } else if ("ellipsize".equals(attrName)) {
-                    xmlValue = String.valueOf(t.ellipsize(Integer.parseInt(xmlValue)));
+                    xmlValue = translate(TranslatorName.Ellipsize, xmlValue);
                 } else if ("shape".equals(attrName)) {
-                    xmlValue = String.valueOf(t.shape(Integer.parseInt(xmlValue)));
+                    xmlValue = translate(TranslatorName.Shape, xmlValue);
                 } else{
                     lower = false;
                 }
@@ -213,6 +215,14 @@ public class DOM2XmlPullBuilder {
                 //swallow it, a lot of options
             }
             return lower ? xmlValue.toLowerCase() : xmlValue;
+        }
+
+        private String translate(TranslatorName name, String value) {
+            return translate(name, Integer.parseInt(value));
+        }
+
+        private String translate(TranslatorName name, int value) {
+            return Translators.INSTANCE.get(name).translate(value);
         }
 
         private void declareNamespaces(XmlPullParser pp, Element parent)
