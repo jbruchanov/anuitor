@@ -1,6 +1,8 @@
 package com.scurab.android.anuitor.extract2
 
+import android.graphics.drawable.Drawable
 import android.os.Build
+import android.view.View
 import com.scurab.android.anuitor.extract.view.ReflectionExtractor
 import com.scurab.android.anuitor.tools.ise
 
@@ -23,6 +25,15 @@ abstract class BaseExtractor {
                 var result: Any? = function(item)
                 if (convertToString) {
                     result = result?.toString()
+                }
+                @Suppress("UNCHECKED_CAST")
+                if (item is Drawable) {
+                    (result as? Map<out String, Any>)?.let { r ->
+                        r.forEach { (key, v) ->
+                            put("${name}_$key", v)
+                        }
+                        result = result.toString()
+                    }
                 }
                 put(name, result ?: "null")
             } catch (e: Throwable) {
