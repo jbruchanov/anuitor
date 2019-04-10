@@ -11,6 +11,7 @@
           },
           {
             "n": "Context:",
+            "m": "getContext",
             "c": "getContext()?.toString()"
           },
           {"m": "getContentDescription" },
@@ -43,11 +44,6 @@
           {
             "m": "getTag",
             "n": "Tag:"
-          },
-          {
-            "m": "getTags",
-            "n": "Tags:",
-            "r": true
           },
           {"m": "hasFocus" },
           {"m": "hasFocusable" },
@@ -110,6 +106,13 @@
           {"m": "getTouchDelegate" },
           {"m": "getTouchables" },
           {"m": "getVerticalFadingEdgeLength" }
+        ],
+        "4": [
+          {
+            "m": "mKeyedTags",
+            "n": "Tags:",
+            "r": true
+          }
         ],
         "11": [
           {"m": "getAlpha" },
@@ -632,18 +635,22 @@
           {"m": "getCompoundPaddingBottom"},
           {
             "n": "CompoundDrawableLeft:",
+            "m": "getCompoundDrawables",
             "c": "getCompoundDrawables()?.get(0)?.toString()"
           },
           {
             "n": "CompoundDrawableTop:",
+            "m": "getCompoundDrawables",
             "c": "getCompoundDrawables()?.get(1)?.toString()"
           },
           {
             "n": "CompoundDrawableRight:",
+            "m": "getCompoundDrawables",
             "c": "getCompoundDrawables()?.get(2)?.toString()"
           },
           {
             "n": "CompoundDrawableBottom:",
+            "m": "getCompoundDrawables",
             "c": "getCompoundDrawables()?.get(3)?.toString()"
           },
           {
@@ -736,18 +743,22 @@
         "17": [
           {
             "n": "CompoundDrawableRelativeStart:",
+            "m": "getCompoundDrawablesRelative",
             "c": "getCompoundDrawablesRelative()?.get(0)?.toString()"
           },
           {
             "n": "CompoundDrawableRelativeTop:",
+            "m": "getCompoundDrawablesRelative",
             "c": "getCompoundDrawablesRelative()?.get(1)?.toString()"
           },
           {
             "n": "CompoundDrawableRelativeEnd:",
+            "m": "getCompoundDrawablesRelative",
             "c": "getCompoundDrawablesRelative()?.get(2)?.toString()"
           },
           {
             "n": "CompoundDrawableRelativeBottom:",
+            "m": "getCompoundDrawablesRelative",
             "c": "getCompoundDrawablesRelative()?.get(3)?.toString()"
           },
           {"m": "getCompoundPaddingEnd"},
@@ -1017,7 +1028,7 @@
         "1" : [
           {
             "n": "Adapter:",
-            "c": "getAdapter()"
+            "m": "getAdapter"
           },
           {
             "n": "AdapterItemsCount",
