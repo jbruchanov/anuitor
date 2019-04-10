@@ -106,11 +106,13 @@ public class ReflectionExtractor extends BaseExtractor {
                         } else if (value instanceof Object[]) {
                             List<Object> result = new ArrayList<>();
                             for (Object v : (Object[]) value) {
-                                final Class<?> vClass = Reflector.fixAutoboxing(v.getClass());
-                                if (vClass.isPrimitive() || vClass == String.class) {
-                                    result.add(v);
-                                } else {
-                                    result.add(fillValues(v, new HashMap<String, Object>(), data, cycleHandler, depth + 1));
+                                if (v != null) {
+                                    final Class<?> vClass = Reflector.fixAutoboxing(v.getClass());
+                                    if (vClass.isPrimitive() || vClass == String.class) {
+                                        result.add(v);
+                                    } else {
+                                        result.add(fillValues(v, new HashMap<String, Object>(), data, cycleHandler, depth + 1));
+                                    }
                                 }
                             }
                             data.put(name, result);
