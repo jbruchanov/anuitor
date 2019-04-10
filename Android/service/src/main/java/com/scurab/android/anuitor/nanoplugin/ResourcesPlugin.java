@@ -32,6 +32,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ public class ResourcesPlugin extends BasePlugin {
     private static final String XML = "xml";
     private static final String ID = "id";
     private static final String NUMBER = "number";
+    public static final int MAX_RAW_SIZE_FOR_STRING = 8 * 1024;
 
     private Resources mRes;
     private ResourcesReflector mHelper;
@@ -183,9 +185,26 @@ public class ResourcesPlugin extends BasePlugin {
                 response.Data = DOM2XmlPullBuilder.transform(mRes.getXml(id));
                 response.DataType = XML;
                 break;
+            case raw:
+                response.DataType = STRING_DATA_TYPE;
+                try {
+                    InputStream is = mRes.openRawResource(id);
+                    int available = is.available();
+                    if (available < MAX_RAW_SIZE_FOR_STRING) {
+                        byte[] data = new byte[available];
+                        is.read(data);
+                        response.Data = new String(data);
+                    } else {
+                        response.Data = "Skipped raw resources content because of size:" + available;
+                    }
+                    is.close();
+                } catch (Throwable e) {
+                    response.Data = e.getMessage();
+                    e.printStackTrace();
+                }
+                break;
             default:
             case attr:
-            case raw:
             case style:
             case styleable:
             case unknown:
