@@ -5,9 +5,9 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 
-import com.google.gson.Gson;
 import com.scurab.android.anuitor.model.Pair;
 import com.scurab.android.anuitor.model.Tuple;
+import com.scurab.android.anuitor.nanoplugin.BasePlugin;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -179,6 +179,6 @@ public class IdsHelper {
                 location = null;
             }
         }
-        return new Gson().toJson(result); //TODO: put GSON reference to one place
+        return BasePlugin.initJson().toJson(result); //TODO: put GSON reference to one place
     }
 }

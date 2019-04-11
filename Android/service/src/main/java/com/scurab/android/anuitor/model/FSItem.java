@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.model;
 
-import com.google.gson.annotations.Expose;
 
 /**
  * User: jbruchanov
@@ -15,7 +14,6 @@ public class FSItem implements Comparable<FSItem> {
 
     private String Name;
     private String Size;
-    @Expose
     private long mSize;
     private int Type;
 
