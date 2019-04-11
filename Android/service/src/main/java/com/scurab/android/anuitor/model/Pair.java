@@ -5,8 +5,8 @@ package com.scurab.android.anuitor.model;
  */
 public class Pair<K, V> {
 
-    final K Key;
-    final V Value;
+    public final K Key;
+    public final V Value;
 
     public Pair(K key, V value) {
         this.Key = key;
