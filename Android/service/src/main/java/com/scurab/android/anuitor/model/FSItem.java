@@ -12,10 +12,10 @@ public class FSItem implements Comparable<FSItem> {
     public static int TYPE_FILE = 1;
     public static int TYPE_FOLDER = 2;
 
-    private String Name;
-    private String Size;
-    private long mSize;
-    private int Type;
+    public final String Name;
+    public final String Size;
+    public final int Type;
+    private final long mSize;
 
     public FSItem(String name, int type, long size) {
         if (name == null) {
