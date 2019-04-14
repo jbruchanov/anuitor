@@ -36,11 +36,13 @@ android {
 }
 
 task createStructureClasses {
+    def structure = "${project.projectDir}/src/main/assets/structure.json"
     doLast {
         def targetPackage = 'com.scurab.android.anuitor.extract2'
-        def structure = "${project.projectDir}/src/main/assets/structure.json"
         com.scurab.anutior.buildsrc.Script.generateClasses(targetPackage, structure, "${project.projectDir}/src/extractors")
     }
+    inputs.files(structure)
+    outputs.dir("${project.projectDir}/src/extractors")
     group = "build"
 }
 preBuild.dependsOn createStructureClasses
