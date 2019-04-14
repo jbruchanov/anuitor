@@ -21,6 +21,7 @@ public class AnUitorClientConfig {
     static final String COLOR_POSITION = "rgb(44, 107, 153)";
     static final String COLOR_LAYOUTS = "rgb(76, 153, 44)";
     static final String COLOR_VISIBILITY = "rgb(198, 21, 21)";
+    static final String COLOR_RED = "rgb(255, 0, 0)";
     static final String TYPE_HIGHLIGHTS = "TypeHighlights";
     static final String PROPERTY_HIGHLIGHTS = "PropertyHighlights";
     static final String GRID_STROKE_COLOR = "GridStrokeColor";
@@ -40,6 +41,7 @@ public class AnUitorClientConfig {
         CONFIG.put("Device", device);
         CONFIG.put("Groovy", hasGroovySupport);
 
+        setSelectionColor(COLOR_RED);
         initDefaultHighlights();
         return CONFIG;
     }
