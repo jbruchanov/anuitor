@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract2.BaseExtractor;
+import com.scurab.android.anuitor.extract2.BaseViewExtractorKt;
 import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.reflect.ActivityThreadReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;
@@ -87,6 +88,7 @@ public class ScreenStructurePlugin extends BasePlugin {
                     }
                 }
             }
+            data.remove(BaseViewExtractorKt.OWNER);
         }
 
         Collections.reverse(resultDataSet);//stack order
