@@ -12,6 +12,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.AppCompatTextView;
+
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,7 +127,8 @@ public class ComponentsFragment extends DialogFragment {
     }
 
     protected void onShowDatePickerDialog() {
-        new DatePickerDialog(getActivity(), null, 2012, 3, 3).show();
+        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(getActivity(), R.style.Theme_AppCompat);
+        new DatePickerDialog(themeWrapper, null, 2012, 3, 3).show();
     }
 
     protected void onShowTimePickerDialog() {
