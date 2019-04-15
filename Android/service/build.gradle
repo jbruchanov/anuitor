@@ -71,6 +71,7 @@ dependencies {
     compileOnly "androidx.percentlayout:percentlayout:${androidX}"
     compileOnly "com.google.android.material:material:${androidX}"
     compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
+    compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
 
     compileOnly "com.google.code.gson:gson:${gson}"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"

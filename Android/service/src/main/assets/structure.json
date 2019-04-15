@@ -1189,6 +1189,7 @@
       "parent": "android.widget.LinearLayout",
       "items": {
         "1" : [
+          {"m": "getCounterMaxLength"},
           {"m": "getError"},
           {"m": "getHint"},
           {"m": "getPasswordVisibilityToggleContentDescription"},
@@ -1205,6 +1206,51 @@
           {"m": "isHintAnimationEnabled"},
           {"m": "isHintEnabled"},
           {"m": "isPasswordVisibilityToggleEnabled"}
+        ]
+      }
+    },
+    "com.google.android.material.chip.Chip": {
+      "parent": "android.widget.CompoundButton",
+      "items": {
+        "1": [
+          {
+            "n": "CheckedIcon:",
+            "m": "getCheckedIcon"
+          },
+          {"m": "getChipBackgroundColor"},
+          {"m": "getChipCornerRadius"},
+          {"n": "ChipDrawable:", "m": "getChipDrawable"},
+          {"m": "getChipEndPadding"},
+          {"m": "getChipIcon"},
+          {"m": "getChipIconSize"},
+          {"m": "getChipIconTint"},
+          {"m": "getChipMinHeight"},
+          {"m": "getChipStartPadding"},
+          {"m": "getChipStrokeColor"},
+          {"m": "getChipStrokeWidth"},
+          {"m": "getText"},
+          {
+            "n": "CloseIcon:",
+            "m": "getCloseIcon"
+          },
+          {"m": "getText"},
+          {"m": "getCloseIconContentDescription"},
+          {"m": "getCloseIconEndPadding"},
+          {"m": "getCloseIconSize"},
+          {"m": "getCloseIconStartPadding"},
+          {"m": "getCloseIconTint"},
+          {"m": "getEllipsize"},
+          {"m": "getHideMotionSpec"},
+          {"m": "getIconEndPadding"},
+          {"m": "getIconStartPadding"},
+          {"m": "getRippleColor"},
+          {"m": "getShowMotionSpec"},
+          {"m": "getTextEndPadding"},
+          {"m": "getTextStartPadding"},
+          {"m": "isCheckable"},
+          {"m": "isCheckedIconVisible"},
+          {"m": "isChipIconVisible"},
+          {"m": "isCloseIconVisible"}
         ]
       }
     }

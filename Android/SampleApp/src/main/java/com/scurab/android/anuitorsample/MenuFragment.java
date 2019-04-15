@@ -1,7 +1,9 @@
 package com.scurab.android.anuitorsample;
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ public class MenuFragment extends Fragment {
             ViewPagerFragment.class,
             ViewPager2Fragment.class,
             WidgetsFragment.class,
+            WidgetsAndroidXFragment.class,
             CustomWidgetsFragment.class,
             DrawOutsideBoundsFragment.class,
             RecyclerViewFragment.class,

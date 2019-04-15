@@ -17,4 +17,5 @@ ext {
     kotlin_poet = "1.2.0"
     junit = "4.12"
     viewPager2 = "1.0.0-alpha03"
+    coordinatorLayout = "1.1.0-alpha01"
 }

@@ -17,4 +17,7 @@
     <string name="nav_sub_header">SubHeader</string>
     <string name="nav_sub_item_1">SubItem1</string>
     <string name="nav_sub_item_2">SubItem2</string>
+    <string name="button_label_disabled">button_label_disabled</string>
+    <string name="unelevated_button_label_enabled">unelevated_button_label_enabled</string>
+    <string name="demo_card_text">Demo Card Text</string>
 </resources>

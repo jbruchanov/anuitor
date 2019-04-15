@@ -15,4 +15,5 @@
     <color name="stroke_green_dark">#ff005711</color>
     <color name="tile_background">#ff646464</color>
     <color name="black">#000</color>
+    <color name="transparent">#00000000</color>
 </resources>
