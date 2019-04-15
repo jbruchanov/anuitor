@@ -658,6 +658,9 @@ public class ScreenPreviewPage extends Composite {
             onDrawMouseCross(mX, mY);
             if (true) {
                 ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY, mIgnored);
+                if(vs == null) {
+                    return;
+                }
                 if (vs.hasCustomRenderSize()) {
                     drawRectForView(vs, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);
                 }
