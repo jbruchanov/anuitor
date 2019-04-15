@@ -8,7 +8,7 @@ import com.scurab.android.anuitor.tools.ise
 
 abstract class BaseExtractor {
 
-    fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
+    open fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
         return onFillValues(item, data, contextData)
     }
 
@@ -47,6 +47,6 @@ abstract class BaseExtractor {
             return "null"
         }
         return (DetailExtractor.findExtractor(this::class.java) ?: ReflectionExtractor(true))
-                .fillValues(this, mutableMapOf(), null)
+                .fillValues(this, mutableMapOf(), mutableMapOf())
     }
 }

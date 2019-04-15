@@ -1,12 +1,20 @@
 package com.scurab.android.anuitor.extract2
 
+import android.app.Activity
+import android.app.Application
+import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.fragment.app.FragmentActivity
 import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.reflect.Reflector
 import com.scurab.android.anuitor.tools.HttpTools
+import com.scurab.android.anuitor.tools.atLeastApi
+import com.scurab.android.anuitor.tools.ise
 
 fun Int.idName() = IdsHelper.getNameForId(this)
 fun View.idName() = IdsHelper.getNameForId(id)
@@ -145,4 +153,44 @@ fun CharSequence.escaped(): String {
         }
     }
     return sb.toString()
+}
+
+fun Context.getActivity(): Activity? {
+    var context: Context = this
+    var activity: Activity? = context as? Activity?
+    while (activity == null && context is ContextWrapper) {
+        context = context.baseContext
+        activity = context as? Activity
+    }
+    return activity
+}
+
+fun Context.getApplication(): Application {
+    return applicationContext as Application
+}
+
+
+fun View.components() : ViewComponents {
+    return ViewComponents(context.getApplication(), context.getActivity()).apply {
+        (activity as? FragmentActivity)?.also {activity ->
+            val xFragments: Map<View, Pair<View, IFragmentDelegate>> = activity.supportFragmentManager.fragments
+                    .filter { it.view != null }
+                    .map { Pair(it.view ?: ise("Null view")/*false positive, filtered*/, AndroidXFragmentDelegate(it)) }
+                    .associateBy { it.first }
+                    .toMutableMap()
+            var allFragments = xFragments
+
+            atLeastApi(Build.VERSION_CODES.O) {
+                val fragments: Map<View, Pair<View, IFragmentDelegate>> = activity.fragmentManager.fragments
+                        .filter { it.view != null }
+                        .map { Pair(it.view ?: ise("Null view")/*false positive, filtered*/, AndroidFragmentDelegate(it)) }
+                        .associateBy { it.first }
+                allFragments = allFragments + fragments
+            }
+            fragments.addAll(allFragments.values.map { it.second })
+            allFragments.values.forEach { (view, fragment) ->
+                fragmentsPerRootView[view] = fragment
+            }
+        }
+    }
 }

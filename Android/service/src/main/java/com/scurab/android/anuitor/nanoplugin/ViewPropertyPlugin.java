@@ -10,10 +10,13 @@ import android.util.Base64;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract2.BaseExtractor;
+import com.scurab.android.anuitor.extract2.BaseViewExtractorKt;
 import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 
 import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
+import com.scurab.android.anuitor.extract2.ExtractorExtMethodsKt;
+import com.scurab.android.anuitor.extract2.IFragmentDelegate;
 import com.scurab.android.anuitor.extract2.ReflectionHelper;
 import com.scurab.android.anuitor.model.DataResponse;
 import com.scurab.android.anuitor.model.OutRef;
@@ -81,20 +84,29 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 if (view != null) {
                     DataResponse response;
                     if (property != null) {
-                        final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
                         Object propertyValue;
                         String methodName;
-                        final ViewReflector reflector = new ViewReflector(view);
-                        if (item != null) {
-                            propertyValue = reflector.callMethod(item.methodName);
-                            if (item.arrayIndex >= 0) {
-                                propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
+                        if (BaseViewExtractorKt.OWNER.equals(property)) {
+                            propertyValue = ExtractorExtMethodsKt.components(view).findOwnerComponent(view);
+                            if (propertyValue instanceof IFragmentDelegate) {
+                                propertyValue = ((IFragmentDelegate) propertyValue).getFragment();
                             }
-                            methodName = item.methodName;
+                            methodName = "";
                         } else {
-                            OutRef<String> oMethodName = new OutRef<>();
-                            propertyValue = tryGetValue(reflector, property, oMethodName);
-                            methodName = oMethodName.getValue();
+                            final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
+
+                            final ViewReflector reflector = new ViewReflector(view);
+                            if (item != null) {
+                                propertyValue = reflector.callMethod(item.methodName);
+                                if (item.arrayIndex >= 0) {
+                                    propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
+                                }
+                                methodName = item.methodName;
+                            } else {
+                                OutRef<String> oMethodName = new OutRef<>();
+                                propertyValue = tryGetValue(reflector, property, oMethodName);
+                                methodName = oMethodName.getValue();
+                            }
                         }
                         response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName);
                     } else {

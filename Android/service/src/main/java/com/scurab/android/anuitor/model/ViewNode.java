@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.model;
 
 import com.scurab.android.anuitor.extract2.BaseViewExtractor;
+import com.scurab.android.anuitor.extract2.BaseViewExtractorKt;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 
 import org.json.JSONArray;
@@ -25,6 +26,7 @@ public class ViewNode {
     private final int Level;
     private final int Position;
     private Map<String, Object> Data;
+    private final String Owner;
 
     public ViewNode(int id, int level, int position, Map<String, Object> data) {
         IDi = id;
@@ -35,6 +37,8 @@ public class ViewNode {
 
         Data.put("Position", Position);
         validateDataSet(Data, position);
+        Object owner = data.get(BaseViewExtractorKt.OWNER);
+        Owner = owner != null ? owner.toString() : "null";
     }
 
     public void addChild(ViewNode n) {
@@ -83,6 +87,7 @@ public class ViewNode {
         obj.put("IDs", IDs);
         obj.put("Level", Level);
         obj.put("Position", Position);
+        obj.put(BaseViewExtractorKt.OWNER, Owner);
         if (Data != null) {
             JSONObject data = new JSONObject();
             for (String key : Data.keySet()) {
