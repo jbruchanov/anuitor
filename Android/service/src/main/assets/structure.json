@@ -1040,6 +1040,29 @@
         ]
       }
     },
+    "androidx.viewpager2.widget.ViewPager2": {
+      "parent": "android.view.ViewGroup",
+      "items": {
+        "1" : [
+          {
+            "n": "Adapter:",
+            "m": "getAdapter"
+          },
+          {
+            "n": "AdapterItemsCount",
+            "c": "getAdapter()?.getItemCount() ?: 0"
+          },
+          {"m": "getCurrentItem"},
+          {"m": "getOrientation"},
+          {
+            "m": "getScrollState",
+            "t": "ViewPager2ScrollState"
+          },
+          {"m": "isFakeDragging"},
+          {"m": "isUserInputEnabled"}
+        ]
+      }
+    },
     "com.google.android.material.appbar.AppBarLayout": {
       "parent": "android.view.ViewGroup",
       "items": {

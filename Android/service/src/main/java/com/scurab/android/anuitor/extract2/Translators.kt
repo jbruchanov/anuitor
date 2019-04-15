@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.gridlayout.widget.GridLayout
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.scurab.android.anuitor.extract2.translator.CustomLogicTranslator
 import com.scurab.android.anuitor.extract2.translator.ItemTranslator
@@ -45,7 +46,8 @@ enum class TranslatorName {
     Shape,
     Ellipsize,
     TextStyle,
-    ScaleType;
+    ScaleType,
+    ViewPager2ScrollState;
 }
 
 
@@ -280,6 +282,12 @@ object Translators {
         itemTranslator(TranslatorName.TabLayoutTabMode) {
             +(TabLayout.MODE_FIXED to "MODE_FIXED")
             +(TabLayout.MODE_SCROLLABLE to "MODE_SCROLLABLE")
+        }
+
+        itemTranslator(TranslatorName.ViewPager2ScrollState) {
+            +(ViewPager2.SCROLL_STATE_DRAGGING to "SCROLL_STATE_DRAGGING")
+            +(ViewPager2.SCROLL_STATE_SETTLING to "SCROLL_STATE_SETTLING")
+            +(ViewPager2.SCROLL_STATE_IDLE to "SCROLL_STATE_IDLE")
         }
     }
 

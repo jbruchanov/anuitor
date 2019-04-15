@@ -24,6 +24,7 @@ public class MenuFragment extends Fragment {
             ListViewFragment.class,
             ScrollViewFragment.class,
             ViewPagerFragment.class,
+            ViewPager2Fragment.class,
             WidgetsFragment.class,
             CustomWidgetsFragment.class,
             DrawOutsideBoundsFragment.class,
