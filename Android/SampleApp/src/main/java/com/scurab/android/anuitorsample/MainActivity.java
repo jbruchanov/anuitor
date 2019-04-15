@@ -3,8 +3,10 @@ package com.scurab.android.anuitorsample;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.slidingpanelayout.widget.SlidingPaneLayout;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -35,7 +37,7 @@ public class MainActivity extends BaseActivity {
 
         mPaneLayout = (SlidingPaneLayout) findViewById(R.id.sliding_pane_layout);
         Resources res = getResources();
-        mPaneLayout.setParallaxDistance((int) res.getDimension(R.dimen.left_menu_parallax_distance));
+        mPaneLayout.setParallaxDistance(res.getDimensionPixelSize(R.dimen.left_menu_parallax_distance));
         mPaneLayout.setSliderFadeColor(Color.TRANSPARENT);
         mPaneLayout.openPane();
 
@@ -63,5 +65,14 @@ public class MainActivity extends BaseActivity {
     public void openFragment(Fragment f, boolean add) {
         super.openFragment(f, add);
         mPaneLayout.closePane();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mPaneLayout.isOpen()) {
+            mPaneLayout.openPane();
+            return;
+        }
+        super.onBackPressed();
     }
 }
