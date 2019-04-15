@@ -158,8 +158,7 @@ public class ViewNodeJSO extends JavaScriptObject implements HasNodes<ViewNodeJS
     }-*/;
 
     /**
-     * Just for nice readable representation, because in debug time this doesn't
-     * work as usual java object in variables.
+     * Just for nice readable representation, because in debug time this doesn't work as usual java object in variables.
      * 
      * @return
      */
@@ -175,17 +174,22 @@ public class ViewNodeJSO extends JavaScriptObject implements HasNodes<ViewNodeJS
     public final native boolean isLeaf() /*-{
 		return this.Nodes == null || this.Nodes.length == 0;
     }-*/;
+    
+    public final native String getOwner()
+    /*-{
+        return this.Owner;
+    }-*/;
 
     public final boolean shouldRender() {
         return getBoolean("_RenderViewContent");
     }
-    
-    public final boolean hasCustomRenderSize(){
+
+    public final boolean hasCustomRenderSize() {
         return hasKey(ViewFields.Internal.RENDER_AREA_RELATIVE);
     }
-    
+
     private final int getRenderAreaPosition(int index) {
-        if(hasCustomRenderSize()){
+        if (hasCustomRenderSize()) {
             return Integer.parseInt(getString(ViewFields.Internal.RENDER_AREA_RELATIVE).split(",")[index]);
         }
         return 0;
@@ -200,7 +204,7 @@ public class ViewNodeJSO extends JavaScriptObject implements HasNodes<ViewNodeJS
     }
     
     private final int getRenderWidthHeight(int i1, int i2) {
-        if(hasCustomRenderSize()){
+        if (hasCustomRenderSize()) {
             String[] vals = getString(ViewFields.Internal.RENDER_AREA_RELATIVE).split(",");
             return Integer.parseInt(vals[i2]) - Integer.parseInt(vals[i1]);
         }

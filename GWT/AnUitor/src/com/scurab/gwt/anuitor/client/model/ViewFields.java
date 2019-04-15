@@ -10,6 +10,7 @@ public final class ViewFields {
     public static final String VISIBILITY = "Visibility";    
     public static final String POSITION = "Position";
     public static final String GROOVY_CONSOLE = "Groovy Console";
+    public static final String OWNER = "Owner";
 
     /**
      * Fields which are used for internal purposes only and have meaning only

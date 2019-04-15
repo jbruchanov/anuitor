@@ -61,8 +61,9 @@ public final class TableTools {
         }
         java.util.Collections.sort(list);
 
+        list.add(0, new Pair("Owner", viewNode.getOwner(), true, viewNode.getPosition()));
         list.add(0, new Pair("Groovy Console", viewNode.getPosition()));
-        list.add(0, new Pair("Position", viewNode.getPosition()));
+        list.add(0, new Pair(ViewFields.POSITION, viewNode.getPosition()));
         list.add(0, new Pair("Level", viewNode.getLevel()));
         list.add(0, new Pair("IDName", viewNode.getIDName()));
         list.add(0, new Pair("ID", viewNode.getID()));
