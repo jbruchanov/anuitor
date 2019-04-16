@@ -8,6 +8,7 @@ import static com.scurab.gwt.anuitor.client.util.GenericTools.createGroovyHistor
 import static com.scurab.gwt.anuitor.client.util.GenericTools.createLink;
 import static com.scurab.gwt.anuitor.client.util.GenericTools.createPropertyHistoryToken;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -61,7 +62,9 @@ public final class TableTools {
         }
         java.util.Collections.sort(list);
 
-        list.add(0, new Pair("Owner", viewNode.getOwner(), true, viewNode.getPosition()));
+        moveToFirst(list, "Context:");
+        moveToFirst(list, "Inheritance");
+        list.add(0, new Pair(ViewFields.OWNER, viewNode.getOwner(), true, viewNode.getPosition()));
         list.add(0, new Pair("Groovy Console", viewNode.getPosition()));
         list.add(0, new Pair(ViewFields.POSITION, viewNode.getPosition()));
         list.add(0, new Pair("Level", viewNode.getLevel()));
@@ -70,6 +73,24 @@ public final class TableTools {
         list.add(0, new Pair(ViewFields.TYPE, viewNode.getStringedValue(ViewFields.TYPE)));
 
         return dataProvider;
+    }   
+    
+    private static void moveToFirst(List<Pair> list, String keyName) {
+        Pair pair = null;
+        Iterator<Pair> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Pair item = iterator.next();
+            if (keyName.equals(item.key)) {
+                pair = item;
+                iterator.remove();
+                break;
+            }
+        }
+
+        if (pair != null) {
+            list.add(0, pair);
+        }
+        
     }
     
     /**
