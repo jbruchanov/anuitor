@@ -1322,8 +1322,9 @@
             "e": true
           },
           {
-            "m": "getState",
-            "r": true
+            "m": "mState",
+            "r": true,
+            "t": "FragmentState"
           },
           {
             "m": "getWho",
@@ -1614,7 +1615,7 @@
             "e": true
           },
           {
-            "m": "getState",
+            "m": "mState",
             "r": true,
             "t": "FragmentState"
           },
