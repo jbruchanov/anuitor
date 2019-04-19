@@ -78,7 +78,7 @@ public class ScreenStructurePlugin extends BasePlugin {
                 fillActivity(activity, data);
             } else {
                 BaseExtractor extractor = DetailExtractor.getExtractor(v);
-                extractor.fillValues(v, data, null);
+                extractor.fillValues(v, data, null, 0);
                 if (c instanceof ContextWrapper) {
                     c = ((ContextWrapper) c).getBaseContext();
                     if (c instanceof Activity) {
@@ -100,7 +100,7 @@ public class ScreenStructurePlugin extends BasePlugin {
     private void fillActivity(@Nullable Activity activity, HashMap<String, Object> data){
         if (activity != null) {
             BaseExtractor extractor = DetailExtractor.getExtractor(activity.getClass());
-            extractor.fillValues(activity, data, null);
+            extractor.fillValues(activity, data, null, 0);
         }
     }
 

@@ -14,7 +14,7 @@ import com.scurab.android.anuitor.extract2.BaseViewExtractorKt;
 import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 
-import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
+import com.scurab.android.anuitor.extract2.ReflectionExtractor;
 import com.scurab.android.anuitor.extract2.ExtractorExtMethodsKt;
 import com.scurab.android.anuitor.extract2.IFragmentDelegate;
 import com.scurab.android.anuitor.extract2.ReflectionHelper;
@@ -157,7 +157,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 }
                 extractor = mReflectionExtractor;
             }
-            final Map<String, Object> data = extractor.fillValues(object, new HashMap<>(), null);
+            final Map<String, Object> data = extractor.fillValues(object, new HashMap<>(), null, 0);
             data.put("Type", object.getClass().getName());
             data.put("1ParentType", parentType);
             data.put("2Name", name);

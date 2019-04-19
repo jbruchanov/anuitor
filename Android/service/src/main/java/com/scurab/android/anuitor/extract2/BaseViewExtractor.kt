@@ -16,18 +16,18 @@ abstract class BaseViewExtractor : BaseExtractor() {
         val mandatoryKeys = arrayOf("_ScaleX", "_ScaleY", "_Visibility", "_RenderViewContent", "Position", "LocationScreenX", "LocationScreenY", "Height", "Width", "Type")
     }
 
-    final override fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
+    final override fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, depth: Int): MutableMap<String, Any> {
         val context = contextData ?: mutableMapOf()
         val viewComponents = context[COMPONENTS] as? ViewComponents
         if (viewComponents?.activity == null) {//root component's context is an app not an activity
             val components = (item as View).components()
             context[COMPONENTS] = components
         }
-        return super.fillValues(item, data, context)
+        return super.fillValues(item, data, context, depth)
     }
 
     @CallSuper
-    override fun onFillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
+    override fun onFillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, depth: Int): MutableMap<String, Any> {
         val v = item as View
         data["LayoutParams:"] = v.layoutParams?.javaClass?.name ?: "null"
         data[OWNER] = (contextData?.get(COMPONENTS) as? ViewComponents)?.let {
@@ -42,7 +42,7 @@ abstract class BaseViewExtractor : BaseExtractor() {
         }
 
         fillMandatoryValues(v, data, contextData)
-        return super.onFillValues(item, data, contextData)
+        return super.onFillValues(item, data, contextData, depth)
     }
 
     private fun fillMandatoryValues(v: View, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {

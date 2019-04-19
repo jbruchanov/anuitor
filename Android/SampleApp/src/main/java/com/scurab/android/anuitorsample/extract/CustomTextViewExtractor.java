@@ -3,6 +3,9 @@ package com.scurab.android.anuitorsample.extract;
 import com.scurab.android.anuitor.extract2.TextViewExtractor;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -14,8 +17,8 @@ public class CustomTextViewExtractor extends TextViewExtractor {
 
     @Override
     @NonNull
-    protected Map<String, Object> onFillValues(Object item, Map<String, Object> data, Map<String, Object> contextData) {
-        super.onFillValues(item, data, contextData);
+    protected Map<String, Object> onFillValues(@NotNull Object item, @NotNull Map<String, Object> data, @Nullable Map<String, Object> contextData, int depth) {
+        super.onFillValues(item, data, contextData, depth);
 
         CustomTextView customTextView = (CustomTextView) item;
         data.put("CustomValue", customTextView.getCustomValue());

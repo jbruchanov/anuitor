@@ -2,17 +2,14 @@ package com.scurab.android.anuitor.extract2
 
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.view.View
-import com.scurab.android.anuitor.extract.view.ReflectionExtractor
-import com.scurab.android.anuitor.tools.ise
 
 abstract class BaseExtractor {
 
-    open fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
-        return onFillValues(item, data, contextData)
+    open fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, depth: Int): MutableMap<String, Any> {
+        return onFillValues(item, data, contextData, depth)
     }
 
-    protected open fun onFillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
+    protected open fun onFillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, depth: Int): MutableMap<String, Any> {
         data.put("Inheritance", 0, item) { inheritance() }
         data.put("Type", 0, item) { item.javaClass.name }
         data.put("StringValue", 0, item) { this.toString() }
@@ -42,11 +39,11 @@ abstract class BaseExtractor {
         }
     }
 
-    protected fun Any?.extract(): Any {
+    protected fun Any?.extract(depth: Int): Any {
         if (this == null) {
             return "null"
         }
         return (DetailExtractor.findExtractor(this::class.java) ?: ReflectionExtractor(true))
-                .fillValues(this, mutableMapOf(), mutableMapOf())
+                .fillValues(this, mutableMapOf(), mutableMapOf(), depth + 1)
     }
 }

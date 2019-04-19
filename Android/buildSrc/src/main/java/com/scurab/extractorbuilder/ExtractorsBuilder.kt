@@ -32,8 +32,9 @@ class ExtractorsBuilder {
                                                 .parameterizedBy(String::class.asTypeName(), Any::class.asTypeName())
                                                 .copy(nullable = true)
                                         ).build())
+                                .addParameter("depth", Int::class.asClassName())
                                 .returns(ClassName.bestGuess("MutableMap").parameterizedBy(String::class.asTypeName(),Any::class.asTypeName()))
-                                .addStatement("super.onFillValues(item, data, contextData)")
+                                .addStatement("super.onFillValues(item, data, contextData, depth)")
                                 //no escape, as we reference it as ViewGroup.LayoutParams
                                 .addStatement("val v = item as " + (receiverClass.replace("$", ".") + if (structureItem.usingGenerics) "<*>" else ""))
                                 .apply {
@@ -64,7 +65,7 @@ class ExtractorsBuilder {
             mi.isId -> "${mi.methodName}().idName()"
             mi.useExtractor -> {
                 convertToString = ", false"
-                "${mi.methodName}().extract()"
+                "${mi.methodName}().extract(depth)"
             }
             else -> {
                 var methodName = mi.methodName

@@ -15,6 +15,8 @@ import com.scurab.android.anuitor.reflect.Reflector
 import com.scurab.android.anuitor.tools.HttpTools
 import com.scurab.android.anuitor.tools.atLeastApi
 import com.scurab.android.anuitor.tools.ise
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 
 fun Int.idName() = IdsHelper.getNameForId(this)
 fun View.idName() = IdsHelper.getNameForId(id)
@@ -193,4 +195,24 @@ fun View.components() : ViewComponents {
             }
         }
     }
+}
+
+fun Any.allMethods() : Collection<Method> {
+    val result = mutableListOf<Method>()
+    var clazz: Class<*>? = javaClass
+    while(clazz != null && clazz != Object::class.java) {
+        result.addAll(clazz.declaredMethods)
+        clazz = clazz.superclass
+    }
+    return result
+}
+
+fun Any.allFields() : Collection<Field> {
+    val result = mutableListOf<Field>()
+    var clazz: Class<*>? = javaClass
+    while(clazz != null && clazz != Object::class.java) {
+        result.addAll(clazz.declaredFields)
+        clazz = clazz.superclass
+    }
+    return result
 }
