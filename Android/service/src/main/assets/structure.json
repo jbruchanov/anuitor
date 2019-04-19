@@ -59,7 +59,10 @@
             "n": "ApplicationWindowToken:",
             "m": "getApplicationWindowToken"
           },
-          {"m": "getDrawableState" },
+          {
+            "m": "getDrawableState",
+            "t": "DrawableState"
+          },
           {"m": "getDrawingCache" },
           {"m": "getDrawingCacheBackgroundColor" },
           {"m": "getDrawingCacheQuality" },
