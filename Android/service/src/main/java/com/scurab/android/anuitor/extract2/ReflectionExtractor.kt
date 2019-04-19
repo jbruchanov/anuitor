@@ -142,6 +142,12 @@ class ReflectionExtractor(private val useFields: Boolean = false) : BaseExtracto
     private fun Any.asCollection() : Collection<*>? {
         return when {
             this is Array<*> -> return this.toList()
+            this is IntArray -> return this.toList()
+            this is LongArray -> return this.toList()
+            this is ByteArray -> return this.toList()
+            this is ShortArray -> return this.toList()
+            this is BooleanArray -> return this.toList()
+            this is CharArray -> return this.toList()
             this is Collection<*> -> return this
             else -> null
         }

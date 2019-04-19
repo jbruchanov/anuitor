@@ -17,6 +17,7 @@ import com.scurab.android.anuitor.tools.atLeastApi
 import com.scurab.android.anuitor.tools.ise
 import java.lang.reflect.Field
 import java.lang.reflect.Method
+import java.util.*
 
 fun Int.idName() = IdsHelper.getNameForId(this)
 fun View.idName() = IdsHelper.getNameForId(id)
@@ -215,4 +216,30 @@ fun Any.allFields() : Collection<Field> {
         clazz = clazz.superclass
     }
     return result
+}
+
+fun Any.isArray() : Boolean {
+    return when(this) {
+        is Array<*>,
+        is IntArray,
+        is LongArray,
+        is ByteArray,
+        is ShortArray,
+        is BooleanArray,
+        is CharArray -> return true
+        else -> false
+    }
+}
+
+fun Any.toArrayString() : String? {
+    return when(this) {
+        is IntArray -> Arrays.toString(this)
+        is LongArray -> Arrays.toString(this)
+        is ByteArray -> Arrays.toString(this)
+        is ShortArray -> Arrays.toString(this)
+        is BooleanArray -> Arrays.toString(this)
+        is CharArray -> Arrays.toString(this)
+        is Array<*> -> Arrays.toString(this)
+        else -> null
+    }
 }

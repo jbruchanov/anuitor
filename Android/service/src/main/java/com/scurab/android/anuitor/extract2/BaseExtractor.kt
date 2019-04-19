@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.extract2
 
 import android.graphics.drawable.Drawable
 import android.os.Build
+import java.util.*
 
 abstract class BaseExtractor {
 
@@ -21,7 +22,11 @@ abstract class BaseExtractor {
             try {
                 var result: Any? = function(item)
                 if (convertToString) {
-                    result = result?.toString()
+                    result = if (result?.isArray() == true) {
+                        result.toArrayString()
+                    } else {
+                        result?.toString()
+                    }
                 }
                 @Suppress("UNCHECKED_CAST")
                 if (item is Drawable) {
