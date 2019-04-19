@@ -123,7 +123,7 @@ object Translators {
                 "default"
             } else {
                 val name = IdsHelper.getNameForId(state.absoluteValue)
-                val isEnabled = state.absoluteValue > 0
+                val isEnabled = state > 0
                 "$name=$isEnabled"
             }
         }
