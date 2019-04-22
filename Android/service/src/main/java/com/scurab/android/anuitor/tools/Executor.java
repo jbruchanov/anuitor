@@ -58,13 +58,10 @@ public class Executor {
     public static void runInMainThreadBlocking(Handler handler, final Runnable op, int timeout) {
         final Object lock = new Object();
         synchronized (lock) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    op.run();
-                    synchronized (lock) {
-                        lock.notifyAll();
-                    }
+            handler.post(() -> {
+                op.run();
+                synchronized (lock) {
+                    lock.notifyAll();
                 }
             });
 

@@ -115,12 +115,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                     } else {
                         final OutRef<DataResponse> ref = new OutRef<>();
                         final View finalView = view;
-                        Executor.runInMainThreadBlocking(30000, new Runnable() {
-                            @Override
-                            public void run() {
-                                ref.setValue(handleObject(finalView, reflection, finalView.getClass().getName(), "", "", maxDepth));
-                            }
-                        });
+                        Executor.runInMainThreadBlocking(30000, () -> ref.setValue(handleObject(finalView, reflection, finalView.getClass().getName(), "", "", maxDepth)));
                         response = ref.getValue();
                     }
                     return new OKResponse(HttpTools.MimeType.APP_JSON, JSON.toJson(response));

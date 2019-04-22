@@ -54,24 +54,21 @@ public class ScreenViewPlugin extends ActivityPlugin {
         if (view != null) {
             view.getLocationOnScreen(mLocation);
             final Bitmap[] outBitmap = new Bitmap[1];
-            Executor.runInMainThreadBlockingOnlyIfCrashing(new Runnable() {
-                @Override
-                public void run() {
-                    if (mLocation[0] != 0 || mLocation[1] != 0) {//dialog or something, rootview is not at [0,0]
-                        int w = mLocation[0] + view.getWidth();
-                        int h = mLocation[1] + view.getHeight();
-                        outBitmap[0] = onCreateBitmap(w, h);
-                        Canvas c = onCreateCanvas(outBitmap[0]);
-                        c.drawRect(0, 0, w, h, mClearPaint);//clear white background to get transparency
-                        c.translate(mLocation[0], mLocation[1]);
-                        view.draw(c);
-                    } else {
-                        view.destroyDrawingCache();
-                        view.buildDrawingCache(false);
+            Executor.runInMainThreadBlockingOnlyIfCrashing(() -> {
+                if (mLocation[0] != 0 || mLocation[1] != 0) {//dialog or something, rootview is not at [0,0]
+                    int w = mLocation[0] + view.getWidth();
+                    int h = mLocation[1] + view.getHeight();
+                    outBitmap[0] = onCreateBitmap(w, h);
+                    Canvas c = onCreateCanvas(outBitmap[0]);
+                    c.drawRect(0, 0, w, h, mClearPaint);//clear white background to get transparency
+                    c.translate(mLocation[0], mLocation[1]);
+                    view.draw(c);
+                } else {
+                    view.destroyDrawingCache();
+                    view.buildDrawingCache(false);
 
-                        // get bitmap
-                        outBitmap[0] = view.getDrawingCache();
-                    }
+                    // get bitmap
+                    outBitmap[0] = view.getDrawingCache();
                 }
             });
 

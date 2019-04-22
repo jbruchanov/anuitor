@@ -48,12 +48,7 @@ public class ExtractTest extends AndroidTestCase {
                 }
             }
         }
-        Collections.sort(result, new Comparator<Pair<String, Class<?>>>() {
-            @Override
-            public int compare(Pair<String, Class<?>> lhs, Pair<String, Class<?>> rhs) {
-                return lhs.first.compareTo(rhs.first);
-            }
-        });
+        Collections.sort(result, (lhs, rhs) -> lhs.first.compareTo(rhs.first));
         for (Pair<String, Class<?>> name : result) {
             String methodCall = name.first + "()";
             boolean isPrimitive = name.second.isPrimitive();

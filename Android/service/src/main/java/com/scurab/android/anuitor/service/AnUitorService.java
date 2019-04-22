@@ -339,52 +339,49 @@ public class AnUitorService extends Service {
      * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
      */
     public static void startService(final Context context, final int port, final int rawWebZipFileRes, final boolean overwriteWebFolder, final Runnable onFinishCallback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String folder = String.format("%s/%s", context.getCacheDir().toString(), DEFAULT_ROOT_FOLDER);
-                File f = new File(folder);
-                if (overwriteWebFolder || !f.exists()) {
-                    FileSystemTools.deleteFolder(f);
-                    f.mkdir();
-                    try {
-                        String zipFile = folder + "/web.zip";
-                        if (rawWebZipFileRes == -1) {
-                            new File(zipFile).delete();
-                            URL website = new URL("http://anuitor.scurab.com/download/anuitor.zip");
-                            FileSystemTools.copyFile(website.openStream(), zipFile);
-                        } else {
-                            int resId = rawWebZipFileRes;
-                            if (resId == 0) {
-                                resId = R.raw.anuitor;
-                            }
-                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, resId, zipFile);
+        new Thread(() -> {
+            String folder = String.format("%s/%s", context.getCacheDir().toString(), DEFAULT_ROOT_FOLDER);
+            File f = new File(folder);
+            if (overwriteWebFolder || !f.exists()) {
+                FileSystemTools.deleteFolder(f);
+                f.mkdir();
+                try {
+                    String zipFile = folder + "/web.zip";
+                    if (rawWebZipFileRes == -1) {
+                        new File(zipFile).delete();
+                        URL website = new URL("http://anuitor.scurab.com/download/anuitor.zip");
+                        FileSystemTools.copyFile(website.openStream(), zipFile);
+                    } else {
+                        int resId = rawWebZipFileRes;
+                        if (resId == 0) {
+                            resId = R.raw.anuitor;
                         }
-                        ZipTools.extractFolder(zipFile, folder);
-                    } catch (Throwable e) {
-                        Notification notification = new NotificationCompat.Builder(context)
-                        .setSmallIcon(ICON_RES_ID)
-                        .setContentTitle(TAG + " Error")
-                        .setContentText(e.getMessage())
-                        .build();
-                        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        nm.notify(1, notification);
-
-                        Log.e(TAG, e.getMessage());
-                        e.printStackTrace();
-                        f.delete();
+                        ZipTools.copyFileIntoInternalStorageIfNecessary(context, resId, zipFile);
                     }
-                }
+                    ZipTools.extractFolder(zipFile, folder);
+                } catch (Throwable e) {
+                    Notification notification = new NotificationCompat.Builder(context)
+                    .setSmallIcon(ICON_RES_ID)
+                    .setContentTitle(TAG + " Error")
+                    .setContentText(e.getMessage())
+                    .build();
+                    NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    nm.notify(1, notification);
 
-                Intent i = new Intent(context, AnUitorService.class);
-                i.setAction(AnUitorService.START);
-                i.putExtra(AnUitorService.ROOT_FOLDER, DEFAULT_ROOT_FOLDER);
-                i.putExtra(AnUitorService.PORT, port);
-                context.startService(i);
-
-                if (onFinishCallback != null) {
-                    onFinishCallback.run();
+                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
+                    f.delete();
                 }
+            }
+
+            Intent i = new Intent(context, AnUitorService.class);
+            i.setAction(AnUitorService.START);
+            i.putExtra(AnUitorService.ROOT_FOLDER, DEFAULT_ROOT_FOLDER);
+            i.putExtra(AnUitorService.PORT, port);
+            context.startService(i);
+
+            if (onFinishCallback != null) {
+                onFinishCallback.run();
             }
         }).start();
     }

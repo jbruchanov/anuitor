@@ -68,19 +68,16 @@ public class GrooidShell {
 
     public EvalResult evaluateOnMainThread(final String scriptText) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         final OutRef<EvalResult> result = new OutRef<>();
-        Executor.runInMainThreadBlocking(10000, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final EvalResult evalResult = evaluate(scriptText);
-                    result.setValue(evalResult);
-                } catch (Throwable t) {
-                    result.setValue(new EvalResult(t));
-                    t.printStackTrace();
-                }
-                synchronized (result) {
-                    result.notifyAll();
-                }
+        Executor.runInMainThreadBlocking(10000, () -> {
+            try {
+                final EvalResult evalResult = evaluate(scriptText);
+                result.setValue(evalResult);
+            } catch (Throwable t) {
+                result.setValue(new EvalResult(t));
+                t.printStackTrace();
+            }
+            synchronized (result) {
+                result.notifyAll();
             }
         });
         return result.getValue();
@@ -91,14 +88,11 @@ public class GrooidShell {
         final Set<String> classNames = new LinkedHashSet<String>();
         final DexFile dexFile = new DexFile(dexOptions);
         CompilerConfiguration config = new CompilerConfiguration();
-        config.setBytecodePostprocessor(new BytecodeProcessor() {
-            @Override
-            public byte[] processBytecode(String s, byte[] bytes) {
-                ClassDefItem classDefItem = CfTranslator.translate(s + ".class", bytes, cfOptions, dexOptions);
-                dexFile.add(classDefItem);
-                classNames.add(s);
-                return bytes;
-            }
+        config.setBytecodePostprocessor((s, bytes) -> {
+            ClassDefItem classDefItem = CfTranslator.translate(s + ".class", bytes, cfOptions, dexOptions);
+            dexFile.add(classDefItem);
+            classNames.add(s);
+            return bytes;
         });
 
         GrooidClassLoader gcl = new GrooidClassLoader(this.classLoader, config);

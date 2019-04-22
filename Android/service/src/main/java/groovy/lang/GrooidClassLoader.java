@@ -25,11 +25,7 @@ public class GrooidClassLoader extends GroovyClassLoader {
 
     @Override
     protected ClassCollector createCollector(CompilationUnit unit, SourceUnit su) {
-        InnerLoader loader = AccessController.doPrivileged(new PrivilegedAction<InnerLoader>() {
-            public InnerLoader run() {
-                return new InnerLoader(GrooidClassLoader.this);
-            }
-        });
+        InnerLoader loader = AccessController.doPrivileged((PrivilegedAction<InnerLoader>) () -> new InnerLoader(GrooidClassLoader.this));
         return new ClassCollector(loader, unit, su) {
             @Override
             protected Class onClassNode(ClassWriter classWriter, ClassNode classNode) {

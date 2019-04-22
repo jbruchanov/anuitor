@@ -42,58 +42,42 @@ public class ComponentsFragment extends DialogFragment {
         alertDialog.setTag("SimpleTag");
         alertDialog.setTag(R.id.tag_test1, "ComplexTag1");
         alertDialog.setTag(R.id.tag_test2, alertDialog);
-        alertDialog.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) { onShowAlertDialog(); }
-        });
+        alertDialog.setOnClickListener(v -> onShowAlertDialog());
         ll.addView(alertDialog);
 
         Button datePicker = new Button(context);
         datePicker.setText("DatePicker");
-        datePicker.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) { onShowDatePickerDialog(); }
-        });
+        datePicker.setOnClickListener(v -> onShowDatePickerDialog());
         ll.addView(datePicker);
 
         Button dialogFragment = new Button(context);
         dialogFragment.setText("DialogFragment");
-        dialogFragment.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) { onShowDialogFragment(); }
-        });
+        dialogFragment.setOnClickListener(v -> onShowDialogFragment());
         ll.addView(dialogFragment);
 
         Button pBarDialog = new Button(context);
         pBarDialog.setText("ProgressBar");
-        pBarDialog.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) { onShowProgressDialog(); }
-        });
+        pBarDialog.setOnClickListener(v -> onShowProgressDialog());
         ll.addView(pBarDialog);
 
         Button timeDialog = new Button(context);
         timeDialog.setText("TimerPicker");
-        timeDialog.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) { onShowTimePickerDialog(); }
-        });
+        timeDialog.setOnClickListener(v -> onShowTimePickerDialog());
         ll.addView(timeDialog);
 
         Button bottomSheetDialog = new Button(context);
         bottomSheetDialog.setText("BottomSheetDialog");
-        bottomSheetDialog.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) { onShowBottomSheetDialog(); }
-        });
+        bottomSheetDialog.setOnClickListener(v -> onShowBottomSheetDialog());
         ll.addView(bottomSheetDialog);
 
         Button snackBar = new Button(context);
         snackBar.setText("SnackBar");
-        snackBar.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) { onShowSnackBar(); }
-        });
+        snackBar.setOnClickListener(v -> onShowSnackBar());
         ll.addView(snackBar);
 
         Button anotherActivity = new Button(context);
         anotherActivity.setText("AnotherActivity");
-        anotherActivity.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) { onOpenAnotherActivity(); }
-        });
+        anotherActivity.setOnClickListener(v -> onOpenAnotherActivity());
         ll.addView(anotherActivity);
 
         return ll;
@@ -149,12 +133,7 @@ public class ComponentsFragment extends DialogFragment {
 
     protected void onShowSnackBar() {
         Snackbar.make(getView(), R.string.app_name, Snackbar.LENGTH_LONG)
-                .setAction(R.string.title_home, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(), "Click", Toast.LENGTH_LONG).show();
-                    }
-                })
+                .setAction(R.string.title_home, v -> Toast.makeText(v.getContext(), "Click", Toast.LENGTH_LONG).show())
                 .show();
     }
 }

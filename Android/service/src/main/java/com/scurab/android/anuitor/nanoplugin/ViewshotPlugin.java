@@ -119,13 +119,10 @@ public class ViewshotPlugin extends ActivityPlugin {
                                         final Object lock = new Object();
                                         try {
                                             final View finalView = view;
-                                            view.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    finalView.buildDrawingCache(false);
-                                                    synchronized (lock) {
-                                                        lock.notifyAll();
-                                                    }
+                                            view.post(() -> {
+                                                finalView.buildDrawingCache(false);
+                                                synchronized (lock) {
+                                                    lock.notifyAll();
                                                 }
                                             });
                                             synchronized (lock) {
@@ -217,13 +214,10 @@ public class ViewshotPlugin extends ActivityPlugin {
     public static Bitmap drawViewBlocking(final View view, final Rect renderArea, final Paint clearPaint) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             final Bitmap[] lock = new Bitmap[1];
-            view.post(new Runnable() {
-                @Override
-                public void run() {
-                    lock[0] = drawView(view, renderArea, clearPaint);
-                    synchronized (lock) {
-                        lock.notifyAll();
-                    }
+            view.post(() -> {
+                lock[0] = drawView(view, renderArea, clearPaint);
+                synchronized (lock) {
+                    lock.notifyAll();
                 }
             });
             synchronized (lock) {

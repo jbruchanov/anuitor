@@ -28,12 +28,7 @@ public class CoordinatorLayoutFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Click", Toast.LENGTH_LONG).show();
-            }
-        });
+        view.findViewById(R.id.fab).setOnClickListener(v -> Toast.makeText(v.getContext(), "Click", Toast.LENGTH_LONG).show());
 
         final CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) view.findViewById(R.id.navigation).getLayoutParams();
         layoutParams.setBehavior(new BottomBarScrollOffBehavior());

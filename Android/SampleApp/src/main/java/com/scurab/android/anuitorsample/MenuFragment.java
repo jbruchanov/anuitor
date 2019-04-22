@@ -53,17 +53,14 @@ public class MenuFragment extends Fragment {
         mMenuAdapter = new ArrayAdapter<>(getActivity(), R.layout.menu_list_item, items);
         mListView.setAdapter(mMenuAdapter);
         mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                Class<?> clz = itemFragments[i];
-                try {
-                    Fragment f = (Fragment) clz.newInstance();
-                    final BaseActivity activity = getBaseActivity();
-                    activity.openFragment(f, activity instanceof AnotherActivity);
-                } catch (Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+        mListView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            Class<?> clz = itemFragments[i];
+            try {
+                Fragment f = (Fragment) clz.newInstance();
+                final BaseActivity activity = getBaseActivity();
+                activity.openFragment(f, activity instanceof AnotherActivity);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
         return view;

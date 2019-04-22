@@ -40,12 +40,7 @@ public class MainActivity extends BaseActivity {
         mPaneLayout.setParallaxDistance(res.getDimensionPixelSize(R.dimen.left_menu_parallax_distance));
         mPaneLayout.setSliderFadeColor(Color.TRANSPARENT);
         //needs to be posted or invalid size
-        mPaneLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mPaneLayout.openPane();
-            }
-        });
+        mPaneLayout.post(() -> mPaneLayout.openPane());
 
         View v = findViewById(R.id.txt_sample);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotation);
