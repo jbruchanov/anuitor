@@ -1,8 +1,5 @@
 package groovy.lang;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import com.android.dx.Version;
 import com.android.dx.dex.DexFormat;
 import com.android.dx.dex.DexOptions;
@@ -15,7 +12,6 @@ import com.scurab.android.anuitor.model.OutRef;
 import com.scurab.android.anuitor.tools.Executor;
 import com.scurab.android.anuitor.tools.LogCatProvider;
 
-import org.codehaus.groovy.control.BytecodeProcessor;
 import org.codehaus.groovy.control.CompilerConfiguration;
 
 import java.io.ByteArrayOutputStream;

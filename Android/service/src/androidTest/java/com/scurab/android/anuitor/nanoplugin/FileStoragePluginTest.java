@@ -1,13 +1,10 @@
 package com.scurab.android.anuitor.nanoplugin;
 
 import android.os.Environment;
-import android.test.AndroidTestCase;
 
 import com.google.gson.Gson;
 import com.scurab.android.anuitor.model.FSItem;
 import com.scurab.android.anuitor.tools.HttpTools;
-
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

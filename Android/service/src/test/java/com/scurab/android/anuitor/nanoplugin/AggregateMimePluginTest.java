@@ -3,8 +3,6 @@ package com.scurab.android.anuitor.nanoplugin;
 import com.scurab.android.anuitor.tools.HttpTools;
 
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import java.io.File;
 import java.util.Arrays;
@@ -19,7 +17,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;

@@ -1,7 +1,6 @@
 package com.scurab.android.anuitor.sample;
 
 import android.content.Context;
-import android.test.AndroidTestCase;
 
 import com.scurab.android.anuitor.TestHelper;
 

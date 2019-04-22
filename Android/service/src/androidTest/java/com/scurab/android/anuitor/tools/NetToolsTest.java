@@ -1,7 +1,5 @@
 package com.scurab.android.anuitor.tools;
 
-import android.test.AndroidTestCase;
-
 /**
  * Created by jbruchanov on 23/06/2014.
  */
