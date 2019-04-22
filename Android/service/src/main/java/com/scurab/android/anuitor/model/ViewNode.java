@@ -39,6 +39,7 @@ public class ViewNode {
         validateDataSet(Data, position);
         Object owner = data.get(BaseViewExtractorKt.OWNER);
         Owner = owner != null ? owner.toString() : "null";
+        data.remove(BaseViewExtractorKt.OWNER);
     }
 
     public void addChild(ViewNode n) {

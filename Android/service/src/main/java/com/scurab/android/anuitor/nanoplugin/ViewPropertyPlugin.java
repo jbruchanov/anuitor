@@ -41,6 +41,7 @@ import fi.iki.elonen.NanoHTTPD;
 public class ViewPropertyPlugin extends ActivityPlugin {
 
     private static final String PROPERTY = "property";
+    private static final String MAX_DEPTH = "maxDepth";
     private static final String REFLECTION = "reflection";
     private static final String FILE = "viewproperty.json";
     private static final String PATH = "/" + FILE;
@@ -79,6 +80,8 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 if ("undefined".equalsIgnoreCase(property)) {
                     property = null;
                 }
+                String maxDepthStr = qsValue.containsKey(MAX_DEPTH) ? qsValue.get(MAX_DEPTH) : "1";
+                int maxDepth = Integer.parseInt(maxDepthStr);
                 View view = getCurrentRootView(qsValue);
                 view = view != null ? DetailExtractor.findViewByPosition(view, position) : null;
                 if (view != null) {
@@ -108,14 +111,14 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                                 methodName = oMethodName.getValue();
                             }
                         }
-                        response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName);
+                        response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName, maxDepth);
                     } else {
                         final OutRef<DataResponse> ref = new OutRef<>();
                         final View finalView = view;
                         Executor.runInMainThreadBlocking(30000, new Runnable() {
                             @Override
                             public void run() {
-                                ref.setValue(handleObject(finalView, reflection, finalView.getClass().getName(), "", ""));
+                                ref.setValue(handleObject(finalView, reflection, finalView.getClass().getName(), "", "", maxDepth));
                             }
                         });
                         response = ref.getValue();
@@ -147,17 +150,16 @@ public class ViewPropertyPlugin extends ActivityPlugin {
     }
 
     @SuppressWarnings("unchecked")
-    protected DataResponse handleObject(Object object, boolean reflection, String parentType, String name, String methodName) {
+    protected DataResponse handleObject(Object object, boolean reflection, String parentType, String name, String methodName, int maxDepth) {
         DataResponse response = new DataResponse();
         if (object != null) {
             BaseExtractor extractor = reflection ? null : DetailExtractor.findExtractor(object.getClass());
             if (extractor == null) {
-                if (mReflectionExtractor == null) {
-                    mReflectionExtractor = new ReflectionExtractor(true);
-                }
+                mReflectionExtractor = new ReflectionExtractor(true, maxDepth);
                 extractor = mReflectionExtractor;
             }
             final Map<String, Object> data = extractor.fillValues(object, new HashMap<>(), null, 0);
+            data.remove("Owner");
             data.put("Type", object.getClass().getName());
             data.put("1ParentType", parentType);
             data.put("2Name", name);

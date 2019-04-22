@@ -20,7 +20,8 @@ public class GenericTools {
         .append("/viewproperty.json")
         .append("?").append(DataProvider.QRY_PARAM_SCREEN_INDEX).append("=").append(screenIndex)
         .append("&").append(DataProvider.QRY_PARAM_POSITION).append("=").append(position)
-        .append("&").append(DataProvider.QRY_PARAM_PROPERTY).append("=").append(key)       
+        .append("&").append(DataProvider.QRY_PARAM_PROPERTY).append("=").append(key)
+        .append("&").append(DataProvider.QRY_MAX_DEPTH).append("=").append("3")
         .toString();
     }
     

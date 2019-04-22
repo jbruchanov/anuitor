@@ -45,6 +45,7 @@ public class DataProvider {
     
     public static final String QRY_PARAM_POSITION = "position";
     public static final String QRY_PARAM_PROPERTY = "property";    
+    public static final String QRY_MAX_DEPTH = "maxDepth";
 
     /**
      * Generic callback

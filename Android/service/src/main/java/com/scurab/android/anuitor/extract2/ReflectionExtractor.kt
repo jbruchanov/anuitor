@@ -1,29 +1,36 @@
 package com.scurab.android.anuitor.extract2
 
+import android.os.Handler
+import android.os.MessageQueue
 import android.util.Log
 import java.lang.reflect.Modifier
 import java.util.regex.Pattern
 
-private const val MAX_DEPTH = 4
-class ReflectionExtractor(private val useFields: Boolean = false) : BaseExtractor() {
+private const val MAX_DEPTH = 2
+
+class ReflectionExtractor(private val useFields: Boolean = false, private val maxDepth: Int = MAX_DEPTH) : BaseExtractor() {
     companion object {
         /**
          * Fill this with regexp patterns to ignore methods
          */
-        private var IGNORE_PATTERNS = arrayOf(
+        private val IGNORE_PATTERNS = arrayOf(
                 Pattern.compile("add.*", 0),
+                Pattern.compile("as.*", 0),
                 Pattern.compile("begin.*", 0),
                 Pattern.compile("call.*", 0),
                 Pattern.compile("clear.*", 0),
+                Pattern.compile("clone.*", 0),
                 Pattern.compile("commit.*", 0),
                 Pattern.compile("create.*", 0),
                 Pattern.compile("dispatch.*", 0),
                 Pattern.compile("exec.*", 0),
                 Pattern.compile("find.*", 0),
                 Pattern.compile("gen.*", 0),
+                Pattern.compile("lock.*", 0),
                 Pattern.compile("mutate.*", 0),
                 Pattern.compile("on.*", 0),
                 Pattern.compile("open.*", 0),
+                Pattern.compile("obtain.*", 0),
                 Pattern.compile("perform.*", 0),
                 Pattern.compile("pop.*", 0),
                 Pattern.compile("post.*", 0),
@@ -33,6 +40,8 @@ class ReflectionExtractor(private val useFields: Boolean = false) : BaseExtracto
                 Pattern.compile("select.*", 0),
                 Pattern.compile("show.*", 0),
                 Pattern.compile("will.*", 0))
+
+        private val IGNORE_CLASSES = setOf<Class<*>>(MessageQueue::class.java, Handler::class.java)
     }
 
     override fun onFillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, depth: Int): MutableMap<String, Any> {
@@ -41,8 +50,8 @@ class ReflectionExtractor(private val useFields: Boolean = false) : BaseExtracto
     }
 
     private fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, cycleHandler: MutableSet<Any>, depth: Int): MutableMap<String, Any> {
-        if (depth >= MAX_DEPTH) {
-            data["depth"] = "max:$depth reached"
+        if (depth >= maxDepth) {
+//            data["depth"] = "max:$depth reached"
             return data
         }
         item.allMethods()
@@ -50,12 +59,13 @@ class ReflectionExtractor(private val useFields: Boolean = false) : BaseExtracto
                 .filter { it.parameterTypes.isEmpty() /*&& it.returnType.isPrimitive*/ && it.returnType != Void.TYPE }
                 .forEach { m ->
                     try {
+                        Log.d("ReflectionExtractor", "Method:${m.name} Object:$item")
                         m.isAccessible = true
                         m.invoke(item)?.let { v ->
                             storeItem(m.name, v, data, cycleHandler, depth)
                         }
                     } catch (e: Throwable) {
-                        Log.e("Extractor", String.format("Name:%s Exception:%s", m.name, e.javaClass.simpleName))
+                        Log.e("ReflectionExtractor", "Name:${m.name} Object:$item Exception:${e.javaClass.simpleName}")
                     }
                 }
 
@@ -64,12 +74,13 @@ class ReflectionExtractor(private val useFields: Boolean = false) : BaseExtracto
                     .filter { !(Modifier.isStatic(it.modifiers) || it.name.startsWith("shadow$")) }
                     .forEach { f ->
                         try {
+                            Log.d("ReflectionExtractor", "Name:${f.name} Object:$item")
                             f.isAccessible = true
                             f.get(item)?.let { v ->
                                 storeItem(f.name, v, data, cycleHandler, depth)
                             }
                         } catch (e: Throwable) {
-                            Log.e("Extractor", String.format("Name:%s Exception:%s", f.name, e.javaClass.simpleName))
+                            Log.e("ReflectionExtractor", "Name:${f.name} Object:$item Exception:${e.javaClass.simpleName}")
                         }
                     }
         }
@@ -77,18 +88,28 @@ class ReflectionExtractor(private val useFields: Boolean = false) : BaseExtracto
     }
 
     private fun storeItem(name: String, v: Any, data: MutableMap<String, Any>, cycleHandler: MutableSet<Any>, depth: Int) {
+        if (depth >= maxDepth) {
+            return
+        }
+        if (IGNORE_CLASSES.contains(v.javaClass)) {
+            return
+        }
         if (v.javaClass.isPrimitiveType()) {
             data[name] = v
         } else if (!cycleHandler.contains(v)) {
             cycleHandler.add(v)
-            data[name] = v.asCollection()?.let { collection ->
-                collection.map {item ->
-                    item?.let {
-                        (DetailExtractor.findExtractor(it.javaClass)
-                                ?.fillValues(it, mutableMapOf(), data, depth + 1))
-                                ?: this.fillValues(it, mutableMapOf(), data, cycleHandler, depth + 1)
-                    }
-                }
+            data[name] = v.asCollection()
+                    ?.let { collection ->
+                        //avoid having a lot of empty objects in array
+                        if(depth < maxDepth) {
+                            collection.map { item ->
+                                item?.let {
+                                    (DetailExtractor.findExtractor(it.javaClass)
+                                            ?.fillValues(it, mutableMapOf(), data, depth + 1))
+                                            ?: this.fillValues(it, mutableMapOf(), data, cycleHandler, depth + 1)
+                                }
+                            }
+                        }
             } ?: (DetailExtractor.findExtractor(v.javaClass)
                     ?.fillValues(v, mutableMapOf(), data, depth + 1))
                     ?: this.fillValues(v, mutableMapOf(), data, cycleHandler, depth + 1)
