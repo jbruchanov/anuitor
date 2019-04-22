@@ -35,6 +35,10 @@ public class ObjectJSO extends JavaScriptObject {
     
     public final native String getFieldValue(String key)
     /*-{
-        return String(this[key]);
+        try {
+            return String(this[key]);
+        } catch(e) {
+            return JSON.stringify(this[key]);
+        }
     }-*/;
 }

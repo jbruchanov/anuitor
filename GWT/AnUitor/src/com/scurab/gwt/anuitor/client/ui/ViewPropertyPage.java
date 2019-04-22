@@ -57,7 +57,7 @@ public class ViewPropertyPage extends Composite {
         initDataTable();
         loadData();
         detailScrollPanel.setHeight((Window.getClientHeight()) + "px");
-        detailScrollPanel.setWidth((Window.getClientWidth() - 450) + "px");
+        detailScrollPanel.setWidth((Window.getClientWidth() / 3) + "px");
         rawJson.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -118,11 +118,15 @@ public class ViewPropertyPage extends Composite {
         Arrays.sort(keys);
 
         for (String key : keys) {
+            try {
             String value = jso.getFieldValue(key);
-            if ("Type".equals(key)) {
-                list.add(0, new Pair(key, value));
-            } else {
-                list.add(new Pair(key, value));
+                if ("Type".equals(key)) {
+                    list.add(0, new Pair(key, value));
+                } else {
+                    list.add(new Pair(key, value));
+                }
+            } catch (Throwable t) {
+                list.add(new Pair(key, t.getMessage()));
             }
         }
         return list;

@@ -158,7 +158,8 @@ public final class TableTools {
                             sb.append(createLink(createGoogle(cleanInstanceHash(value)), value));
                         }
                         return;
-                    } else if (value.startsWith("com.scurab") && !value.contains("anuitorsample")) {
+                    } else if (value.startsWith("com.scurab") && 
+                            !(value.contains("anuitorsample") || value.endsWith("Extractor"))) {
                         sb.append(createLink(createGithub(cleanInstanceHash(value)), value));
                         return;
                     }
