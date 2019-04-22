@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mPaneLayout = (SlidingPaneLayout) findViewById(R.id.sliding_pane_layout);
+        mPaneLayout = findViewById(R.id.sliding_pane_layout);
         Resources res = getResources();
         mPaneLayout.setParallaxDistance(res.getDimensionPixelSize(R.dimen.left_menu_parallax_distance));
         mPaneLayout.setSliderFadeColor(Color.TRANSPARENT);

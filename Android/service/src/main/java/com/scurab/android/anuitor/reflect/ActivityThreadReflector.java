@@ -34,7 +34,7 @@ public class ActivityThreadReflector extends Reflector<Object> {
     public List<Activity> getActivities() {
         final ArrayList<Activity> result = new ArrayList<>();
         for (Object mActivityRecord : ((ArrayMap<?, Object>) getFieldValue(mReal, "mActivities")).values()) {
-            result.add((Activity) getFieldValue(mActivityRecord, "activity"));
+            result.add(getFieldValue(mActivityRecord, "activity"));
         }
         return result;
     }

@@ -143,7 +143,7 @@ public class SimpleWebServer extends NanoHTTPD {
                 int dot = args[i].indexOf('=');
                 if (dot > 0) {
                     String name = args[i].substring(0, dot);
-                    String value = args[i].substring(dot + 1, args[i].length());
+                    String value = args[i].substring(dot + 1);
                     options.put(name, value);
                 }
             }

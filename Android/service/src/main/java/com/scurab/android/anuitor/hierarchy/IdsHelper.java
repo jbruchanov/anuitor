@@ -38,7 +38,7 @@ public class IdsHelper {
         string, style, styleable,
         transition,
         unknown,
-        xml;
+        xml
     }
 
     static final HashMap<String, SparseArray<String>> VALUES;

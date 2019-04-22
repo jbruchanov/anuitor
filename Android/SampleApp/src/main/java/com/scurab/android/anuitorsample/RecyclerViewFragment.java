@@ -72,8 +72,8 @@ public class RecyclerViewFragment extends Fragment {
 
         public SampleViewHolder(View itemView) {
             super(itemView);
-            mOrder = (TextView) itemView.findViewById(R.id.order);
-            mData = (TextView) itemView.findViewById(R.id.data);
+            mOrder = itemView.findViewById(R.id.order);
+            mData = itemView.findViewById(R.id.data);
         }
     }
 }

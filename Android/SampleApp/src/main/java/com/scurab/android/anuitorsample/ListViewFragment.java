@@ -57,8 +57,8 @@ public class ListViewFragment extends Fragment {
                 convertView = View.inflate(mContext, R.layout.list_item, null);
                 tag = new Tag();
                 convertView.setTag(tag);
-                tag.order = (TextView) convertView.findViewById(R.id.order);
-                tag.data = (TextView) convertView.findViewById(R.id.data);
+                tag.order = convertView.findViewById(R.id.order);
+                tag.data = convertView.findViewById(R.id.data);
             } else {
                 tag = (Tag) convertView.getTag();
             }

@@ -48,7 +48,7 @@ public class MenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.menu, container, false);
-        mListView = (ListView) view.findViewById(android.R.id.list);
+        mListView = view.findViewById(android.R.id.list);
         String[] items = itemFragmentNames;
         mMenuAdapter = new ArrayAdapter<>(getActivity(), R.layout.menu_list_item, items);
         mListView.setAdapter(mMenuAdapter);

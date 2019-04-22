@@ -27,9 +27,9 @@ public final class NetTools {
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
-                        String ip = inetAddress.getHostAddress().toString();
+                        String ip = inetAddress.getHostAddress();
                         if (isIPv4(ip)) {
-                            sb.append(inetAddress.getHostAddress().toString() + ",");
+                            sb.append(inetAddress.getHostAddress() + ",");
                         }
                     }
                 }

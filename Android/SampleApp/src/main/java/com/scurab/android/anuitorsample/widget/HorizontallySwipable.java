@@ -9,5 +9,5 @@ package com.scurab.android.anuitorsample.widget;
  * Time: 09:49
  */
 public interface HorizontallySwipable {
-    public boolean canScrollHorizontally(int dx);
+    boolean canScrollHorizontally(int dx);
 }

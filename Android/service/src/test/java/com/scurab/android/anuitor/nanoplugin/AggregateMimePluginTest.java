@@ -113,7 +113,7 @@ public class AggregateMimePluginTest {
     private BasePlugin createBasePlugin(String mime, String uri) {
         BasePlugin bp = mock(HelpBasePlugin.class);
         doCallRealMethod().when(bp).canServeUri(anyString(), any(File.class));
-        doCallRealMethod().when(bp).canServeUri(anyString(), (File)isNull());
+        doCallRealMethod().when(bp).canServeUri(anyString(), isNull());
         doReturn(mime).when(bp).mimeType();
         doReturn(new String[]{uri}).when(bp).files();
         return bp;
