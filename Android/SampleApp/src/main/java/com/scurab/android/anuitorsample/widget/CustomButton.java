@@ -2,9 +2,7 @@ package com.scurab.android.anuitorsample.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.scurab.android.anuitor.hierarchy.ExportField;
 import com.scurab.android.anuitor.hierarchy.ExportView;

@@ -2,8 +2,6 @@ package com.scurab.android.anuitorsample.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.animation.RotateAnimation;
-import android.widget.TextView;
 
 /**
  * Created by jbruchanov on 01/07/2014.

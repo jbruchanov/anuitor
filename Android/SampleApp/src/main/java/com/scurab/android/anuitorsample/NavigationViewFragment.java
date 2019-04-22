@@ -1,12 +1,11 @@
 package com.scurab.android.anuitorsample;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import com.google.android.material.navigation.NavigationView;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
