@@ -1,6 +1,6 @@
 package com.scurab.android.anuitorsample;
 
-import android.app.Application;
+import androidx.multidex.MultiDexApplication;
 
 import com.scurab.android.anuitor.extract2.DetailExtractor;
 
@@ -9,7 +9,7 @@ import com.scurab.android.anuitor.extract2.DetailExtractor;
  *
  * @since 2014-05-15.
  */
-public class SampleApplication extends Application {
+public class SampleApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {

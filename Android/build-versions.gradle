@@ -18,4 +18,5 @@ ext {
     junit = "4.12"
     viewPager2 = "1.0.0-alpha03"
     coordinatorLayout = "1.1.0-alpha01"
+    multidex = "1.0.3"
 }

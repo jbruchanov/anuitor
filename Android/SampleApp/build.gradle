@@ -12,9 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
-        if (groovyEnabled) {
-            multiDexEnabled true
-        }
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -33,6 +31,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
 
+    implementation "com.android.support:multidex:${multidex}"
     implementation "androidx.recyclerview:recyclerview:${androidX}"
     implementation "androidx.cardview:cardview:${androidX}"
     implementation "androidx.gridlayout:gridlayout:${androidX}"
