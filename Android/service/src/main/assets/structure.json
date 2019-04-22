@@ -1506,23 +1506,23 @@
           {"m": "getFontSpacing"},
           {
             "m": "getMaskFilter",
-            "c": "getMaskFilter().javaClass.name"
+            "c": "getMaskFilter()?.javaClass?.name"
           },
           {
             "m": "getPathEffect",
-            "c": "getPathEffect().javaClass.name"
+            "c": "getPathEffect()?.javaClass?.name"
           },
           {
             "m": "getShader",
-            "c": "getShader().javaClass.name"
+            "c": "getShader()?.javaClass?.name"
           },
           {
             "m": "getStrokeCap",
-            "c": "getStrokeCap().name"
+            "c": "getStrokeCap()?.name"
           },
           {
             "m": "getStrokeJoin",
-            "c": "getStrokeJoin().name"
+            "c": "getStrokeJoin()?.name"
           },
           {"m": "getStrokeMiter"},
           {"m": "getStrokeWidth"},
@@ -1540,7 +1540,7 @@
           {"m": "getTypeface"},
           {
             "m": "getXfermode",
-            "c": "getXfermode().javaClass.name"
+            "c": "getXfermode()?.javaClass?.name"
           },
           {"m": "isAntiAlias"},
           {"m": "isDither"},
