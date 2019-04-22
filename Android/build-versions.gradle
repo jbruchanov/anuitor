@@ -3,7 +3,7 @@
 ext {
     minSdk = 14
     compileSdk = 28
-    targetSdk = 27 //28 breaks anything with reflection
+    targetSdk = 28 //28 breaks anything with reflection
     androidX = "1.0.0"
     gson = "2.8.2"
     jackson = "2.9.2"
