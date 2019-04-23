@@ -62,6 +62,7 @@ public final class TableTools {
         }
         java.util.Collections.sort(list);
 
+        moveToFirst(list, "StringValue");
         moveToFirst(list, "Context:");
         moveToFirst(list, "Inheritance");
         list.add(0, new Pair(ViewFields.OWNER, viewNode.getOwner(), true, viewNode.getPosition()));
