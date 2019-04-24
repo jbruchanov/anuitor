@@ -100,18 +100,21 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
             cycleHandler.add(v)
             data[name] = v.asCollection()
                     ?.let { collection ->
-                        //avoid having a lot of empty objects in array
-                        if(depth < maxDepth) {
-                            collection.map { item ->
+                        var result: Any? = null
+                        if (depth < maxDepth) {
+                            result = collection.map { item ->
                                 item?.let {
-                                    (DetailExtractor.findExtractor(it.javaClass)
-                                            ?.fillValues(it, mutableMapOf(), data, depth + 1))
-                                            ?: this.fillValues(it, mutableMapOf(), data, cycleHandler, depth + 1)
+                                    if (it.javaClass.isPrimitiveType()) {
+                                        it
+                                    } else {
+                                        it.toString()
+                                    }
                                 }
                             }
                         }
-            } ?: (DetailExtractor.findExtractor(v.javaClass)
-                    ?.fillValues(v, mutableMapOf(), data, depth + 1))
+                        result
+                    }
+                    //no specific extractors, that could potentially create circular reference
                     ?: this.fillValues(v, mutableMapOf(), data, cycleHandler, depth + 1)
         } else {
             data[name] = v.toString()
