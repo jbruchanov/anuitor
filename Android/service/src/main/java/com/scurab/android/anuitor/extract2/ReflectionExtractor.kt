@@ -51,7 +51,6 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
 
     private fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, cycleHandler: MutableSet<Any>, depth: Int): MutableMap<String, Any> {
         if (depth >= maxDepth) {
-//            data["depth"] = "max:$depth reached"
             return data
         }
         item.allMethods()
@@ -59,7 +58,6 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
                 .filter { it.parameterTypes.isEmpty() /*&& it.returnType.isPrimitive*/ && it.returnType != Void.TYPE }
                 .forEach { m ->
                     try {
-                        Log.d("ReflectionExtractor", "Method:${m.name} Object:$item")
                         m.isAccessible = true
                         m.invoke(item)?.let { v ->
                             storeItem(m.name, v, data, cycleHandler, depth)
@@ -74,7 +72,6 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
                     .filter { !(Modifier.isStatic(it.modifiers) || it.name.startsWith("shadow$")) }
                     .forEach { f ->
                         try {
-                            Log.d("ReflectionExtractor", "Name:${f.name} Object:$item")
                             f.isAccessible = true
                             f.get(item)?.let { v ->
                                 storeItem(f.name, v, data, cycleHandler, depth)
