@@ -107,7 +107,7 @@ public class IdsHelper {
      */
     public static String getNameForId(int id) {
         if (id == -1) {
-            return "undefined";
+            return "View.NO_ID";
         }
         for (String type : VALUES.keySet()) {
             SparseArray<String> array = VALUES.get(type);
