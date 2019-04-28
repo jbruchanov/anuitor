@@ -52,7 +52,9 @@ enum class TranslatorName {
     ViewImportantForAutoFill,
     ViewFocusable,
     ViewTextAlignment,
-    ViewTextDirection;
+    ViewTextDirection,
+    ViewScrollBarType,
+    ViewGroupDescendantFocusability;
 }
 
 
@@ -287,6 +289,7 @@ object Translators {
             +(View.FOCUSABLES_TOUCH_MODE to "FOCUSABLES_TOUCH_MODE")
             atLeastApi(Build.VERSION_CODES.O) {
                 +(View.FOCUSABLE to "FOCUSABLE")
+                +(View.FOCUSABLE_AUTO to "FOCUSABLE_AUTO")
                 +(View.NOT_FOCUSABLE to "NOT_FOCUSABLE")
             }
         }
@@ -316,6 +319,19 @@ object Translators {
                     +(View.TEXT_DIRECTION_FIRST_STRONG_RTL to "TEXT_DIRECTION_FIRST_STRONG_RTL")
                 }
             }
+        }
+
+        itemTranslator(TranslatorName.ViewScrollBarType) {
+            +(View.SCROLLBARS_INSIDE_OVERLAY to "SCROLLBARS_INSIDE_OVERLAY")
+            +(View.SCROLLBARS_INSIDE_INSET to "SCROLLBARS_INSIDE_INSET")
+            +(View.SCROLLBARS_OUTSIDE_OVERLAY to "SCROLLBARS_OUTSIDE_OVERLAY")
+            +(View.SCROLLBARS_OUTSIDE_INSET to "SCROLLBARS_OUTSIDE_INSET")
+        }
+
+        itemTranslator(TranslatorName.ViewGroupDescendantFocusability) {
+            +(ViewGroup.FOCUS_BEFORE_DESCENDANTS to "FOCUS_BEFORE_DESCENDANTS")
+            +(ViewGroup.FOCUS_AFTER_DESCENDANTS to "FOCUS_AFTER_DESCENDANTS")
+            +(ViewGroup.FOCUS_BLOCK_DESCENDANTS to "FOCUS_BLOCK_DESCENDANTS")
         }
 
         //androidx

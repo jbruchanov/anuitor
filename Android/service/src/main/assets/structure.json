@@ -97,7 +97,10 @@
             "m": "getRootView"
           },
           {"m": "getScrollBarStyle" },
-          {"m": "getSolidColor" },
+          {
+            "m": "getSolidColor",
+            "c": "getSolidColor()?.stringColor()"
+          },
           {"m": "getVerticalScrollbarWidth" },
           {"m": "getViewTreeObserver" },
           {
@@ -338,7 +341,10 @@
       "items": {
         "1": [
           {"m" : "getChildCount"},
-          {"m" : "getDescendantFocusability"},
+          {
+            "m": "getDescendantFocusability",
+            "t": "ViewGroupDescendantFocusability"
+          },
           {"m" : "getFocusedChild"},
           {"m" : "getLayoutAnimation"},
           {"m" : "getLayoutAnimationListener"},
