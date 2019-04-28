@@ -7,14 +7,12 @@ android {
 
     defaultConfig {
         minSdkVersion minSdk
-        targetSdkVersion targetSdk//keep it below M, tests+permission don't work
+        targetSdkVersion targetSdk
 
         versionCode 1
         versionName "1.0"
-        if (groovyEnabled) {
-            multiDexEnabled true
-        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
