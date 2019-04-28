@@ -48,12 +48,12 @@ abstract class BaseViewExtractor : BaseExtractor() {
 
     private fun fillMandatoryValues(v: View, context: ExtractingContext) {
         context.apply {
-            data["Extractor"] = javaClass.name
+            data["Extractor"] = this@BaseViewExtractor.javaClass.name
             data["Width"] = v.width
             data["Height"] = v.height
 
             val isViewGroup = v is ViewGroup && !DetailExtractor.isExcludedViewGroup(v.javaClass.name)
-            val isParentVisible = contextData?.get("_Visibility") as? Int? ?: View.VISIBLE
+            val isParentVisible = contextData["_Visibility"] as? Int? ?: View.VISIBLE
             val isVisible = v.visibility == View.VISIBLE && (View.VISIBLE == isParentVisible)
             val hasBackground = v.background != null
             val shouldRender = isVisible && v.isShown && (isViewGroup && hasBackground || !isViewGroup)
