@@ -10,6 +10,7 @@ import android.view.View;
 import com.scurab.android.anuitor.extract2.BaseExtractor;
 import com.scurab.android.anuitor.extract2.BaseViewExtractorKt;
 import com.scurab.android.anuitor.extract2.DetailExtractor;
+import com.scurab.android.anuitor.extract2.ExtractingContext;
 import com.scurab.android.anuitor.reflect.ActivityThreadReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
@@ -78,7 +79,7 @@ public class ScreenStructurePlugin extends BasePlugin {
                 fillActivity(activity, data);
             } else {
                 BaseExtractor extractor = DetailExtractor.getExtractor(v);
-                extractor.fillValues(v, data, null, 0);
+                extractor.fillValues(v, new ExtractingContext(data));
                 if (c instanceof ContextWrapper) {
                     c = ((ContextWrapper) c).getBaseContext();
                     if (c instanceof Activity) {
@@ -100,7 +101,7 @@ public class ScreenStructurePlugin extends BasePlugin {
     private void fillActivity(@Nullable Activity activity, HashMap<String, Object> data){
         if (activity != null) {
             BaseExtractor extractor = DetailExtractor.getExtractor(activity.getClass());
-            extractor.fillValues(activity, data, null, 0);
+            extractor.fillValues(activity, new ExtractingContext(data));
         }
     }
 

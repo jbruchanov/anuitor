@@ -59,14 +59,13 @@ fun StringBuilder.stripLastChars(amount: Int): StringBuilder {
     return this
 }
 
-fun Bundle.extract(data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?): MutableMap<String, Any> {
+fun Bundle.extract(context: ExtractingContext) {
     keySet().forEach { key ->
-        data[key] = get(key) ?: "null"
+        context.data[key] = get(key) ?: "null"
     }
-    return data
 }
 
-fun IntArray.extractRelativeLayoutRules(data: MutableMap<String, Any>): MutableMap<String, Any> {
+fun IntArray.extractRelativeLayoutRules(context: ExtractingContext) {
     val relativeLayoutRules = arrayOf("leftOf", "rightOf", "above", "below", "alignBaseline",
             "alignLeft", "alignTop", "alignRight", "alignBottom", "alignParentLeft", "alignParentTop", "alignParentRight",
             "alignParentBottom", "center", "centerHorizontal", "centerVertical")
@@ -77,7 +76,7 @@ fun IntArray.extractRelativeLayoutRules(data: MutableMap<String, Any>): MutableM
 
     forEachIndexed{ i, rule ->
         if(rule != 0) {
-            data[relativeLayoutParamRuleName(i)] =
+            context.data[relativeLayoutParamRuleName(i)] =
                     when (rule) {
                         RelativeLayout.TRUE -> true
                         0 -> "false/NO_ID"
@@ -85,7 +84,6 @@ fun IntArray.extractRelativeLayoutRules(data: MutableMap<String, Any>): MutableM
                     }
         }
     }
-    return data
 }
 
 fun IntArray.drawableStates(): String {

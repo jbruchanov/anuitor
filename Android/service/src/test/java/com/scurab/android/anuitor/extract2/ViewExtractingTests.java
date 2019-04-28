@@ -35,7 +35,7 @@ public class ViewExtractingTests {
                 View v = spy(createView((Class<? extends View>) clz));
 
                 HelpHashMap hhm = new HelpHashMap(ve);
-                ve.fillValues(v, hhm, null);
+                ve.fillValues(v, new ExtractingContext(hhm));
 
                 //TODO: is there any way how to test methods have been called at most 1 time ?
                 assertTrue(hhm.size() > 0);

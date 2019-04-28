@@ -1457,7 +1457,7 @@
         "1" : [
           {
             "n": "",
-            "c": "v.extract(data, contextData)"
+            "c": "v.extract(context)"
           }
         ]
       }
@@ -1699,7 +1699,7 @@
           {
             "n": "",
             "m": "getRules",
-            "c": "v.getRules().extractRelativeLayoutRules(data)"
+            "c": "v.getRules().extractRelativeLayoutRules(context)"
           }
         ]
       }

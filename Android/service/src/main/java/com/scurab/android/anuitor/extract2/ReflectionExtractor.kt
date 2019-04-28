@@ -44,14 +44,9 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
         private val IGNORE_CLASSES = setOf<Class<*>>(MessageQueue::class.java, Handler::class.java)
     }
 
-    override fun onFillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, depth: Int): MutableMap<String, Any> {
-        super.onFillValues(item, data, contextData, depth)
-        return this.fillValues(item, data, contextData ?: mutableMapOf(), mutableSetOf(), depth)
-    }
-
-    private fun fillValues(item: Any, data: MutableMap<String, Any>, contextData: MutableMap<String, Any>?, cycleHandler: MutableSet<Any>, depth: Int): MutableMap<String, Any> {
-        if (depth >= maxDepth) {
-            return data
+    override fun onFillValues(item: Any, context: ExtractingContext) {
+        if (context.depth >= maxDepth) {
+            return
         }
         item.allMethods()
                 .filter { !it.name.shouldIgnore() }
@@ -60,7 +55,7 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
                     try {
                         m.isAccessible = true
                         m.invoke(item)?.let { v ->
-                            storeItem(m.name, v, data, cycleHandler, depth)
+                            storeItem(m.name, v, context)
                         }
                     } catch (e: Throwable) {
                         Log.e("ReflectionExtractor", "Name:${m.name} Object:$item Exception:${e.javaClass.simpleName}")
@@ -74,47 +69,48 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
                         try {
                             f.isAccessible = true
                             f.get(item)?.let { v ->
-                                storeItem(f.name, v, data, cycleHandler, depth)
+                                storeItem(f.name, v, context)
                             }
                         } catch (e: Throwable) {
                             Log.e("ReflectionExtractor", "Name:${f.name} Object:$item Exception:${e.javaClass.simpleName}")
                         }
                     }
         }
-        return data
     }
 
-    private fun storeItem(name: String, v: Any, data: MutableMap<String, Any>, cycleHandler: MutableSet<Any>, depth: Int) {
-        if (depth >= maxDepth) {
+    private fun storeItem(name: String, v: Any, context: ExtractingContext) {
+        if (context.depth >= maxDepth) {
             return
         }
         if (IGNORE_CLASSES.contains(v.javaClass)) {
             return
         }
-        if (v.javaClass.isPrimitiveType()) {
-            data[name] = v
-        } else if (!cycleHandler.contains(v)) {
-            cycleHandler.add(v)
-            data[name] = v.asCollection()
-                    ?.let { collection ->
-                        var result: Any? = null
-                        if (depth < maxDepth) {
-                            result = collection.map { item ->
-                                item?.let {
-                                    if (it.javaClass.isPrimitiveType()) {
-                                        it
-                                    } else {
-                                        it.toString()
+        context.apply {
+            if (v.javaClass.isPrimitiveType()) {
+                data[name] = v
+            } else if (!cycleHandler.contains(v)) {
+                cycleHandler.add(v)
+                data[name] = v.asCollection()
+                        ?.let { collection ->
+                            var result: Any? = null
+                            if (depth < maxDepth) {
+                                result = collection.map { item ->
+                                    item?.let {
+                                        if (it.javaClass.isPrimitiveType()) {
+                                            it
+                                        } else {
+                                            it.toString()
+                                        }
                                     }
                                 }
                             }
+                            result
                         }
-                        result
-                    }
-                    //no specific extractors, that could potentially create circular reference
-                    ?: this.fillValues(v, mutableMapOf(), data, cycleHandler, depth + 1)
-        } else {
-            data[name] = v.toString()
+                        //no specific extractors, that could potentially create circular reference
+                        ?: this@ReflectionExtractor.fillValues(v, ExtractingContext(contextData = data, depth = depth + 1))
+            } else {
+                data[name] = v.toString()
+            }
         }
     }
 

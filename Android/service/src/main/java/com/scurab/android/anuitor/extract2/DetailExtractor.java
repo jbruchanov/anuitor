@@ -174,7 +174,7 @@ public final class DetailExtractor {
         int[] counter = {0};
         ViewNode vn = new ViewNode(rootView.getId(), 0, counter[0], lazy
                 ? null
-                : getExtractor(rootView).fillValues(rootView, new HashMap<>(), null, 0));
+                : getExtractor(rootView).fillValues(rootView, new ExtractingContext()));
 
 
         counter[0]++;
@@ -190,7 +190,7 @@ public final class DetailExtractor {
                 BaseExtractor extractor = getExtractor(child);
                 Map<String, Object> result = new HashMap<>();
 
-                result = lazy ? null : extractor.fillValues(child, result, parentData, 0);
+                result = lazy ? null : extractor.fillValues(child, new ExtractingContext(result, parentData, 0, new HashSet<>()));
 
                 ViewNode vn = new ViewNode(
                         child.getId(),
