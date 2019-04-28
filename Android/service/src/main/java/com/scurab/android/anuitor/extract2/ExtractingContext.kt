@@ -15,7 +15,7 @@ data class ExtractingContext(
     fun <T> put(name: String, minApi: Int, item: T, convertToString: Boolean = true, codeBlock: T.() -> Any?) {
         if (Build.VERSION.SDK_INT >= minApi) {
             try {
-                var result: Any? = codeBlock(item)
+                var result: Any? = codeBlock(item)?.verbosed()
                 if (convertToString) {
                     result = if (result?.isArray() == true) {
                         result.toArrayString()
@@ -36,6 +36,16 @@ data class ExtractingContext(
             } catch (e: Throwable) {
                 data[name] = e.message ?: "Null error message"
             }
+        }
+    }
+
+    private fun Any.verbosed(): Any {
+        return when {
+            this == Int.MAX_VALUE -> "$this (Int.MAX_VALUE)"
+            this == Int.MIN_VALUE -> "$this (Int.MIN_VALUE)"
+            this == Long.MIN_VALUE -> "$this (Long.MIN_VALUE)"
+            this == Long.MAX_VALUE -> "$this (Long.MIN_VALUE)"
+            else -> this
         }
     }
 }
