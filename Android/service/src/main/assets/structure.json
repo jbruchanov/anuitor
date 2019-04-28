@@ -35,10 +35,22 @@
             "m": "getVisibility",
             "t": "Visibility"
           },
-          {"m": "getNextFocusDownId" },
-          {"m": "getNextFocusLeftId" },
-          {"m": "getNextFocusRightId" },
-          {"m": "getNextFocusUpId" },
+          {
+            "m": "getNextFocusDownId",
+            "c": "getNextFocusDownId().idName()"
+          },
+          {
+            "m": "getNextFocusLeftId",
+            "c": "getNextFocusLeftId().idName()"
+          },
+          {
+            "m": "getNextFocusRightId",
+            "c": "getNextFocusRightId().idName()"
+          },
+          {
+            "m": "getNextFocusUpId",
+            "c": "getNextFocusUpId().idName()"
+          },
           {"m": "getScrollX" },
           {"m": "getScrollY" },
           {
@@ -71,8 +83,11 @@
           {"m": "getHorizontalFadingEdgeLength" },
           {"m": "getMeasuredHeight" },
           {"m": "getMeasuredWidth" },
-          {"m": "getOnFocusChangeListener" },
-          {"m": "getOverScrollMode" },
+          {"m": "getOnFocusChangeListener"},
+          {
+            "m": "getOverScrollMode",
+            "t": "ViewOverScroll"
+          },
           {
             "n": "Parent:",
             "m": "getParent"
@@ -132,7 +147,10 @@
             "t": "ViewLayerType"
           },
           {"m": "getMatrix" },
-          {"m": "getNextFocusForwardId" },
+          {
+            "m": "getNextFocusForwardId",
+            "c": "getNextFocusForwardId().idName()"
+          },
           {"m": "getX" },
           {"m": "getY" },
           {"m": "getMeasuredHeightAndState" },
@@ -156,7 +174,10 @@
         "16": [
           {"m": "getResources" },
           {"m": "getCameraDistance" },
-          {"m": "getImportantForAccessibility" },
+          {
+            "m": "getImportantForAccessibility",
+            "t": "ImportantForA11Y"
+          },
           {"m": "getMinimumWidth" },
           {"m": "getMinimumHeight" },
           {"m": "getAccessibilityNodeProvider" },
@@ -174,16 +195,28 @@
           {"m": "hasTransientState" }
         ],
         "17": [
-          {"m": "getLabelFor" },
-          {"m": "getLayoutDirection" },
+          {
+            "m": "getLabelFor",
+            "c": "getLabelFor().idName()"
+          },
+          {
+            "m": "getLayoutDirection",
+            "t": "ViewLayoutDirection"
+          },
           {
             "n": "Display:",
             "m": "getDisplay"
           },
           {"m": "getPaddingEnd" },
           {"m": "getPaddingStart" },
-          {"m": "getTextAlignment" },
-          {"m": "getTextDirection" },
+          {
+            "m": "getTextAlignment",
+            "t": "ViewTextAlignment"
+          },
+          {
+            "m": "getTextDirection",
+            "t": "ViewTextDirection"
+          },
           {"m": "isPaddingRelative" }
         ],
         "18": [
@@ -222,8 +255,14 @@
           {"m": "isNestedScrollingEnabled" }
         ],
         "22": [
-          {"m": "getAccessibilityTraversalAfter" },
-          {"m": "getAccessibilityTraversalBefore" }
+          {
+            "m": "getAccessibilityTraversalAfter",
+            "c": "getAccessibilityTraversalAfter().idName()"
+          },
+          {
+            "m": "getAccessibilityTraversalBefore",
+            "c": "getAccessibilityTraversalBefore().idName()"
+          }
         ],
         "23": [
           {"m": "getAccessibilityClassName" },
@@ -259,9 +298,18 @@
           {"m": "getAutofillType" },
           {"m": "getAutofillValue" },
           {"m": "getDefaultFocusHighlightEnabled" },
-          {"m": "getFocusable" },
-          {"m": "getImportantForAutofill" },
-          {"m": "getNextClusterForwardId" },
+          {
+            "m": "getFocusable",
+            "t": "ViewFocusable"
+          },
+          {
+            "m": "getImportantForAutofill",
+            "t": "ViewImportantForAutoFill"
+          },
+          {
+            "m": "getNextClusterForwardId",
+            "c": "getNextClusterForwardId().idName()"
+          },
           {"m": "getTooltipText" },
           {"m": "hasExplicitFocusable" },
           {"m": "hasPointerCapture" },
@@ -271,8 +319,14 @@
         ],
         "28": [
           {"m": "getAccessibilityPaneTitle" },
-          {"m": "getOutlineAmbientShadowColor" },
-          {"m": "getOutlineSpotShadowColor" },
+          {
+            "m": "getOutlineAmbientShadowColor",
+            "c": "getOutlineAmbientShadowColor().stringColor()"
+          },
+          {
+            "m": "getOutlineSpotShadowColor",
+            "c": "getOutlineAmbientShadowColor().stringColor()"
+          },
           {"m": "isAccessibilityHeading" },
           {"m": "isPivotSet" },
           {"m": "isScreenReaderFocusable" }
@@ -1391,7 +1445,10 @@
           {"m": "getDirtyBounds", "c": "getDirtyBounds().toShortString()"}
         ],
         "23": [
-          {"m": "getLayoutDirection", "t": "LayoutDirection"},
+          {
+            "m": "getLayoutDirection",
+            "t": "ViewLayoutDirection"
+          },
           {"m": "isFilterBitmap"}
         ]
       }

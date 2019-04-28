@@ -28,7 +28,7 @@ enum class TranslatorName {
     Gravity,
     LayoutParams,
     ImportantForA11Y,
-    LayoutDirection,
+    ViewLayoutDirection,
     ChoiceMode,
     DrawerLockMode,
     GridLayoutOrientation,
@@ -47,7 +47,12 @@ enum class TranslatorName {
     Ellipsize,
     TextStyle,
     ScaleType,
-    ViewPager2ScrollState;
+    ViewPager2ScrollState,
+    ViewOverScroll,
+    ViewImportantForAutoFill,
+    ViewFocusable,
+    ViewTextAlignment,
+    ViewTextDirection;
 }
 
 
@@ -80,12 +85,14 @@ object Translators {
                 +(View.IMPORTANT_FOR_ACCESSIBILITY_YES to "YES")
                 +(View.IMPORTANT_FOR_ACCESSIBILITY_NO to "NO")
                 +(View.IMPORTANT_FOR_ACCESSIBILITY_AUTO to "AUTO")
-                +(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS to "NO_HIDE_DESCENDANTS")
+                atLeastApi(Build.VERSION_CODES.KITKAT) {
+                    +(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS to "NO_HIDE_DESCENDANTS")
+                }
             }
         }
 
         atLeastApi(Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            itemTranslator(TranslatorName.LayoutDirection) {
+            itemTranslator(TranslatorName.ViewLayoutDirection) {
                 +(View.LAYOUT_DIRECTION_INHERIT to "INHERIT")
                 +(View.LAYOUT_DIRECTION_LOCALE to "LOCALE")
                 +(View.LAYOUT_DIRECTION_LTR to "LTR")
@@ -257,6 +264,57 @@ object Translators {
             itemTranslator(TranslatorName.ViewGroupLayoutMode) {
                 +(ViewGroup.LAYOUT_MODE_CLIP_BOUNDS to "LAYOUT_MODE_CLIP_BOUNDS")
                 +(ViewGroup.LAYOUT_MODE_OPTICAL_BOUNDS to "LAYOUT_MODE_OPTICAL_BOUNDS")
+            }
+        }
+
+        itemTranslator(TranslatorName.ViewOverScroll) {
+            +(View.OVER_SCROLL_NEVER to "OVER_SCROLL_NEVER")
+            +(View.OVER_SCROLL_ALWAYS to "OVER_SCROLL_ALWAYS")
+            +(View.OVER_SCROLL_IF_CONTENT_SCROLLS to "OVER_SCROLL_IF_CONTENT_SCROLLS")
+        }
+
+        atLeastApi(Build.VERSION_CODES.O) {
+            itemTranslator(TranslatorName.ViewImportantForAutoFill) {
+                +(View.IMPORTANT_FOR_AUTOFILL_YES_EXCLUDE_DESCENDANTS to "IMPORTANT_FOR_AUTOFILL_YES_EXCLUDE_DESCENDANTS")
+                +(View.IMPORTANT_FOR_AUTOFILL_YES to "IMPORTANT_FOR_AUTOFILL_YES")
+                +(View.IMPORTANT_FOR_AUTOFILL_AUTO to "IMPORTANT_FOR_AUTOFILL_AUTO")
+                +(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS to "IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS")
+                +(View.IMPORTANT_FOR_AUTOFILL_NO to "IMPORTANT_FOR_AUTOFILL_NO")
+            }
+        }
+
+        itemTranslator(TranslatorName.ViewFocusable) {
+            +(View.FOCUSABLES_TOUCH_MODE to "FOCUSABLES_TOUCH_MODE")
+            atLeastApi(Build.VERSION_CODES.O) {
+                +(View.FOCUSABLE to "FOCUSABLE")
+                +(View.NOT_FOCUSABLE to "NOT_FOCUSABLE")
+            }
+        }
+
+        atLeastApi(Build.VERSION_CODES.KITKAT) {
+            itemTranslator(TranslatorName.ViewTextAlignment) {
+                +(View.TEXT_ALIGNMENT_INHERIT to "TEXT_ALIGNMENT_INHERIT")
+                +(View.TEXT_ALIGNMENT_GRAVITY to "TEXT_ALIGNMENT_GRAVITY")
+                +(View.TEXT_ALIGNMENT_TEXT_START to "TEXT_ALIGNMENT_TEXT_START")
+                +(View.TEXT_ALIGNMENT_TEXT_END to "TEXT_ALIGNMENT_TEXT_END")
+                +(View.TEXT_ALIGNMENT_CENTER to "TEXT_ALIGNMENT_CENTER")
+                +(View.TEXT_ALIGNMENT_VIEW_START to "TEXT_ALIGNMENT_VIEW_START")
+                +(View.TEXT_ALIGNMENT_VIEW_END to "TEXT_ALIGNMENT_VIEW_END")
+            }
+        }
+
+        atLeastApi(Build.VERSION_CODES.KITKAT) {
+            itemTranslator(TranslatorName.ViewTextDirection) {
+                +(View.TEXT_DIRECTION_INHERIT to "TEXT_DIRECTION_INHERIT")
+                +(View.TEXT_DIRECTION_FIRST_STRONG to "TEXT_DIRECTION_FIRST_STRONG")
+                +(View.TEXT_DIRECTION_ANY_RTL to "TEXT_DIRECTION_ANY_RTL")
+                +(View.TEXT_DIRECTION_LTR to "TEXT_DIRECTION_LTR")
+                +(View.TEXT_DIRECTION_RTL to "TEXT_DIRECTION_RTL")
+                +(View.TEXT_DIRECTION_LOCALE to "TEXT_DIRECTION_LOCALE")
+                atLeastApi(Build.VERSION_CODES.M) {
+                    +(View.TEXT_DIRECTION_FIRST_STRONG_LTR to "TEXT_DIRECTION_FIRST_STRONG_LTR")
+                    +(View.TEXT_DIRECTION_FIRST_STRONG_RTL to "TEXT_DIRECTION_FIRST_STRONG_RTL")
+                }
             }
         }
 
