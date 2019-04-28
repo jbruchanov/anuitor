@@ -155,7 +155,7 @@ public final class TableTools {
                     if (isInheritance) {
                         sb.append(SafeHtmlUtils.fromTrustedString(value.replaceAll(">", "&gt;<br/>")));
                         return;
-                    } else if (value.startsWith("com.android") || value.startsWith("android.")) {
+                    } else if (value.startsWith("com.android") || value.startsWith("android.") || value.startsWith("androidx.")) {
                         sb.append(createLink(createGoogle(cleanInstanceHash(value)), value));
                         return;
                     } else if (value.startsWith("com.scurab")
