@@ -12,7 +12,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.40"
     }
 }
 
@@ -35,9 +35,9 @@ compileTestKotlin {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "com.squareup:kotlinpoet:$kotlin_poet"
-    compile "androidx.annotation:annotation:${androidX}"
-    compile "com.google.code.gson:gson:${gson}"
+    implementation "com.squareup:kotlinpoet:$kotlin_poet"
+    implementation "androidx.annotation:annotation:${androidX}"
+    implementation "com.google.code.gson:gson:${gson}"
 
-    testCompile "junit:junit:$junit"
+    testImplementation "junit:junit:$junit"
 }

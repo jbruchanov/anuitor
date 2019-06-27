@@ -9,14 +9,15 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Looper;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.scurab.android.anuitor.extract2.DetailExtractor;
+import androidx.annotation.Nullable;
+
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 

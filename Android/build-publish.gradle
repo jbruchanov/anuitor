@@ -1,0 +1,131 @@
+apply plugin: 'maven-publish'
+
+afterEvaluate {
+    task sourcesJar(type: Jar) {
+        if (project.extensions.findByName("android") != null) {
+            from android.sourceSets.main.java.source.collect { project.file(it) }
+        } else {
+            from sourceSets.main.allSource
+        }
+        archiveClassifier = 'sources'
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.scurab'
+            artifactId = 'anuitor'
+            version = '0.9.12'
+
+            pom {
+                name = 'AnUitor'
+                description = 'UI debug tool for Android'
+                url = 'http://anuitor.scurab.com'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'Jiri Bruchanov'
+                        email = 'jbruchanov@gmail.com'
+                        organization = 'Bruchanov'
+                        organizationUrl = 'http://www.bruchanov.name'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/jbruchanov/AnUitor'
+                    developerConnection = 'scm:git:https://github.com/jbruchanov/AnUitor'
+                    url = 'https://github.com/jbruchanov/anuitor'
+                }
+
+                withXml { xmlProvider ->
+                    xmlProvider.includeDependencies(project)
+                }
+            }
+        }
+    }
+}
+
+//region extensions
+XmlProvider.metaClass.includeDependencies = { Project project ->
+    def node = delegate.asNode()
+    //remove anything what could be already defined there, necessary for java-lib
+    node.removeNodeIfExists("dependencies")
+
+    final dependenciesNode = node.appendNode('dependencies')
+
+    //`dependency configuration` to `pom scope`
+    final confsMap = [
+            //order is important, in case of different scopes, later dep overwrites previous one
+            implementation: "runtime",
+            compile       : "compile",
+            api           : "compile"] as LinkedHashMap //order matters
+
+    def map = [:]
+    //save unique deps with maven scope
+    confsMap.each { configuration, depScope ->
+        project.configurations[configuration].getDependencies().each { dep ->
+            map[dep] = depScope
+        }
+    }
+
+    map.forEach { dependency, scope ->
+        dependenciesNode.addDependency(dependency, scope)
+    }
+}
+
+//helper function to add a dependency into
+Node.metaClass.addDependency = { Dependency dep, String scope ->
+    boolean isProjectDependency = dep instanceof ProjectDependency
+    boolean ignoreDependency = dep.group == null || dep.version == null || dep.name == null ||
+            dep.version == "unspecified" || dep.name == "unspecified"
+
+    def name, group, version
+    if (isProjectDependency) {
+        //use name + gradle.properties values, this is local subproject dep
+        def projectDep = dep as ProjectDependency
+        name = projectDep.name
+        group = project.groupId
+        version = project.versionName
+    } else if (!ignoreDependency) {
+        name = dep.name
+        group = dep.group
+        version = dep.version
+    } else {
+        return
+    }
+
+    final dependencyNode = delegate.appendNode('dependency')
+    dependencyNode.appendNode('groupId', group)
+    dependencyNode.appendNode('artifactId', name)
+    dependencyNode.appendNode('version', version)
+    dependencyNode.appendNode('scope', scope)
+
+    if (!dep.transitive) {
+        // If this dependency is transitive, we should force exclude all its dependencies them from the POM
+        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+        exclusionNode.appendNode('groupId', '*')
+        exclusionNode.appendNode('artifactId', '*')
+    } else if (!dep.properties.excludeRules.empty) {
+        // Otherwise add specified exclude rules
+        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+        dep.properties.excludeRules.each { ExcludeRule rule ->
+            exclusionNode.appendNode('groupId', rule.group ?: '*')
+            exclusionNode.appendNode('artifactId', rule.module ?: '*')
+        }
+    }
+
+    return
+}
+
+Node.metaClass.removeNodeIfExists = { String tag ->
+    def child = delegate[tag] as NodeList
+    if (!child.isEmpty()) {
+        delegate.remove(child)
+    }
+}
+//endregion extensions

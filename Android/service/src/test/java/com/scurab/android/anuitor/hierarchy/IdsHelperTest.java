@@ -2,26 +2,23 @@ package com.scurab.android.anuitor.hierarchy;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import com.scurab.android.anuitor.C;
 import com.scurab.android.anuitor.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.HashMap;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jbruchanov on 12.6.2014.
  */
-@Config(manifest = C.MANIFEST, sdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class IdsHelperTest {
 

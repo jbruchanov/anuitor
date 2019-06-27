@@ -9,15 +9,14 @@ import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.View;
 
-import com.scurab.android.anuitor.extract2.BaseExtractor;
-import com.scurab.android.anuitor.extract2.BaseViewExtractorKt;
-import com.scurab.android.anuitor.extract2.DetailExtractor;
+import com.scurab.android.anuitor.Constants;
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
-
+import com.scurab.android.anuitor.extract2.BaseExtractor;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.extract2.ExtractingContext;
-import com.scurab.android.anuitor.extract2.ReflectionExtractor;
 import com.scurab.android.anuitor.extract2.ExtractorExtMethodsKt;
 import com.scurab.android.anuitor.extract2.IFragmentDelegate;
+import com.scurab.android.anuitor.extract2.ReflectionExtractor;
 import com.scurab.android.anuitor.extract2.ReflectionHelper;
 import com.scurab.android.anuitor.model.DataResponse;
 import com.scurab.android.anuitor.model.OutRef;
@@ -90,7 +89,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                     if (property != null) {
                         Object propertyValue;
                         String methodName;
-                        if (BaseViewExtractorKt.OWNER.equals(property)) {
+                        if (Constants.OWNER.equals(property)) {
                             propertyValue = ExtractorExtMethodsKt.components(view).findOwnerComponent(view);
                             if (propertyValue instanceof IFragmentDelegate) {
                                 propertyValue = ((IFragmentDelegate) propertyValue).getFragment();

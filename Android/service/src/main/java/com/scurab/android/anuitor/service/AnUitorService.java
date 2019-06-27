@@ -12,10 +12,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.scurab.android.anuitor.R;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
@@ -223,10 +224,10 @@ public class AnUitorService extends Service {
                         .setDefaults(defaults)
                         .setContentText(msg)
                         .setSmallIcon(ICON_RES_ID)
-                        .setPriority(Notification.PRIORITY_HIGH)
                         .setContentIntent(createContentIntent());
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    builder.setPriority(Notification.PRIORITY_HIGH);
                     builder.setStyle(new Notification.BigTextStyle().bigText(msg));
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

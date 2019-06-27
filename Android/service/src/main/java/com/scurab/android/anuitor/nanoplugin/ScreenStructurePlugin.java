@@ -3,12 +3,13 @@ package com.scurab.android.anuitor.nanoplugin;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.scurab.android.anuitor.Constants;
 import com.scurab.android.anuitor.extract2.BaseExtractor;
-import com.scurab.android.anuitor.extract2.BaseViewExtractorKt;
 import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.extract2.ExtractingContext;
 import com.scurab.android.anuitor.reflect.ActivityThreadReflector;
@@ -89,7 +90,7 @@ public class ScreenStructurePlugin extends BasePlugin {
                     }
                 }
             }
-            data.remove(BaseViewExtractorKt.OWNER);
+            data.remove(Constants.OWNER);
         }
 
         Collections.reverse(resultDataSet);//stack order

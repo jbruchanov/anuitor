@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply from: "$rootDir/build-android.gradle"
+
+dependencies {
+    api project(":webserver")
+    api "androidx.annotation:annotation:$androidXAnnotations"
+
+    compileOnly "com.google.code.gson:gson:${gson}"
+    compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"
+
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.robolectric:robolectric:${robolectric}"
+    testImplementation "org.mockito:mockito-core:${mockito}"
+    androidTestImplementation "org.mockito:mockito-core:${mockito}"
+}

@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply from: "$rootDir/build-android.gradle"
+
+android {
+    lintOptions {
+        abortOnError false
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                pom {
+                    name = 'AnUitor - Groovy plugin'
+                }
+                artifactId = 'anuitor-groovy'
+                artifact tasks.bundleReleaseAar
+                artifact tasks.sourcesJar
+            }
+        }
+    }
+}
+
+dependencies {
+    compileOnly project(":core")
+
+    implementation "com.google.android.tools:dx:${dx}"
+    implementation "org.codehaus.groovy:groovy:${groovy}"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+}

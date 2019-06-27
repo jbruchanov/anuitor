@@ -2,13 +2,12 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import com.scurab.android.anuitor.tools.HttpTools;
 
+import java.io.File;
 import java.util.Map;
 
-import static com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON;
-
-import java.io.File;
-
 import fi.iki.elonen.NanoHTTPD;
+
+import static com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON;
 
 
 /**

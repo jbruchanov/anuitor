@@ -2,7 +2,6 @@ package com.scurab.android.anuitor.extract2.translator
 
 import com.scurab.android.anuitor.extract2.TranslatorName
 import com.scurab.android.anuitor.extract2.stripLastChars
-import java.lang.StringBuilder
 
 class ItemTranslator(private val name: TranslatorName, private val binary: Boolean) : Translator {
     private val mapping = mutableMapOf<Int, String>()

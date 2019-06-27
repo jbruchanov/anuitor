@@ -3,15 +3,15 @@ package com.scurab.android.anuitor.extract2;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
 import com.scurab.android.anuitor.model.ViewNode;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * User: jbruchanov

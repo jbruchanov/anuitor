@@ -3,17 +3,9 @@ package com.scurab.android.anuitor.reflect;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.scurab.android.anuitor.tools.DOM2XmlPullBuilder;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-
-import javax.xml.transform.TransformerException;
 
 /**
  * Created by jbruchanov on 22/05/2014.
@@ -101,10 +93,6 @@ public abstract class Reflector<T> {
             return float.class;
         }
         return clz;
-    }
-
-    protected String transformToString(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException, TransformerException {
-        return DOM2XmlPullBuilder.transform(xmlPullParser);
     }
 
     public static <T> T getFieldValue(Object obj, String fieldName) {

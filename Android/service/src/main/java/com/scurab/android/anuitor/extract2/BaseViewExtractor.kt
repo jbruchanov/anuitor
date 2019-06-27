@@ -5,16 +5,11 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import com.scurab.android.anuitor.Constants.COMPONENTS
+import com.scurab.android.anuitor.Constants.OWNER
 import com.scurab.android.anuitor.tools.atLeastApi
 
-const val COMPONENTS = "_Components"
-const val OWNER = "Owner"
-
 abstract class BaseViewExtractor : BaseExtractor() {
-
-    companion object {
-        val mandatoryKeys = arrayOf("_ScaleX", "_ScaleY", "_Visibility", "_RenderViewContent", "Position", "LocationScreenX", "LocationScreenY", "Height", "Width", "Type")
-    }
 
     final override fun fillValues(item: Any, context: ExtractingContext): MutableMap<String, Any> {
         val viewComponents = context.contextData[COMPONENTS] as? ViewComponents
