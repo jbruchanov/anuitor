@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.scurab.android.anuitor.R;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
+import com.scurab.android.anuitor.json.JsonRef;
 import com.scurab.android.anuitor.reflect.WindowManagerProvider;
 import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
@@ -340,6 +341,7 @@ public class AnUitorService extends Service {
      * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
      */
     public static void startService(final Context context, final int port, final int rawWebZipFileRes, final boolean overwriteWebFolder, final Runnable onFinishCallback) {
+        JsonRef.initJson();
         new Thread(() -> {
             String folder = String.format("%s/%s", context.getCacheDir().toString(), DEFAULT_ROOT_FOLDER);
             File f = new File(folder);

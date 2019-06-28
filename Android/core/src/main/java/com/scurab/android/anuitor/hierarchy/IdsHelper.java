@@ -5,6 +5,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 
+import com.scurab.android.anuitor.json.JsonRef;
 import com.scurab.android.anuitor.model.Pair;
 import com.scurab.android.anuitor.model.Tuple;
 import com.scurab.android.anuitor.nanoplugin.BasePlugin;
@@ -177,6 +178,6 @@ public class IdsHelper {
                 location = null;
             }
         }
-        return BasePlugin.initJson().toJson(result); //TODO: put GSON reference to one place
+        return JsonRef.JSON.toJson(result);
     }
 }

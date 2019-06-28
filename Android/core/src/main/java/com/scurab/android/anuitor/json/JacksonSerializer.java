@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class JacksonSerializer implements JsonSerializer {
 
     private final ObjectMapper mObjectMapper;

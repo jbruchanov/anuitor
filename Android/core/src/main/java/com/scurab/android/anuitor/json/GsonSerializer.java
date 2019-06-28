@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+@SuppressWarnings("unused")
 public class GsonSerializer implements JsonSerializer {
 
     private final Gson mGson;
