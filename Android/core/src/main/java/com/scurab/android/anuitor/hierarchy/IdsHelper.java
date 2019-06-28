@@ -52,10 +52,8 @@ public class IdsHelper {
     /**
      * Load values
      * @param Rclass must be class of your application R.class
-     * @throws NoSuchFieldException
-     * @throws ClassNotFoundException
      */
-    public static void loadValues(Class<?> Rclass) throws NoSuchFieldException, ClassNotFoundException {
+    public static void loadValues(Class<?> Rclass) {
         if (!VALUES.isEmpty()) {
             VALUES.clear();
         }

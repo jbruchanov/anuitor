@@ -43,7 +43,7 @@ public class IdsHelperTest {
     }
 
     @Test
-    public void testGetJson() throws NoSuchFieldException, ClassNotFoundException {
+    public void testGetJson() {
         IdsHelper.loadValues(R.class);
         String s = IdsHelper.toJson();
         HashMap hashMap = new Gson().fromJson(s, HashMap.class);

@@ -37,6 +37,7 @@ public class AnotherActivity extends BaseActivity {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected Class<Fragment> getInitFragment() throws ClassNotFoundException {
         return (Class<Fragment>) Class.forName(getIntent().getStringExtra(ARG_INIT_FRAGMENT));
     }

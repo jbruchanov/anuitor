@@ -10,6 +10,7 @@ import java.util.Arrays;
 /**
  * Created by jbruchanov on 22/05/2014.
  */
+@SuppressWarnings("unchecked")
 public abstract class Reflector<T> {
 
     protected final T mReal;

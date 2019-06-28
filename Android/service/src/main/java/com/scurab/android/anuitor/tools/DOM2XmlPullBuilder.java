@@ -305,7 +305,7 @@ public class DOM2XmlPullBuilder {
 
     private static final char SPACE = ' ';
 
-    private static String naiveFormatLine(String line) throws IOException, XmlPullParserException {
+    private static String naiveFormatLine(String line) {
         int offset = getFrontOffset(line);
         List<String> attrs = getElements(line);
         if (attrs.size() == 1) {
