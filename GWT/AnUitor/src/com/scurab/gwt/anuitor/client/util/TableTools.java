@@ -31,6 +31,10 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 
 public final class TableTools {
 
+    public interface Filter<T> {
+        boolean accept(T item);
+    }
+    
     /**
      * Create data model for tableview based on {@link ViewNodeJSO}
      * 
@@ -38,6 +42,17 @@ public final class TableTools {
      * @return
      */
     public static ListDataProvider<Pair> createDataProvider(ViewNodeJSO viewNode) {
+        return createDataProvider(viewNode, null);
+    }
+        
+    /**
+     * Create data model for tableview based on {@link ViewNodeJSO}
+     * 
+     * @param viewNode
+     * @param filter optional filter to filter out some items
+     * @return
+     */
+    public static ListDataProvider<Pair> createDataProvider(ViewNodeJSO viewNode, Filter<Pair> filter) {
         ListDataProvider<Pair> dataProvider = new ListDataProvider<Pair>();
         List<Pair> list = dataProvider.getList();
         Set<String> keys = viewNode.getDataKeys();
@@ -51,7 +66,11 @@ public final class TableTools {
             try {
                 String value = viewNode.getStringedValue(key);
                 clickable &= !"null".equals(value);
-                list.add(new Pair(key, value, clickable, viewNode.getPosition()));
+                final Pair p = new Pair(key, value, clickable, viewNode.getPosition());
+                boolean accept = filter == null || filter.accept(p);
+                if(accept) { 
+                    list.add(p);
+                }
             } catch (Exception e) {
                 sb.append(key).append("\n" + e.getMessage());
             }

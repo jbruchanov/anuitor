@@ -57,9 +57,12 @@ import com.scurab.gwt.anuitor.client.util.CanvasTools;
 import com.scurab.gwt.anuitor.client.util.CellTreeTools;
 import com.scurab.gwt.anuitor.client.util.CollectionTools;
 import com.scurab.gwt.anuitor.client.util.ConfigHelper;
+import com.scurab.gwt.anuitor.client.util.DebounceTimer;
 import com.scurab.gwt.anuitor.client.util.HTMLColors;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
+import com.scurab.gwt.anuitor.client.util.StringTools;
 import com.scurab.gwt.anuitor.client.util.TableTools;
+import com.scurab.gwt.anuitor.client.util.TableTools.Filter;
 import com.scurab.gwt.anuitor.client.util.ViewMesh;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnSelectionChangedListener;
@@ -95,7 +98,9 @@ public class ScreenPreviewPage extends Composite {
     TextBox gridSize;
     @UiField
     SplitLayoutPanel splitLayoutPanel;
-    @UiField(provided = true)
+    @UiField
+    TextBox filter;
+    @UiField(provided = true)    
     CellTable<Pair> cellTable = new CellTable<Pair>();
 
     /*
@@ -140,14 +145,22 @@ public class ScreenPreviewPage extends Composite {
     private MyTimer mTimer = new MyTimer();
     /* There is a selected view on screen */
     private boolean mSelectedView = false;
-    /* Download root for view hierarchy */
+    /* Root for view hierarchy */
     private ViewNodeJSO mRoot;
+    /* Last known selected node */
+    private ViewNodeJSO mSelectedNode;
     /* show cross base on image, not perfect UX, new canvas just for it would be better... */
     private boolean mDrawCross = false;
     /* ignore for mouse position traversing, e.g. for disabling touch_blockers */
     private Set<ViewNodeJSO> mIgnored = new HashSet<ViewNodeJSO>();
     private int mScreenId = 0;
     private String mSelectionColor;
+    private final DebounceTimer<String> mFilterDebounce = new DebounceTimer<String>(new DebounceTimer.Callback<String>() {
+        @Override
+        public void onAction(String filter) {            
+            updateFilter(filter, false);
+        }       
+    });
 
     interface TestPageUiBinder extends UiBinder<Widget, ScreenPreviewPage> {
     }
@@ -347,6 +360,13 @@ public class ScreenPreviewPage extends Composite {
                 enqueuGridUpdate();
             }
         });
+        
+        filter.addKeyUpHandler(new KeyUpHandler() {            
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
+                mFilterDebounce.postAction(filter.getText());
+            }
+        });
 
         AbsolutePanel ap = new AbsolutePanel();
         flowPanel.add(ap);
@@ -486,7 +506,9 @@ public class ScreenPreviewPage extends Composite {
      * @param viewNode
      */
     private void onShowTableDetail(ViewNodeJSO viewNode) {
-        TableTools.createDataProvider(viewNode).addDataDisplay(cellTable);
+        mSelectedNode = viewNode;
+        updateFilter(filter.getText(), false);
+        //TableTools.createDataProvider(viewNode).addDataDisplay(cellTable);        
     }
 
     /**
@@ -660,6 +682,23 @@ public class ScreenPreviewPage extends Composite {
             mCanvasGrid.getContext2d().clearRect(0, 0, w, h);
         }
     }
+    
+    private void updateFilter(final String filter, boolean regexp) {
+        if (mSelectedNode != null) {
+            final String filterExpr = StringTools.filterExpression(filter);            
+            TableTools.createDataProvider(mSelectedNode, new Filter<Pair>() {
+                @Override
+                public boolean accept(Pair item) {
+                    if(filterExpr != null) {
+                        return item.key.toLowerCase().contains(filterExpr)
+                         || StringTools.emptyIfNull(item.value).contains(filterExpr);
+                    } else {
+                        return true;
+                    }
+                }
+            }).addDataDisplay(cellTable);
+        }
+    }      
 
     /**
      * Timer for little delay between mouse move and "hover", performance issue
