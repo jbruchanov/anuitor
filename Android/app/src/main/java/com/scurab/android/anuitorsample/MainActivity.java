@@ -55,13 +55,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        AnUitorService.startService(this, 8081, 0, true, null);
-        AnUitorClientConfig.addTypeHighlighting(Button.class, "rgba(255, 0, 255, 0.15)");
-    }
-
-    @Override
     public void openFragment(Fragment f, boolean add) {
         super.openFragment(f, add);
         mPaneLayout.closePane();
