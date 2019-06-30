@@ -14,6 +14,8 @@ import com.scurab.android.anuitor.tools.HttpTools;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -48,8 +50,10 @@ public class ScreenViewPlugin extends ActivityPlugin {
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        final View view = getCurrentRootView(HttpTools.parseQueryString(session.getQueryParameterString()));
-        ByteArrayInputStream resultInputStream = null;
+        HashMap<String, String> qsValue = HttpTools.parseQueryString(session.getQueryParameterString());
+        final View view = getCurrentRootView(qsValue);
+        ByteArrayInputStream resultInputStream;
+        NanoHTTPD.Response response;
 
         if (view != null) {
             view.getLocationOnScreen(mLocation);
@@ -80,12 +84,10 @@ public class ScreenViewPlugin extends ActivityPlugin {
                 resultInputStream = new ByteArrayInputStream(bos.toByteArray());
                 b.recycle();
             }
+            response = new OKResponse(IMAGE_PNG, resultInputStream);
         } else {
-            resultInputStream = new ByteArrayInputStream(new byte[0]);
+            response = new Response(NanoHTTPD.Response.Status.NOT_FOUND, IMAGE_PNG, (InputStream) null);
         }
-
-
-        NanoHTTPD.Response response = new OKResponse(IMAGE_PNG, resultInputStream);
         return response;
     }
 

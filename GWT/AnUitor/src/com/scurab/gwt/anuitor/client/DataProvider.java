@@ -10,6 +10,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.scurab.gwt.anuitor.client.model.DataResponseJSO;
 import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.ObjectJSO;
@@ -37,7 +38,8 @@ public class DataProvider {
     private static final String VIEW_PROPERTY = "/viewproperty.json";
     private static final String GROOVY = "/groovy";
     
-    public static final int HTTP_OK = 200;    
+    public static final int HTTP_OK = 200;
+    public static final int HTTP_NOT_FOUND = 404;  
     public static final String QRY_PARAM_SCREEN_INDEX = "screenIndex";
     public static final String SCREEN_INDEX_QRY = "?" + QRY_PARAM_SCREEN_INDEX + "=";
     public static final String SCREEN = (DEMO ? SAMPLE_DATA : "") + "/screen.png";
@@ -137,6 +139,7 @@ public class DataProvider {
      */
     private static <T extends JavaScriptObject> void sendRequest(String url, final AsyncCallback<T> callback){
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+        builder.setHeader("Cache-Control", "no-cache");
         try {
             builder.sendRequest(null, new ReqCallback<T>(callback));                      
         } catch (Exception e) {
@@ -160,7 +163,8 @@ public class DataProvider {
 
         @Override
         public void onResponseReceived(Request request, Response response) {
-            if (HTTP_OK == response.getStatusCode()) {
+            final int code = response.getStatusCode();
+            if (HTTP_OK == code) {
                 try {
                     String value = response.getText();                 
                     T t = JsonUtils.safeEval(value);
@@ -168,6 +172,8 @@ public class DataProvider {
                 } catch (Exception e) {
                     mCallback.onError(request, response, e);
                 }
+            } else if (HTTP_NOT_FOUND == code) {
+                mCallback.onError(request, response, new Exception("Not found, Is selected Activity running?"));                                          
             } else {
                 mCallback.onError(request, response, new Exception("ErrCode:" + response.getStatusCode()));
             }

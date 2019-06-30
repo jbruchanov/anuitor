@@ -9,6 +9,7 @@ import com.scurab.android.anuitor.tools.HttpTools;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -38,6 +39,7 @@ public class ViewHierarchyPlugin extends ActivityPlugin {
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         View view = getCurrentRootView(HttpTools.parseQueryString(session.getQueryParameterString()));
         String json;
+        NanoHTTPD.Response response;
         if (view != null) {
             ViewNode vn = DetailExtractor.parse(view, false);
             try {
@@ -46,11 +48,11 @@ public class ViewHierarchyPlugin extends ActivityPlugin {
                 json = String.format("{\"exception\":\"%s\"}", e.getMessage());
                 e.printStackTrace();
             }
+            response = new OKResponse(APP_JSON, new ByteArrayInputStream(json.getBytes()));
         } else {
-            json = "{}";
+            response = new Response(NanoHTTPD.Response.Status.NOT_FOUND, APP_JSON, (InputStream) null);
         }
 
-        NanoHTTPD.Response response = new OKResponse(APP_JSON, new ByteArrayInputStream(json.getBytes()));
         return response;
     }
 

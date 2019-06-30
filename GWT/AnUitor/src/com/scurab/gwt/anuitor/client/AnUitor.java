@@ -100,7 +100,7 @@ public class AnUitor implements EntryPoint {
         Map<String, String> queryString = buildHashParameterMap();
         int screenIndex = queryString.containsKey(DataProvider.QRY_PARAM_SCREEN_INDEX) 
                 ? Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_SCREEN_INDEX)) 
-                : getScreenIndex();               
+                : getScreenIndex();
         if ("ScreenPreview".equals(screen)) {            
             toOpen = new ScreenPreviewPage(screenIndex);            
         } else if ("3D".equals(screen)) {
@@ -238,8 +238,11 @@ public class AnUitor implements EntryPoint {
     }        
     
     private int getScreenIndex(){
-       String v = mScreenListBox == null ? "0" : mScreenListBox.getValue(mScreenListBox.getSelectedIndex());
-       return v == null || "null".equals(v) ? 0 : Integer.parseInt(v);
+        if (mScreenListBox == null || mScreenListBox.getSelectedIndex() < 0) {
+            return -1;
+        }
+        String v = mScreenListBox == null ? "0" : mScreenListBox.getValue(mScreenListBox.getSelectedIndex());
+        return v == null || "null".equals(v) ? 0 : Integer.parseInt(v);
     }
     
     private boolean sorryDemoNotSupported() {
