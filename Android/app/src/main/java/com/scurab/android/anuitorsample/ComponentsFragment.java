@@ -37,50 +37,28 @@ public class ComponentsFragment extends DialogFragment {
         ll.setGravity(Gravity.CENTER_HORIZONTAL);
         ll.setOrientation(LinearLayout.VERTICAL);
 
-        Button alertDialog = new Button(context);
-        alertDialog.setText("Alert");
+        Button alertDialog = createButton("Alert", v -> onShowAlertDialog());
         alertDialog.setTag("SimpleTag");
         alertDialog.setTag(R.id.tag_test1, "ComplexTag1");
         alertDialog.setTag(R.id.tag_test2, alertDialog);
-        alertDialog.setOnClickListener(v -> onShowAlertDialog());
         ll.addView(alertDialog);
 
-        Button datePicker = new Button(context);
-        datePicker.setText("DatePicker");
-        datePicker.setOnClickListener(v -> onShowDatePickerDialog());
-        ll.addView(datePicker);
-
-        Button dialogFragment = new Button(context);
-        dialogFragment.setText("DialogFragment");
-        dialogFragment.setOnClickListener(v -> onShowDialogFragment());
-        ll.addView(dialogFragment);
-
-        Button pBarDialog = new Button(context);
-        pBarDialog.setText("ProgressBar");
-        pBarDialog.setOnClickListener(v -> onShowProgressDialog());
-        ll.addView(pBarDialog);
-
-        Button timeDialog = new Button(context);
-        timeDialog.setText("TimerPicker");
-        timeDialog.setOnClickListener(v -> onShowTimePickerDialog());
-        ll.addView(timeDialog);
-
-        Button bottomSheetDialog = new Button(context);
-        bottomSheetDialog.setText("BottomSheetDialog");
-        bottomSheetDialog.setOnClickListener(v -> onShowBottomSheetDialog());
-        ll.addView(bottomSheetDialog);
-
-        Button snackBar = new Button(context);
-        snackBar.setText("SnackBar");
-        snackBar.setOnClickListener(v -> onShowSnackBar());
-        ll.addView(snackBar);
-
-        Button anotherActivity = new Button(context);
-        anotherActivity.setText("AnotherActivity");
-        anotherActivity.setOnClickListener(v -> onOpenAnotherActivity());
-        ll.addView(anotherActivity);
+        ll.addView(createButton("DatePicker", v -> onShowDatePickerDialog()));
+        ll.addView(createButton("DialogFragment", v -> onShowDialogFragment()));
+        ll.addView(createButton("ProgressBar", v -> onShowProgressDialog()));
+        ll.addView(createButton("TimerPicker", v -> onShowTimePickerDialog()));
+        ll.addView(createButton("BottomSheetDialog", v -> onShowBottomSheetDialog()));
+        ll.addView(createButton("SnackBar", v -> onShowSnackBar()));
+        ll.addView(createButton("AnotherActivity", v -> onOpenAnotherActivity()));
 
         return ll;
+    }
+
+    private Button createButton(String title, View.OnClickListener clickListener) {
+        Button button = new Button(requireActivity());
+        button.setText(title);
+        button.setOnClickListener(clickListener);
+        return button;
     }
 
     protected void onOpenAnotherActivity() {
