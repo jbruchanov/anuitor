@@ -25,6 +25,7 @@ import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -560,7 +561,7 @@ public class ScreenPreviewPage extends Composite {
         PBarHelper.show();
         DataProvider.getTreeHierarchy(mScreenId, new DataProvider.AsyncCallback<ViewNodeJSO>() {
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                 PBarHelper.hide();
                 Window.alert(t.getMessage());
             }

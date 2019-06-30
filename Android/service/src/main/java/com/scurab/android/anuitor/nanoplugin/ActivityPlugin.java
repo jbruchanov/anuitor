@@ -23,9 +23,6 @@ public abstract class ActivityPlugin extends BasePlugin {
     protected static final String SCREEN_INDEX = "screenIndex";
     public static final String APPLICATION_IS_NOT_ACTIVE = "Application is not active";
 
-    private static final NanoHTTPD.Response EMPTY_RESPONSE = new OKResponse(HttpTools.MimeType.TEXT_PLAIN, APPLICATION_IS_NOT_ACTIVE);
-    private static final NanoHTTPD.Response JSON_EMPTY_RESPONSE = new OKResponse(HttpTools.MimeType.APP_JSON, "{}");
-
     private WindowManager mWindowManager;
 
     protected ActivityPlugin(WindowManager windowManager) {
@@ -40,9 +37,9 @@ public abstract class ActivityPlugin extends BasePlugin {
         String[] viewRootNames = mWindowManager.getViewRootNames();
         if (viewRootNames == null || viewRootNames.length == 0) {
             if (mimeType.equals(HttpTools.MimeType.APP_JSON)) {
-                return JSON_EMPTY_RESPONSE;
+                return new OKResponse(HttpTools.MimeType.APP_JSON, "[]");
             } else {
-                return EMPTY_RESPONSE;
+                return new OKResponse(HttpTools.MimeType.TEXT_PLAIN, APPLICATION_IS_NOT_ACTIVE);
             }
         } else {
             return handleRequest(uri, headers, session, file, mimeType);

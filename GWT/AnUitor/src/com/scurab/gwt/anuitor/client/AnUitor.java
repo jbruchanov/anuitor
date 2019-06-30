@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -70,7 +71,7 @@ public class AnUitor implements EntryPoint {
         DataProvider.getConfig(new AsyncCallback<JSONValue>() {
             
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                PBarHelper.hide();
                if (sConfig == null) {//something bad happen
                    sConfig = new JSONObject();
@@ -151,26 +152,32 @@ public class AnUitor implements EntryPoint {
         Label title = new Label(ConfigHelper.getDeviceInfo());
         title.setStyleName("deviceTitle");
         hp.add(title);
+        mButtons.clear();
         hp.add(mScreenListBox = createListBox());
-        hp.add(createButton("ScreenPreview"));
-        hp.add(createButton("3D"));
-        hp.add(createButton("ViewHierarchy"));
-        hp.add(createButton("Resources"));
-        hp.add(createButton("FileStorage"));
-        hp.add(createButton("Windows"));
-        hp.add(createButton("Screenshot"));
-        hp.add(createButton("LogCat"));
+        hp.add(createButton("ScreenPreview", false));
+        hp.add(createButton("3D", false));
+        hp.add(createButton("ViewHierarchy", false));
+        hp.add(createButton("Resources", false));
+        hp.add(createButton("FileStorage", false));
+        hp.add(createButton("Windows", false));
+        hp.add(createButton("Screenshot", false));
+        hp.add(createButton("LogCat", false));
         if (ConfigHelper.isGroovyEnabled()) {
-            hp.add(createButton("Groovy"));
+            hp.add(createButton("Groovy", false));
         }
 
         return hp;
     }
     
-    private Button createButton(String name){
+    private final Map<String, Button> mButtons = new HashMap<String, Button>();
+    private static final String[] NO_ACTIVITY_FEATURES = new String[] {"Resources", "FileStorage", "Windows", "LogCat"};
+    
+    private Button createButton(String name, boolean enabled) {
         Button btn = new Button(name);
-        btn.setStyleName("mainScreenButton", true);
+        btn.setStyleName("mainScreenButton");
         btn.addClickHandler(mClickHandler);
+        btn.setEnabled(enabled);
+        mButtons.put(name, btn);
         return btn;
     }
     
@@ -179,8 +186,8 @@ public class AnUitor implements EntryPoint {
         lb.setEnabled(false);
         lb.addItem("Loading", (String)null);
         DataProvider.getScreens(new AsyncCallback<JsArrayString>() {            
-            @Override public void onError(Request r, Throwable t) {
-                Window.alert("Unable to load screens:" + t.getMessage());
+            @Override public void onError(Request req, Response res, Throwable t) {                
+                Window.alert("Unable to load screens!\nError:" + t.getMessage());                
             }            
             @Override
             public void onDownloaded(JsArrayString result) {
@@ -191,9 +198,25 @@ public class AnUitor implements EntryPoint {
                    lb.addItem(value, String.valueOf(i));                   
                 }
                 lb.setSelectedIndex(lb.getItemCount() - 1);
+                enableButtons(result.length() == 0 ? NO_ACTIVITY_FEATURES : null);
             }
         });
         return lb;
+    }
+    
+    private void enableButtons(String[] toEnable) {
+        if(toEnable == null) {
+            for(Button b : mButtons.values()) {
+                b.setEnabled(true);
+            }
+        } else {
+            for(String key : toEnable) {
+                Button b = mButtons.get(key);
+                if(b != null) {
+                    b.setEnabled(true);
+                }
+            }
+        }
     }
 
     private IsWidget mLastScreen;
@@ -216,7 +239,7 @@ public class AnUitor implements EntryPoint {
     
     private int getScreenIndex(){
        String v = mScreenListBox == null ? "0" : mScreenListBox.getValue(mScreenListBox.getSelectedIndex());
-       return v == null ? 0 : Integer.parseInt(v);
+       return v == null || "null".equals(v) ? 0 : Integer.parseInt(v);
     }
     
     private boolean sorryDemoNotSupported() {

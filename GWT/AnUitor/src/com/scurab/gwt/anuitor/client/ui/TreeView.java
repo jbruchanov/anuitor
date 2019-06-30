@@ -22,6 +22,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.scurab.gwt.anuitor.client.DataProvider;
@@ -89,7 +90,7 @@ public class TreeView extends FlowPanel{
         PBarHelper.show();
         DataProvider.getTreeHierarchy(screenIndex, new AsyncCallback<ViewNodeJSO>() {
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                 PBarHelper.hide();
                 Window.alert(t.getMessage());
             }
