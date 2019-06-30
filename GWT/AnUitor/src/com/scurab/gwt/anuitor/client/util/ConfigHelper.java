@@ -41,7 +41,7 @@ public class ConfigHelper {
             for (String regexp : colors.keySet()) {
                 boolean matches = false;
                 try {
-                    key.toLowerCase().matches(regexp);
+                    matches = key.toLowerCase().matches(regexp);
                 } catch (Exception e) {                    
                     logger.log(Level.INFO, "Invalid regexp:'" + regexp + "' for PropertyHighlights");                    
                 }
