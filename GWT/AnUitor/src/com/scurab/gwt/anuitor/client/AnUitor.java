@@ -174,7 +174,7 @@ public class AnUitor implements EntryPoint {
     
     private Button createButton(String name, boolean enabled) {
         Button btn = new Button(name);
-        btn.setStyleName("mainScreenButton");
+        btn.setStyleName("mainScreenButton", true);
         btn.addClickHandler(mClickHandler);
         btn.setEnabled(enabled);
         mButtons.put(name, btn);
