@@ -22,6 +22,7 @@ public class SampleApplication extends MultiDexApplication {
 
         AnUitorService.startService(this, 8081, 0, true, null);
         AnUitorClientConfig.addTypeHighlighting(Button.class, "rgba(255, 0, 255, 0.15)");
+        AnUitorClientConfig.addPropertyHighlighting("text.*|.*TextColor.*|CanResolveText.*", "rgba(255, 0, 255, 1)");
         IdsHelper.loadValues(R.class);
 
         DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView.class,
