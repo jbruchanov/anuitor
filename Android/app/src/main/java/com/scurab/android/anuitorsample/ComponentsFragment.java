@@ -51,6 +51,11 @@ public class ComponentsFragment extends DialogFragment {
         ll.addView(createButton("SnackBar", v -> onShowSnackBar()));
         ll.addView(createButton("AnotherActivity", v -> onOpenAnotherActivity()));
 
+        Button ignoredByPointer = createButton("Ignored by pointer",
+                v -> Toast.makeText(requireContext(), "Ignored by pointer Clicked", Toast.LENGTH_LONG).show());
+        ignoredByPointer.setId(R.id.pointer_ignore);
+        ll.addView(ignoredByPointer);
+
         return ll;
     }
 

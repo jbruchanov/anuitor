@@ -20,9 +20,10 @@ public class SampleApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        AnUitorService.startService(this, 8081, 0, true, null);
         AnUitorClientConfig.addTypeHighlighting(Button.class, "rgba(255, 0, 255, 0.15)");
         AnUitorClientConfig.addPropertyHighlighting("text.*|.*TextColor.*|CanResolveText.*", "rgba(255, 0, 255, 1)");
+        AnUitorClientConfig.addPointerIgnoreViewId(R.id.pointer_ignore);
+        AnUitorService.startService(this, 8081, 0, true, null);
         IdsHelper.loadValues(R.class);
 
         DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView.class,

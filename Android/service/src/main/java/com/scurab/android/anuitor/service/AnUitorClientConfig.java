@@ -4,13 +4,16 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 
 import com.scurab.android.anuitor.BuildConfig;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by jbruchanov on 20/04/2017.
@@ -27,6 +30,7 @@ public class AnUitorClientConfig {
     static final String PROPERTY_HIGHLIGHTS = "PropertyHighlights";
     static final String GRID_STROKE_COLOR = "GridStrokeColor";
     static final String SELECTION_COLOR = "SelectionColor";
+    static final String POINTER_IGNORE_IDS = "PointerIgnoreIds";
 
     private AnUitorClientConfig() {
     }
@@ -72,6 +76,18 @@ public class AnUitorClientConfig {
             CONFIG.put(PROPERTY_HIGHLIGHTS, highlights = new HashMap<>());
         }
         highlights.put(regexp, htmlColor);
+    }
+
+    /**
+     * Add view id for automatic pointer ignore
+     * @param viewId viewId*
+     */
+    public static void addPointerIgnoreViewId(@IdRes int viewId) {
+        Set<Integer> ignore = (Set<Integer>) CONFIG.get(POINTER_IGNORE_IDS);
+        if (ignore == null) {
+            CONFIG.put(POINTER_IGNORE_IDS, ignore = new HashSet<>());
+        }
+        ignore.add(viewId);
     }
 
     /**

@@ -26,6 +26,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -45,21 +46,27 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.kiouri.sliderbar.client.event.BarValueChangedEvent;
 import com.kiouri.sliderbar.client.event.BarValueChangedHandler;
+import com.scurab.gwt.anuitor.client.AnUitor;
 import com.scurab.gwt.anuitor.client.DataProvider;
 import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
+import com.scurab.gwt.anuitor.client.model.ViewNodeHelper.Action;
 import com.scurab.gwt.anuitor.client.style.CustomTreeResources;
 import com.scurab.gwt.anuitor.client.util.CanvasTools;
 import com.scurab.gwt.anuitor.client.util.CellTreeTools;
+import com.scurab.gwt.anuitor.client.util.CollectionTools;
 import com.scurab.gwt.anuitor.client.util.ConfigHelper;
 import com.scurab.gwt.anuitor.client.util.HTMLColors;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
 import com.scurab.gwt.anuitor.client.util.TableTools;
+import com.scurab.gwt.anuitor.client.util.ViewMesh;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnSelectionChangedListener;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnViewNodeMouseOverListener;
 import com.scurab.gwt.anuitor.client.widget.ScaleSliderBar;
+
+import thothbot.parallax.core.shared.Log;
 
 public class ScreenPreviewPage extends Composite {
 
@@ -599,6 +606,22 @@ public class ScreenPreviewPage extends Composite {
                 centerPanel.add(mCellTree);
                 CellTreeTools.expandAll(mCellTree.getRootTreeNode());
                 mCellTree.setAnimationEnabled(true);
+                
+                //preset views for ignoring                
+                final Set<Integer> ignoreViewIds = CollectionTools.jsonArrayAsIntegerSet((JSONArray) AnUitor.getConfig().get("PointerIgnoreIds"));                
+                if (ignoreViewIds != null && !ignoreViewIds.isEmpty()) {
+                    ViewNodeHelper.forEachNodePreOrder(mRoot, new Action<ViewNodeJSO>() {
+                        @Override
+                        public boolean doAction(ViewNodeJSO value, ViewNodeJSO parent) {
+                            int viewId = value.getID();
+                            if(ignoreViewIds.contains(viewId)) {
+                                mIgnored.add(value);
+                                mTreeViewModel.highlightAsIgnoredNode(value);
+                            }
+                            return true;
+                        }
+                    });
+                }
                 PBarHelper.hide();
             }
         });
