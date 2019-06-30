@@ -16,7 +16,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.scurab'
             artifactId = 'anuitor'
-            version = '0.9.12'
+            version = project.releaseVersion
 
             pom {
                 name = 'AnUitor'
