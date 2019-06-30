@@ -28,6 +28,7 @@
 	.filterLabel{
 		font: "Lucida Console", Monaco;
 		font-weight: bold;
+		padding-top: 3px;
 		padding-right: 5px;			
 	}
 	
