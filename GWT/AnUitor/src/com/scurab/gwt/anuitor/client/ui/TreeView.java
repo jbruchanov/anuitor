@@ -54,13 +54,13 @@ public class TreeView extends FlowPanel{
     private static final TreeViewStyle CSS = TreeViewResources.INSTANCE.css();
 
     /* Virtual one column width is showing view's ID */
-    private static final int WIDTH_COEF_ID = 250;
+    private static final int WIDTH_COEF_ID = 175;
     /* Virtual one column height is showing view's ID */
-    private static final int HEIGHT_COEF_ID = 50;
+    private static final int HEIGHT_COEF_ID = 35;
     /* Virtual one column width only type */
-    private static final int WIDTH_COEF = 150;
+    private static final int WIDTH_COEF = 175;
     /* Virtual one column height only type */
-    private static final int HEIGHT_COEF = 30;
+    private static final int HEIGHT_COEF = 25;
     /* Animation duration for expand/collapse animation */
     private static final int DURATION = 750;    
     
