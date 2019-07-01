@@ -85,7 +85,9 @@ public final class TableTools {
         moveToFirst(list, "Context:");
         moveToFirst(list, "Inheritance");
         list.add(0, new Pair(ViewFields.OWNER, viewNode.getOwner(), true, viewNode.getPosition()));
-        list.add(0, new Pair("Groovy Console", viewNode.getPosition()));
+        if (ConfigHelper.isGroovyEnabled()) {
+            list.add(0, new Pair("Groovy Console", viewNode.getPosition()));
+        }
         list.add(0, new Pair(ViewFields.POSITION, viewNode.getPosition()));
         list.add(0, new Pair("Level", viewNode.getLevel()));
         list.add(0, new Pair("IDName", viewNode.getIDName()));
