@@ -1740,7 +1740,7 @@
       }
     },
     "android.widget.LinearLayout$LayoutParams": {
-      "parent": "android.view.ViewGroup$LayoutParams",
+      "parent": "android.view.ViewGroup$MarginLayoutParams",
       "items": {
         "1" : [
           {
@@ -1756,7 +1756,7 @@
       }
     },
     "android.widget.RelativeLayout$LayoutParams": {
-      "parent": "android.view.ViewGroup$LayoutParams",
+      "parent": "android.view.ViewGroup$MarginLayoutParams",
       "items": {
         "1" : [
           {
@@ -1784,7 +1784,7 @@
       }
     },
     "androidx.recyclerview.widget.RecyclerView$LayoutParams": {
-      "parent": "android.view.ViewGroup$LayoutParams",
+      "parent": "android.view.ViewGroup$MarginLayoutParams",
       "items": {
         "1" : [
           {"m": "viewNeedsUpdate"},
