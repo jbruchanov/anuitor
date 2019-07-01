@@ -238,6 +238,7 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
             mSelectionModel.setSelected(mSelectionChangedHandler.mLastSelected, false);
         }
         mSelectionModel.setSelected(vs, true);
+        scrollToElement(vs);
     }
 
     /**
@@ -265,11 +266,11 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         if (vs == null) {
             return;
         }
-        String key = "ViewNodeJSO_id_" + vs.hashCode();
+        String key = getNodeJSOId(vs);
         clearHighlightedNode();
         mHighlightedElement = DOM.getElementById(key);
         if (mHighlightedElement != null) {
-            mHighlightedElement.addClassName(CSS_HIGHLIGHTED_NODE);
+            mHighlightedElement.addClassName(CSS_HIGHLIGHTED_NODE);            
         }
     }
 
@@ -308,6 +309,13 @@ public class ViewHierarchyTreeViewModel implements TreeViewModel {
         Element el = DOM.getElementById(key);
         if (el != null) {
             el.removeClassName(CSS_IGNORED_NODE);
+        }
+    }
+    
+    private void scrollToElement(ViewNodeJSO vs) {
+        Element e = DOM.getElementById(getNodeJSOId(vs));
+        if (e != null) {
+            e.scrollIntoView();
         }
     }
 
