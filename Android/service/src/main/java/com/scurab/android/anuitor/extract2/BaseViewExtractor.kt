@@ -25,6 +25,9 @@ abstract class BaseViewExtractor : BaseExtractor() {
         val v = item as View
         context.apply {
             data["LayoutParams:"] = v.layoutParams?.javaClass?.name ?: "null"
+            (v.layoutParams as? ViewGroup.MarginLayoutParams)?.run {
+                data["LayoutParams_margins"] = "[$leftMargin, $topMargin, $rightMargin, $bottomMargin]"
+            }
             data[OWNER] = (contextData?.get(COMPONENTS) as? ViewComponents)?.let {
                 it.findOwnerComponent(v)
             } ?: "Unknown"
