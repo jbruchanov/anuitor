@@ -1126,6 +1126,19 @@
         ]
       }
     },
+    "androidx.constraintlayout.widget.ConstraintLayout": {
+      "parent": "android.view.ViewGroup",
+      "items": {
+        "1": [
+          {"m": "getOptimizationLevel"},
+          {"m": "getMinWidth"},
+          {"m": "getMinHeight"},
+          {"m": "getMaxWidth"},
+          {"m": "getMaxHeight"},
+          {"m": "getOptimizationLevel"}
+        ]
+      }
+    },
     "com.google.android.material.appbar.AppBarLayout": {
       "parent": "android.view.ViewGroup",
       "items": {
@@ -1316,7 +1329,7 @@
           {"m": "isCloseIconVisible"}
         ]
       }
-    }
+      }
   },
   "components" : {
     "android.app.Activity": {
@@ -1800,6 +1813,60 @@
             "r": true,
             "p": true
           }
+        ]
+      }
+    },
+    "androidx.constraintlayout.widget.ConstraintLayout$LayoutParams": {
+      "parent": "android.view.ViewGroup$MarginLayoutParams",
+      "items": {
+        "1" : [
+          {"m":"baselineToBaseline", "p": true},
+          {"m":"bottomToBottom", "p": true},
+          {"m":"bottomToTop", "p": true},
+          {"m":"circleAngle", "p": true},
+          {"m":"circleConstraint", "p": true},
+          {"m":"circleRadius", "p": true},
+          {"m":"constrainedHeight", "p": true},
+          {"m":"constrainedWidth", "p": true},
+          {"m":"constraintTag", "p": true},
+          {"m":"dimensionRatio", "p": true},
+          {"m":"editorAbsoluteX", "p": true},
+          {"m":"editorAbsoluteY", "p": true},
+          {"m":"endToEnd", "p": true},
+          {"m":"endToStart", "p": true},
+          {"m":"goneBottomMargin", "p": true},
+          {"m":"goneEndMargin", "p": true},
+          {"m":"goneLeftMargin", "p": true},
+          {"m":"goneRightMargin", "p": true},
+          {"m":"goneStartMargin", "p": true},
+          {"m":"goneTopMargin", "p": true},
+          {"m":"guideBegin", "p": true},
+          {"m":"guideEnd", "p": true},
+          {"m":"guidePercent", "p": true},
+          {"m":"helped", "p": true},
+          {"m":"horizontalBias", "p": true},
+          {"m":"horizontalChainStyle", "p": true},
+          {"m":"horizontalWeight", "p": true},
+          {"m":"leftToLeft", "p": true},
+          {"m":"leftToRight", "p": true},
+          {"m":"matchConstraintDefaultHeight", "p": true},
+          {"m":"matchConstraintDefaultWidth", "p": true},
+          {"m":"matchConstraintMaxHeight", "p": true},
+          {"m":"matchConstraintMaxWidth", "p": true},
+          {"m":"matchConstraintMinHeight", "p": true},
+          {"m":"matchConstraintMinWidth", "p": true},
+          {"m":"matchConstraintPercentHeight", "p": true},
+          {"m":"matchConstraintPercentWidth", "p": true},
+          {"m":"orientation", "p": true},
+          {"m":"rightToLeft", "p": true},
+          {"m":"rightToRight", "p": true},
+          {"m":"startToEnd", "p": true},
+          {"m":"startToStart", "p": true},
+          {"m":"topToBottom", "p": true},
+          {"m":"topToTop", "p": true},
+          {"m":"verticalBias", "p": true},
+          {"m":"verticalChainStyle", "p": true},
+          {"m":"verticalWeight", "p": true}
         ]
       }
     }

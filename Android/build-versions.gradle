@@ -21,4 +21,5 @@ ext {
     androidX = "1.0.0"
     androidXAppCompat = "1.0.2"
     androidXAnnotations = "1.1.0"
+    constraintlayout = "2.0.0-beta2"
 }

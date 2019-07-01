@@ -68,6 +68,7 @@ dependencies {
     compileOnly "com.google.android.material:material:${androidX}"
     compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
     compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
+    compileOnly "androidx.constraintlayout:constraintlayout:${constraintlayout}"
 
     testImplementation "junit:junit:$junit"
     testImplementation project(":service-groovy")

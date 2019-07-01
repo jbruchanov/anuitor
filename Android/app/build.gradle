@@ -36,6 +36,7 @@ dependencies {
     implementation "androidx.slidingpanelayout:slidingpanelayout:${androidX}"
     implementation "androidx.viewpager2:viewpager2:${viewPager2}"
     implementation "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
+    implementation "androidx.constraintlayout:constraintlayout:${constraintlayout}"
 
 //    implementation "com.google.code.gson:gson:${gson}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jackson}"
