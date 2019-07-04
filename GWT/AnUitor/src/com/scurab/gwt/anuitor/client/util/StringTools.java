@@ -45,9 +45,37 @@ public class StringTools {
         }
         return sb.toString();
     }
-    
+
+    /**
+     * Get only Capital chars HelloWorld returns HW
+     * 
+     * @param value
+     * @return
+     */
+    public static String getCapitalsAndFirstFollowingLetter(String value) {
+        if (value == null) {
+            return value;
+        }
+        boolean addFirstFollowing = false;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0, n = value.length(); i < n; i++) {
+            char c = value.charAt(i);
+            if(addFirstFollowing) {
+                addFirstFollowing = false;
+                sb.append(c);                     
+                continue;
+            }
+            if (Character.isUpperCase(c)) {
+                sb.append(c);
+                addFirstFollowing = true;
+            }
+        }
+        return sb.toString();
+    }
+
     /**
      * Replace mid of string by "..."
+     * 
      * @param value
      * @param maxLen
      * @return
@@ -55,8 +83,8 @@ public class StringTools {
     public static String ellipsizeMid(String value, int maxLen) {
         if (value == null || value.length() < maxLen || value.length() < 5) {
             return value;
-        }       
-        
+        }
+
         StringBuilder sb = new StringBuilder(value);
         int mid = value.length() / 2;
         int size = Math.max(1, 3 + (value.length() - maxLen) / 2);
