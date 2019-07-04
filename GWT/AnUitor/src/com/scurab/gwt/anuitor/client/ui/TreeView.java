@@ -37,6 +37,7 @@ import com.scurab.gwt.anuitor.client.model.ViewTreeNode;
 import com.scurab.gwt.anuitor.client.style.TreeViewResources;
 import com.scurab.gwt.anuitor.client.style.TreeViewStyle;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
+import com.scurab.gwt.anuitor.client.util.StringTools;
 
 /**
  * Tree view panel for view hierarchy
@@ -53,18 +54,20 @@ public class TreeView extends FlowPanel{
 
     private static final TreeViewStyle CSS = TreeViewResources.INSTANCE.css();
 
-    /* Virtual one column width is showing view's ID */
-    private static final int WIDTH_COEF_ID = 175;
-    /* Virtual one column height is showing view's ID */
-    private static final int HEIGHT_COEF_ID = 35;
-    /* Virtual one column width only type */
-    private static final int WIDTH_COEF = 175;
-    /* Virtual one column height only type */
-    private static final int HEIGHT_COEF = 25;
     /* Animation duration for expand/collapse animation */
-    private static final int DURATION = 750;    
+    private static final int ID_WIDTH_COEF_ID = 0;
+    private static final int ID_WIDTH_COEF = 1;
+    private static final int ID_HEIGHT_COEF_ID = 2;
+    private static final int ID_HEIGHT_COEF = 3;
     
-    private static final double CIRCLE_RADIUS = 5;
+    private static final int DURATION = 750;
+    
+//    private static final double CIRCLE_RADIUS = 5;
+    private static final int TEXT_X_OFFSET = 10;
+    private static final int TEXT_Y_2ND_LINE_OFFSET = 10;
+    
+    private RenderDelegate mRenderDelegate = new DefaultRenderer();
+    
     /* Root for transformed tree from ViewNodeJSO */   
     private ViewTreeNode mViewTreeRoot = null;
     /* SVG graph */
@@ -78,11 +81,11 @@ public class TreeView extends FlowPanel{
     /* Keep first n nodes close together, they are not much interesting */
     private final int mCloseNodes = 4;
     /* Difference if we have first nodes closer together */
-    private int mCloseNodesDiff = mShowId ? Math.max(0, mCloseNodes * (WIDTH_COEF_ID - WIDTH_COEF)) : 0;
+    private int mCloseNodesDiff;// = mShowId ? Math.max(0, mCloseNodes * (WIDTH_COEF_ID - WIDTH_COEF)) : 0;
     /* Currently selected/last clicked node*/
     private ViewTreeNode mSelectedNode;
     /* EventBus for click/hover events */
-    private HandlerManager mEventBus = new HandlerManager(this);
+    private HandlerManager mEventBus = new HandlerManager(this);      
 
     public TreeView(int screenIndex) {
         super();
@@ -106,12 +109,14 @@ public class TreeView extends FlowPanel{
     protected void onDataLoaded(ViewNodeJSO srcroot) {        
         List<Integer> levelItems = new ArrayList<Integer>();        
         mViewTreeRoot = ViewNodeHelper.convertToViewTreeNodes(srcroot, levelItems);
+        int[] spacing = mRenderDelegate.getSpacing();
+        mCloseNodesDiff = mShowId ? Math.max(0, mCloseNodes * (spacing[ID_WIDTH_COEF_ID] - spacing[ID_WIDTH_COEF])) : 0;
         if(levelItems.size() <= mCloseNodes){
             mCloseNodesDiff = 0;
         }
                 
-        int width = ((mShowId ? WIDTH_COEF_ID : WIDTH_COEF) * levelItems.size()) - mCloseNodesDiff;
-        int height = (mShowId ? HEIGHT_COEF_ID : HEIGHT_COEF) * Collections.max(levelItems);
+        int width = ((mShowId ? spacing[ID_WIDTH_COEF_ID] : spacing[ID_WIDTH_COEF]) * levelItems.size()) - mCloseNodesDiff;
+        int height = (int)((mShowId ? spacing[ID_HEIGHT_COEF_ID] : spacing[ID_HEIGHT_COEF]) * Collections.max(levelItems) * 0.75f);
         
         // get tree layout
         mTreeLayout = D3.layout().tree().size(height, width);//rotated to grow to right => height = width and width = height
@@ -143,7 +148,7 @@ public class TreeView extends FlowPanel{
      */
     private Selection initSVG(int width, int height){     
         Selection svg = D3.select(this)
-                .append("svg")
+                .append("svg")                
                 .attr("width", width + 20)//margins
                 .attr("height", height + 20)
                 .append("g")
@@ -191,10 +196,11 @@ public class TreeView extends FlowPanel{
             @Override
             public Void forEach(Object thisArg, Value element, int index, Array<?> array) {
                 ViewTreeNode datum = element.<ViewTreeNode> as();
+                int[] spacing = mRenderDelegate.getSpacing();
                 if(datum.depth() <= mCloseNodes){//keep 1st nodes close, because they are not interesting
-                    datum.setAttr("y", datum.depth() * WIDTH_COEF);
+                    datum.setAttr("y", datum.depth() * spacing[ID_WIDTH_COEF]);
                 } else {
-                    datum.setAttr("y", (datum.depth() * (mShowId ? WIDTH_COEF_ID : WIDTH_COEF)) - mCloseNodesDiff);
+                    datum.setAttr("y", (datum.depth() * (mShowId ? spacing[ID_WIDTH_COEF_ID] : spacing[ID_WIDTH_COEF])) - mCloseNodesDiff);
                 }  
                 return null;
             }
@@ -214,7 +220,7 @@ public class TreeView extends FlowPanel{
         Selection nodeEnter = node
                 .enter()
                 .append("g")
-                .attr("class", CSS.node())                   
+                .attr("class", CSS.node())
                 .attr("transform", "translate(" + source.getNumAttr(ORIGIN_Y) + "," + source.getNumAttr(ORIGIN_X) + ")")
                 .on("click", new NodeClickHandler())
                 .on("dblclick", new CollapseExpandHandler())
@@ -233,41 +239,32 @@ public class TreeView extends FlowPanel{
                 });
         
         //add text
-        nodeEnter.append("text")
-                .attr("x", new DatumFunction<Integer>() {
-                    @Override
-                    public Integer apply(Element context, Value d, int index) {
-                        JavaScriptObject node = d.<ViewTreeNode> as().getObjAttr("_children");
-                        return node != null ? -10 : 10;
-                    }
-                })
-                .attr("dx",".35em")                
-                .attr("text-anchor", new DatumFunction<String>() {
-                    @Override
-                    public String apply(Element context, Value d, int index) {
-                        JavaScriptObject node = d.<ViewTreeNode> as().getObjAttr("_children");
-                        return (node != null) ? "end" :"start";
-                    }
-                }).text(new DatumFunction<String>() {//1st line                    
-                    @Override
-                    public String apply(Element context, Value d, int index) {                        
-                        ViewTreeNode as = d.<ViewTreeNode> as();                        
-                        return as.getView().getSimpleType();                        
-                    }
-                }).append("tspan")//2nd line                    
-                    .attr("x",13)
-                    .attr("y",10)
+        Selection textNode = nodeEnter.append("text");
+            textNode.append("tspan")//2nd line                    
+                    .attr("x",TEXT_X_OFFSET)                          
+                    .attr("font-weight", "bold")
+                    .text(new DatumFunction<String>() {                        
+                        @Override
+                        public String apply(Element context, Value d, int index) {
+                            ViewTreeNode as = d.<ViewTreeNode> as();                        
+                            return mRenderDelegate.getType(as.getView());                                                
+                        }
+                    });
+                textNode.append("tspan")//2nd line                    
+                    .attr("x", TEXT_X_OFFSET)
+                    .attr("y", TEXT_Y_2ND_LINE_OFFSET)                    
+                    .attr("font-weight", "100")
                     .text(new DatumFunction<String>() {                        
                         @Override
                         public String apply(Element context, Value d, int index) {
                             if(mShowId){
                                 ViewTreeNode as = d.<ViewTreeNode> as();
                                 ViewNodeJSO view = as.getView();
-                                return view.getID() > 0 ? view.getIDName() : "";                                                                   
+                                return mRenderDelegate.getId(view);
                             }
                             return "";
                         }
-                    });        
+                    });
 
 
         // transition entering nodes
@@ -282,7 +279,7 @@ public class TreeView extends FlowPanel{
                     });
 
         nodeUpdate.select("circle")
-                .attr("r", CIRCLE_RADIUS)
+                .attr("r", mRenderDelegate.getCircleRadius())
                     .style("fill", new DatumFunction<String>() {
                         @Override
                         public String apply(Element context, Value d, int index) {
@@ -446,5 +443,84 @@ public class TreeView extends FlowPanel{
 
     public void removeHoverChangedHandler(ViewHoverChangedEventHandler handler) {
         mEventBus.removeHandler(ViewHoverChangedEvent.TYPE, handler);
+    }
+    
+    public interface RenderDelegate {
+        String getType(ViewNodeJSO value);
+        String getId(ViewNodeJSO value);
+        int[] getSpacing();
+        int getCircleRadius();
+    }
+    
+    public static class DefaultRenderer implements RenderDelegate {
+        private static final int MAX_TEXT_LEN = 38;
+        private static final int[] SPACING = new int[] { 175, 125, 40, 20 };
+        @Override
+        public String getType(ViewNodeJSO value) {
+            return StringTools.ellipsizeMid(value.getSimpleType(), MAX_TEXT_LEN);
+        }
+
+        @Override
+        public String getId(ViewNodeJSO value) {
+            String id = StringTools.emptyIfNull(value.getID() > 0 ? value.getIDName() : "");
+            return StringTools.ellipsizeMid(id.replaceAll("@id/", ""), MAX_TEXT_LEN);
+        }
+
+        @Override
+        public int[] getSpacing() { 
+            return SPACING;
+        }
+
+        @Override
+        public int getCircleRadius() {            
+            return 5;
+        }
+
+    }
+    
+    public static class SimplisticRenderer implements RenderDelegate {
+        private static final int[] SPACING = new int[] {50, 50, 20, 20};
+        @Override
+        public String getType(ViewNodeJSO value) {
+            return StringTools.getCapitals(value.getSimpleType());
+        }
+
+        @Override
+        public String getId(ViewNodeJSO value) {
+            return null;
+        }
+
+        @Override
+        public int[] getSpacing() {
+            return SPACING;
+        }
+
+        @Override
+        public int getCircleRadius() { 
+            return 3;
+        }        
+    }
+    
+    public static class NoText implements RenderDelegate {
+        private static final int[] SPACING = new int[] {25, 25, 20, 20};
+        @Override
+        public String getType(ViewNodeJSO value) {
+            return null;
+        }
+
+        @Override
+        public String getId(ViewNodeJSO value) {
+            return null;
+        }
+
+        @Override
+        public int[] getSpacing() {
+            return SPACING;
+        }
+
+        @Override
+        public int getCircleRadius() { 
+            return 5;
+        }        
     }
 }

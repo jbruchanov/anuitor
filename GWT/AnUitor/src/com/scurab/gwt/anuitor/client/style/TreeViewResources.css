@@ -43,7 +43,8 @@
 }
 
 .node text {
-  font: 9.5px "Lucida Console", Monaco, monospace, sans-serif;
+  /* font: 9px "Lucida Console", Monaco, monospace, sans-serif; */
+  font: 9px sans-serif;
 }
 
 .link {
