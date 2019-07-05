@@ -1435,6 +1435,23 @@
         ]
       }
     },
+    "android.app.FragmentManager": {
+      "items": {
+        "11": [
+          {"m": "getBackStackEntryCount"}
+        ],
+        "17": [
+          {"m": "isDestroyed"}
+        ],
+        "26": [
+          {"m": "isStateSaved"},
+          {
+            "m": "getFragments",
+            "e": true
+          }
+        ]
+      }
+    },
     "android.graphics.drawable.Drawable": {
       "items": {
         "1" : [
@@ -1541,7 +1558,7 @@
         "1" : [
           {
             "n": "",
-            "c": "v.extract(context)"
+            "c": "v.keySet().map { context.put(it, v.get(it)) }"
           }
         ]
       }
@@ -1722,6 +1739,28 @@
             "m": "interfaces",
             "c": "v.interfaces()"
           }
+        ]
+      }
+    },
+    "androidx.fragment.app.FragmentManager": {
+      "className" : "AndroidXFragmentManager",
+      "items": {
+        "1": [
+          {"m": "getBackStackEntryCount"},
+          {
+            "m": "getFragmentFactory",
+            "c": "v::class?.java?.name"
+          },
+          {
+            "m": "getFragments",
+            "e": true
+          },
+          {
+            "m": "getPrimaryNavigationFragment",
+            "e": true
+          },
+          {"m": "isDestroyed"},
+          {"m": "isStateSaved"}
         ]
       }
     },

@@ -11,15 +11,24 @@ abstract class BaseExtractor {
         context.put("Inheritance", 0, item) { inheritance() }
         context.put("Type", 0, item) { item.javaClass.name }
         context.put("StringValue", 0, item) { this.toString() }
+        context.put("Extractor", 0, this.javaClass.name) { this.toString() }
     }
 
     protected fun Any?.extract(context: ExtractingContext): Any {
         if (this == null) {
             return "null"
         }
-        return (DetailExtractor.findExtractor(this::class.java)
+        return when {
+            this is Iterable<*> -> this.filterNotNull().map { extractItem(it, context) }
+            this is Array<*> -> this.filterNotNull().map { extractItem(it, context) }
+            else -> extractItem(this, context)
+        }
+    }
+
+    private fun extractItem(item: Any, context: ExtractingContext): MutableMap<String, Any> {
+        return (DetailExtractor.findExtractor(item::class.java)
                 ?: ReflectionExtractor(true))
-                .fillValues(this, context)
+                .fillValues(item, context)
     }
 
     protected fun Any?.interfaces(): String {

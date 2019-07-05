@@ -46,7 +46,6 @@ abstract class BaseViewExtractor : BaseExtractor() {
 
     private fun fillMandatoryValues(v: View, context: ExtractingContext) {
         context.apply {
-            data["Extractor"] = this@BaseViewExtractor.javaClass.name
             data["Width"] = v.width
             data["Height"] = v.height
 
