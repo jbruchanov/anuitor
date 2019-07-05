@@ -2,10 +2,11 @@ package com.scurab.android.anuitor.extract2
 
 import android.graphics.drawable.Drawable
 import android.os.Build
+import java.util.*
 
 data class ExtractingContext(
-        val data: MutableMap<String, Any> = mutableMapOf(),
-        val contextData: MutableMap<String, Any> = mutableMapOf(),
+        val data: MutableMap<String, Any> = TreeMap(),
+        val contextData: MutableMap<String, Any> = TreeMap(),
         var depth: Int = 0,
         val cycleHandler: MutableSet<Any> = mutableSetOf()
 ) {

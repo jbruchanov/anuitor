@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import fi.iki.elonen.NanoHTTPD;
 
@@ -63,12 +64,12 @@ public class ScreenStructurePlugin extends BasePlugin {
     @Override
     public NanoHTTPD.Response serveFile(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         String[] viewRootNames = mWindowManager.getViewRootNames();
-        List<HashMap<String, Object>> resultDataSet = new ArrayList<>();
+        List<Map<String, Object>> resultDataSet = new ArrayList<>();
 
         for (String rootName : viewRootNames) {
             View v = mWindowManager.getRootView(rootName);
             Context c = v.getContext();
-            HashMap<String, Object> data = new HashMap<>();
+            Map<String, Object> data = new TreeMap<>();
             data.put("RootName", rootName);
             resultDataSet.add(data);
             Activity activity = getActivity(v);
@@ -84,7 +85,7 @@ public class ScreenStructurePlugin extends BasePlugin {
                 if (c instanceof ContextWrapper) {
                     c = ((ContextWrapper) c).getBaseContext();
                     if (c instanceof Activity) {
-                        HashMap<String, Object> sub = new HashMap<>();
+                        Map<String, Object> sub = new TreeMap<>();
                         data.put("OwnerActivity", sub);
                         fillActivity((Activity) c, sub);
                     }
@@ -99,7 +100,7 @@ public class ScreenStructurePlugin extends BasePlugin {
         return response;
     }
 
-    private void fillActivity(@Nullable Activity activity, HashMap<String, Object> data){
+    private void fillActivity(@Nullable Activity activity, Map<String, Object> data){
         if (activity != null) {
             BaseExtractor extractor = DetailExtractor.getExtractor(activity.getClass());
             extractor.fillValues(activity, new ExtractingContext(data));
