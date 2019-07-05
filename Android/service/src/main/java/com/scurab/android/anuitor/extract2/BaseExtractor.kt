@@ -21,4 +21,17 @@ abstract class BaseExtractor {
                 ?: ReflectionExtractor(true))
                 .fillValues(this, context)
     }
+
+    protected fun Any?.interfaces(): String {
+        if (this == null) {
+            return ""
+        }
+        val result = mutableSetOf<String>()
+        var clazz: Class<*>? = this::class.java
+        while (clazz != null) {
+            result.addAll(clazz.interfaces.map { it.simpleName })
+            clazz = clazz.superclass
+        }
+        return result.sorted().joinToString(", ")
+    }
 }
