@@ -39,6 +39,10 @@ data class ExtractingContext(
         }
     }
 
+    fun <T> put(name: String, item: T) {
+        data[name] = item ?: "null"
+    }
+
     private fun Any.verbosed(): Any {
         return when {
             this == Int.MAX_VALUE -> "$this (Int.MAX_VALUE)"
