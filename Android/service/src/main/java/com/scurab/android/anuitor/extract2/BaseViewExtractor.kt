@@ -41,7 +41,6 @@ abstract class BaseViewExtractor : BaseExtractor() {
 
             fillMandatoryValues(v, this)
         }
-        return super.onFillValues(item, context)
     }
 
     private fun fillMandatoryValues(v: View, context: ExtractingContext) {

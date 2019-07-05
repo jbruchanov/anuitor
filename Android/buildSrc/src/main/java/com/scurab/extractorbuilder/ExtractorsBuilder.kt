@@ -1,7 +1,6 @@
 package com.scurab.extractorbuilder
 
 import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 
 class ExtractorsBuilder {
     fun build(receiverClass: String,
@@ -10,15 +9,16 @@ class ExtractorsBuilder {
 
         val className = (structureItem.className ?: receiverClass.simpleClassName())
         val parentClass =
-                structureItem.parent?.let {
-                    ClassName.bestGuess("$packageName.${it.simpleClassName()}Extractor")
-                } ?: structureItem.parentExtractor?.let { ClassName.bestGuess(it) }
+                structureItem.parentExtractor?.let { ClassName.bestGuess(it) }
                 ?: ClassName.bestGuess("$packageName.BaseExtractor")
         val inFileClassName = "${className}Extractor"
         val file = FileSpec.builder(packageName, inFileClassName)
                 .addType(TypeSpec.classBuilder(inFileClassName)
                         .superclass(parentClass)
                         .addModifiers(KModifier.OPEN)
+                        .addProperty(PropertySpec.builder("parent", String::class.asTypeName().copy(nullable = true), KModifier.OVERRIDE)
+                                .initializer("%S", structureItem.parent)
+                                .build())
                         .addFunction(FunSpec.builder("onFillValues")
                                 .addAnnotation(AnnotationSpec.builder(ClassName.bestGuess("android.annotation.SuppressLint")).addMember("%S", "NewApi").build())
                                 .addModifiers(KModifier.OVERRIDE)
@@ -27,7 +27,11 @@ class ExtractorsBuilder {
                                         ParameterSpec
                                                 .builder("context", ClassName.bestGuess("com.scurab.android.anuitor.extract2.ExtractingContext"))
                                                 .build())
-                                .addStatement("super.onFillValues(item, context)")
+                                .apply {
+                                    if (!parentClass.toString().endsWith(".BaseExtractor")) {
+                                        addStatement("super.onFillValues(item, context)")
+                                    }
+                                }
                                 //no escape, as we reference it as ViewGroup.LayoutParams
                                 .addStatement("val v = item as " + (receiverClass.replace("$", ".") + if (structureItem.usingGenerics) "<*>" else ""))
                                 .apply {

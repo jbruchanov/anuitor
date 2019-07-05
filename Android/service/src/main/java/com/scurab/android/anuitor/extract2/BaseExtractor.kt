@@ -2,17 +2,26 @@ package com.scurab.android.anuitor.extract2
 
 abstract class BaseExtractor {
 
+    abstract val parent: String?
+
     open fun fillValues(item: Any, context: ExtractingContext): MutableMap<String, Any> {
         onFillValues(item, context)
+
+        //recursively follow inheritance
+        parent?.let {
+            DetailExtractor.findExtractor(Class.forName(it))
+                    ?.fillValues(item, context)
+        }
+        if (parent == null) {
+            context.put("Inheritance", 0, item) { inheritance() }
+            context.put("Type", 0, item) { item.javaClass.name }
+            context.put("StringValue", 0, item) { this.toString() }
+            context.put("Extractor", 0, this.javaClass.name) { this.toString() }
+        }
         return context.data
     }
 
-    protected open fun onFillValues(item: Any, context: ExtractingContext) {
-        context.put("Inheritance", 0, item) { inheritance() }
-        context.put("Type", 0, item) { item.javaClass.name }
-        context.put("StringValue", 0, item) { this.toString() }
-        context.put("Extractor", 0, this.javaClass.name) { this.toString() }
-    }
+    protected abstract fun onFillValues(item: Any, context: ExtractingContext)
 
     protected fun Any?.extract(context: ExtractingContext): Any {
         if (this == null) {

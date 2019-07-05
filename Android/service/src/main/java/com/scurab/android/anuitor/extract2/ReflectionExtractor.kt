@@ -9,6 +9,8 @@ import java.util.regex.Pattern
 private const val MAX_DEPTH = 2
 
 class ReflectionExtractor(private val useFields: Boolean = false, private val maxDepth: Int = MAX_DEPTH) : BaseExtractor() {
+    override val parent: String? = null
+
     companion object {
         /**
          * Fill this with regexp patterns to ignore methods
