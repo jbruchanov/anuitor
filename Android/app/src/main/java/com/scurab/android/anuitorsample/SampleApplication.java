@@ -2,12 +2,19 @@ package com.scurab.android.anuitorsample;
 
 import android.widget.Button;
 
+import androidx.fragment.app.Fragment;
 import androidx.multidex.MultiDexApplication;
 
+import com.scurab.android.anuitor.extract2.BaseExtractor;
 import com.scurab.android.anuitor.extract2.DetailExtractor;
+import com.scurab.android.anuitor.extract2.ExtractingContext;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.service.AnUitorClientConfig;
 import com.scurab.android.anuitor.service.AnUitorService;
+import com.scurab.android.anuitorsample.common.BaseFragment;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by jbruchanov@gmail.com
@@ -28,5 +35,21 @@ public class SampleApplication extends MultiDexApplication {
 
         DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView.class,
                 (view, outRect) -> view.getDrawingSize(outRect));
+
+        DetailExtractor.registerExtractor(BaseFragment.class, new BaseExtractor() {
+            @Nullable
+            @Override
+            public String getParent() {
+                //parent of our BaseFragment is Fragment so continue with inheritance
+                //returning null will stop extracting from super classes
+                return Fragment.class.getName();
+            }
+
+            @Override
+            protected void onFillValues(@NotNull Object item, @NotNull ExtractingContext context) {
+                BaseFragment baseFragment = (BaseFragment) item;
+                context.put("FakePresenter", baseFragment.getFakePresenter());
+            }
+        });
     }
 }
