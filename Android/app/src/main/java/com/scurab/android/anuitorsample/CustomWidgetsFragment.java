@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.scurab.android.anuitorsample.common.BaseFragment;
 import com.scurab.android.anuitorsample.widget.CustomButton;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
 import com.scurab.android.anuitorsample.widget.SubCustomButton;
@@ -18,7 +19,7 @@ import com.scurab.android.anuitorsample.widget.SubCustomTextView;
 /**
  * Created by jbruchanov on 01/07/2014.
  */
-public class CustomWidgetsFragment extends Fragment {
+public class CustomWidgetsFragment extends BaseFragment {
 
 
     @Override

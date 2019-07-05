@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.scurab.android.anuitorsample.common.BaseFragment;
+
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.NestedScrollingParent;
@@ -17,7 +19,7 @@ import android.widget.Toast;
  * Created by JBruchanov on 12/03/2017.
  */
 
-public class CoordinatorLayoutFragment extends Fragment {
+public class CoordinatorLayoutFragment extends BaseFragment {
 
     @Nullable
     @Override

@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.scurab.android.anuitorsample.common.BaseFragment;
+
 /**
  * Created by jbruchanov on 26/06/2014.
  */
-public class ScrollViewFragment extends Fragment {
+public class ScrollViewFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

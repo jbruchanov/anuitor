@@ -10,10 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.scurab.android.anuitorsample.common.BaseFragment;
+
 /**
  * Created by jbruchanov on 26/06/2014.
  */
-public class ListViewFragment extends Fragment {
+public class ListViewFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

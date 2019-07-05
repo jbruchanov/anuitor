@@ -12,10 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.scurab.android.anuitorsample.common.BaseFragment;
+
 /**
  * Created by jbruchanov on 26/06/2014.
  */
-public class MenuFragment extends Fragment {
+public class MenuFragment extends BaseFragment {
 
     private ListView mListView;
     private ArrayAdapter<String> mMenuAdapter;

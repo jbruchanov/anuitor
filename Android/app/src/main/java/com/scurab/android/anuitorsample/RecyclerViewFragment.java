@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.scurab.android.anuitorsample.common.BaseFragment;
+
 /**
  * Created by JBruchanov on 20/02/2016.
  */
-public class RecyclerViewFragment extends Fragment {
+public class RecyclerViewFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
 

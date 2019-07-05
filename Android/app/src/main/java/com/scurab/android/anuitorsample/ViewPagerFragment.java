@@ -8,12 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.scurab.android.anuitorsample.common.BaseFragment;
 import com.scurab.android.anuitorsample.widget.SimplePagerAdapter;
 
 /**
  * Created by jbruchanov on 26/06/2014.
  */
-public class ViewPagerFragment extends Fragment {
+public class ViewPagerFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

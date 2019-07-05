@@ -10,10 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 
+import com.scurab.android.anuitorsample.common.BaseFragment;
+
 /**
  * Created by jbruchanov on 26/06/2014.
  */
-public class WidgetsFragment extends Fragment {
+public class WidgetsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
