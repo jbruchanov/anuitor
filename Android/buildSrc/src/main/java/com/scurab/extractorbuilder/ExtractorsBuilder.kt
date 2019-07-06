@@ -1,6 +1,8 @@
 package com.scurab.extractorbuilder
 
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+
 
 class ExtractorsBuilder {
     fun build(receiverClass: String,
@@ -16,8 +18,12 @@ class ExtractorsBuilder {
                 .addType(TypeSpec.classBuilder(inFileClassName)
                         .superclass(parentClass)
                         .addModifiers(KModifier.OPEN)
-                        .addProperty(PropertySpec.builder("parent", String::class.asTypeName().copy(nullable = true), KModifier.OVERRIDE)
-                                .initializer("%S", structureItem.parent)
+                        .addProperty(PropertySpec.builder("parent",
+                                ClassName("java.lang", "Class")
+                                        .parameterizedBy(WildcardTypeName.producerOf(Any::class))
+                                        .copy(nullable = true),
+                                KModifier.OVERRIDE)
+                                .initializer("%L", structureItem.parent?.let { "${structureItem.parent}::class.java" } ?: "null")
                                 .build())
                         .addFunction(FunSpec.builder("onFillValues")
                                 .addAnnotation(AnnotationSpec.builder(ClassName.bestGuess("android.annotation.SuppressLint")).addMember("%S", "NewApi").build())

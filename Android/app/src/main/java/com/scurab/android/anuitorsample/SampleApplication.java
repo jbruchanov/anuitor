@@ -37,12 +37,11 @@ public class SampleApplication extends MultiDexApplication {
                 (view, outRect) -> view.getDrawingSize(outRect));
 
         DetailExtractor.registerExtractor(BaseFragment.class, new BaseExtractor() {
+
             @Nullable
             @Override
-            public String getParent() {
-                //parent of our BaseFragment is Fragment so continue with inheritance
-                //returning null will stop extracting from super classes
-                return Fragment.class.getName();
+            public Class<?> getParent() {
+                return Fragment.class;
             }
 
             @Override

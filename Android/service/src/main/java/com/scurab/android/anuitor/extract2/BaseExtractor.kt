@@ -1,8 +1,10 @@
 package com.scurab.android.anuitor.extract2
 
+import java.lang.IllegalArgumentException
+
 abstract class BaseExtractor {
 
-    abstract val parent: String?
+    abstract val parent: Class<*>?
 
     open fun fillValues(item: Any, context: ExtractingContext): MutableMap<String, Any> {
         if (!context.data.containsKey("Type")) {
@@ -15,8 +17,8 @@ abstract class BaseExtractor {
 
         //recursively follow inheritance
         parent?.let {
-            DetailExtractor.findExtractor(Class.forName(it))
-                    ?.fillValues(item, context)
+            DetailExtractor.findExtractor(it)?.run { fillValues(item, context) }
+                    ?: throw IllegalArgumentException("Not found extractor for class: ${it.name}")
         }
         return context.data
     }
