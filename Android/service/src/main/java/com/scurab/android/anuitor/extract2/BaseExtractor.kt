@@ -1,6 +1,9 @@
 package com.scurab.android.anuitor.extract2
 
 import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
+
+private const val CYCLE_PARENT_CHECK = "_cycleParentCheck"
 
 abstract class BaseExtractor {
 
@@ -17,10 +20,40 @@ abstract class BaseExtractor {
 
         //recursively follow inheritance
         parent?.let {
+            cycleCheck(context)
             DetailExtractor.findExtractor(it)?.run { fillValues(item, context) }
                     ?: throw IllegalArgumentException("Not found extractor for class: ${it.name}")
+            removeCycleTag(context)
         }
         return context.data
+    }
+
+    private fun cycleCheck(context: ExtractingContext) {
+        if (!context.contextData.containsKey(CYCLE_PARENT_CHECK)) {
+            context.contextData[CYCLE_PARENT_CHECK] = mutableSetOf<Class<*>>()
+        }
+        parent?.let { parent ->
+            @Suppress("UNCHECKED_CAST")
+            (context.contextData[CYCLE_PARENT_CHECK] as MutableSet<Class<*>>).let {
+                if (it.contains(parent)) {
+                    throw IllegalStateException("Parent class extraction cycle detected!\n" +
+                            "Extractor:'${this.javaClass.name}' is trying to use parent:'${parent.name}'\n" +
+                            "This parent has been already used for extracting. Update your extractor " +
+                            "to use correct parent!")
+                } else {
+                    it.add(parent)
+                }
+            }
+        }
+    }
+
+    private fun removeCycleTag(context: ExtractingContext) {
+        parent?.let { parent ->
+            @Suppress("UNCHECKED_CAST")
+            (context.contextData[CYCLE_PARENT_CHECK] as MutableSet<Class<*>>).let {
+                it.remove(parent)
+            }
+        }
     }
 
     protected abstract fun onFillValues(item: Any, context: ExtractingContext)

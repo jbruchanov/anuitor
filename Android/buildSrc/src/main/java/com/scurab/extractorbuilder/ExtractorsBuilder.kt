@@ -22,7 +22,7 @@ class ExtractorsBuilder {
                                 ClassName("java.lang", "Class")
                                         .parameterizedBy(WildcardTypeName.producerOf(Any::class))
                                         .copy(nullable = true),
-                                KModifier.OVERRIDE)
+                                KModifier.OVERRIDE, KModifier.FINAL)
                                 .initializer("%L", structureItem.parent?.let { "${structureItem.parent}::class.java" } ?: "null")
                                 .build())
                         .addFunction(FunSpec.builder("onFillValues")
