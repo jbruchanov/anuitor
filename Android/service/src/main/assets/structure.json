@@ -474,7 +474,7 @@
       }
     },
     "android.widget.CalendarView": {
-      "parent": "android.widget.ViewGroup",
+      "parent": "android.view.ViewGroup",
       "items": {
         "1" : [
           {"m": "getDate"},
@@ -527,7 +527,7 @@
       }
     },
     "android.widget.HorizontalScrollView": {
-      "parent": "android.widget.ViewGroup",
+      "parent": "android.view.ViewGroup",
       "items": {
         "3" : [
           {"m": "getMaxScrollAmount"},
@@ -628,7 +628,7 @@
       }
     },
     "android.widget.ScrollView": {
-      "parent": "android.widget.ViewGroup",
+      "parent": "android.view.ViewGroup",
       "items": {
         "1" : [
           {"m": "getMaxScrollAmount"},
@@ -951,7 +951,7 @@
       }
     },
     "androidx.cardview.widget.CardView": {
-      "parent": "android.widget.ViewGroup",
+      "parent": "android.view.ViewGroup",
       "items": {
         "1" : [
           {"m": "getCardElevation"},
@@ -1764,7 +1764,7 @@
         ]
       }
     },
-    "android.view.ViewGroup$LayoutParams": {
+    "android.view.ViewGroup.LayoutParams": {
       "items": {
         "1" : [
           {"m": "width", "p" : true, "t" : "LayoutSize"},
@@ -1772,8 +1772,8 @@
         ]
       }
     },
-    "android.view.ViewGroup$MarginLayoutParams": {
-      "parent": "android.view.ViewGroup$LayoutParams",
+    "android.view.ViewGroup.MarginLayoutParams": {
+      "parent": "android.view.ViewGroup.LayoutParams",
       "items": {
         "1" : [
           {
@@ -1795,8 +1795,8 @@
         ]
       }
     },
-    "android.widget.FrameLayout$LayoutParams": {
-      "parent": "android.view.ViewGroup$MarginLayoutParams",
+    "android.widget.FrameLayout.LayoutParams": {
+      "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
           {
@@ -1807,8 +1807,8 @@
         ]
       }
     },
-    "android.widget.LinearLayout$LayoutParams": {
-      "parent": "android.view.ViewGroup$MarginLayoutParams",
+    "android.widget.LinearLayout.LayoutParams": {
+      "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
           {
@@ -1823,8 +1823,8 @@
         ]
       }
     },
-    "android.widget.RelativeLayout$LayoutParams": {
-      "parent": "android.view.ViewGroup$MarginLayoutParams",
+    "android.widget.RelativeLayout.LayoutParams": {
+      "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
           {
@@ -1835,8 +1835,8 @@
         ]
       }
     },
-    "androidx.viewpager.widget.ViewPager$LayoutParams": {
-      "parent": "android.view.ViewGroup$LayoutParams",
+    "androidx.viewpager.widget.ViewPager.LayoutParams": {
+      "parent": "android.view.ViewGroup.LayoutParams",
       "items": {
         "1" : [
           {
@@ -1851,8 +1851,8 @@
         ]
       }
     },
-    "androidx.recyclerview.widget.RecyclerView$LayoutParams": {
-      "parent": "android.view.ViewGroup$MarginLayoutParams",
+    "androidx.recyclerview.widget.RecyclerView.LayoutParams": {
+      "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
           {"m": "viewNeedsUpdate"},
@@ -1871,8 +1871,8 @@
         ]
       }
     },
-    "androidx.constraintlayout.widget.ConstraintLayout$LayoutParams": {
-      "parent": "android.view.ViewGroup$MarginLayoutParams",
+    "androidx.constraintlayout.widget.ConstraintLayout.LayoutParams": {
+      "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
           {"m":"baselineToBaseline", "p": true},
