@@ -1765,6 +1765,7 @@
       }
     },
     "android.view.ViewGroup.LayoutParams": {
+      "className" : "ViewGroupLayoutParams",
       "items": {
         "1" : [
           {"m": "width", "p" : true, "t" : "LayoutSize"},
@@ -1773,6 +1774,7 @@
       }
     },
     "android.view.ViewGroup.MarginLayoutParams": {
+      "className" : "ViewGroupMarginLayoutParams",
       "parent": "android.view.ViewGroup.LayoutParams",
       "items": {
         "1" : [
@@ -1796,6 +1798,7 @@
       }
     },
     "android.widget.FrameLayout.LayoutParams": {
+      "className" : "FrameLayoutLayoutParams",
       "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
@@ -1808,6 +1811,7 @@
       }
     },
     "android.widget.LinearLayout.LayoutParams": {
+      "className" : "LinearLayoutLayoutParams",
       "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
@@ -1824,6 +1828,7 @@
       }
     },
     "android.widget.RelativeLayout.LayoutParams": {
+      "className" : "RelativeLayoutLayoutParams",
       "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
@@ -1836,6 +1841,7 @@
       }
     },
     "androidx.viewpager.widget.ViewPager.LayoutParams": {
+      "className" : "ViewPagerLayoutParams",
       "parent": "android.view.ViewGroup.LayoutParams",
       "items": {
         "1" : [
@@ -1852,6 +1858,7 @@
       }
     },
     "androidx.recyclerview.widget.RecyclerView.LayoutParams": {
+      "className" : "RecyclerViewLayoutParams",
       "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [
@@ -1872,6 +1879,7 @@
       }
     },
     "androidx.constraintlayout.widget.ConstraintLayout.LayoutParams": {
+      "className" : "ConstraintLayoutLayoutParams",
       "parent": "android.view.ViewGroup.MarginLayoutParams",
       "items": {
         "1" : [

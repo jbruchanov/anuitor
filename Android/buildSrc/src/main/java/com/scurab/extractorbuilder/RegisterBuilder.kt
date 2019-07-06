@@ -16,10 +16,20 @@ class RegisterBuilder {
 
                 private fun register(androidApiClass: String, func: () -> BaseExtractor) {
                     try {
-                        val clz = Class.forName(androidApiClass)
+                        val clz = classForName(androidApiClass)
                         DetailExtractor.registerExtractor(clz, func())
                     } catch (e: Throwable) {
-                        Log.e("ExtractorsRegister", "Unable to register '${'$'}androidApiClass'")
+                        Log.e("ExtractorsRegister", "Unable to register ''${'$'}androidApiClass'")
+                    }
+                }
+            
+                private fun classForName(androidApiClass: String): Class<*> {
+                    return try {
+                        Class.forName(androidApiClass)
+                    } catch (e: ClassNotFoundException) {
+                        //try check if it's internal class like for layoutParams
+                        val startIndex = androidApiClass.lastIndexOf(".")
+                        Class.forName(androidApiClass.replaceRange(startIndex, startIndex +1 , "${'$'}"))
                     }
                 }
             }
