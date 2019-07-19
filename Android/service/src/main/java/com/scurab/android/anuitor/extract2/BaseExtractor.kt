@@ -4,7 +4,8 @@ import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 
 private const val CYCLE_PARENT_CHECK = "_cycleParentCheck"
-
+//necessary for child fragments so FragmentExtractor might be used multiple times
+private const val CYCLE_DEPTH_CHECK = 5
 abstract class BaseExtractor {
 
     abstract val parent: Class<*>?
@@ -30,18 +31,19 @@ abstract class BaseExtractor {
 
     private fun cycleCheck(context: ExtractingContext) {
         if (!context.contextData.containsKey(CYCLE_PARENT_CHECK)) {
-            context.contextData[CYCLE_PARENT_CHECK] = mutableSetOf<Class<*>>()
+            context.contextData[CYCLE_PARENT_CHECK] = mutableMapOf<Class<*>, Int>()
         }
         parent?.let { parent ->
             @Suppress("UNCHECKED_CAST")
-            (context.contextData[CYCLE_PARENT_CHECK] as MutableSet<Class<*>>).let {
-                if (it.contains(parent)) {
+            (context.contextData[CYCLE_PARENT_CHECK] as MutableMap<Class<*>, Int>).also {
+                it[parent] = 0
+                val counter = it[parent] as Int
+                it[parent] = counter + 1
+                if (counter > CYCLE_DEPTH_CHECK) {
                     throw IllegalStateException("Parent class extraction cycle detected!\n" +
                             "Extractor:'${this.javaClass.name}' is trying to use parent:'${parent.name}'\n" +
                             "This parent has been already used for extracting. Update your extractor " +
                             "to use correct parent!")
-                } else {
-                    it.add(parent)
                 }
             }
         }
@@ -50,8 +52,8 @@ abstract class BaseExtractor {
     private fun removeCycleTag(context: ExtractingContext) {
         parent?.let { parent ->
             @Suppress("UNCHECKED_CAST")
-            (context.contextData[CYCLE_PARENT_CHECK] as MutableSet<Class<*>>).let {
-                it.remove(parent)
+            (context.contextData[CYCLE_PARENT_CHECK] as MutableMap<Class<*>, Int>).let {
+                it[parent] = (it[parent] as Int) -1
             }
         }
     }
@@ -63,8 +65,12 @@ abstract class BaseExtractor {
             return "null"
         }
         return when {
-            this is Iterable<*> -> this.filterNotNull().map { extractItem(it, context) }
-            this is Array<*> -> this.filterNotNull().map { extractItem(it, context) }
+            this is Iterable<*> -> this.filterNotNull().map {
+                extractItem(it, context)
+            }
+            this is Array<*> -> this.filterNotNull().map {
+                extractItem(it, context)
+            }
             else -> extractItem(this, context)
         }
     }
@@ -72,7 +78,8 @@ abstract class BaseExtractor {
     private fun extractItem(item: Any, context: ExtractingContext): MutableMap<String, Any> {
         return (DetailExtractor.findExtractor(item::class.java)
                 ?: ReflectionExtractor(true))
-                .fillValues(item, context)
+                .fillValues(item,
+                        ExtractingContext(contextData = context.contextData, depth = context.depth + 1))
     }
 
     protected fun Any?.interfaces(): String {

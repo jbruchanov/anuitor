@@ -34,7 +34,8 @@ public class MenuFragment extends BaseFragment {
             DrawOutsideBoundsFragment.class,
             RecyclerViewFragment.class,
             CoordinatorLayoutFragment.class,
-            NavigationViewFragment.class
+            NavigationViewFragment.class,
+            ChildFragments.class,
     };
 
     public static final String[] itemFragmentNames;
@@ -42,7 +43,11 @@ public class MenuFragment extends BaseFragment {
     static {
         itemFragmentNames = new String[itemFragments.length];
         for (int i = 0; i < itemFragmentNames.length; i++) {
-            itemFragmentNames[i] = itemFragments[i].getSimpleName().replace("Fragment", "");
+            String fragment = itemFragments[i].getSimpleName();
+            if (fragment.endsWith("Fragment")) {
+                fragment = fragment.replace("Fragment", "");
+            }
+            itemFragmentNames[i] = fragment;
         }
     }
 

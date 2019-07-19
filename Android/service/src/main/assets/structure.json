@@ -1431,7 +1431,11 @@
           {"m": "isDetached"}
         ],
         "17" : [
-          {"m": "getParentFragment"}
+          {"m": "getParentFragment"},
+          {
+            "m": "getChildFragmentManager",
+            "e": true
+          }
         ]
       }
     },
@@ -1720,6 +1724,10 @@
           {"m": "isVisible"},
           {
             "m": "getArguments",
+            "e": true
+          },
+          {
+            "m": "getChildFragmentManager",
             "e": true
           },
           {
