@@ -2,6 +2,7 @@ package com.scurab.gwt.anuitor.client.ui.tree;
 
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 import com.scurab.gwt.anuitor.client.model.ViewTreeNode;
 import com.scurab.gwt.anuitor.client.util.DoublePair;
@@ -33,14 +34,16 @@ public class ShortNameRenderer implements RenderDelegate {
 
     @Override
     public DoublePair svgSize(List<Integer> levelItems) {
-        return mRendering.svgSize(levelItems)
-                .multiply(SIZING.first + 5, SIZING.second);
+        return mRendering.svgSize(levelItems)              
+                .multiply(SIZING.first, SIZING.second)
+                .atLeast(Window.getClientWidth() - 50, Window.getClientHeight() - 50);
     }
 
     @Override
     public DoublePair treeSize(List<Integer> levelItems) {
         return mRendering.treeSize(levelItems)
-                .multiply(SIZING.second, SIZING.first);
+                .multiply(SIZING.second, SIZING.first)
+                .atLeast(Window.getClientHeight() / 2, Window.getClientWidth() / 2);
     }
     
     @Override

@@ -2,6 +2,7 @@ package com.scurab.gwt.anuitor.client.ui.tree;
 
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 import com.scurab.gwt.anuitor.client.model.ViewTreeNode;
 import com.scurab.gwt.anuitor.client.util.DoublePair;
@@ -34,14 +35,18 @@ public class NoTextRenderer implements RenderDelegate {
     public DoublePair svgSize(List<Integer> levelItems) {
         double x = getCircleRadius() * SIZE_COEF_X;
         double y = getCircleRadius() * SIZE_COEF_Y;
-        return mRendering.svgSize(levelItems).multiply(x, y);
+        return mRendering.svgSize(levelItems)
+                .multiply(x, y)
+                .atLeast(Window.getClientWidth() - 50, Window.getClientHeight() - 50);
     }
 
     @Override
     public DoublePair treeSize(List<Integer> levelItems) {
         double x = getCircleRadius() * SIZE_COEF_X;
         double y = getCircleRadius() * SIZE_COEF_Y;
-        return mRendering.treeSize(levelItems).multiply(x, y);
+        return mRendering.treeSize(levelItems)
+                .multiply(x, y)
+                .atLeast(Window.getClientWidth() / 2, Window.getClientHeight() / 2);
     }
     
     @Override

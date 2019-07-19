@@ -38,4 +38,10 @@ public class DoublePair {
     public DoublePair plus(double first, double second) {
         return new DoublePair(this.first + first, this.second + second);
     }
+    
+    public DoublePair atLeast(double first, double second) {
+        double a = (this.first > first) ? this.first : first;
+        double b = (this.second > second) ? this.second : second;
+        return new DoublePair(a, b);
+    }
 }
