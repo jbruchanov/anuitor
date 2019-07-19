@@ -20,7 +20,7 @@ open class ChildFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (view as? TextView)?.text = javaClass.name
+        (view as? TextView)?.text = javaClass.simpleName
     }
 }
 

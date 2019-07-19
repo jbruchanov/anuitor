@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.reflect.Reflector
@@ -170,29 +171,42 @@ fun Context.getApplication(): Application {
     return applicationContext as Application
 }
 
+fun View.components(): ViewComponents {
+    val result = mutableListOf<IFragmentDelegate>()
 
-fun View.components() : ViewComponents {
-    return ViewComponents(context.getApplication(), context.getActivity()).apply {
-        (activity as? FragmentActivity)?.also {activity ->
-            val xFragments: Map<View, Pair<View, IFragmentDelegate>> = activity.supportFragmentManager.fragments
-                    .filter { it.view != null }
-                    .map { Pair(it.view ?: ise("Null view")/*false positive, filtered*/, AndroidXFragmentDelegate(it)) }
-                    .associateBy { it.first }
-                    .toMutableMap()
-            var allFragments = xFragments
-
-            atLeastApi(Build.VERSION_CODES.O) {
-                val fragments: Map<View, Pair<View, IFragmentDelegate>> = activity.fragmentManager.fragments
-                        .filter { it.view != null }
-                        .map { Pair(it.view ?: ise("Null view")/*false positive, filtered*/, AndroidFragmentDelegate(it)) }
-                        .associateBy { it.first }
-                allFragments = allFragments + fragments
-            }
-            fragments.addAll(allFragments.values.map { it.second })
-            allFragments.values.forEach { (view, fragment) ->
-                fragmentsPerRootView[view] = fragment
-            }
+    fun saveChildAndroidXFragments(fragment: Fragment) {
+        if (fragment.view != null) {
+            result.add(AndroidXFragmentDelegate(fragment))
         }
+        fragment.childFragmentManager.fragments
+                .filter { it.view != null }
+                .forEach { f -> saveChildAndroidXFragments(f) }
+    }
+
+    return ViewComponents(context.getApplication(), context.getActivity()).apply {
+        (activity as? FragmentActivity)?.also { activity ->
+            activity.supportFragmentManager.fragments.forEach { f -> saveChildAndroidXFragments(f) }
+        }
+        atLeastApi(Build.VERSION_CODES.O) {
+            fun saveChildFragments(fragment: android.app.Fragment) {
+                if (fragment.view != null) {
+                    result.add(AndroidFragmentDelegate(fragment))
+                }
+                fragment.childFragmentManager?.fragments
+                        ?.filter { it.view != null }
+                        ?.forEach { f -> saveChildFragments(f) }
+            }
+            activity?.fragmentManager?.fragments?.forEach { saveChildFragments(it) }
+        }
+
+        //keep child fragments closer to start so any iteration will rather pick them
+        //instead of parent fragment
+        fragments.addAll(result.reversed())
+        fragments
+                .filter { it.view != null }
+                .forEach { f ->
+                    fragmentsPerRootView[f.view!!] = f
+                }
     }
 }
 
