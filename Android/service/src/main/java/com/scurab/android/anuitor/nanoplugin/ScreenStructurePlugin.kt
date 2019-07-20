@@ -33,9 +33,7 @@ class ScreenStructurePlugin(private val windowManager: WindowManager) : BasePlug
     private val activityThread = ActivityThreadReflector()
 
     override fun files(): Array<String> = arrayOf(FILE)
-
     override fun mimeType(): String = APP_JSON
-
     override fun canServeUri(uri: String, rootDir: File): Boolean = PATH == uri
 
     override fun serveFile(uri: String, headers: Map<String, String>,
