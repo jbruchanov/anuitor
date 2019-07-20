@@ -66,7 +66,7 @@ class ScreenStructurePlugin(private val windowManager: WindowManager) : BasePlug
                         .forEach { (name, item) ->
                             //naive activity detection => app/activity/view
                             if (name.indexOfFirst { it == '/' } != name.indexOfLast { it == '/' }) {
-                                items.add(simpleStructure(item.context.getActivity()
+                                items.add(simpleStructure(item.getActivity()
                                         ?: throw IllegalStateException("View without activity?!")))
                             } else {
                                 items.add(simpleStructure(item))

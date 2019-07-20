@@ -8,6 +8,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -75,8 +76,8 @@ fun IntArray.extractRelativeLayoutRules(context: ExtractingContext) {
         return "layoutParams_" + if (index < relativeLayoutRules.size) relativeLayoutRules[index] else index
     }
 
-    forEachIndexed{ i, rule ->
-        if(rule != 0) {
+    forEachIndexed { i, rule ->
+        if (rule != 0) {
             context.data[relativeLayoutParamRuleName(i)] =
                     when (rule) {
                         RelativeLayout.TRUE -> true
@@ -167,6 +168,22 @@ fun Context.getActivity(): Activity? {
     return activity
 }
 
+fun View.getActivity(): Activity? {
+    var activity = context.getActivity()
+    if (activity == null) {
+        //view might have Application context, so try to search it in whole hierarchy
+        (this as? ViewGroup)?.apply {
+            (0 until childCount).forEach { i ->
+                activity = getChildAt(i).getActivity()
+                if (activity != null) {
+                    return activity
+                }
+            }
+        }
+    }
+    return activity
+}
+
 fun Context.getApplication(): Application {
     return applicationContext as Application
 }
@@ -183,7 +200,7 @@ fun View.components(): ViewComponents {
                 .forEach { f -> saveChildAndroidXFragments(f) }
     }
 
-    return ViewComponents(context.getApplication(), context.getActivity()).apply {
+    return ViewComponents(context.getApplication(), getActivity()).apply {
         (activity as? FragmentActivity)?.also { activity ->
             activity.supportFragmentManager.fragments.forEach { f -> saveChildAndroidXFragments(f) }
         }
@@ -210,28 +227,28 @@ fun View.components(): ViewComponents {
     }
 }
 
-fun Any.allMethods() : Collection<Method> {
+fun Any.allMethods(): Collection<Method> {
     val result = mutableListOf<Method>()
     var clazz: Class<*>? = javaClass
-    while(clazz != null && clazz != Object::class.java) {
+    while (clazz != null && clazz != Object::class.java) {
         result.addAll(clazz.declaredMethods)
         clazz = clazz.superclass
     }
     return result
 }
 
-fun Any.allFields() : Collection<Field> {
+fun Any.allFields(): Collection<Field> {
     val result = mutableListOf<Field>()
     var clazz: Class<*>? = javaClass
-    while(clazz != null && clazz != Object::class.java) {
+    while (clazz != null && clazz != Object::class.java) {
         result.addAll(clazz.declaredFields)
         clazz = clazz.superclass
     }
     return result
 }
 
-fun Any.isArray() : Boolean {
-    return when(this) {
+fun Any.isArray(): Boolean {
+    return when (this) {
         is Array<*>,
         is IntArray,
         is LongArray,
@@ -243,8 +260,8 @@ fun Any.isArray() : Boolean {
     }
 }
 
-fun Any.toArrayString() : String? {
-    return when(this) {
+fun Any.toArrayString(): String? {
+    return when (this) {
         is IntArray -> Arrays.toString(this)
         is LongArray -> Arrays.toString(this)
         is ByteArray -> Arrays.toString(this)
