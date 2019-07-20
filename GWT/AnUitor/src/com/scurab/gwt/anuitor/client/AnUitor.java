@@ -127,8 +127,11 @@ public class AnUitor implements EntryPoint {
                 updateHistory = false;
             }
             toOpen = new GroovyPage(screenIndex, position);
-        } else if ("Windows".equals(screen)) {
+        } else if ("Windows Detailed".equals(screen)) {
             Window.open(DataProvider.SCREEN_SCTRUCTURE, "_blank", "");
+            return;
+        } else if ("Windows".equals(screen)) {
+            Window.open(DataProvider.SCREEN_SCTRUCTURE_SIMPLE, "_blank", "");
             return;
         } else if ("Screenshot".equals(screen)) {
             Window.open(DataProvider.SCREEN + "?" + DataProvider.SCREEN_INDEX_QRY + getScreenIndex(), "_blank", "");
@@ -166,6 +169,7 @@ public class AnUitor implements EntryPoint {
         hp.add(createButton("Resources", false));
         hp.add(createButton("FileStorage", false));
         hp.add(createButton("Windows", false));
+        hp.add(createButton("Windows Detailed", false));
         hp.add(createButton("Screenshot", false));
         hp.add(createButton("LogCat", false));
         if (ConfigHelper.isGroovyEnabled()) {
