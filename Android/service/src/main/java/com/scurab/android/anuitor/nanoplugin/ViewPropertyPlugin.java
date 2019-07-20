@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.nanoplugin;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -69,6 +70,11 @@ public class ViewPropertyPlugin extends ActivityPlugin {
     }
 
     @Override
+    public Activity getCurrentActivity() {
+        return super.getCurrentActivity();
+    }
+
+    @Override
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         try {
             String queryString = session.getQueryParameterString();
@@ -113,10 +119,9 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                         }
                         response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName, maxDepth);
                     } else {
-                        final OutRef<DataResponse> ref = new OutRef<>();
                         final View finalView = view;
-                        Executor.runInMainThreadBlocking(30000, () -> ref.setValue(handleObject(finalView, reflection, finalView.getClass().getName(), "", "", maxDepth)));
-                        response = ref.getValue();
+                        response = Executor.runInMainThreadBlocking(30000,
+                                () -> handleObject(finalView, reflection, finalView.getClass().getName(), "", "", maxDepth));
                     }
                     return new OKResponse(HttpTools.MimeType.APP_JSON, JSON.toJson(response));
                 }

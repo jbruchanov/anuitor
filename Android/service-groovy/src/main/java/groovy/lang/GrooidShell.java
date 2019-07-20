@@ -38,6 +38,7 @@ import dalvik.system.DexClassLoader;
  */
 public class GrooidShell {
 
+    private static final int DEFAULT_TIMEOUT = 10000;
     private static final String DEX_IN_JAR_NAME = "classes.dex";
     private static final Attributes.Name CREATED_BY = new Attributes.Name("Created-By");
 
@@ -62,21 +63,17 @@ public class GrooidShell {
         cfOptions.statistics = false;
     }
 
-    public EvalResult evaluateOnMainThread(final String scriptText) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        final OutRef<EvalResult> result = new OutRef<>();
-        Executor.runInMainThreadBlocking(10000, () -> {
+    public EvalResult evaluateOnMainThread(final String scriptText) {
+        return Executor.runInMainThreadBlocking(10000, () -> {
+            EvalResult result;
             try {
-                final EvalResult evalResult = evaluate(scriptText);
-                result.setValue(evalResult);
+                result = evaluate(scriptText);
             } catch (Throwable t) {
-                result.setValue(new EvalResult(t));
                 t.printStackTrace();
+                result = new EvalResult(t);
             }
-            synchronized (result) {
-                result.notifyAll();
-            }
+            return result;
         });
-        return result.getValue();
     }
 
     public EvalResult evaluate(String scriptText) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {

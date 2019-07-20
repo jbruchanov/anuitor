@@ -3,29 +3,35 @@ package com.scurab.android.anuitor.tools;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.scurab.android.anuitor.model.OutRef;
+
 /**
  * Created by jbruchanov on 26/06/2014.
  */
 public class Executor {
 
     private static Handler sHandler;
+    private static final int DEFAULT_TIMEOUT = 2000;
+
+    public interface Action<T> {
+        T run();
+    }
 
     /**
      * Run op in main thread with 2s timeout
      *
      * @param op
      */
-    public static void runInMainThreadBlocking(final Runnable op) {
-        runInMainThreadBlocking(getHandler(), op, 2000);
+    public static <T> T runInMainThreadBlocking(Action<T> op) {
+        return runInMainThreadBlocking(getHandler(), op, DEFAULT_TIMEOUT);
     }
 
     /**
-     *
      * @param timeout
      * @param op
      */
-    public static void runInMainThreadBlocking(int timeout, final Runnable op) {
-        runInMainThreadBlocking(getHandler(), op, timeout);
+    public static <T> T runInMainThreadBlocking(int timeout, Action<T> op) {
+        return runInMainThreadBlocking(getHandler(), op, timeout);
     }
 
     /**
@@ -34,11 +40,11 @@ public class Executor {
      *
      * @param op
      */
-    public static void runInMainThreadBlockingOnlyIfCrashing(final Runnable op) {
+    public static <T> T runInMainThreadBlockingOnlyIfCrashing(Action<T> op) {
         try {
-            op.run();
+            return op.run();
         } catch (Throwable t) {
-            runInMainThreadBlocking(getHandler(), op, 2000);
+            return runInMainThreadBlocking(getHandler(), op, DEFAULT_TIMEOUT);
         }
     }
 
@@ -51,15 +57,17 @@ public class Executor {
 
     /**
      * Run code in main thread and block current running thread
+     *
      * @param handler
      * @param op
      * @param timeout
      */
-    public static void runInMainThreadBlocking(Handler handler, final Runnable op, int timeout) {
+    public static <T> T runInMainThreadBlocking(Handler handler, final Action<T> op, int timeout) {
         final Object lock = new Object();
+        final OutRef<T> result = new OutRef<>();
         synchronized (lock) {
             handler.post(() -> {
-                op.run();
+                result.setValue(op.run());
                 synchronized (lock) {
                     lock.notifyAll();
                 }
@@ -71,5 +79,6 @@ public class Executor {
                 e.printStackTrace();
             }
         }
+        return result.getValue();
     }
 }

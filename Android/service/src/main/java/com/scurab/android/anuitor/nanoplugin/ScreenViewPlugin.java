@@ -74,6 +74,7 @@ public class ScreenViewPlugin extends ActivityPlugin {
                     // get bitmap
                     outBitmap[0] = view.getDrawingCache();
                 }
+                return null;
             });
 
             Bitmap b = outBitmap[0];
