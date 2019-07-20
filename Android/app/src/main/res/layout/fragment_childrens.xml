@@ -5,15 +5,15 @@
     android:orientation="vertical">
 
     <fragment
-        class="com.scurab.android.anuitorsample.ChildFragmentB"
-        android:id="@+id/child_fragment_a"
+        class="com.scurab.android.anuitorsample.ChildFragmentASub"
+        android:id="@+id/child_fragment_sub1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <fragment
-        class="com.scurab.android.anuitorsample.ChildFragmentA"
-        android:id="@+id/child_fragment_b"
+        class="com.scurab.android.anuitorsample.ChildFragmentASub"
+        android:id="@+id/child_fragment_sub2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

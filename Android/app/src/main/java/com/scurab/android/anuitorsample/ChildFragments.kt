@@ -24,5 +24,10 @@ open class ChildFragment : BaseFragment() {
     }
 }
 
-class ChildFragmentA : ChildFragment()
+class ChildFragmentA : BaseFragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_childrens, container, false)
+    }
+}
+class ChildFragmentASub : ChildFragment()
 class ChildFragmentB : ChildFragment()
