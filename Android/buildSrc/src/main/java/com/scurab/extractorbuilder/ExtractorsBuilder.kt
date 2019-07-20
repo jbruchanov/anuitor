@@ -26,6 +26,7 @@ class ExtractorsBuilder {
                                 .initializer("%L", structureItem.parent?.let { "${structureItem.parent}::class.java" } ?: "null")
                                 .build())
                         .addFunction(FunSpec.builder("onFillValues")
+                                .addAnnotation(AnnotationSpec.builder(ClassName.bestGuess("androidx.annotation.CallSuper")).build())
                                 .addAnnotation(AnnotationSpec.builder(ClassName.bestGuess("android.annotation.SuppressLint")).addMember("%S", "NewApi").build())
                                 .addModifiers(KModifier.OVERRIDE)
                                 .addParameter("item", Any::class.asClassName())
