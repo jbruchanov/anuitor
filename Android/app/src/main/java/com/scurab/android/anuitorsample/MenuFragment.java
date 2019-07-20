@@ -36,6 +36,7 @@ public class MenuFragment extends BaseFragment {
             CoordinatorLayoutFragment.class,
             NavigationViewFragment.class,
             ChildFragments.class,
+            WebViewFragment.class,
     };
 
     public static final String[] itemFragmentNames;
