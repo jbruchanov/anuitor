@@ -44,12 +44,18 @@ class ScreenStructurePlugin(private val windowManager: WindowManager) : BasePlug
                            mimeType: String): NanoHTTPD.Response {
 
         val qs = HttpTools.parseQueryString(session.queryParameterString)
-        val result: Any =
-                if ("simple" == qs["type"]) simpleStructure(activityThread.application)
-                else deepStructure()
+        return try {
+            val result: Any =
+                    if ("simple" == qs["type"]) simpleStructure(activityThread.application)
+                    else deepStructure()
 
-        val json = BasePlugin.JSON.toJson(result)
-        return OKResponse(APP_JSON, ByteArrayInputStream(json.toByteArray()))
+            val json = BasePlugin.JSON.toJson(result)
+            OKResponse(APP_JSON, ByteArrayInputStream(json.toByteArray()))
+        } catch (e: Throwable) {
+            Response(NanoHTTPD.Response.Status.INTERNAL_ERROR,
+                    NanoHTTPD.MIME_PLAINTEXT,
+                    ByteArrayInputStream((e.message ?: "Null exception message").toByteArray()))
+        }
     }
 
     private fun simpleStructure(item: Any): Node {
