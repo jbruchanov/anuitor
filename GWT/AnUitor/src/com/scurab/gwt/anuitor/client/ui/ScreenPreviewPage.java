@@ -668,8 +668,11 @@ public class ScreenPreviewPage extends Composite {
     }
 
     private void updateGridCanvas(float scale) {
-        int w = (int) (mImageWidth * scale);
-        int h = (int) (mImageHeight * scale);
+        int w = (int) (.5f + mImageWidth * scale);
+        int h = (int) (.5f + mImageHeight * scale);
+        //update element size, otherwise mouse handler doesn't work if it's bigger then fullhd 
+        mCanvasGrid.setWidth(w + "px");
+        mCanvasGrid.setHeight(h + "px");
         if (showGridCheckbox.getValue()) {
             mCanvasGrid.setCoordinateSpaceWidth(w);
             mCanvasGrid.setCoordinateSpaceHeight(h);
