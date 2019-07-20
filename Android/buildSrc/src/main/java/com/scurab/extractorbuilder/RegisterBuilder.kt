@@ -19,7 +19,7 @@ class RegisterBuilder {
                         val clz = classForName(androidApiClass)
                         DetailExtractor.registerExtractor(clz, func())
                     } catch (e: Throwable) {
-                        Log.e("ExtractorsRegister", "Unable to register ''${'$'}androidApiClass'")
+                        Log.e("ExtractorsRegister", "Unable to register '${'$'}androidApiClass'")
                     }
                 }
             
