@@ -45,7 +45,7 @@ public abstract class Reflector<T> {
                 Method m = clz.getDeclaredMethod(methodName, clzs);
                 m.setAccessible(true);
                 return (T) m.invoke(receiver, params);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 clz = clz.getSuperclass();
             }
         }

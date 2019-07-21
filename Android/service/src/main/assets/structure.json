@@ -888,7 +888,6 @@
     },
     "android.webkit.WebView": {
       "parent": "android.view.ViewGroup",
-      "_note": "fillSettings?",
       "items": {
         "1" : [
           {"m": "canGoBack"},
@@ -897,7 +896,11 @@
           {"m": "getUrl"},
           {"m": "getTitle"},
           {"m": "getProgress"},
-          {"m": "getProgress"}
+          {
+            "n": "Settings:",
+            "m": "getSettings",
+            "e": true
+          }
         ],
         "11" : [
           {"m": "canZoomIn"},
@@ -1666,6 +1669,80 @@
           {"m": "getFontFeatureSettings"},
           {"m": "getLetterSpacing"},
           {"m": "isElegantTextHeight"}
+        ]
+      }
+    },
+    "android.webkit.WebSettings": {
+      "items": {
+        "1" : [
+          {"m": "getBlockNetworkImage"},
+          {"m": "getCacheMode"},
+          {"m": "getCursiveFontFamily"},
+          {"m": "getDefaultFixedFontSize"},
+          {"m": "getDefaultFontSize"},
+          {"m": "getDefaultTextEncodingName"},
+          {"m": "getFantasyFontFamily"},
+          {"m": "getFixedFontFamily"},
+          {"m": "getJavaScriptCanOpenWindowsAutomatically"},
+          {"m": "getJavaScriptEnabled"},
+          {"m": "getLayoutAlgorithm"},
+          {"m": "getLightTouchEnabled"},
+          {"m": "getLoadsImagesAutomatically"},
+          {"m": "getMinimumFontSize"},
+          {"m": "getMinimumLogicalFontSize"},
+          {"m": "getSansSerifFontFamily"},
+          {"m": "getSaveFormData"},
+          {"m": "getSavePassword"},
+          {"m": "getSerifFontFamily"},
+          {"m": "getStandardFontFamily"},
+          {"m": "getTextSize"},
+          {"m": "getUseWideViewPort"},
+          {"m": "supportMultipleWindows"},
+          {"m": "supportZoom"}
+        ],
+        "3": [
+          {"m": "getAllowFileAccess"},
+          {"m": "getBuiltInZoomControls"},
+          {"m": "getUserAgentString"}
+        ],
+        "5": [
+          {"m": "getDatabaseEnabled"},
+          {"m": "getDatabasePath"}
+        ],
+        "7": [
+          {"m": "getDefaultZoom"},
+          {"m": "getDomStorageEnabled"},
+          {"m": "getLoadWithOverviewMode"}
+        ],
+        "8": [
+          {"m": "getBlockNetworkLoads"},
+          {"m": "getPluginState"}
+        ],
+        "11": [
+          {"m": "getAllowContentAccess"},
+          {"m": "getDisplayZoomControls"}
+        ],
+        "14": [
+          {"m": "getTextZoom"}
+        ],
+        "16": [
+          {"m": "getAllowFileAccessFromFileURLs"},
+          {"m": "getAllowUniversalAccessFromFileURLs"}
+        ],
+        "17": [
+          {"m": "getMediaPlaybackRequiresUserGesture"}
+        ],
+        "21": [
+          {"m": "getMixedContentMode"}
+        ],
+        "23": [
+          {"m": "getOffscreenPreRaster"}
+        ],
+        "24": [
+          {"m": "getDisabledActionModeMenuItems"}
+        ],
+        "26": [
+          {"m": "getSafeBrowsingEnabled"}
         ]
       }
     },

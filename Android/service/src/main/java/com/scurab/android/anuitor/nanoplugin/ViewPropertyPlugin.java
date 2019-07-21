@@ -106,7 +106,7 @@ public class ViewPropertyPlugin extends ActivityPlugin {
 
                             final ViewReflector reflector = new ViewReflector(view);
                             if (item != null) {
-                                propertyValue = reflector.callMethod(item.methodName);
+                                propertyValue = Executor.runInMainThreadBlocking(() -> reflector.callMethod(item.methodName));
                                 if (item.arrayIndex >= 0) {
                                     propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
                                 }
