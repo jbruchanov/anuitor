@@ -3,20 +3,16 @@ package com.scurab.android.anuitorsample;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.slidingpanelayout.widget.SlidingPaneLayout;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.scurab.android.anuitor.extract2.DetailExtractor;
-import com.scurab.android.anuitor.service.AnUitorClientConfig;
-import com.scurab.android.anuitor.service.AnUitorService;
 import com.scurab.android.anuitorsample.extract.CustomTextViewExtractor;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
 
@@ -43,7 +39,7 @@ public class MainActivity extends BaseActivity {
         mPaneLayout.post(() -> mPaneLayout.openPane());
 
         View v = findViewById(R.id.txt_sample);
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotation);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale);
         v.setAnimation(animation);
     }
 
