@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.extract2;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +40,8 @@ public final class DetailExtractor {
     public static void resetToDefault() {
         MAP.clear();
         VIEWGROUP_IGNORE.clear();
-
+        //WebView is not typical viewgroup, let's treat it as a view
+        VIEWGROUP_IGNORE.add(WebView.class.getName());
         ExtractorsRegister.INSTANCE.register();
     }
 
