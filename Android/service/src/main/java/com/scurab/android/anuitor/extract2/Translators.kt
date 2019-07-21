@@ -8,6 +8,7 @@ import android.text.util.Linkify
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
 import android.widget.AbsListView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -54,7 +55,8 @@ enum class TranslatorName {
     ViewTextAlignment,
     ViewTextDirection,
     ViewScrollBarType,
-    ViewGroupDescendantFocusability;
+    ViewGroupDescendantFocusability,
+    WebSettingsMixedContentMode;
 }
 
 
@@ -273,6 +275,14 @@ object Translators {
             +(View.OVER_SCROLL_NEVER to "OVER_SCROLL_NEVER")
             +(View.OVER_SCROLL_ALWAYS to "OVER_SCROLL_ALWAYS")
             +(View.OVER_SCROLL_IF_CONTENT_SCROLLS to "OVER_SCROLL_IF_CONTENT_SCROLLS")
+        }
+
+        atLeastApi(Build.VERSION_CODES.LOLLIPOP) {
+            itemTranslator(TranslatorName.WebSettingsMixedContentMode) {
+                +(WebSettings.MIXED_CONTENT_NEVER_ALLOW to "MIXED_CONTENT_NEVER_ALLOW")
+                +(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW to "MIXED_CONTENT_ALWAYS_ALLOW")
+                +(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE to "MIXED_CONTENT_COMPATIBILITY_MODE")
+            }
         }
 
         atLeastApi(Build.VERSION_CODES.O) {
