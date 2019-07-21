@@ -24,29 +24,31 @@ import java.io.File
 import java.lang.IllegalStateException
 import java.util.*
 
-private const val FILE = "screenstructure.json"
-private const val PATH = "/$FILE"
+private const val FILE_DEEP = "screenstructure.json"
+private const val FILE_SIMPLE = "screencomponents.json"
 private typealias Node = Map<String, Any>
 
 class ScreenStructurePlugin(private val windowManager: WindowManager) : BasePlugin() {
 
     private val activityThread = ActivityThreadReflector()
+    private val files = arrayOf(FILE_DEEP, FILE_SIMPLE)
+    private val paths = files.map { "/$it" }
 
-    override fun files(): Array<String> = arrayOf(FILE)
+    override fun files(): Array<String> = files
     override fun mimeType(): String = APP_JSON
-    override fun canServeUri(uri: String, rootDir: File): Boolean = PATH == uri
+    override fun canServeUri(uri: String, rootDir: File): Boolean = paths.indexOf(uri) != -1
 
     override fun serveFile(uri: String, headers: Map<String, String>,
                            session: NanoHTTPD.IHTTPSession,
                            file: File,
                            mimeType: String): NanoHTTPD.Response {
 
-        val qs = HttpTools.parseQueryString(session.queryParameterString)
         return try {
-            val result: Any =
-                    if ("simple" == qs["type"]) simpleStructure(activityThread.application)
-                    else deepStructure()
-
+            val result : Any = when {
+                uri.endsWith(FILE_DEEP) -> deepStructure()
+                uri.endsWith(FILE_SIMPLE) -> simpleStructure(activityThread.application)
+                else -> throw IllegalArgumentException("Unsupported uri:$uri")
+            }
             val json = BasePlugin.JSON.toJson(result)
             OKResponse(APP_JSON, ByteArrayInputStream(json.toByteArray()))
         } catch (e: Throwable) {
@@ -70,8 +72,14 @@ class ScreenStructurePlugin(private val windowManager: WindowManager) : BasePlug
                         .forEach { (name, item) ->
                             //naive activity detection => app/activity/view
                             if (name.indexOfFirst { it == '/' } != name.indexOfLast { it == '/' }) {
-                                items.add(simpleStructure(item.getActivity()
-                                        ?: throw IllegalStateException("View without activity?!")))
+                                //view without activity as a context ?
+                                //might be the app or some very unusual case
+                                val activity = item.getActivity()
+                                if (activity != null) {
+                                    items.add(simpleStructure(activity))
+                                } else {
+                                    items.add(simpleStructure(item))
+                                }
                             } else {
                                 items.add(simpleStructure(item))
                             }

@@ -44,7 +44,7 @@ public class DataProvider {
     public static final String SCREEN_INDEX_QRY = "?" + QRY_PARAM_SCREEN_INDEX + "=";
     public static final String SCREEN = (DEMO ? SAMPLE_DATA : "") + "/screen.png";
     public static final String SCREEN_SCTRUCTURE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json";
-    public static final String SCREEN_SCTRUCTURE_SIMPLE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json?type=simple";
+    public static final String SCREEN_SCTRUCTURE_SIMPLE = (DEMO ? SAMPLE_DATA : "") + "/screencomponents.json";
     
     public static final String QRY_PARAM_POSITION = "position";
     public static final String QRY_PARAM_PROPERTY = "property";    
