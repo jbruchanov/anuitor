@@ -523,6 +523,9 @@
         ],
         "21" : [
           {"m": "getButtonTintMode"}
+        ],
+        "23" : [
+          {"m": "getButtonDrawable"}
         ]
       }
     },
