@@ -2023,6 +2023,32 @@
           {"m":"verticalWeight", "p": true}
         ]
       }
+    },
+    "androidx.appcompat.widget.SwitchCompat" : {
+      "parent": "android.widget.CompoundButton",
+      "items": {
+        "1": [
+          {"m": "getCompoundPaddingLeft"},
+          {"m": "getCompoundPaddingRight"},
+          {"m": "getShowText"},
+          {"m": "getSplitTrack"},
+          {"m": "getSwitchMinWidth"},
+          {"m": "getSwitchPadding"},
+          {"m": "getTextOff"},
+          {"m": "getTextOn"},
+          {
+            "n": "ThumbDrawable:",
+            "m": "getThumbDrawable"
+          },
+          {"m": "getThumbTextPadding"},
+          {"m": "getThumbTintMode"},
+          {
+            "n": "TrackDrawable:",
+            "m": "getTrackDrawable"
+          },
+          {"m": "getThumbTintMode"}
+        ]
+      }
     }
   }
 }
