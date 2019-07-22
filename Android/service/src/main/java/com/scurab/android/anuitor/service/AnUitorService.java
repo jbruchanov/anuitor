@@ -248,7 +248,7 @@ public class AnUitorService extends Service {
                         .setContentTitle(title)
                         .setAutoCancel(true)
                         .setDefaults(defaults)
-                        .setContentText(msg)
+                        .setContentText(StringUtils.valueIfNull(msg, "Null msg"))
                         .setSmallIcon(ICON_RES_ID);
 
                 if (contentIntent != null) {
