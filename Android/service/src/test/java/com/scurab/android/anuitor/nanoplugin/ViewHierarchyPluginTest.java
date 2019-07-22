@@ -16,9 +16,11 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.io.IOException;
+import java.io.File;
 
 import fi.iki.elonen.NanoHTTPD;
 
+import static java.util.Collections.emptyMap;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -33,6 +35,9 @@ import static org.mockito.Mockito.mock;
 @RunWith(RobolectricTestRunner.class)
 public class ViewHierarchyPluginTest {
 
+    private static final String EMPTY_STRING = "";
+    private static final File EMPTY_FILE = new File("");
+
     @Test
     public void testCorrectPath() {
         WindowManager wm = mock(WindowManager.class);
@@ -40,19 +45,18 @@ public class ViewHierarchyPluginTest {
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
         assertArrayEquals(new String[]{"viewhierarchy.json"}, viewHierarchyPlugin.files());
-        assertTrue(viewHierarchyPlugin.canServeUri("/viewhierarchy.json", null));
+        assertTrue(viewHierarchyPlugin.canServeUri("/viewhierarchy.json", EMPTY_FILE));
     }
 
     @Test
-    public void testEmptyResultForNullView() throws IOException {
+    public void testEmptyResultForNullView() {
         WindowManager wm = mock(WindowManager.class);
         doReturn(null).when(wm).getCurrentRootView();
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
-        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(null, null, mock(NanoHTTPD.IHTTPSession.class), null, null);
+        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
-        String data = IOUtils.toString(response.getData());
-        assertEquals("{}", data);
+        assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
     }
 
     @Test
@@ -62,7 +66,7 @@ public class ViewHierarchyPluginTest {
         doReturn(inflate).when(wm).getCurrentRootView();
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
-        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(null, null, mock(NanoHTTPD.IHTTPSession.class), null, null);
+        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
         String data = IOUtils.toString(response.getData());
         ViewNode vn = new Gson().fromJson(data, ViewNode.class);

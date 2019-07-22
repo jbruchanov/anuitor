@@ -38,7 +38,7 @@ public class ActivityPluginTest {
         ActivityPlugin ap = spy(new TestActivityPlugin(wm));
         NanoHTTPD.Response response = ap.serveFile("someuri", null, mock(NanoHTTPD.IHTTPSession.class), mock(File.class), HttpTools.MimeType.APP_JSON);
         String data = IOUtils.toString(response.getData());
-        assertEquals("{}", data);
+        assertEquals("[]", data);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
     }
 

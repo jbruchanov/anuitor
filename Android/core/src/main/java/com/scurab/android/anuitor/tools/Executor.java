@@ -65,6 +65,9 @@ public class Executor {
     public static <T> T runInMainThreadBlocking(Handler handler, final Action<T> op, int timeout) {
         final Object lock = new Object();
         final OutRef<T> result = new OutRef<>();
+        if (Looper.getMainLooper() == Looper.myLooper()) {
+            return op.run();
+        }
         synchronized (lock) {
             handler.post(() -> {
                 result.setValue(op.run());
