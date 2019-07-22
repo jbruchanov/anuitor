@@ -12,16 +12,21 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+
 import com.scurab.android.anuitor.R;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
+import com.scurab.android.anuitor.json.JsonRef;
 import com.scurab.android.anuitor.reflect.WindowManagerProvider;
 import com.scurab.android.anuitor.tools.FileSystemTools;
 import com.scurab.android.anuitor.tools.NetTools;
+import com.scurab.android.anuitor.tools.StringUtils;
 import com.scurab.android.anuitor.tools.ZipTools;
 
 import java.io.File;
@@ -113,9 +118,7 @@ public class AnUitorService extends Service {
             f.mkdirs();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel();
-        }
+        createNotificationChannel(this);
 
         try {
             mServer = onCreateServer(port, absPath);
@@ -124,7 +127,7 @@ public class AnUitorService extends Service {
             return true;
         } catch (Throwable e) {
             NotificationManager nm = getNotificationManager();
-            nm.notify(NOTIF_ID, createSimpleNotification(e.getMessage(), false));
+            nm.notify(NOTIF_ID, createNotification(this, e.getMessage()));
         }
         return false;
     }
@@ -199,44 +202,71 @@ public class AnUitorService extends Service {
             title = String.format("%s (%s)", title, appTitle);
         }
 
+        Notification n = createNotification(this,
+                title,
+                msg,
+                defaults,
+                createContentIntent(),
+                addStopAction ? createStopIntent() : null);
+        if (n == null) {
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        }
+        return n;
+    }
+
+    @Nullable
+    private static Notification createNotification(@NonNull Context context,
+                                                   @NonNull String msg) {
+        return createNotification(context, TAG, msg, NotificationCompat.PRIORITY_HIGH, null, null);
+    }
+
+    @Nullable
+    private static Notification createNotification(@NonNull Context context,
+                                                   @NonNull String title,
+                                                   @NonNull String msg,
+                                                   int defaults,
+                                                   @Nullable PendingIntent contentIntent,
+                                                   @Nullable PendingIntent stopIntent) {
         try {
-            NotificationCompat.Builder notib = new NotificationCompat.Builder(this, TAG)
-                    .setContentTitle(title)
+            NotificationCompat.Builder notib = new NotificationCompat.Builder(context, TAG)
+                    .setContentTitle(StringUtils.valueIfNull(title, TAG))
                     .setAutoCancel(true)
                     .setDefaults(defaults)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setContentText(msg)
+                    .setContentText(StringUtils.valueIfNull(msg, "Null msg"))
                     .setSmallIcon(ICON_RES_ID)
-                    .setContentIntent(createContentIntent())
+                    .setContentIntent(contentIntent)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
 
-            if (addStopAction) {
-                notib.addAction(0, STOP, createStopIntent());
+            if (stopIntent != null) {
+                notib.addAction(0, STOP, stopIntent);
             }
             return notib.build();
         } catch (Throwable e) {
-            //we don't have support library around
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                Notification.Builder builder = new Notification.Builder(this)
+                Notification.Builder builder = new Notification.Builder(context)
                         .setContentTitle(title)
                         .setAutoCancel(true)
                         .setDefaults(defaults)
                         .setContentText(msg)
-                        .setSmallIcon(ICON_RES_ID)
-                        .setPriority(Notification.PRIORITY_HIGH)
-                        .setContentIntent(createContentIntent());
+                        .setSmallIcon(ICON_RES_ID);
+
+                if (contentIntent != null) {
+                    builder.setContentIntent(contentIntent);
+                }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    if (stopIntent != null) {
+                        builder.addAction(0, STOP, stopIntent);
+                    }
+                    builder.setPriority(Notification.PRIORITY_HIGH);
                     builder.setStyle(new Notification.BigTextStyle().bigText(msg));
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     builder.setChannelId(TAG);
                 }
                 return builder.getNotification();
-            } else {
-                Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
             }
-            e.printStackTrace();
         }
         return null;
     }
@@ -281,13 +311,18 @@ public class AnUitorService extends Service {
         return PendingIntent.getService(this, (int) System.currentTimeMillis(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private void createNotificationChannel() {
-        NotificationChannel chan = new NotificationChannel(TAG, TITLE, NotificationManager.IMPORTANCE_NONE);
-        chan.setImportance(NotificationManager.IMPORTANCE_HIGH);
-        NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        assert service != null;
-        service.createNotificationChannel(chan);
+    /**
+     * Create notification channel if necessary
+     * @param context
+     */
+    private static void createNotificationChannel(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel chan = new NotificationChannel(TAG, TITLE, NotificationManager.IMPORTANCE_NONE);
+            chan.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager service = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            assert service != null;
+            service.createNotificationChannel(chan);
+        }
     }
 
     /**
@@ -295,7 +330,7 @@ public class AnUitorService extends Service {
      * @param context
      */
     public static void startService(Context context) {
-        startService(context, DEFAULT_PORT, 0, false, null);
+        startService(context, DEFAULT_PORT, R.raw.anuitor, false, null);
     }
 
     /**
@@ -305,7 +340,7 @@ public class AnUitorService extends Service {
      * @param port
      */
     public static void startServiceUsingPort(Context context, int port) {
-        startService(context, port, 0, false, null);
+        startService(context, port, R.raw.anuitor, false, null);
     }
 
     /**
@@ -325,7 +360,7 @@ public class AnUitorService extends Service {
      * @param onFinishCallback
      */
     public static void startService(Context context, boolean overwriteWebFolder, Runnable onFinishCallback) {
-        startService(context, DEFAULT_PORT, 0, overwriteWebFolder, onFinishCallback);
+        startService(context, DEFAULT_PORT, R.raw.anuitor, overwriteWebFolder, onFinishCallback);
     }
 
     /**
@@ -338,53 +373,57 @@ public class AnUitorService extends Service {
      * @param onFinishCallback   called when {@link Context#startService(android.content.Intent)} has been called, can be null, is called in non main thread!
      * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
      */
-    public static void startService(final Context context, final int port, final int rawWebZipFileRes, final boolean overwriteWebFolder, final Runnable onFinishCallback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String folder = String.format("%s/%s", context.getCacheDir().toString(), DEFAULT_ROOT_FOLDER);
-                File f = new File(folder);
-                if (overwriteWebFolder || !f.exists()) {
-                    FileSystemTools.deleteFolder(f);
-                    f.mkdir();
-                    try {
-                        String zipFile = folder + "/web.zip";
-                        if (rawWebZipFileRes == -1) {
-                            new File(zipFile).delete();
-                            URL website = new URL("http://anuitor.scurab.com/download/anuitor.zip");
-                            FileSystemTools.copyFile(website.openStream(), zipFile);
-                        } else {
-                            int resId = rawWebZipFileRes;
-                            if (resId == 0) {
-                                resId = R.raw.anuitor;
-                            }
-                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, resId, zipFile);
+    public static void startService(@NonNull final Context context, final int port, final int rawWebZipFileRes, final boolean overwriteWebFolder, final Runnable onFinishCallback) {
+        JsonRef.initJson();
+        createNotificationChannel(context);
+        new Thread(() -> {
+            String folder = String.format("%s/%s", context.getCacheDir().toString(), DEFAULT_ROOT_FOLDER);
+            File f = new File(folder);
+            if (overwriteWebFolder || !f.exists()) {
+                FileSystemTools.deleteFolder(f);
+                f.mkdir();
+                try {
+                    String zipFile = folder + "/web.zip";
+                    if (rawWebZipFileRes == -1) {
+                        new File(zipFile).delete();
+                        URL website = new URL("http://anuitor.scurab.com/download/anuitor.zip");
+                        FileSystemTools.copyFile(website.openStream(), zipFile);
+                    } else {
+                        int resId = rawWebZipFileRes;
+                        if (resId == 0) {
+                            resId = R.raw.anuitor;
                         }
-                        ZipTools.extractFolder(zipFile, folder);
-                    } catch (Throwable e) {
-                        Notification notification = new NotificationCompat.Builder(context)
-                        .setSmallIcon(ICON_RES_ID)
-                        .setContentTitle(TAG + " Error")
-                        .setContentText(e.getMessage())
-                        .build();
-                        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        nm.notify(1, notification);
-
-                        Log.e(TAG, e.getMessage());
-                        e.printStackTrace();
-                        f.delete();
+                        ZipTools.copyFileIntoInternalStorageIfNecessary(context, resId, zipFile);
                     }
-                }
+                    ZipTools.extractFolder(zipFile, folder);
+                } catch (Throwable e) {
+                    Notification notification = createNotification(context,
+                            TAG + " Error",
+                            e.getMessage(),
+                            Notification.DEFAULT_ALL,
+                            null, null);
+                    NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    nm.notify(1, notification);
 
-                Intent i = new Intent(context, AnUitorService.class);
-                i.setAction(AnUitorService.START);
-                i.putExtra(AnUitorService.ROOT_FOLDER, DEFAULT_ROOT_FOLDER);
-                i.putExtra(AnUitorService.PORT, port);
+                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
+                    f.delete();
+                    return;
+                }
+            }
+
+            Intent i = new Intent(context, AnUitorService.class);
+            i.setAction(AnUitorService.START);
+            i.putExtra(AnUitorService.ROOT_FOLDER, DEFAULT_ROOT_FOLDER);
+            i.putExtra(AnUitorService.PORT, port);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(i);
+            } else {
                 context.startService(i);
+            }
 
-                if (onFinishCallback != null) {
-                    onFinishCallback.run();
-                }
+            if (onFinishCallback != null) {
+                onFinishCallback.run();
             }
         }).start();
     }

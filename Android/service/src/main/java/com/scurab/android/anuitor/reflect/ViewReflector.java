@@ -1,9 +1,10 @@
 package com.scurab.android.anuitor.reflect;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by JBruchanov on 23/11/2015.

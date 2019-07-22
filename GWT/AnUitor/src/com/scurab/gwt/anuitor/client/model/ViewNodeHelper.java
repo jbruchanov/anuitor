@@ -71,7 +71,8 @@ public class ViewNodeHelper {
      * @return
      */
     public static ViewNodeJSO findFrontVisibleView(ViewNodeJSO root, int x, int y, Set<ViewNodeJSO> ignore) {
-        if(((int)root.getDouble(ViewFields.Internal.VISIBILITY)) != 0){//not visible
+        //disabled for now, this makes views inactive actitivies "invisible" for search
+        if(false && ((int)root.getDouble(ViewFields.Internal.VISIBILITY)) != 0){//not visible
             return null;
         }
         

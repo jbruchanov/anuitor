@@ -3,21 +3,14 @@ package com.scurab.android.anuitor.reflect;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.scurab.android.anuitor.tools.DOM2XmlPullBuilder;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import javax.xml.transform.TransformerException;
-
 /**
  * Created by jbruchanov on 22/05/2014.
  */
+@SuppressWarnings({"unchecked", "TypeParameterHidesVisibleType"})
 public abstract class Reflector<T> {
 
     protected final T mReal;
@@ -36,7 +29,7 @@ public abstract class Reflector<T> {
         return callMethodByReflection(mClass, mReal, methodName, params);
     }
 
-    protected static <T> T callMethodByReflection(@NonNull Class<?> clazz, @Nullable Object receiver, @Nullable String methodName, @NonNull Object... params) {
+    public static <T> T callMethodByReflection(@NonNull Class<?> clazz, @Nullable Object receiver, @Nullable String methodName, @NonNull Object... params) {
         if (methodName == null) {
             methodName = getCalleeMethod();
         }
@@ -52,7 +45,7 @@ public abstract class Reflector<T> {
                 Method m = clz.getDeclaredMethod(methodName, clzs);
                 m.setAccessible(true);
                 return (T) m.invoke(receiver, params);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 clz = clz.getSuperclass();
             }
         }
@@ -101,10 +94,6 @@ public abstract class Reflector<T> {
             return float.class;
         }
         return clz;
-    }
-
-    protected String transformToString(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException, TransformerException {
-        return DOM2XmlPullBuilder.transform(xmlPullParser);
     }
 
     public static <T> T getFieldValue(Object obj, String fieldName) {

@@ -10,8 +10,12 @@
 		margin: 0;
 		padding: 0;
 	}
-	.padding{
+	.padding {
 		padding: 10px;		
+	}
+	
+	.padding_small {
+		padding: 5px 15px;		
 	}
 	
 	.viewInfo{
@@ -19,6 +23,18 @@
 		padding-top: 5px;
 		padding-bottom: 5px;
 		padding-right: 10px;
+	}
+	
+	.filterLabel{
+		font: "Lucida Console", Monaco;
+		font-weight: bold;
+		padding-top: 3px;
+		padding-right: 5px;			
+	}
+	
+	.filterText{
+		font-family: monospace, sans-serif;
+		padding: 0px;		
 	}
 	
 	.textGridSize{    
@@ -61,7 +77,15 @@
 			</g:center>
 			<g:east size="500">
 				<g:ScrollPanel>
-					<p1:CellTable ui:field="cellTable" pageSize="500" />
+					<g:VerticalPanel width="100%">
+						<g:HorizontalPanel styleName="{style.padding_small}" width="100%" >
+							<g:cell width="45">
+								<g:Label text="Filter" styleName="{style.filterLabel}" />
+							</g:cell>
+							<g:TextBox ui:field="filter" styleName="{style.filterText}" width="100%"/>							
+						</g:HorizontalPanel>						
+						<p1:CellTable ui:field="cellTable" pageSize="500" />
+					</g:VerticalPanel>
 				</g:ScrollPanel>
 			</g:east>
 		</g:SplitLayoutPanel>

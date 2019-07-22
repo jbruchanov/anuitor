@@ -9,14 +9,15 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Looper;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.scurab.android.anuitor.extract.DetailExtractor;
+import androidx.annotation.Nullable;
+
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
@@ -119,13 +120,10 @@ public class ViewshotPlugin extends ActivityPlugin {
                                         final Object lock = new Object();
                                         try {
                                             final View finalView = view;
-                                            view.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    finalView.buildDrawingCache(false);
-                                                    synchronized (lock) {
-                                                        lock.notifyAll();
-                                                    }
+                                            view.post(() -> {
+                                                finalView.buildDrawingCache(false);
+                                                synchronized (lock) {
+                                                    lock.notifyAll();
                                                 }
                                             });
                                             synchronized (lock) {
@@ -217,13 +215,10 @@ public class ViewshotPlugin extends ActivityPlugin {
     public static Bitmap drawViewBlocking(final View view, final Rect renderArea, final Paint clearPaint) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             final Bitmap[] lock = new Bitmap[1];
-            view.post(new Runnable() {
-                @Override
-                public void run() {
-                    lock[0] = drawView(view, renderArea, clearPaint);
-                    synchronized (lock) {
-                        lock.notifyAll();
-                    }
+            view.post(() -> {
+                lock[0] = drawView(view, renderArea, clearPaint);
+                synchronized (lock) {
+                    lock.notifyAll();
                 }
             });
             synchronized (lock) {

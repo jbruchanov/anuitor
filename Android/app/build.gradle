@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply from: "$rootDir/build-android.gradle"
+
+android {
+
+    defaultConfig {
+        minSdkVersion minSdk
+        applicationId "com.scurab.android.anuitorsample"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+    }
+}
+
+dependencies {
+    def localMaven = false
+    if(localMaven) {
+        implementation "com.scurab:anuitor:${project.releaseVersion}"
+        implementation "com.scurab:anuitor-groovy:${project.releaseVersion}"
+    } else {
+        implementation project(":service")
+        if (/*build-versions.gradle*/groovyEnabled) {
+            implementation project(":service-groovy")
+        }
+    }
+
+    testImplementation 'junit:junit:4.12'
+
+    implementation "com.android.support:multidex:${multidex}"
+    implementation "androidx.recyclerview:recyclerview:${androidX}"
+    implementation "androidx.cardview:cardview:${androidX}"
+    implementation "androidx.gridlayout:gridlayout:${androidX}"
+    implementation "com.google.android.material:material:${androidX}"
+    implementation "androidx.percentlayout:percentlayout:${androidX}"
+    implementation "androidx.slidingpanelayout:slidingpanelayout:${androidX}"
+    implementation "androidx.viewpager2:viewpager2:${viewPager2}"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
+    implementation "androidx.constraintlayout:constraintlayout:${constraintlayout}"
+
+//    implementation "com.google.code.gson:gson:${gson}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jackson}"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}

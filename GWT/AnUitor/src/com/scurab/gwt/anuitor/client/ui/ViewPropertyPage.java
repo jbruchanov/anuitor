@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -57,7 +58,7 @@ public class ViewPropertyPage extends Composite {
         initDataTable();
         loadData();
         detailScrollPanel.setHeight((Window.getClientHeight()) + "px");
-        detailScrollPanel.setWidth((Window.getClientWidth() - 450) + "px");
+        detailScrollPanel.setWidth((Window.getClientWidth() / 3) + "px");
         rawJson.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -70,7 +71,7 @@ public class ViewPropertyPage extends Composite {
         DataProvider.getViewProperty(mScreenIndex, mPosition, mProperty, new AsyncCallback<DataResponseJSO>() {
 
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                 // TODO Auto-generated method stub
 
             }
@@ -118,11 +119,15 @@ public class ViewPropertyPage extends Composite {
         Arrays.sort(keys);
 
         for (String key : keys) {
+            try {
             String value = jso.getFieldValue(key);
-            if ("Type".equals(key)) {
-                list.add(0, new Pair(key, value));
-            } else {
-                list.add(new Pair(key, value));
+                if ("Type".equals(key)) {
+                    list.add(0, new Pair(key, value));
+                } else {
+                    list.add(new Pair(key, value));
+                }
+            } catch (Throwable t) {
+                list.add(new Pair(key, t.getMessage()));
             }
         }
         return list;

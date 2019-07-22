@@ -12,8 +12,6 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -25,6 +23,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.doAnswer;
@@ -59,7 +58,8 @@ public class ScreenViewPluginTest {
         ScreenViewPlugin svp = new ScreenViewPlugin(wm);
         NanoHTTPD.IHTTPSession session = mock(NanoHTTPD.IHTTPSession.class);
         NanoHTTPD.Response response = svp.handleRequest(null, null, session, null, null);
-        byte[] data = IOUtils.toByteArray(response.getData());
+        assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
+        assertNull(response.getData());
     }
 
     @Test
@@ -94,14 +94,11 @@ public class ScreenViewPluginTest {
 
         ScreenViewPlugin svp = spy(new ScreenViewPlugin(wm));
         final Canvas[] canvas = new Canvas[1];
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                Canvas c = spy(new Canvas((Bitmap) invocation.getArguments()[0]));
-                canvas[0] = c;
+        doAnswer(invocation -> {
+            Canvas c = spy(new Canvas((Bitmap) invocation.getArguments()[0]));
+            canvas[0] = c;
 
-                return c;
-            }
+            return c;
         }).when(svp).onCreateCanvas(any(Bitmap.class));
 
         NanoHTTPD.Response response = svp.handleRequest(null, null, mock(NanoHTTPD.IHTTPSession.class), null, null);
@@ -127,14 +124,11 @@ public class ScreenViewPluginTest {
 
     private View createView(final int x, final int y, int w, int h) {
         View v = mock(View.class);
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                int[] pos = (int[]) invocation.getArguments()[0];
-                pos[0] = x;
-                pos[1] = y;
-                return null;
-            }
+        doAnswer(invocation -> {
+            int[] pos = (int[]) invocation.getArguments()[0];
+            pos[0] = x;
+            pos[1] = y;
+            return null;
         }).when(v).getLocationOnScreen(any(int[].class));
         doReturn(w).when(v).getWidth();
         doReturn(h).when(v).getHeight();

@@ -1,7 +1,6 @@
 package com.scurab.gwt.anuitor.client.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.github.gwtd3.api.Coords;
@@ -22,6 +21,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.scurab.gwt.anuitor.client.DataProvider;
@@ -35,6 +35,9 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 import com.scurab.gwt.anuitor.client.model.ViewTreeNode;
 import com.scurab.gwt.anuitor.client.style.TreeViewResources;
 import com.scurab.gwt.anuitor.client.style.TreeViewStyle;
+import com.scurab.gwt.anuitor.client.ui.tree.DefaultRenderer;
+import com.scurab.gwt.anuitor.client.ui.tree.RenderDelegate;
+import com.scurab.gwt.anuitor.client.util.DoublePair;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
 
 /**
@@ -45,25 +48,22 @@ import com.scurab.gwt.anuitor.client.util.PBarHelper;
  * @author jbruchanov
  *
  */
-public class TreeView extends FlowPanel{
+public class TreeView extends FlowPanel {
 
     private static final String ORIGIN_Y = "y0";
     private static final String ORIGIN_X = "x0";
 
     private static final TreeViewStyle CSS = TreeViewResources.INSTANCE.css();
 
-    /* Virtual one column width is showing view's ID */
-    private static final int WIDTH_COEF_ID = 250;
-    /* Virtual one column height is showing view's ID */
-    private static final int HEIGHT_COEF_ID = 50;
-    /* Virtual one column width only type */
-    private static final int WIDTH_COEF = 150;
-    /* Virtual one column height only type */
-    private static final int HEIGHT_COEF = 30;
-    /* Animation duration for expand/collapse animation */
-    private static final int DURATION = 750;    
+    /* Animation duration for expand/collapse animation */   
+    private static final int DURATION = 750;
     
-    private static final double CIRCLE_RADIUS = 5;
+    private static final int TEXT_X_OFFSET = 10;
+    private static final int TEXT_Y_2ND_LINE_OFFSET = 10;
+    
+    private RenderDelegate mRenderDelegate = new DefaultRenderer();
+          
+    private ViewNodeJSO mLoadedData = null;
     /* Root for transformed tree from ViewNodeJSO */   
     private ViewTreeNode mViewTreeRoot = null;
     /* SVG graph */
@@ -71,25 +71,19 @@ public class TreeView extends FlowPanel{
     /* Tree layout object */
     private TreeLayout mTreeLayout = null;
     /* Global projection for lines between nodes */
-    private Diagonal mDiagonal = null;    
-    /* Show id on 2nd line for node */
-    private boolean mShowId = true;
-    /* Keep first n nodes close together, they are not much interesting */
-    private final int mCloseNodes = 4;
-    /* Difference if we have first nodes closer together */
-    private int mCloseNodesDiff = mShowId ? Math.max(0, mCloseNodes * (WIDTH_COEF_ID - WIDTH_COEF)) : 0;
+    private Diagonal mDiagonal = null;
     /* Currently selected/last clicked node*/
     private ViewTreeNode mSelectedNode;
     /* EventBus for click/hover events */
-    private HandlerManager mEventBus = new HandlerManager(this);
+    private HandlerManager mEventBus = new HandlerManager(this);      
 
     public TreeView(int screenIndex) {
-        super();
+        super();        
         TreeViewResources.INSTANCE.css().ensureInjected();  
         PBarHelper.show();
         DataProvider.getTreeHierarchy(screenIndex, new AsyncCallback<ViewNodeJSO>() {
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                 PBarHelper.hide();
                 Window.alert(t.getMessage());
             }
@@ -100,29 +94,37 @@ public class TreeView extends FlowPanel{
                 PBarHelper.hide();
             };
         });
-    }       
+    }
     
-    protected void onDataLoaded(ViewNodeJSO srcroot) {        
-        List<Integer> levelItems = new ArrayList<Integer>();        
-        mViewTreeRoot = ViewNodeHelper.convertToViewTreeNodes(srcroot, levelItems);
-        if(levelItems.size() <= mCloseNodes){
-            mCloseNodesDiff = 0;
+    public void setRenderer(RenderDelegate renderer) {  
+        getElement().removeAllChildren();
+        if (renderer == null) {
+            renderer = new DefaultRenderer();
         }
+        mRenderDelegate = renderer;
+        if (mLoadedData != null) {
+            onDataLoaded(mLoadedData);
+        }
+    }
+    
+    protected void onDataLoaded(ViewNodeJSO srcroot) {
+        mLoadedData = srcroot;        
+        List<Integer> levelItems = new ArrayList<Integer>();        
+        mViewTreeRoot = ViewNodeHelper.convertToViewTreeNodes(srcroot, levelItems);                
                 
-        int width = ((mShowId ? WIDTH_COEF_ID : WIDTH_COEF) * levelItems.size()) - mCloseNodesDiff;
-        int height = (mShowId ? HEIGHT_COEF_ID : HEIGHT_COEF) * Collections.max(levelItems);
-        
+        final DoublePair treeSize = mRenderDelegate.treeSize(levelItems);
+        final DoublePair svgSize = mRenderDelegate.svgSize(levelItems);
         // get tree layout
-        mTreeLayout = D3.layout().tree().size(height, width);//rotated to grow to right => height = width and width = height
+        mTreeLayout = D3.layout().tree().size(treeSize.first, treeSize.second);//rotated to grow to right => height = width and width = height
 
         //init SVG
-        mSvg = initSVG(width, height);
+        mSvg = initSVG(svgSize.first, svgSize.second);
         
         // set the global way to draw paths
-        mDiagonal = initDiagonal();        
+        mDiagonal = initDiagonal();
 
         // get the root of the tree and initialize it
-        mViewTreeRoot.setAttr(ORIGIN_X, (width - 20) / 2);
+        mViewTreeRoot.setAttr(ORIGIN_X, treeSize.first / 2);
         mViewTreeRoot.setAttr(ORIGIN_Y, 0);
         
         //collapse all of them if necessary
@@ -140,13 +142,15 @@ public class TreeView extends FlowPanel{
      * @param height
      * @return
      */
-    private Selection initSVG(int width, int height){     
+    private Selection initSVG(double width, double height) {
+        int marginHorizontalHalf = 10;
+        int marginVerticalHalf = 10; 
         Selection svg = D3.select(this)
-                .append("svg")
-                .attr("width", width + 20)//margins
-                .attr("height", height + 20)
+                .append("svg")                
+                .attr("width", width + (marginHorizontalHalf * 2))//margins
+                .attr("height", height + (marginVerticalHalf * 2))
                 .append("g")
-                    .attr("transform", "translate(10, 10)");//move because of margins
+                    .attr("transform", "translate(" + marginHorizontalHalf +", " + marginVerticalHalf + ")");//move because of margins
         return svg;
     }
     
@@ -157,25 +161,20 @@ public class TreeView extends FlowPanel{
     private Diagonal initDiagonal(){
         Diagonal diagonal = D3.svg()
                 .diagonal()
+                //line rendering
                 .projection(new DatumFunction<Array<Double>>() {
-                    @Override
+                    @Override                    
                     public Array<Double> apply(Element context, Value d, int index) {
                         ViewTreeNode data = d.<ViewTreeNode> as();
                         //don't use Array.fromDoubles(args), it doesn't work after compilation...
-                        //seems it calls toString() but after compilation returns object reference instead of proper comma separated values 
-                        return arrayFromDoubles(data.y(), data.x());
+                        //seems it calls toString() but after compilation returns object reference instead of proper comma separated values
+                        return mRenderDelegate.node(data).toArray();
                     }
                 });
         return diagonal;
     }
     
-    private Array<Double> arrayFromDoubles(double... values){
-        Array<Double> arr = Array.create();
-        for(double d : values){
-            arr.push(d);
-        }
-        return arr;
-    }
+    
     
     /**
      * Update tree layout
@@ -184,20 +183,21 @@ public class TreeView extends FlowPanel{
     private void update(final ViewTreeNode source) {
         Array<Node> nodes = mTreeLayout.nodes(mViewTreeRoot).reverse();
         Array<Link> links = mTreeLayout.links(nodes);
-
-        // set y coordinate based on node depth
-        nodes.forEach(new ForEachCallback<Void>() {                
-            @Override
-            public Void forEach(Object thisArg, Value element, int index, Array<?> array) {
-                ViewTreeNode datum = element.<ViewTreeNode> as();
-                if(datum.depth() <= mCloseNodes){//keep 1st nodes close, because they are not interesting
-                    datum.setAttr("y", datum.depth() * WIDTH_COEF);
-                } else {
-                    datum.setAttr("y", (datum.depth() * (mShowId ? WIDTH_COEF_ID : WIDTH_COEF)) - mCloseNodesDiff);
-                }  
-                return null;
-            }
-        });
+        final String originX;
+        final String originY;
+        //only few places, has to accomodate switched axis
+        switch (mRenderDelegate.getOrientation()) {
+        case RenderDelegate.ORIENTATION_HORIZONTAL:
+            originX = ORIGIN_Y;
+            originY = ORIGIN_X;
+            break;
+        case RenderDelegate.ORIENTATION_VERTICAL:
+            originX = ORIGIN_X;
+            originY = ORIGIN_Y;
+            break;
+        default:
+            throw new IllegalStateException("Unsupported orientation:" + mRenderDelegate.getOrientation());
+        }
 
         // assign ids to nodes
         UpdateSelection node = mSvg.selectAll("g." + CSS.node()).data(nodes, new KeyFunction<Integer>() {
@@ -213,8 +213,8 @@ public class TreeView extends FlowPanel{
         Selection nodeEnter = node
                 .enter()
                 .append("g")
-                .attr("class", CSS.node())                   
-                .attr("transform", "translate(" + source.getNumAttr(ORIGIN_Y) + "," + source.getNumAttr(ORIGIN_X) + ")")
+                .attr("class", CSS.node())
+                .attr("transform", "translate(" + source.getNumAttr(originX) + "," + source.getNumAttr(originY) + ")")
                 .on("click", new NodeClickHandler())
                 .on("dblclick", new CollapseExpandHandler())
                 .on("mouseenter", new HoverHandler(true))
@@ -232,41 +232,31 @@ public class TreeView extends FlowPanel{
                 });
         
         //add text
-        nodeEnter.append("text")
-                .attr("x", new DatumFunction<Integer>() {
-                    @Override
-                    public Integer apply(Element context, Value d, int index) {
-                        JavaScriptObject node = d.<ViewTreeNode> as().getObjAttr("_children");
-                        return node != null ? -10 : 10;
-                    }
-                })
-                .attr("dx",".35em")                
-                .attr("text-anchor", new DatumFunction<String>() {
-                    @Override
-                    public String apply(Element context, Value d, int index) {
-                        JavaScriptObject node = d.<ViewTreeNode> as().getObjAttr("_children");
-                        return (node != null) ? "end" :"start";
-                    }
-                }).text(new DatumFunction<String>() {//1st line                    
-                    @Override
-                    public String apply(Element context, Value d, int index) {                        
-                        ViewTreeNode as = d.<ViewTreeNode> as();                        
-                        return as.getView().getSimpleType();                        
-                    }
-                }).append("tspan")//2nd line                    
-                    .attr("x",13)
-                    .attr("y",10)
+        Selection textNode = nodeEnter.append("text")
+                .attr("y", mRenderDelegate.getTextOffset());
+        
+            textNode.append("tspan")//2nd line                    
+                    .attr("x", TEXT_X_OFFSET)
+                    .attr("font-weight", "bold")
                     .text(new DatumFunction<String>() {                        
                         @Override
                         public String apply(Element context, Value d, int index) {
-                            if(mShowId){
-                                ViewTreeNode as = d.<ViewTreeNode> as();
-                                ViewNodeJSO view = as.getView();
-                                return view.getID() > 0 ? view.getIDName() : "";                                                                   
-                            }
-                            return "";
+                            ViewTreeNode as = d.<ViewTreeNode> as();                        
+                            return mRenderDelegate.getType(as.getView());                                                
                         }
-                    });        
+                    });
+                textNode.append("tspan")//2nd line                    
+                    .attr("x", TEXT_X_OFFSET)
+                    .attr("y", TEXT_Y_2ND_LINE_OFFSET)                    
+                    .attr("font-weight", "100")
+                    .text(new DatumFunction<String>() {                        
+                        @Override
+                        public String apply(Element context, Value d, int index) {                            
+                            ViewTreeNode as = d.<ViewTreeNode> as();
+                            ViewNodeJSO view = as.getView();
+                            return mRenderDelegate.getId(view);                            
+                        }
+                    });
 
 
         // transition entering nodes
@@ -276,12 +266,13 @@ public class TreeView extends FlowPanel{
                         @Override
                         public String apply(Element context, Value d, int index) {
                             ViewTreeNode data = d.<ViewTreeNode>as();
-                            return "translate(" + data.y() + "," + data.x() + ")";
+                            DoublePair node = mRenderDelegate.node(data);
+                            return "translate(" + node.first + "," + node.second + ")";
                         }
                     });
 
         nodeUpdate.select("circle")
-                .attr("r", CIRCLE_RADIUS)
+                .attr("r", mRenderDelegate.getCircleRadius())
                     .style("fill", new DatumFunction<String>() {
                         @Override
                         public String apply(Element context, Value d, int index) {
@@ -301,7 +292,8 @@ public class TreeView extends FlowPanel{
                 .attr("transform", new DatumFunction<String>() {
                     @Override
                     public String apply(Element context, Value d, int index) {
-                        return "translate(" + source.y() + "," + source.x() + ")";
+                        DoublePair dp = mRenderDelegate.node(source);
+                        return "translate(" + dp.first + "," + dp.second + ")";
                     }
                 }).remove();
 
@@ -320,6 +312,7 @@ public class TreeView extends FlowPanel{
                 .attr("d", new DatumFunction<String>() {
                     @Override
                     public String apply(Element context, Value d, int index) {
+                      //no need for switching
                         Coords o = Coords.create(source.getNumAttr(ORIGIN_X), source.getNumAttr(ORIGIN_Y));
                         return mDiagonal.generate(Link.create(o, o));
                     }
@@ -340,6 +333,7 @@ public class TreeView extends FlowPanel{
             @Override
             public Void forEach(Object thisArg, Value element, int index,Array<?> array) {
                 ViewTreeNode data = element.<ViewTreeNode> as();
+                //no need for switching
                 data.setAttr(ORIGIN_X, data.x());
                 data.setAttr(ORIGIN_Y, data.y());
                 return null;

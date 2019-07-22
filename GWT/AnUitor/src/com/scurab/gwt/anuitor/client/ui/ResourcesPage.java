@@ -12,6 +12,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -82,7 +83,7 @@ public class ResourcesPage extends Composite {
     protected void loadData() {
         DataProvider.getResources(new AsyncCallback<ObjectJSO>() {
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                 Window.alert(t.getMessage());
             }
 
@@ -219,7 +220,7 @@ public class ResourcesPage extends Composite {
     protected void onSelectionItemChanged(String group, final ResourceItemJSO item) {
         DataProvider.getResource(item.getKey(), new AsyncCallback<ResourceDetailJSO>() {
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                 Window.alert(t.getMessage());
             }
             

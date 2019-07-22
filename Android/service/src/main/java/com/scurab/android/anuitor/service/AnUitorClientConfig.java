@@ -2,14 +2,18 @@ package com.scurab.android.anuitor.service;
 
 import android.content.Context;
 import android.os.Build;
-import androidx.annotation.NonNull;
 import android.view.View;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 
 import com.scurab.android.anuitor.BuildConfig;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by jbruchanov on 20/04/2017.
@@ -21,10 +25,12 @@ public class AnUitorClientConfig {
     static final String COLOR_POSITION = "rgb(44, 107, 153)";
     static final String COLOR_LAYOUTS = "rgb(76, 153, 44)";
     static final String COLOR_VISIBILITY = "rgb(198, 21, 21)";
+    static final String COLOR_RED = "rgb(255, 0, 0)";
     static final String TYPE_HIGHLIGHTS = "TypeHighlights";
     static final String PROPERTY_HIGHLIGHTS = "PropertyHighlights";
     static final String GRID_STROKE_COLOR = "GridStrokeColor";
     static final String SELECTION_COLOR = "SelectionColor";
+    static final String POINTER_IGNORE_IDS = "PointerIgnoreIds";
 
     private AnUitorClientConfig() {
     }
@@ -40,6 +46,7 @@ public class AnUitorClientConfig {
         CONFIG.put("Device", device);
         CONFIG.put("Groovy", hasGroovySupport);
 
+        setSelectionColor(COLOR_RED);
         initDefaultHighlights();
         return CONFIG;
     }
@@ -69,6 +76,18 @@ public class AnUitorClientConfig {
             CONFIG.put(PROPERTY_HIGHLIGHTS, highlights = new HashMap<>());
         }
         highlights.put(regexp, htmlColor);
+    }
+
+    /**
+     * Add view id for automatic pointer ignore
+     * @param viewId viewId*
+     */
+    public static void addPointerIgnoreViewId(@IdRes int viewId) {
+        Set<Integer> ignore = (Set<Integer>) CONFIG.get(POINTER_IGNORE_IDS);
+        if (ignore == null) {
+            CONFIG.put(POINTER_IGNORE_IDS, ignore = new HashSet<>());
+        }
+        ignore.add(viewId);
     }
 
     /**

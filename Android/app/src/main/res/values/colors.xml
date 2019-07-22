@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#3fa7b5</color>
+    <color name="colorPrimaryDark">#30929f</color>
+    <color name="colorAccent">#ffffc200</color>
+
+    <color name="menu_background">#2f2f2f</color>
+    <color name="menu_item_pressed">#ff4c4c4c</color>
+    <color name="menu_item_checked">#202020</color>
+    <color name="menu_item_checked_highlight">@color/colorAccent</color>
+
+    <color name="stroke_green">#ff00ad22</color>
+    <color name="stroke_green_light">#ff79ad84</color>
+    <color name="stroke_green_dark">#ff005711</color>
+    <color name="tile_background">#ff646464</color>
+    <color name="black">#000</color>
+    <color name="transparent">#00000000</color>
+</resources>

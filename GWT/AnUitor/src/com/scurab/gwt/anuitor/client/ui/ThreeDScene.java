@@ -27,6 +27,7 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.scurab.gwt.anuitor.client.DataProvider;
@@ -147,7 +148,7 @@ public class ThreeDScene extends AnimatedScene {
         PBarHelper.show();
         DataProvider.getTreeHierarchy(mScreenIndex, new AsyncCallback<ViewNodeJSO>() {
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                 PBarHelper.hide();
                 Window.alert(t.getMessage());
             }

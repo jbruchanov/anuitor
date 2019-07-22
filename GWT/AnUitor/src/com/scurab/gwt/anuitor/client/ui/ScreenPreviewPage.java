@@ -25,6 +25,8 @@ import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -44,21 +46,30 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.kiouri.sliderbar.client.event.BarValueChangedEvent;
 import com.kiouri.sliderbar.client.event.BarValueChangedHandler;
+import com.scurab.gwt.anuitor.client.AnUitor;
 import com.scurab.gwt.anuitor.client.DataProvider;
 import com.scurab.gwt.anuitor.client.model.Pair;
 import com.scurab.gwt.anuitor.client.model.ViewNodeHelper;
 import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
+import com.scurab.gwt.anuitor.client.model.ViewNodeHelper.Action;
 import com.scurab.gwt.anuitor.client.style.CustomTreeResources;
 import com.scurab.gwt.anuitor.client.util.CanvasTools;
 import com.scurab.gwt.anuitor.client.util.CellTreeTools;
+import com.scurab.gwt.anuitor.client.util.CollectionTools;
 import com.scurab.gwt.anuitor.client.util.ConfigHelper;
+import com.scurab.gwt.anuitor.client.util.DebounceTimer;
 import com.scurab.gwt.anuitor.client.util.HTMLColors;
 import com.scurab.gwt.anuitor.client.util.PBarHelper;
+import com.scurab.gwt.anuitor.client.util.StringTools;
 import com.scurab.gwt.anuitor.client.util.TableTools;
+import com.scurab.gwt.anuitor.client.util.TableTools.Filter;
+import com.scurab.gwt.anuitor.client.util.ViewMesh;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnSelectionChangedListener;
 import com.scurab.gwt.anuitor.client.viewmodel.ViewHierarchyTreeViewModel.OnViewNodeMouseOverListener;
 import com.scurab.gwt.anuitor.client.widget.ScaleSliderBar;
+
+import thothbot.parallax.core.shared.Log;
 
 public class ScreenPreviewPage extends Composite {
 
@@ -87,7 +98,9 @@ public class ScreenPreviewPage extends Composite {
     TextBox gridSize;
     @UiField
     SplitLayoutPanel splitLayoutPanel;
-    @UiField(provided = true)
+    @UiField
+    TextBox filter;
+    @UiField(provided = true)    
     CellTable<Pair> cellTable = new CellTable<Pair>();
 
     /*
@@ -132,14 +145,22 @@ public class ScreenPreviewPage extends Composite {
     private MyTimer mTimer = new MyTimer();
     /* There is a selected view on screen */
     private boolean mSelectedView = false;
-    /* Download root for view hierarchy */
+    /* Root for view hierarchy */
     private ViewNodeJSO mRoot;
+    /* Last known selected node */
+    private ViewNodeJSO mSelectedNode;
     /* show cross base on image, not perfect UX, new canvas just for it would be better... */
     private boolean mDrawCross = false;
     /* ignore for mouse position traversing, e.g. for disabling touch_blockers */
     private Set<ViewNodeJSO> mIgnored = new HashSet<ViewNodeJSO>();
     private int mScreenId = 0;
     private String mSelectionColor;
+    private final DebounceTimer<String> mFilterDebounce = new DebounceTimer<String>(new DebounceTimer.Callback<String>() {
+        @Override
+        public void onAction(String filter) {            
+            updateFilter(filter, false);
+        }       
+    });
 
     interface TestPageUiBinder extends UiBinder<Widget, ScreenPreviewPage> {
     }
@@ -191,6 +212,7 @@ public class ScreenPreviewPage extends Composite {
                 // update slider
                 mScaleSliderBar
                         .setValue((int) (((mScaleSliderBar.getMaxValue() + SCALE_MIN) / 2f) * scale) - SCALE_MIN);
+                updateGridCanvas(1);
                 // finish loading and render
                 reloadCanvas(scale);
             }
@@ -339,6 +361,13 @@ public class ScreenPreviewPage extends Composite {
                 enqueuGridUpdate();
             }
         });
+        
+        filter.addKeyUpHandler(new KeyUpHandler() {            
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
+                mFilterDebounce.postAction(filter.getText());
+            }
+        });
 
         AbsolutePanel ap = new AbsolutePanel();
         flowPanel.add(ap);
@@ -478,7 +507,9 @@ public class ScreenPreviewPage extends Composite {
      * @param viewNode
      */
     private void onShowTableDetail(ViewNodeJSO viewNode) {
-        TableTools.createDataProvider(viewNode).addDataDisplay(cellTable);
+        mSelectedNode = viewNode;
+        updateFilter(filter.getText(), false);
+        //TableTools.createDataProvider(viewNode).addDataDisplay(cellTable);        
     }
 
     /**
@@ -560,7 +591,7 @@ public class ScreenPreviewPage extends Composite {
         PBarHelper.show();
         DataProvider.getTreeHierarchy(mScreenId, new DataProvider.AsyncCallback<ViewNodeJSO>() {
             @Override
-            public void onError(Request r, Throwable t) {
+            public void onError(Request req, Response res, Throwable t) {
                 PBarHelper.hide();
                 Window.alert(t.getMessage());
             }
@@ -598,6 +629,22 @@ public class ScreenPreviewPage extends Composite {
                 centerPanel.add(mCellTree);
                 CellTreeTools.expandAll(mCellTree.getRootTreeNode());
                 mCellTree.setAnimationEnabled(true);
+                
+                //preset views for ignoring                
+                final Set<Integer> ignoreViewIds = CollectionTools.jsonArrayAsIntegerSet((JSONArray) AnUitor.getConfig().get("PointerIgnoreIds"));                
+                if (ignoreViewIds != null && !ignoreViewIds.isEmpty()) {
+                    ViewNodeHelper.forEachNodePreOrder(mRoot, new Action<ViewNodeJSO>() {
+                        @Override
+                        public boolean doAction(ViewNodeJSO value, ViewNodeJSO parent) {
+                            int viewId = value.getID();
+                            if(ignoreViewIds.contains(viewId)) {
+                                mIgnored.add(value);
+                                mTreeViewModel.highlightAsIgnoredNode(value);
+                            }
+                            return true;
+                        }
+                    });
+                }
                 PBarHelper.hide();
             }
         });
@@ -622,8 +669,11 @@ public class ScreenPreviewPage extends Composite {
     }
 
     private void updateGridCanvas(float scale) {
-        int w = (int) (mImageWidth * scale);
-        int h = (int) (mImageHeight * scale);
+        int w = (int) (.5f + mImageWidth * scale);
+        int h = (int) (.5f + mImageHeight * scale);
+        //update element size, otherwise mouse handler doesn't work if it's bigger then fullhd 
+        mCanvasGrid.setWidth(w + "px");
+        mCanvasGrid.setHeight(h + "px");
         if (showGridCheckbox.getValue()) {
             mCanvasGrid.setCoordinateSpaceWidth(w);
             mCanvasGrid.setCoordinateSpaceHeight(h);
@@ -636,6 +686,23 @@ public class ScreenPreviewPage extends Composite {
             mCanvasGrid.getContext2d().clearRect(0, 0, w, h);
         }
     }
+    
+    private void updateFilter(final String filter, boolean regexp) {
+        if (mSelectedNode != null) {
+            final String filterExpr = StringTools.filterExpression(filter);            
+            TableTools.createDataProvider(mSelectedNode, new Filter<Pair>() {
+                @Override
+                public boolean accept(Pair item) {
+                    if(filterExpr != null) {
+                        return item.key.toLowerCase().contains(filterExpr)
+                         || StringTools.emptyIfNull(item.value).contains(filterExpr);
+                    } else {
+                        return true;
+                    }
+                }
+            }).addDataDisplay(cellTable);
+        }
+    }      
 
     /**
      * Timer for little delay between mouse move and "hover", performance issue
@@ -658,6 +725,9 @@ public class ScreenPreviewPage extends Composite {
             onDrawMouseCross(mX, mY);
             if (true) {
                 ViewNodeJSO vs = ViewNodeHelper.findFrontVisibleView(mRoot, scaledX, scaledY, mIgnored);
+                if(vs == null) {
+                    return;
+                }
                 if (vs.hasCustomRenderSize()) {
                     drawRectForView(vs, mCanvas, mScale, HTMLColors.ORANGE, HTMLColors.TRANSPARENT, true);
                 }

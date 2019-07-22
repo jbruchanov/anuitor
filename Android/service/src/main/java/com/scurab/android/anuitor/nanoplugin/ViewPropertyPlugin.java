@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.nanoplugin;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -9,14 +10,17 @@ import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.View;
 
-import com.scurab.android.anuitor.extract.BaseExtractor;
-import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.Constants;
 import com.scurab.android.anuitor.extract.RenderAreaWrapper;
-import com.scurab.android.anuitor.extract.Translator;
-import com.scurab.android.anuitor.extract.view.ReflectionExtractor;
+import com.scurab.android.anuitor.extract2.BaseExtractor;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
+import com.scurab.android.anuitor.extract2.ExtractingContext;
+import com.scurab.android.anuitor.extract2.ExtractorExtMethodsKt;
+import com.scurab.android.anuitor.extract2.IFragmentDelegate;
+import com.scurab.android.anuitor.extract2.ReflectionExtractor;
+import com.scurab.android.anuitor.extract2.ReflectionHelper;
 import com.scurab.android.anuitor.model.DataResponse;
 import com.scurab.android.anuitor.model.OutRef;
-import com.scurab.android.anuitor.reflect.ReflectionHelper;
 import com.scurab.android.anuitor.reflect.ViewReflector;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.Executor;
@@ -38,6 +42,7 @@ import fi.iki.elonen.NanoHTTPD;
 public class ViewPropertyPlugin extends ActivityPlugin {
 
     private static final String PROPERTY = "property";
+    private static final String MAX_DEPTH = "maxDepth";
     private static final String REFLECTION = "reflection";
     private static final String FILE = "viewproperty.json";
     private static final String PATH = "/" + FILE;
@@ -65,6 +70,11 @@ public class ViewPropertyPlugin extends ActivityPlugin {
     }
 
     @Override
+    public Activity getCurrentActivity() {
+        return super.getCurrentActivity();
+    }
+
+    @Override
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         try {
             String queryString = session.getQueryParameterString();
@@ -76,37 +86,42 @@ public class ViewPropertyPlugin extends ActivityPlugin {
                 if ("undefined".equalsIgnoreCase(property)) {
                     property = null;
                 }
+                String maxDepthStr = qsValue.containsKey(MAX_DEPTH) ? qsValue.get(MAX_DEPTH) : "1";
+                int maxDepth = Integer.parseInt(maxDepthStr);
                 View view = getCurrentRootView(qsValue);
                 view = view != null ? DetailExtractor.findViewByPosition(view, position) : null;
                 if (view != null) {
                     DataResponse response;
                     if (property != null) {
-                        final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
                         Object propertyValue;
                         String methodName;
-                        final ViewReflector reflector = new ViewReflector(view);
-                        if (item != null) {
-                            propertyValue = reflector.callMethod(item.methodName);
-                            if (item.arrayIndex >= 0) {
-                                propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
+                        if (Constants.OWNER.equals(property)) {
+                            propertyValue = ExtractorExtMethodsKt.components(view).findOwnerComponent(view);
+                            if (propertyValue instanceof IFragmentDelegate) {
+                                propertyValue = ((IFragmentDelegate) propertyValue).getFragment();
                             }
-                            methodName = item.methodName;
+                            methodName = "";
                         } else {
-                            OutRef<String> oMethodName = new OutRef<>();
-                            propertyValue = tryGetValue(reflector, property, oMethodName);
-                            methodName = oMethodName.getValue();
-                        }
-                        response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName);
-                    } else {
-                        final OutRef<DataResponse> ref = new OutRef<>();
-                        final View finalView = view;
-                        Executor.runInMainThreadBlocking(30000, new Runnable() {
-                            @Override
-                            public void run() {
-                                ref.setValue(handleObject(finalView, reflection, finalView.getClass().getName(), "", ""));
+                            final ReflectionHelper.Item item = ReflectionHelper.ITEMS.get(property);
+
+                            final ViewReflector reflector = new ViewReflector(view);
+                            if (item != null) {
+                                propertyValue = Executor.runInMainThreadBlocking(() -> reflector.callMethod(item.methodName));
+                                if (item.arrayIndex >= 0) {
+                                    propertyValue = ((Object[]) propertyValue)[item.arrayIndex];
+                                }
+                                methodName = item.methodName;
+                            } else {
+                                OutRef<String> oMethodName = new OutRef<>();
+                                propertyValue = tryGetValue(reflector, property, oMethodName);
+                                methodName = oMethodName.getValue();
                             }
-                        });
-                        response = ref.getValue();
+                        }
+                        response = handleObject(propertyValue, reflection, view.getClass().getName(), property, methodName, maxDepth);
+                    } else {
+                        final View finalView = view;
+                        response = Executor.runInMainThreadBlocking(30000,
+                                () -> handleObject(finalView, reflection, finalView.getClass().getName(), "", "", maxDepth));
                     }
                     return new OKResponse(HttpTools.MimeType.APP_JSON, JSON.toJson(response));
                 }
@@ -135,17 +150,16 @@ public class ViewPropertyPlugin extends ActivityPlugin {
     }
 
     @SuppressWarnings("unchecked")
-    protected DataResponse handleObject(Object object, boolean reflection, String parentType, String name, String methodName) {
+    protected DataResponse handleObject(Object object, boolean reflection, String parentType, String name, String methodName, int maxDepth) {
         DataResponse response = new DataResponse();
         if (object != null) {
             BaseExtractor extractor = reflection ? null : DetailExtractor.findExtractor(object.getClass());
             if (extractor == null) {
-                if (mReflectionExtractor == null) {
-                    mReflectionExtractor = new ReflectionExtractor(new Translator(), true);
-                }
+                mReflectionExtractor = new ReflectionExtractor(true, maxDepth);
                 extractor = mReflectionExtractor;
             }
-            final HashMap data = extractor.onFillValues(object, new HashMap<String, Object>(), null);
+            final Map<String, Object> data = extractor.fillValues(object, new ExtractingContext());
+            data.remove("Owner");
             data.put("Type", object.getClass().getName());
             data.put("1ParentType", parentType);
             data.put("2Name", name);

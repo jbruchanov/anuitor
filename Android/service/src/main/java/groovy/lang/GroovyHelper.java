@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.view.View;
 
-import com.scurab.android.anuitor.extract.DetailExtractor;
+import com.scurab.android.anuitor.extract2.DetailExtractor;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.reflect.ActivityThreadReflector;
 import com.scurab.android.anuitor.reflect.Reflector;

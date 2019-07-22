@@ -63,8 +63,12 @@ public class TransportServlet extends HttpServlet {
             if ("POST".equals(method)) {               
                 copy(req.getInputStream(), urlc.getOutputStream());
             }
-            copy(urlc.getInputStream(), resp.getOutputStream());                    
-        } catch (Exception e) {            
+            try {
+                copy(urlc.getInputStream(), resp.getOutputStream());
+            } catch (Exception e) {
+                resp.setStatus(urlc.getResponseCode());
+            }
+        } catch (Exception e) {           
             e.printStackTrace();
         }
     }

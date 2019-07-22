@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -38,14 +39,15 @@ import com.scurab.gwt.anuitor.client.util.PBarHelper;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class AnUitor implements EntryPoint {
-    
+
     private static JSONObject sConfig = new JSONObject();
-    
+
     public static JSONObject getConfig() {
         return sConfig;
     }
-    
+
     private ListBox mScreenListBox;
+
     /**
      * This is the entry point method.
      */
@@ -53,75 +55,83 @@ public class AnUitor implements EntryPoint {
     public void onModuleLoad() {
         History.addValueChangeHandler(new ValueChangeHandler<String>() {
             @Override
-            public void onValueChange(ValueChangeEvent<String> event) {                
+            public void onValueChange(ValueChangeEvent<String> event) {
                 PBarHelper.hide();
-                openScreen(event.getValue());                
+                openScreen(event.getValue());
             }
         });
         String token = History.getToken();
         int qmIndex = token.indexOf("?");
-        if(qmIndex > -1) {
+        if (qmIndex > -1) {
             token = token.substring(0, qmIndex);
         }
         //
         final String fToken = token;
         PBarHelper.show();
-        
+
         DataProvider.getConfig(new AsyncCallback<JSONValue>() {
-            
+
             @Override
-            public void onError(Request r, Throwable t) {
-               PBarHelper.hide();
-               if (sConfig == null) {//something bad happen
-                   sConfig = new JSONObject();
-               }
-               openScreen(fToken);
+            public void onError(Request req, Response res, Throwable t) {
+                PBarHelper.hide();
+                if (sConfig == null) {// something bad happen
+                    sConfig = new JSONObject();
+                }
+                openScreen(fToken);
             }
-            
+
             @Override
             public void onDownloaded(JSONValue result) {
-                PBarHelper.hide();   
+                PBarHelper.hide();
                 sConfig = result.isObject();
-                if (sConfig == null) {//something bad happen
+                if (sConfig == null) {// something bad happen
                     sConfig = new JSONObject();
                 }
                 openScreen(fToken);
             }
         });
-    }      
-    
+    }
+
     private static final String SCREEN_INDEX = DataProvider.QRY_PARAM_SCREEN_INDEX + "=";
     private static final String POSITION_INDEX = DataProvider.QRY_PARAM_POSITION + "=";
-    
+
     private void openScreen(String screen) {
         boolean updateHistory = true;
         IsWidget toOpen = null;
         Map<String, String> queryString = buildHashParameterMap();
-        int screenIndex = queryString.containsKey(DataProvider.QRY_PARAM_SCREEN_INDEX) 
-                ? Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_SCREEN_INDEX)) 
-                : getScreenIndex();               
-        if ("ScreenPreview".equals(screen)) {            
-            toOpen = new ScreenPreviewPage(screenIndex);            
+        int screenIndex = queryString.containsKey(DataProvider.QRY_PARAM_SCREEN_INDEX)
+                ? Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_SCREEN_INDEX)) : getScreenIndex();
+        if ("ScreenPreview".equals(screen)) {
+            toOpen = new ScreenPreviewPage(screenIndex);
         } else if ("3D".equals(screen)) {
             toOpen = new ThreeDPage(screenIndex);
         } else if ("ViewHierarchy".equals(screen)) {
             toOpen = new TreeViewPage(screenIndex);
         } else if ("Resources".equals(screen)) {
-            if(sorryDemoNotSupported()){return;}
+            if (sorryDemoNotSupported()) {
+                return;
+            }
             toOpen = new ResourcesPage();
         } else if ("FileStorage".equals(screen)) {
-            if(sorryDemoNotSupported()){return;}
+            if (sorryDemoNotSupported()) {
+                return;
+            }
             toOpen = new FileStoragePage();
         } else if ("Groovy".equals(screen)) {
-            if(sorryDemoNotSupported()){return;}            
+            if (sorryDemoNotSupported()) {
+                return;
+            }
             int position = -1;
-            if(queryString.containsKey(DataProvider.QRY_PARAM_POSITION)){
+            if (queryString.containsKey(DataProvider.QRY_PARAM_POSITION)) {
                 position = Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_POSITION));
                 updateHistory = false;
-            }                                   
-            toOpen = new GroovyPage(screenIndex, position);           
-        } else if ("Windows".equals(screen)) {
+            }
+            toOpen = new GroovyPage(screenIndex, position);
+        } else if ("Windows Detailed".equals(screen)) {
             Window.open(DataProvider.SCREEN_SCTRUCTURE, "_blank", "");
+            return;
+        } else if ("Windows".equals(screen)) {
+            Window.open(DataProvider.SCREEN_SCTRUCTURE_SIMPLE, "_blank", "");
             return;
         } else if ("Screenshot".equals(screen)) {
             Window.open(DataProvider.SCREEN + "?" + DataProvider.SCREEN_INDEX_QRY + getScreenIndex(), "_blank", "");
@@ -129,7 +139,7 @@ public class AnUitor implements EntryPoint {
         } else if ("LogCat".equals(screen)) {
             Window.open("/logcat.txt", "_blank", "");
             return;
-        } else if (screen != null && screen.startsWith("ViewProperty")) {                      
+        } else if (screen != null && screen.startsWith("ViewProperty")) {
             int position = Integer.parseInt(queryString.get(DataProvider.QRY_PARAM_POSITION));
             String property = queryString.get(DataProvider.QRY_PARAM_PROPERTY);
             toOpen = new ViewPropertyPage(screenIndex, position, property);
@@ -146,79 +156,108 @@ public class AnUitor implements EntryPoint {
     private CellPanel createSelectionPane() {
         VerticalPanel hp = new VerticalPanel();
         hp.setWidth("100%");
-        hp.setStyleName("mainScreenContent", true);        
+        hp.setStyleName("mainScreenContent", true);
         hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         Label title = new Label(ConfigHelper.getDeviceInfo());
         title.setStyleName("deviceTitle");
         hp.add(title);
+        mButtons.clear();
         hp.add(mScreenListBox = createListBox());
-        hp.add(createButton("ScreenPreview"));
-        hp.add(createButton("3D"));
-        hp.add(createButton("ViewHierarchy"));
-        hp.add(createButton("Resources"));
-        hp.add(createButton("FileStorage"));
-        hp.add(createButton("Windows"));
-        hp.add(createButton("Screenshot"));
-        hp.add(createButton("LogCat"));
+        hp.add(createButton("ScreenPreview", false));
+        hp.add(createButton("3D", false));
+        hp.add(createButton("ViewHierarchy", false));
+        hp.add(createButton("Resources", false));
+        hp.add(createButton("FileStorage", false));
+        hp.add(createButton("Windows", false));
+        hp.add(createButton("Windows Detailed", false));
+        hp.add(createButton("Screenshot", false));
+        hp.add(createButton("LogCat", false));
         if (ConfigHelper.isGroovyEnabled()) {
-            hp.add(createButton("Groovy"));
+            hp.add(createButton("Groovy", false));
         }
 
         return hp;
     }
-    
-    private Button createButton(String name){
+
+    private final Map<String, Button> mButtons = new HashMap<String, Button>();
+    private static final String[] NO_ACTIVITY_FEATURES = new String[] { "Resources", "FileStorage", "Windows",
+            "LogCat" };
+
+    private Button createButton(String name, boolean enabled) {
         Button btn = new Button(name);
         btn.setStyleName("mainScreenButton", true);
         btn.addClickHandler(mClickHandler);
+        btn.setEnabled(enabled);
+        mButtons.put(name, btn);
         return btn;
     }
-    
-    private ListBox createListBox(){
+
+    private ListBox createListBox() {
         final ListBox lb = new ListBox(false);
         lb.setEnabled(false);
-        lb.addItem("Loading", (String)null);
-        DataProvider.getScreens(new AsyncCallback<JsArrayString>() {            
-            @Override public void onError(Request r, Throwable t) {
-                Window.alert("Unable to load screens:" + t.getMessage());
-            }            
+        lb.addItem("Loading", (String) null);
+        DataProvider.getScreens(new AsyncCallback<JsArrayString>() {
+            @Override
+            public void onError(Request req, Response res, Throwable t) {
+                Window.alert("Unable to load screens!\nError:" + t.getMessage());
+            }
+
             @Override
             public void onDownloaded(JsArrayString result) {
                 lb.clear();
                 lb.setEnabled(true);
-                for (int i = 0, n = result.length(); i < n; i++) {                   
-                   String value = result.get(i);                   
-                   lb.addItem(value, String.valueOf(i));                   
+                for (int i = 0, n = result.length(); i < n; i++) {
+                    String value = result.get(i);
+                    lb.addItem(value, String.valueOf(i));
                 }
                 lb.setSelectedIndex(lb.getItemCount() - 1);
+                enableButtons(result.length() == 0 ? NO_ACTIVITY_FEATURES : null);
             }
         });
         return lb;
+    }
+
+    private void enableButtons(String[] toEnable) {
+        if (toEnable == null) {
+            for (Button b : mButtons.values()) {
+                b.setEnabled(true);
+            }
+        } else {
+            for (String key : toEnable) {
+                Button b = mButtons.get(key);
+                if (b != null) {
+                    b.setEnabled(true);
+                }
+            }
+        }
     }
 
     private IsWidget mLastScreen;
 
     private void openWidget(String v, int index, IsWidget w, boolean updateHistory) {
         if (updateHistory) {
-            //History.newItem(v + (index < 0 ? "" : "?" + SCREEN_INDEX + index), false);// just add index if it's valid
+            // History.newItem(v + (index < 0 ? "" : "?" + SCREEN_INDEX + index), false);// just add index if it's valid
             if (index != -1) {
                 v += "?" + SCREEN_INDEX + index;
             }
             History.newItem(v, false);// just add index if it's valid
-            
+
         }
         if (mLastScreen != null) {
             RootLayoutPanel.get().remove(mLastScreen);
         }
         mLastScreen = w;
         RootLayoutPanel.get().add(mLastScreen);
-    }        
-    
-    private int getScreenIndex(){
-       String v = mScreenListBox == null ? "0" : mScreenListBox.getValue(mScreenListBox.getSelectedIndex());
-       return v == null ? 0 : Integer.parseInt(v);
     }
-    
+
+    private int getScreenIndex() {
+        if (mScreenListBox == null || mScreenListBox.getSelectedIndex() < 0) {
+            return -1;
+        }
+        String v = mScreenListBox == null ? "0" : mScreenListBox.getValue(mScreenListBox.getSelectedIndex());
+        return v == null || "null".equals(v) ? 0 : Integer.parseInt(v);
+    }
+
     private boolean sorryDemoNotSupported() {
         if (DataProvider.DEMO) {
             Window.alert("Sorry, not supported in DEMO!");
@@ -232,7 +271,7 @@ public class AnUitor implements EntryPoint {
             openScreen(((Button) event.getSource()).getText());
         }
     };
-    
+
     private static Map<String, String> buildHashParameterMap() {
         String historyToken = History.getToken();
         historyToken = historyToken.substring(historyToken.indexOf("?") + 1);

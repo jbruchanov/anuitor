@@ -1,13 +1,20 @@
 package com.scurab.gwt.anuitor.client.util;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.scurab.gwt.anuitor.client.AnUitor;
 
 public class ConfigHelper {
+    
+    private static Logger logger = Logger.getLogger("ParentLogger.Child");
+    
     
     public static String colorStyleForType(JSONObject config, String type) {
         if (config != null && type != null) {
@@ -32,12 +39,18 @@ public class ConfigHelper {
             }
             // key = key.toLowerCase();
             for (String regexp : colors.keySet()) {
-                if (key.toLowerCase().matches(regexp)) {
+                boolean matches = false;
+                try {
+                    matches = key.toLowerCase().matches(regexp);
+                } catch (Exception e) {                    
+                    logger.log(Level.INFO, "Invalid regexp:'" + regexp + "' for PropertyHighlights");                    
+                }
+                if (matches) {
                     JSONValue jsonColorV = colors.get(regexp);
                     JSONString jsonColor = jsonColorV != null ? jsonColorV.isString() : null;
                     String color = jsonColor != null ? jsonColor.stringValue() : null;
                     return color;
-                }
+                }              
             }
         }
         return null;

@@ -8,6 +8,7 @@ import static com.scurab.gwt.anuitor.client.util.GenericTools.createGroovyHistor
 import static com.scurab.gwt.anuitor.client.util.GenericTools.createLink;
 import static com.scurab.gwt.anuitor.client.util.GenericTools.createPropertyHistoryToken;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +31,10 @@ import com.scurab.gwt.anuitor.client.model.ViewNodeJSO;
 
 public final class TableTools {
 
+    public interface Filter<T> {
+        boolean accept(T item);
+    }
+    
     /**
      * Create data model for tableview based on {@link ViewNodeJSO}
      * 
@@ -37,6 +42,17 @@ public final class TableTools {
      * @return
      */
     public static ListDataProvider<Pair> createDataProvider(ViewNodeJSO viewNode) {
+        return createDataProvider(viewNode, null);
+    }
+        
+    /**
+     * Create data model for tableview based on {@link ViewNodeJSO}
+     * 
+     * @param viewNode
+     * @param filter optional filter to filter out some items
+     * @return
+     */
+    public static ListDataProvider<Pair> createDataProvider(ViewNodeJSO viewNode, Filter<Pair> filter) {
         ListDataProvider<Pair> dataProvider = new ListDataProvider<Pair>();
         List<Pair> list = dataProvider.getList();
         Set<String> keys = viewNode.getDataKeys();
@@ -50,7 +66,11 @@ public final class TableTools {
             try {
                 String value = viewNode.getStringedValue(key);
                 clickable &= !"null".equals(value);
-                list.add(new Pair(key, value, clickable, viewNode.getPosition()));
+                final Pair p = new Pair(key, value, clickable, viewNode.getPosition());
+                boolean accept = filter == null || filter.accept(p);
+                if(accept) { 
+                    list.add(p);
+                }
             } catch (Exception e) {
                 sb.append(key).append("\n" + e.getMessage());
             }
@@ -61,14 +81,38 @@ public final class TableTools {
         }
         java.util.Collections.sort(list);
 
-        list.add(0, new Pair("Groovy Console", viewNode.getPosition()));
-        list.add(0, new Pair("Position", viewNode.getPosition()));
+        moveToFirst(list, "StringValue");
+        moveToFirst(list, "Context:");
+        moveToFirst(list, "Inheritance");
+        list.add(0, new Pair(ViewFields.OWNER, viewNode.getOwner(), true, viewNode.getPosition()));
+        if (ConfigHelper.isGroovyEnabled()) {
+            list.add(0, new Pair("Groovy Console", viewNode.getPosition()));
+        }
+        list.add(0, new Pair(ViewFields.POSITION, viewNode.getPosition()));
         list.add(0, new Pair("Level", viewNode.getLevel()));
         list.add(0, new Pair("IDName", viewNode.getIDName()));
         list.add(0, new Pair("ID", viewNode.getID()));
         list.add(0, new Pair(ViewFields.TYPE, viewNode.getStringedValue(ViewFields.TYPE)));
 
         return dataProvider;
+    }   
+    
+    private static void moveToFirst(List<Pair> list, String keyName) {
+        Pair pair = null;
+        Iterator<Pair> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Pair item = iterator.next();
+            if (keyName.equals(item.key)) {
+                pair = item;
+                iterator.remove();
+                break;
+            }
+        }
+
+        if (pair != null) {
+            list.add(0, pair);
+        }
+        
     }
     
     /**
@@ -128,15 +172,15 @@ public final class TableTools {
             public void render(Context context, Pair object, SafeHtmlBuilder sb) {
                 if (object.value instanceof String) {
                     boolean isInheritance = object.key != null && object.key.contains("Inheritance");
-                    String value = (String) object.value;                    
-                    if (value.startsWith("com.android") || value.startsWith("android.")) {
-                        if (isInheritance) {
-                            sb.append(SafeHtmlUtils.fromTrustedString(value.replaceAll("\\n", "<br/>")));
-                        } else {
-                            sb.append(createLink(createGoogle(cleanInstanceHash(value)), value));
-                        }
+                    String value = (String) object.value;
+                    if (isInheritance) {
+                        sb.append(SafeHtmlUtils.fromTrustedString(value.replaceAll(">", "&gt;<br/>")));
                         return;
-                    } else if (value.startsWith("com.scurab") && !value.contains("anuitorsample")) {
+                    } else if (value.startsWith("com.android") || value.startsWith("android.") || value.startsWith("androidx.")) {
+                        sb.append(createLink(createGoogle(cleanInstanceHash(value)), value));
+                        return;
+                    } else if (value.startsWith("com.scurab")
+                            && !(value.contains("anuitorsample") || value.endsWith("Extractor"))) {
                         sb.append(createLink(createGithub(cleanInstanceHash(value)), value));
                         return;
                     }

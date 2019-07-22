@@ -1,59 +1,63 @@
-apply from: 'generator.gradle'
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply from: "$rootDir/build-android.gradle"
 
 android {
-    compileSdkVersion compileSdk
-
-    defaultConfig {
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk//keep it below M, tests+permission don't work
-
-        versionCode 1
-        versionName "1.0"
-        if (groovyEnabled) {
-            multiDexEnabled true
-        }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    android {
-        lintOptions {
-            abortOnError false
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    sourceSets {
+        main.java.srcDirs += file("src/extractors")
+        //TODO: remove this and figure out better way for fatAar
+        main.java.srcDirs += file("$rootDir/core/src/main/java")
+        main.java.srcDirs += file("$rootDir/webserver/src/main/java")
     }
 }
 
-task buildHelpClass {
-    doFirst {
-        try {
-            def fsep = System.getProperty("file.separator")
-            def srcFolder = new File(String.format("%s/src/main/java", getProjectDir().absolutePath).replace("/", fsep))
-            if (!srcFolder.exists()) {
-                throw new TaskExecutionException(task(name), new Throwable(String.format("'%s' not found!", srcFolder.getAbsolutePath())));
+task createStructureClasses {
+    def structure = "${project.projectDir}/src/main/assets/structure.json"
+    doLast {
+        def targetPackage = 'com.scurab.android.anuitor.extract2'
+        com.scurab.anutior.buildsrc.Script.generateClasses(targetPackage, structure, "${project.projectDir}/src/extractors")
+    }
+    inputs.files(structure)
+    outputs.dir("${project.projectDir}/src/extractors")
+    group = "build"
+}
+preBuild.dependsOn createStructureClasses
+
+task cleanStructureClasses {
+    doLast {
+        def file = new File("${project.projectDir}/src/extractors")
+        println("Delete" + file.deleteDir())
+        file.mkdirs()
+    }
+    group = "build"
+}
+clean.dependsOn cleanStructureClasses
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                artifactId = 'anuitor'
+                artifact tasks.bundleReleaseAar
+                artifact tasks.sourcesJar
+                //todo jdocs
             }
-            def classContent = generateHelpClass(srcFolder.absolutePath)
-            def classFile = new File(String.format("%s/src/main/java/com/scurab/android/anuitor/reflect/ReflectionHelper.java", getProjectDir().absolutePath).replace("/", fsep))
-            classFile.delete()
-            classFile.write(classContent, "utf-8")
-        } catch (Throwable t) {
-            throw new TaskExecutionException(task(name), t)
         }
     }
 }
-
-preBuild.dependsOn buildHelpClass
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
+    //region fatAar
+    compileOnly "com.google.code.gson:gson:${gson}"
+    compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"
+    //endregion
+
+    compileOnly project(":service-groovy")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     compileOnly "androidx.legacy:legacy-support-core-ui:${androidX}"
     compileOnly "androidx.fragment:fragment:${androidX}"
@@ -62,12 +66,14 @@ dependencies {
     compileOnly "androidx.gridlayout:gridlayout:${androidX}"
     compileOnly "androidx.percentlayout:percentlayout:${androidX}"
     compileOnly "com.google.android.material:material:${androidX}"
+    compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
+    compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
+    compileOnly "androidx.constraintlayout:constraintlayout:${constraintlayout}"
 
-    compileOnly "com.google.code.gson:gson:${gson}"
-    compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"
-    compileOnly "com.google.android.tools:dx:${dx}"
-    compileOnly "org.codehaus.groovy:groovy:${groovy}"
-
+    testImplementation "junit:junit:$junit"
+    testImplementation project(":service-groovy")
+    testImplementation project(":webserver")
+    testImplementation "androidx.appcompat:appcompat:$androidXAppCompat"
     //androidTest only, not needed for the lib itself
     testImplementation "com.google.code.gson:gson:${gson}"
     testImplementation "commons-io:commons-io:${commonsIo}"

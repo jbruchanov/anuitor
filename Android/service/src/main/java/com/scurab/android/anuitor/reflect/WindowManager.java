@@ -10,9 +10,9 @@ import android.view.View;
  */
 public interface WindowManager {
 
-    public Activity getCurrentActivity();
+    Activity getCurrentActivity();
 
-    public View getCurrentRootView();
+    View getCurrentRootView();
 
     String[] getViewRootNames();
 

@@ -10,6 +10,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.scurab.gwt.anuitor.client.model.DataResponseJSO;
 import com.scurab.gwt.anuitor.client.model.FSItemJSO;
 import com.scurab.gwt.anuitor.client.model.ObjectJSO;
@@ -36,15 +37,18 @@ public class DataProvider {
     private static final String CONFIG = "/config.json";
     private static final String VIEW_PROPERTY = "/viewproperty.json";
     private static final String GROOVY = "/groovy";
-    private static final int HTTP_OK = 200;
     
+    public static final int HTTP_OK = 200;
+    public static final int HTTP_NOT_FOUND = 404;  
     public static final String QRY_PARAM_SCREEN_INDEX = "screenIndex";
     public static final String SCREEN_INDEX_QRY = "?" + QRY_PARAM_SCREEN_INDEX + "=";
     public static final String SCREEN = (DEMO ? SAMPLE_DATA : "") + "/screen.png";
     public static final String SCREEN_SCTRUCTURE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json";
+    public static final String SCREEN_SCTRUCTURE_SIMPLE = (DEMO ? SAMPLE_DATA : "") + "/screencomponents.json";
     
     public static final String QRY_PARAM_POSITION = "position";
     public static final String QRY_PARAM_PROPERTY = "property";    
+    public static final String QRY_MAX_DEPTH = "maxDepth";
 
     /**
      * Generic callback
@@ -57,7 +61,7 @@ public class DataProvider {
 
         public void onDownloaded(T result);
 
-        public void onError(Request r, Throwable t);
+        public void onError(Request req, Response res, Throwable t);
     }
 
     /**
@@ -113,7 +117,7 @@ public class DataProvider {
                 
                 @Override
                 public void onError(Request request, Throwable exception) {
-                    callback.onError(request, exception);                    
+                    callback.onError(request, null, exception);                    
                 }
             });                      
         } catch (Exception e) {
@@ -136,6 +140,7 @@ public class DataProvider {
      */
     private static <T extends JavaScriptObject> void sendRequest(String url, final AsyncCallback<T> callback){
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+        builder.setHeader("Cache-Control", "no-cache");
         try {
             builder.sendRequest(null, new ReqCallback<T>(callback));                      
         } catch (Exception e) {
@@ -159,23 +164,26 @@ public class DataProvider {
 
         @Override
         public void onResponseReceived(Request request, Response response) {
-            if (HTTP_OK == response.getStatusCode()) {
+            final int code = response.getStatusCode();
+            if (HTTP_OK == code) {
                 try {
                     String value = response.getText();                 
                     T t = JsonUtils.safeEval(value);
                     mCallback.onDownloaded(t);
                 } catch (Exception e) {
-                    mCallback.onError(request, e);
+                    mCallback.onError(request, response, e);
                 }
+            } else if (HTTP_NOT_FOUND == code) {
+                mCallback.onError(request, response, new Exception("Not found, Is selected Activity running?"));                                          
             } else {
-                mCallback.onError(request, new Exception("ErrCode:" + response.getStatusCode()));
+                mCallback.onError(request, response, new Exception("ErrCode:" + response.getStatusCode()));
             }
         }
 
         @Override
         public void onError(Request request, Throwable exception) {
             if(mCallback != null){
-                mCallback.onError(request, exception);
+                mCallback.onError(request, null, exception);
             }
         }
     }
@@ -202,17 +210,17 @@ public class DataProvider {
                     JSONValue t = JSONParser.parseStrict(json);
                     mCallback.onDownloaded(t);
                 } catch (Exception e) {
-                    mCallback.onError(request, e);
+                    mCallback.onError(request, null, e);
                 }
             } else {
-                mCallback.onError(request, new Exception("ErrCode:" + response.getStatusCode()));
+                mCallback.onError(request, null, new Exception("ErrCode:" + response.getStatusCode()));
             }
         }
 
         @Override
         public void onError(Request request, Throwable exception) {
             if(mCallback != null){
-                mCallback.onError(request, exception);
+                mCallback.onError(request, null, exception);
             }
         }
     }

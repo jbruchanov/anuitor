@@ -16,7 +16,8 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.Base64;
 import android.util.TypedValue;
 
-import com.scurab.android.anuitor.extract.Translator;
+import com.scurab.android.anuitor.extract2.TranslatorName;
+import com.scurab.android.anuitor.extract2.Translators;
 import com.scurab.android.anuitor.hierarchy.IdsHelper;
 import com.scurab.android.anuitor.model.ResourceResponse;
 import com.scurab.android.anuitor.reflect.ColorStateListReflector;
@@ -31,6 +32,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,16 +57,15 @@ public class ResourcesPlugin extends BasePlugin {
     private static final String XML = "xml";
     private static final String ID = "id";
     private static final String NUMBER = "number";
+    public static final int MAX_RAW_SIZE_FOR_STRING = 8 * 1024;
 
     private Resources mRes;
     private ResourcesReflector mHelper;
-    private Translator mTranslator;
 
     private final Paint mClearPaint = new Paint();
 
-    public ResourcesPlugin(Resources res, Translator translator) {
+    public ResourcesPlugin(Resources res) {
         mRes = res;
-        mTranslator = translator;
         mHelper = new ResourcesReflector(mRes);
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
@@ -184,9 +185,26 @@ public class ResourcesPlugin extends BasePlugin {
                 response.Data = DOM2XmlPullBuilder.transform(mRes.getXml(id));
                 response.DataType = XML;
                 break;
+            case raw:
+                response.DataType = STRING_DATA_TYPE;
+                try {
+                    InputStream is = mRes.openRawResource(id);
+                    int available = is.available();
+                    if (available < MAX_RAW_SIZE_FOR_STRING) {
+                        byte[] data = new byte[available];
+                        is.read(data);
+                        response.Data = new String(data);
+                    } else {
+                        response.Data = "Skipped raw resources content because of size:" + available;
+                    }
+                    is.close();
+                } catch (Throwable e) {
+                    response.Data = e.getMessage();
+                    e.printStackTrace();
+                }
+                break;
             default:
             case attr:
-            case raw:
             case style:
             case styleable:
             case unknown:
@@ -339,7 +357,7 @@ public class ResourcesPlugin extends BasePlugin {
             rr.DataType = "color";
 
             int[] stateSet = reflector.getColorState(i);
-            rr.Context = mTranslator.stateListFlags(stateSet);
+            rr.Context = Translators.INSTANCE.get(TranslatorName.DrawableState).translate(stateSet);
 
             int color = colorStateList.getColorForState(stateSet, Integer.MIN_VALUE);
             rr.Data = HttpTools.getStringColor(color);
@@ -459,7 +477,7 @@ public class ResourcesPlugin extends BasePlugin {
 
             rr.id = resId;
             rr.DataType = BASE64_PNG;
-            rr.Context = mTranslator.stateListFlags(stateSet);
+            rr.Context = Translators.INSTANCE.get(TranslatorName.DrawableState).translate(stateSet);
             rr.Data = Base64.encodeToString(drawDrawable(sldReflector.getStateDrawable(i), SIZE, SIZE, mClearPaint), Base64.NO_WRAP);
         }
     }

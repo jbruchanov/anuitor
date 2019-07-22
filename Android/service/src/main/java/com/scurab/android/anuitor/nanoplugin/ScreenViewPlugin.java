@@ -14,6 +14,8 @@ import com.scurab.android.anuitor.tools.HttpTools;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -48,31 +50,31 @@ public class ScreenViewPlugin extends ActivityPlugin {
     public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        final View view = getCurrentRootView(HttpTools.parseQueryString(session.getQueryParameterString()));
-        ByteArrayInputStream resultInputStream = null;
+        HashMap<String, String> qsValue = HttpTools.parseQueryString(session.getQueryParameterString());
+        final View view = getCurrentRootView(qsValue);
+        ByteArrayInputStream resultInputStream;
+        NanoHTTPD.Response response;
 
         if (view != null) {
             view.getLocationOnScreen(mLocation);
             final Bitmap[] outBitmap = new Bitmap[1];
-            Executor.runInMainThreadBlockingOnlyIfCrashing(new Runnable() {
-                @Override
-                public void run() {
-                    if (mLocation[0] != 0 || mLocation[1] != 0) {//dialog or something, rootview is not at [0,0]
-                        int w = mLocation[0] + view.getWidth();
-                        int h = mLocation[1] + view.getHeight();
-                        outBitmap[0] = onCreateBitmap(w, h);
-                        Canvas c = onCreateCanvas(outBitmap[0]);
-                        c.drawRect(0, 0, w, h, mClearPaint);//clear white background to get transparency
-                        c.translate(mLocation[0], mLocation[1]);
-                        view.draw(c);
-                    } else {
-                        view.destroyDrawingCache();
-                        view.buildDrawingCache(false);
+            Executor.runInMainThreadBlockingOnlyIfCrashing(() -> {
+                if (mLocation[0] != 0 || mLocation[1] != 0) {//dialog or something, rootview is not at [0,0]
+                    int w = mLocation[0] + view.getWidth();
+                    int h = mLocation[1] + view.getHeight();
+                    outBitmap[0] = onCreateBitmap(w, h);
+                    Canvas c = onCreateCanvas(outBitmap[0]);
+                    c.drawRect(0, 0, w, h, mClearPaint);//clear white background to get transparency
+                    c.translate(mLocation[0], mLocation[1]);
+                    view.draw(c);
+                } else {
+                    view.destroyDrawingCache();
+                    view.buildDrawingCache(false);
 
-                        // get bitmap
-                        outBitmap[0] = view.getDrawingCache();
-                    }
+                    // get bitmap
+                    outBitmap[0] = view.getDrawingCache();
                 }
+                return null;
             });
 
             Bitmap b = outBitmap[0];
@@ -83,12 +85,10 @@ public class ScreenViewPlugin extends ActivityPlugin {
                 resultInputStream = new ByteArrayInputStream(bos.toByteArray());
                 b.recycle();
             }
+            response = new OKResponse(IMAGE_PNG, resultInputStream);
         } else {
-            resultInputStream = new ByteArrayInputStream(new byte[0]);
+            response = new Response(NanoHTTPD.Response.Status.NOT_FOUND, IMAGE_PNG, (InputStream) null);
         }
-
-
-        NanoHTTPD.Response response = new OKResponse(IMAGE_PNG, resultInputStream);
         return response;
     }
 

@@ -4,6 +4,9 @@ import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.util.TypedValue;
 
+import com.scurab.android.anuitor.tools.DOM2XmlPullBuilder;
+
+import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -42,6 +45,10 @@ public class ResourcesReflector extends Reflector<Resources> {
         String type = getType(value);
         XmlResourceParser xmlPullParser = loadXmlResourceParser(value.string.toString(), resId, value.assetCookie, type);
         return transformToString(xmlPullParser);
+    }
+
+    protected String transformToString(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException, TransformerException {
+        return DOM2XmlPullBuilder.transform(xmlPullParser);
     }
 
     private String getType(TypedValue value){

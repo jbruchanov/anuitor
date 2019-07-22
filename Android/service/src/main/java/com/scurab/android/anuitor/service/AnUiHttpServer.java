@@ -1,8 +1,8 @@
 package com.scurab.android.anuitor.service;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.scurab.android.anuitor.extract.Translator;
 import com.scurab.android.anuitor.nanoplugin.ActiveScreensPlugin;
 import com.scurab.android.anuitor.nanoplugin.AggregateMimePlugin;
 import com.scurab.android.anuitor.nanoplugin.BasePlugin;
@@ -40,7 +40,7 @@ public class AnUiHttpServer extends SimpleWebServer {
             registerPluginForMimeType(new GroovyPlugin(context.getCacheDir()));
             hasGroovySupport = true;
         } catch (Throwable e) {
-            e.printStackTrace();
+            Log.v("AnUiHttpServer", "Unable to register GroovyPlugin");
         }
 
         registerPluginForMimeType(new AggregateMimePlugin(
@@ -51,7 +51,7 @@ public class AnUiHttpServer extends SimpleWebServer {
                 new ActiveScreensPlugin(windowManager),
                 new ViewHierarchyPlugin(windowManager),
                 new FileStoragePlugin(context),
-                new ResourcesPlugin(context.getResources(), new Translator()),
+                new ResourcesPlugin(context.getResources()),
                 new ScreenStructurePlugin(windowManager),
                 new ViewPropertyPlugin(windowManager)));
         registerPluginForMimeType(new LogCatPlugin());
