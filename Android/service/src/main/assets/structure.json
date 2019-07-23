@@ -224,7 +224,10 @@
         ],
         "18": [
           {"m": "getClipBounds" },
-          {"m": "getOverlay" },
+          {
+            "n": "Overlay:",
+            "m": "getOverlay"
+          },
           {
             "n": "WindowId:",
             "m": "getWindowId"
