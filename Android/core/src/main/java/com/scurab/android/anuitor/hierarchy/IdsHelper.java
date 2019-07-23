@@ -178,6 +178,7 @@ public class IdsHelper {
                 location = null;
             }
         }
+        JsonRef.initJson();
         return JsonRef.JSON.toJson(result);
     }
 }

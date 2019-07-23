@@ -212,6 +212,7 @@ public class ScreenPreviewPage extends Composite {
                 // update slider
                 mScaleSliderBar
                         .setValue((int) (((mScaleSliderBar.getMaxValue() + SCALE_MIN) / 2f) * scale) - SCALE_MIN);
+                updateGridCanvas(1);
                 // finish loading and render
                 reloadCanvas(scale);
             }

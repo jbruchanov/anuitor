@@ -127,7 +127,7 @@ public class AnUitorService extends Service {
             return true;
         } catch (Throwable e) {
             NotificationManager nm = getNotificationManager();
-            nm.notify(NOTIF_ID, createSimpleNotification(e.getMessage(), false));
+            nm.notify(NOTIF_ID, createNotification(this, e.getMessage()));
         }
         return false;
     }
@@ -216,6 +216,12 @@ public class AnUitorService extends Service {
 
     @Nullable
     private static Notification createNotification(@NonNull Context context,
+                                                   @NonNull String msg) {
+        return createNotification(context, TAG, msg, NotificationCompat.PRIORITY_HIGH, null, null);
+    }
+
+    @Nullable
+    private static Notification createNotification(@NonNull Context context,
                                                    @NonNull String title,
                                                    @NonNull String msg,
                                                    int defaults,
@@ -223,11 +229,11 @@ public class AnUitorService extends Service {
                                                    @Nullable PendingIntent stopIntent) {
         try {
             NotificationCompat.Builder notib = new NotificationCompat.Builder(context, TAG)
-                    .setContentTitle(StringUtils.valueIfNull(title, "AnUitor"))
+                    .setContentTitle(StringUtils.valueIfNull(title, TAG))
                     .setAutoCancel(true)
                     .setDefaults(defaults)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setContentText(StringUtils.valueIfNull(title, "Null msg"))
+                    .setContentText(StringUtils.valueIfNull(msg, "Null msg"))
                     .setSmallIcon(ICON_RES_ID)
                     .setContentIntent(contentIntent)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
@@ -242,7 +248,7 @@ public class AnUitorService extends Service {
                         .setContentTitle(title)
                         .setAutoCancel(true)
                         .setDefaults(defaults)
-                        .setContentText(msg)
+                        .setContentText(StringUtils.valueIfNull(msg, "Null msg"))
                         .setSmallIcon(ICON_RES_ID);
 
                 if (contentIntent != null) {

@@ -23,6 +23,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.doAnswer;
@@ -57,7 +58,8 @@ public class ScreenViewPluginTest {
         ScreenViewPlugin svp = new ScreenViewPlugin(wm);
         NanoHTTPD.IHTTPSession session = mock(NanoHTTPD.IHTTPSession.class);
         NanoHTTPD.Response response = svp.handleRequest(null, null, session, null, null);
-        byte[] data = IOUtils.toByteArray(response.getData());
+        assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
+        assertNull(response.getData());
     }
 
     @Test
