@@ -5,6 +5,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.multidex.MultiDexApplication
 import com.scurab.android.anuitor.Constants
+import com.scurab.android.anuitor.extract.RenderAreaWrapper
 import com.scurab.android.anuitor.extract2.*
 import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.service.AnUitorClientConfig
@@ -22,8 +23,8 @@ class SampleApplication : MultiDexApplication() {
         AnUitorService.startService(this, 8081, 0, true, null)
         IdsHelper.loadValues(R::class.java)
 
-        DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView::class.java)
-        { view, outRect -> view.getDrawingSize(outRect) }
+        DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView::class.java,
+                RenderAreaWrapper { view, outRect -> view.getDrawingSize(outRect) })
 
         DetailExtractor.registerExtractor(BaseFragment::class.java, object : AndroidXFragmentExtractor() {
             override fun onFillValues(item: Any, context: ExtractingContext) {
