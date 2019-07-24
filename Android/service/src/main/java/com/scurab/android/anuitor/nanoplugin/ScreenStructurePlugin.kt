@@ -15,13 +15,11 @@ import com.scurab.android.anuitor.extract2.ExtractingContext
 import com.scurab.android.anuitor.extract2.getActivity
 import com.scurab.android.anuitor.reflect.ActivityThreadReflector
 import com.scurab.android.anuitor.reflect.WindowManager
-import com.scurab.android.anuitor.tools.HttpTools
 import com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON
 import com.scurab.android.anuitor.tools.atLeastApi
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayInputStream
 import java.io.File
-import java.lang.IllegalStateException
 import java.util.*
 
 private const val FILE_DEEP = "screenstructure.json"
