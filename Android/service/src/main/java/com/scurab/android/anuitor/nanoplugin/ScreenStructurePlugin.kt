@@ -16,15 +16,17 @@ import com.scurab.android.anuitor.extract2.getActivity
 import com.scurab.android.anuitor.reflect.ActivityThreadReflector
 import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON
+import com.scurab.android.anuitor.tools.HttpTools.MimeType.TEXT_PLAIN
 import com.scurab.android.anuitor.tools.atLeastApi
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayInputStream
 import java.io.File
+import java.lang.StringBuilder
 import java.util.*
 
 private const val FILE_DEEP = "screenstructure.json"
 private const val FILE_SIMPLE = "screencomponents.json"
-private typealias Node = Map<String, Any>
+private typealias Node = Map<String, List<Any>>
 
 class ScreenStructurePlugin(private val windowManager: WindowManager) : BasePlugin() {
 
@@ -42,9 +44,14 @@ class ScreenStructurePlugin(private val windowManager: WindowManager) : BasePlug
                            mimeType: String): NanoHTTPD.Response {
 
         return try {
-            val result : Any = when {
+            val result: Any = when {
                 uri.endsWith(FILE_DEEP) -> deepStructure()
-                uri.endsWith(FILE_SIMPLE) -> simpleStructure(activityThread.application)
+                uri.endsWith(FILE_SIMPLE) -> {
+                    val simpleStructure = simpleStructure(activityThread.application)
+                    val sb = StringBuilder()
+                    simpleStructure.toSimpleString(sb)
+                    return OKResponse(TEXT_PLAIN, ByteArrayInputStream(sb.toString().toByteArray()))
+                }
                 else -> throw IllegalArgumentException("Unsupported uri:$uri")
             }
             val json = BasePlugin.JSON.toJson(result)
@@ -101,6 +108,18 @@ class ScreenStructurePlugin(private val windowManager: WindowManager) : BasePlug
         }
         return node
     }
+
+    private fun Node.toSimpleString(sb: StringBuilder, depth: Int = 0) {
+        this.forEach { (name, list) ->
+            sb.append("   ".repeat(depth)).append(name).append("\n")
+            if (list.isNotEmpty()) {
+                list.forEach { n ->
+                    (n as Node).toSimpleString(sb, depth + 1)
+                }
+            }
+        }
+    }
+
 
     private fun deepStructure(): List<Map<String, Any>> {
         val viewRootNames = windowManager.viewRootNames
