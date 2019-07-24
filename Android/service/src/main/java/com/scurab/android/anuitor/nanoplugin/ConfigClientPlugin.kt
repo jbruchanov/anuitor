@@ -18,6 +18,6 @@ class ConfigClientPlugin(private val data: Map<String, Any>) : BasePlugin() {
                            session: NanoHTTPD.IHTTPSession,
                            file: File,
                            mimeType: String): NanoHTTPD.Response {
-        return OKResponse(HttpTools.MimeType.PLAIN_TEXT, BasePlugin.JSON.toJson(data))
+        return OKResponse(HttpTools.MimeType.TEXT_PLAIN, BasePlugin.JSON.toJson(data))
     }
 }

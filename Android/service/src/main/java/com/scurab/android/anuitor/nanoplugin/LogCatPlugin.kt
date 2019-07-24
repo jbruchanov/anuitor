@@ -11,13 +11,13 @@ private const val PATH = "/$FILE"
 class LogCatPlugin : BasePlugin() {
 
     override fun files(): Array<String> = arrayOf(FILE)
-    override fun mimeType(): String = HttpTools.MimeType.PLAIN_TEXT
+    override fun mimeType(): String = HttpTools.MimeType.TEXT_PLAIN
     override fun canServeUri(uri: String, rootDir: File) = PATH == uri
 
     override fun serveFile(uri: String, headers: Map<String, String>, session: NanoHTTPD.IHTTPSession, file: File, mimeType: String): NanoHTTPD.Response {
         val type = session.queryParameterString
                 ?.let { HttpTools.parseQueryString(it) }
                 ?.get("type")
-        return OKResponse(HttpTools.MimeType.PLAIN_TEXT, LogCatProvider.dumpLogcat(type))
+        return OKResponse(HttpTools.MimeType.TEXT_PLAIN, LogCatProvider.dumpLogcat(type))
     }
 }
