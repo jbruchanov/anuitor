@@ -1,5 +1,7 @@
 package com.scurab.android.anuitor.tools;
 
+import androidx.annotation.Nullable;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +17,7 @@ public class LogCatProvider {
     public static final String TYPE_EVENTS = "events";
     public static final String TYPE_RADIO = "radio";
 
-    public static String dumpLogcat(String type) {
+    public static String dumpLogcat(@Nullable String type) {
         if (type == null) {
             type = TYPE_MAIN;
         }
