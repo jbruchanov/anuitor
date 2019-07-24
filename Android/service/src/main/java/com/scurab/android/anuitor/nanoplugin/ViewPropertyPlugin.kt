@@ -58,16 +58,18 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
                 }
 
                 val maxDepth = (qsValue[MAX_DEPTH] ?: "1").toInt()
-                var view = getCurrentRootView(qsValue)
-                view = if (view != null) DetailExtractor.findViewByPosition(view, position) else null
-
-                val result = if (view != null && property != null) {
-                    getPropertyValue(property, view, reflection, maxDepth)
-                } else {
-                    Executor.runInMainThreadBlocking(30000)
-                    { handleObject(view, reflection, view.javaClass.name, "", "", maxDepth) }
-                }
-                response = OKResponse(HttpTools.MimeType.APP_JSON, BasePlugin.JSON.toJson(result))
+                getCurrentRootView(qsValue)
+                        ?.let {
+                            DetailExtractor.findViewByPosition(it, position)
+                        }?.let {view ->
+                            val result = if (property != null) {
+                                getPropertyValue(property, view, reflection, maxDepth)
+                            } else {
+                                Executor.runInMainThreadBlocking(30000)
+                                { handleObject(view, reflection, view.javaClass.name, "", "", maxDepth) }
+                            }
+                            response = OKResponse(HttpTools.MimeType.APP_JSON, BasePlugin.JSON.toJson(result))
+                        }
             }
         } catch (e: Throwable) {
             val stringWriter = StringWriter()
