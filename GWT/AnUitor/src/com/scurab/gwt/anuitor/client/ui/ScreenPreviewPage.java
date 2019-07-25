@@ -34,6 +34,7 @@ import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -99,6 +100,8 @@ public class ScreenPreviewPage extends Composite {
     @UiField
     SplitLayoutPanel splitLayoutPanel;
     @UiField
+    Button reloadButton;
+    @UiField
     TextBox filter;
     @UiField(provided = true)    
     CellTable<Pair> cellTable = new CellTable<Pair>();
@@ -114,6 +117,7 @@ public class ScreenPreviewPage extends Composite {
     private static final double ZOOM_CANVAS_SCALE = 1.5;
     /* Percent part for image preview */
     private static final double PREVIEW_SCREEN_WITH_PERC = 0.55;
+    private static final int DEFAULT_RELOAD_TIMER_TICK = 5;//seconds
     /* Main canvas scale */
     private float mScale = 1;
     /* Main canvas widget */
@@ -161,6 +165,7 @@ public class ScreenPreviewPage extends Composite {
             updateFilter(filter, false);
         }       
     });
+    private Timer mReloadTimer;    
 
     interface TestPageUiBinder extends UiBinder<Widget, ScreenPreviewPage> {
     }
@@ -172,7 +177,7 @@ public class ScreenPreviewPage extends Composite {
         mSelectionColor = ConfigHelper.getSelectionColor();
 
         mScaleSliderBar = new ScaleSliderBar(200 - SCALE_MIN /* max(200) - min(30) = 170 */, "400px");
-        topRow.insert(mScaleSliderBar, 0);
+        topRow.insert(mScaleSliderBar, 1);
 
         bind();
         initTable();
@@ -369,6 +374,21 @@ public class ScreenPreviewPage extends Composite {
             }
         });
 
+        reloadButton.setText("Reload " + mReloadTimerCounter + "s");
+        reloadButton.addClickHandler(new ClickHandler() {           
+            @Override
+            public void onClick(ClickEvent event) {
+                mReloadTimerCounter = DEFAULT_RELOAD_TIMER_TICK;
+                if (mReloadTimer != null) {
+                    mReloadTimer.cancel();
+                    mReloadTimer = null;
+                    reloadButton.setText("Reload " + mReloadTimerCounter + "s");
+                } else {                    
+                    tickReloadTimer();
+                }
+            }
+        });
+       
         AbsolutePanel ap = new AbsolutePanel();
         flowPanel.add(ap);
 
@@ -376,6 +396,25 @@ public class ScreenPreviewPage extends Composite {
         ap.add(mCanvas);
         ap.add(mCanvasGrid);
         onInitZoomCanvas();
+    }
+    
+    private int mReloadTimerCounter = DEFAULT_RELOAD_TIMER_TICK;
+    private void tickReloadTimer() {
+        if (mReloadTimer == null) {
+            mReloadTimer = new Timer() {
+                @Override
+                public void run() {
+                    if (mReloadTimerCounter == 0) {
+                        Window.Location.reload();
+                    } else {
+                        mReloadTimerCounter--;
+                        reloadButton.setText("Reload " + mReloadTimerCounter + "s");
+                        mReloadTimer.schedule(1000);
+                    }
+                }
+            };
+        }
+        mReloadTimer.schedule(1000);
     }
 
     protected void onDrawMouseCross(int x, int y) {
