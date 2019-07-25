@@ -22,7 +22,7 @@ class ViewHierarchyPlugin(windowManager: WindowManager) : ActivityPlugin(windowM
     override fun mimeType(): String = APP_JSON
 
     override fun handleRequest(uri: String, headers: Map<String, String>, session: NanoHTTPD.IHTTPSession, file: File, mimeType: String): NanoHTTPD.Response {
-        val view = session.queryParameterString.currentRootView()
+        val view = session.queryParameterString?.currentRootView()
 
         val response: NanoHTTPD.Response
         if (view != null) {

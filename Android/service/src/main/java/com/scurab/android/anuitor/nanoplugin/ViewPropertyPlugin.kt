@@ -12,6 +12,7 @@ import com.scurab.android.anuitor.reflect.ViewReflector
 import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.Executor
 import com.scurab.android.anuitor.tools.HttpTools
+import com.scurab.android.anuitor.tools.render
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -27,11 +28,11 @@ private const val PATH = "/$FILE"
 
 class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowManager) {
 
-    private val mClearPaint = Paint()
-    private var mReflectionExtractor: ReflectionExtractor? = null
+    private val clearPaint = Paint()
+    private var reflectionExtractor: ReflectionExtractor? = null
 
     init {
-        mClearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        clearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
 
     override fun files(): Array<String> = arrayOf(FILE)
@@ -112,8 +113,8 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
         if (item != null) {
             var extractor: BaseExtractor? = if (reflection) null else DetailExtractor.findExtractor(item.javaClass)
             if (extractor == null) {
-                mReflectionExtractor = ReflectionExtractor(true, maxDepth)
-                extractor = mReflectionExtractor
+                reflectionExtractor = ReflectionExtractor(true, maxDepth)
+                extractor = reflectionExtractor
             }
             val data = extractor!!.fillValues(item, ExtractingContext())
             data.remove("Owner")
@@ -125,20 +126,21 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
             response.Context = data
 
             if (item is Drawable) {
-                response.Data = Base64.encodeToString(ResourcesPlugin.drawDrawableWithBounds(item, mClearPaint), Base64.NO_WRAP)
-                response.DataType = BasePlugin.BASE64_PNG
+                //TODO: replace by ext methods when resources plugin migrated to kt
+                response.Data = Base64.encodeToString(ResourcesPlugin.drawDrawableWithBounds(item, clearPaint), Base64.NO_WRAP)
+                response.DataType = BASE64_PNG
             } else if (item is View) {
+                //TODO: reuse ext methods
                 val renderSize = DetailExtractor.getRenderArea(item)
                 val renderArea = Rect()
                 renderArea.set(0, 0, item.width, item.height)
                 renderSize?.getRenderArea(item, renderArea)
-                val bitmap = ViewshotPlugin.drawViewBlocking(item, renderArea, mClearPaint)
-                if (bitmap != null) {
-                    val stream = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                    response.Data = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
-                    response.DataType = BasePlugin.BASE64_PNG
-                }
+                val bitmap = item.render(renderArea)
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                response.Data = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
+                response.DataType = BASE64_PNG
+                bitmap.recycle()
             }
         } else {
             response.Context = "Null object"
