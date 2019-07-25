@@ -44,15 +44,13 @@ class ViewshotPlugin(windowManager: WindowManager) : ActivityPlugin(windowManage
                 resultInputStream = qsValue.currentRootView()
                         ?.let { DetailExtractor.findViewByPosition(it, qsValue[POSITION]?.toInt() ?: 0) }
                         ?.let { view ->
-                            val renderArea = Rect(0, 0, view.width, view.height)
-                            DetailExtractor.getRenderArea(view)?.getRenderArea(view, renderArea)
                             val bitmap = view
                                     .takeIf { it.visibility == View.VISIBLE && it.hasSize() }
                                     ?.let {
                                         Executor.runInMainThreadBlockingOnlyIfCrashing {
                                             view.takeIf { it is ViewGroup && !DetailExtractor.isExcludedViewGroup(it.javaClass.name) }
                                                     ?.let { view.renderBackground() }
-                                                    ?: view.render(renderArea)
+                                                    ?: view.render()
                                         }
                                     }?.let {
                                         var bitmap = it

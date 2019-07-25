@@ -12,9 +12,8 @@ import com.scurab.android.anuitor.reflect.ViewReflector
 import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.Executor
 import com.scurab.android.anuitor.tools.HttpTools
-import com.scurab.android.anuitor.tools.render
+import com.scurab.android.anuitor.tools.renderToPng
 import fi.iki.elonen.NanoHTTPD
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -130,17 +129,8 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
                 response.Data = Base64.encodeToString(ResourcesPlugin.drawDrawableWithBounds(item, clearPaint), Base64.NO_WRAP)
                 response.DataType = BASE64_PNG
             } else if (item is View) {
-                //TODO: reuse ext methods
-                val renderSize = DetailExtractor.getRenderArea(item)
-                val renderArea = Rect()
-                renderArea.set(0, 0, item.width, item.height)
-                renderSize?.getRenderArea(item, renderArea)
-                val bitmap = item.render(renderArea)
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                response.Data = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
+                response.Data = Base64.encodeToString(item.renderToPng(), Base64.NO_WRAP)
                 response.DataType = BASE64_PNG
-                bitmap.recycle()
             }
         } else {
             response.Context = "Null object"

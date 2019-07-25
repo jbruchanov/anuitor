@@ -2,7 +2,13 @@ package com.scurab.android.anuitor.tools
 
 import android.graphics.*
 import android.os.Build
+import android.util.Base64
 import android.view.View
+import com.scurab.android.anuitor.extract2.DetailExtractor
+import com.scurab.android.anuitor.nanoplugin.BasePlugin
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
@@ -29,18 +35,30 @@ fun View.absoluteScale(): Pair<Float, Float> {
  */
 fun View.hasSize() = width != 0 && height != 0
 
+/**
+ * Render view into bitma
+ * @param includeLocationOnScreen - add spacing if the rootview is doesn't have origin [0,0],
+ * this is necessary for ScreenPreview (just easier to avoid coords recalculation)
+ */
 fun View.render(includeLocationOnScreen : Boolean = false): Bitmap {
     val location = intArrayOf(0, 0)
+    val renderArea = Rect(0, 0, width, height)
+
     if (includeLocationOnScreen) {
         getLocationOnScreen(location)
     }
-    val w = location[0] + width
-    val h = location[1] + height
-    return if (location[0] != 0 || location[1] != 0)
+    DetailExtractor.getRenderArea(this)?.getRenderArea(this, renderArea)
+    val w = location[0] + renderArea.width()
+    val h = location[1] + renderArea.height()
+    return if ((location[0] != 0 || location[1] != 0) ||// includeLocationOnScreen
+            renderArea.width() != width || renderArea.height() != height)//or custom renderArea
         Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888).apply {
             Canvas(this).run {
                 //clear white background to get transparency
                 drawRect(0f, 0f, w.toFloat(), h.toFloat(), clearPaint)
+                //custom render area
+                translate((-renderArea.left).toFloat(), (-renderArea.top).toFloat())
+                //includeLocationOnScreen
                 translate(location[0].toFloat(), location[1].toFloat())
                 draw(this)
             }
@@ -51,15 +69,15 @@ fun View.render(includeLocationOnScreen : Boolean = false): Bitmap {
     }
 }
 
-//TODO: use ^ render
-fun View.render(renderArea: Rect): Bitmap {
-    val b = Bitmap.createBitmap(renderArea.width(), renderArea.height(), Bitmap.Config.ARGB_8888)
-
-    val c = Canvas(b)
-    c.drawRect(0f, 0f, b.width.toFloat(), b.height.toFloat(), clearPaint)//clear white background to get transparency
-    c.translate((-renderArea.left).toFloat(), (-renderArea.top).toFloat())
-    draw(c)
-    return b
+/**
+ * Render View to PNG
+ */
+fun View.renderToPng(includeLocationOnScreen: Boolean = false): ByteArray {
+    val baos = ByteArrayOutputStream()
+    val bitmap = render(includeLocationOnScreen)
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+    bitmap.recycle()
+    return baos.toByteArray()
 }
 
 /**
