@@ -58,7 +58,7 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
                 }
 
                 val maxDepth = (qsValue[MAX_DEPTH] ?: "1").toInt()
-                getCurrentRootView(qsValue)
+                qsValue.currentRootView()
                         ?.let {
                             DetailExtractor.findViewByPosition(it, position)
                         }?.let {view ->

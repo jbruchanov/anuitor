@@ -78,7 +78,7 @@ public class ViewshotPlugin extends ActivityPlugin {
             HashMap<String, String> qsValue = HttpTools.parseQueryString(queryString);
             if (qsValue.containsKey(POSITION)) {
                 int position = Integer.parseInt(qsValue.get(POSITION));
-                View view = getCurrentRootView(qsValue);
+                View view = currentRootView(qsValue);
                 view = view != null ? DetailExtractor.findViewByPosition(view, position) : null;
                 if (view != null) {
                     float[] scale = getAbsoluteScale(view);

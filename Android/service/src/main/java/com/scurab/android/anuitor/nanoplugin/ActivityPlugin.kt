@@ -37,20 +37,24 @@ abstract class ActivityPlugin protected constructor(private val windowManager: W
         return if (index < 0) windowManager.currentRootView else windowManager.getRootView(index)
     }
 
-    protected fun getCurrentRootView(qsValue: HashMap<String, String>): View? {
-        var view: View?
-        try {
-            if (qsValue.containsKey(SCREEN_INDEX)) {
-                view = getCurrentRootView(qsValue[SCREEN_INDEX]?.toInt() ?: 0)
-            } else {
-                view = currentRootView
-            }
-        } catch (t: Throwable) {
-            t.printStackTrace()
-            view = null
+    protected fun String.currentRootView(): View? {
+        return try {
+            this
+                    .let { HttpTools.parseQueryString(it) }
+                    .let { it.currentRootView() }
+        } catch (e: Throwable) {
+            null
         }
+    }
 
-        return view
+    protected fun Map<String, String>.currentRootView(): View? {
+        return try {
+            return this
+                    .let { (it[SCREEN_INDEX] ?: "-1").toInt() }
+                    .let { getCurrentRootView(it) }
+        } catch (e: Throwable) {
+            null
+        }
     }
 
     companion object {
