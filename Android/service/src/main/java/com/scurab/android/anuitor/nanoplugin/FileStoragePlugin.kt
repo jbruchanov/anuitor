@@ -5,6 +5,7 @@ import com.scurab.android.anuitor.model.FSItem
 import com.scurab.android.anuitor.tools.FileSystemTools
 import com.scurab.android.anuitor.tools.HttpTools
 import com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON
+import com.scurab.android.anuitor.tools.HttpTools.MimeType.TEXT_PLAIN
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -23,10 +24,12 @@ class FileStoragePlugin(context: Context) : BasePlugin() {
     override fun canServeUri(uri: String, rootDir: File): Boolean = PATH == uri
 
     override fun serveFile(uri: String, headers: Map<String, String>, session: NanoHTTPD.IHTTPSession, file: File, mimeType: String): NanoHTTPD.Response {
-        var inputStream: InputStream
-        var mime: String
-        var content: String? = null
+
+        var response: NanoHTTPD.Response
         try {
+            val inputStream: InputStream
+            val mime: String
+            var content: String? = null
             val files: List<FSItem>
             val json: String
             val f = session.queryParameterString
@@ -43,14 +46,14 @@ class FileStoragePlugin(context: Context) : BasePlugin() {
                 json = BasePlugin.JSON.toJson(files)
                 inputStream = ByteArrayInputStream(json.toByteArray())
             }
-        } catch (e: Exception) {
-            inputStream = ByteArrayInputStream((e.message ?: "Null exception message").toByteArray())
-            mime = APP_JSON
-        }
-
-        val response = OKResponse(mime, inputStream)
-        if (content != null) {
-            response.addHeader("Content-Disposition", content)
+            response = OKResponse(mime, inputStream)
+            if (content != null) {
+                response.addHeader("Content-Disposition", content)
+            }
+        } catch (e: Throwable) {
+            response = NanoHTTPD.Response(NanoHTTPD.Response.Status.INTERNAL_ERROR,
+                    TEXT_PLAIN,
+                    ByteArrayInputStream((e.message ?: "Null exception message").toByteArray()))
         }
         return response
     }
