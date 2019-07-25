@@ -19,4 +19,10 @@ public class SubCustomButton extends CustomButton {
     public SubCustomButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+
+    @Override
+    protected void init() {
+        setScaleX(1.25f);
+        setScaleY(1.25f);
+    }
 }
