@@ -38,7 +38,3 @@ fun Drawable.renderWithSize(w: Int, h: Int, setBounds: Boolean): ByteArray {
         b.recycle()
     }.toByteArray()
 }
-
-fun NinePatchDrawable.renderNinePatchDrawable() : ByteArray {
-
-}
