@@ -1148,6 +1148,36 @@
         ]
       }
     },
+    "androidx.constraintlayout.widget.Barrier": {
+      "className" : "CoordinatorLayoutBarrier",
+      "parent": "android.view.View",
+      "items": {
+        "1": [
+          {"m": "allowsGoneWidget"},
+          {"m": "getMargin"},
+          {
+            "m": "getReferencedIds",
+            "c": "getReferencedIds().idsName()"
+          },
+          {
+            "m": "getType",
+            "t": "CoordinatorLayoutBarrierType"
+          }
+        ]
+      }
+    },
+    "androidx.constraintlayout.widget.Group": {
+      "className" : "CoordinatorLayoutGroup",
+      "parent": "android.view.View",
+      "items": {
+        "1": [
+          {
+            "m": "getReferencedIds",
+            "c": "getReferencedIds().idsName()"
+          }
+        ]
+      }
+    },
     "com.google.android.material.appbar.AppBarLayout": {
       "parent": "android.view.ViewGroup",
       "items": {

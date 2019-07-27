@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selected"
+    android:oneshot="false">
+    <item
+        android:drawable="@drawable/circle"
+        android:duration="1000" />
+    <item
+        android:drawable="@drawable/ic_home_black_24dp"
+        android:duration="1000" />
+    <item
+        android:drawable="@drawable/ic_notifications_black_24dp"
+        android:duration="1000" />
+</animation-list>

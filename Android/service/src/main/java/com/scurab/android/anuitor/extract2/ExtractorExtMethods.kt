@@ -23,6 +23,7 @@ import java.util.*
 
 fun Int.idName() = IdsHelper.getNameForId(this)
 fun View.idName() = IdsHelper.getNameForId(id)
+fun IntArray.idsName() = map { IdsHelper.getNameForId(it) }
 fun Int.stringColor(): String = HttpTools.getStringColor(this)
 
 fun Int.binary(): String {
