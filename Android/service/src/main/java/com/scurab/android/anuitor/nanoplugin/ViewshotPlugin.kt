@@ -9,7 +9,6 @@ import com.scurab.android.anuitor.tools.*
 import com.scurab.android.anuitor.tools.HttpTools.MimeType.IMAGE_PNG
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 private const val VIEW_PNG = "view.png"

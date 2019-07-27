@@ -3,8 +3,6 @@ package com.scurab.android.anuitor.tools
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.NinePatchDrawable
-import java.io.ByteArrayOutputStream
 
 /**
  * Render drawable with sizes if bounds are not set

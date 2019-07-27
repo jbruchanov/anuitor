@@ -1,7 +1,6 @@
 package com.scurab.android.anuitor.reflect;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 
 import com.scurab.android.anuitor.extract2.ExtractorExtMethodsKt;

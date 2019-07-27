@@ -6,7 +6,6 @@ import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.HttpTools
 import fi.iki.elonen.NanoHTTPD
 import java.io.File
-import java.util.HashMap
 
 abstract class ActivityPlugin protected constructor(private val windowManager: WindowManager) : BasePlugin() {
 

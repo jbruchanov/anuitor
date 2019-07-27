@@ -21,7 +21,6 @@ import com.scurab.android.anuitor.tools.atLeastApi
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayInputStream
 import java.io.File
-import java.lang.StringBuilder
 import java.util.*
 
 private const val FILE_DEEP = "screenstructure.json"

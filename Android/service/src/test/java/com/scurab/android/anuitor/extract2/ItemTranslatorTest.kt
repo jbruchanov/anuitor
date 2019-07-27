@@ -2,7 +2,7 @@ package com.scurab.android.anuitor.extract2
 
 import android.view.Gravity
 import android.view.View
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ItemTranslatorTest {

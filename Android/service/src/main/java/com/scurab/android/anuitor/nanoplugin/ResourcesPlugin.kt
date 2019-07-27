@@ -2,7 +2,6 @@ package com.scurab.android.anuitor.nanoplugin
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
-import android.content.res.TypedArray
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
@@ -10,7 +9,6 @@ import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.NinePatchDrawable
 import android.graphics.drawable.StateListDrawable
-import android.util.Base64
 import android.util.TypedValue
 import com.scurab.android.anuitor.extract2.TranslatorName
 import com.scurab.android.anuitor.extract2.Translators

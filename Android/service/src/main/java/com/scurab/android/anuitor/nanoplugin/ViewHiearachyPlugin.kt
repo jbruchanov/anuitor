@@ -3,7 +3,6 @@ package com.scurab.android.anuitor.nanoplugin
 import com.scurab.android.anuitor.extract2.DetailExtractor
 import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.Executor
-import com.scurab.android.anuitor.tools.HttpTools
 import com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayInputStream

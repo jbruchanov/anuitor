@@ -2,8 +2,7 @@ package com.scurab.android.anuitor.nanoplugin
 
 import fi.iki.elonen.NanoHTTPD
 import java.io.File
-import java.lang.NullPointerException
-import java.util.HashSet
+import java.util.*
 
 class AggregateMimePlugin(vararg plugins: BasePlugin) : BasePlugin() {
 

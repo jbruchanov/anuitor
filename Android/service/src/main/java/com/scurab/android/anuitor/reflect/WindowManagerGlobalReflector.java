@@ -2,7 +2,6 @@ package com.scurab.android.anuitor.reflect;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.view.View;
 

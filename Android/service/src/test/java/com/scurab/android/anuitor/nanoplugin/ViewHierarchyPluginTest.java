@@ -2,26 +2,22 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import android.view.View;
 
-import com.google.gson.Gson;
 import com.scurab.android.anuitor.C;
-import com.scurab.android.anuitor.model.ViewNode;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 
 import fi.iki.elonen.NanoHTTPD;
 
 import static java.util.Collections.emptyMap;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
