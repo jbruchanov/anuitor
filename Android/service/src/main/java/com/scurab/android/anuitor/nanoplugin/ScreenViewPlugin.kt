@@ -3,7 +3,8 @@ package com.scurab.android.anuitor.nanoplugin
 import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.Executor
 import com.scurab.android.anuitor.tools.HttpTools.MimeType.IMAGE_PNG
-import com.scurab.android.anuitor.tools.renderToPng
+import com.scurab.android.anuitor.tools.render
+import com.scurab.android.anuitor.tools.save
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -25,7 +26,7 @@ class ScreenViewPlugin(windowManager: WindowManager) : ActivityPlugin(windowMana
         if (view != null) {
             //null can happen if app is not running
             val resultStream = ByteArrayInputStream(
-                    Executor.runInMainThreadBlockingOnlyIfCrashing { view.renderToPng(true) }
+                    Executor.runInMainThreadBlockingOnlyIfCrashing { view.render(true).save() }
                             ?: (ByteArray(0)))
             response = OKResponse(IMAGE_PNG, resultStream)
         } else {

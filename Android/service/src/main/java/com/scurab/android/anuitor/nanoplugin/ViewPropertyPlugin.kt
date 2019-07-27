@@ -2,7 +2,6 @@ package com.scurab.android.anuitor.nanoplugin
 
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.util.Base64
 import android.view.View
 import com.scurab.android.anuitor.Constants
 import com.scurab.android.anuitor.extract2.*
@@ -10,9 +9,7 @@ import com.scurab.android.anuitor.model.DataResponse
 import com.scurab.android.anuitor.model.OutRef
 import com.scurab.android.anuitor.reflect.ViewReflector
 import com.scurab.android.anuitor.reflect.WindowManager
-import com.scurab.android.anuitor.tools.Executor
-import com.scurab.android.anuitor.tools.HttpTools
-import com.scurab.android.anuitor.tools.renderToPng
+import com.scurab.android.anuitor.tools.*
 import fi.iki.elonen.NanoHTTPD
 import java.io.File
 import java.io.PrintWriter
@@ -126,10 +123,10 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
 
             if (item is Drawable) {
                 //TODO: replace by ext methods when resources plugin migrated to kt
-                response.Data = Base64.encodeToString(ResourcesPlugin.drawDrawableWithBounds(item, clearPaint), Base64.NO_WRAP)
+                response.Data = item.renderWithBounds().base64()
                 response.DataType = BASE64_PNG
             } else if (item is View) {
-                response.Data = Base64.encodeToString(item.renderToPng(), Base64.NO_WRAP)
+                response.Data = item.render(false).save().base64()
                 response.DataType = BASE64_PNG
             }
         } else {

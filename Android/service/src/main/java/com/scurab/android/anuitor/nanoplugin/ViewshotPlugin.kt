@@ -66,12 +66,7 @@ class ViewshotPlugin(windowManager: WindowManager) : ActivityPlugin(windowManage
                                         }
                                         bitmap
                                     } ?: emptyBitmap
-
-                            val bos = ByteArrayOutputStream()
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 20, bos)
-                            val image = bos.toByteArray()
-                            bitmap.recycle()
-                            ByteArrayInputStream(image)
+                            ByteArrayInputStream(bitmap.save())
                         }
             }
 

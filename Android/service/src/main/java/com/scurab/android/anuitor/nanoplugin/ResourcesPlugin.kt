@@ -331,14 +331,4 @@ class ResourcesPlugin(private val res: Resources) : BasePlugin() {
     private fun Drawable.extractDrawable(): ResourceResponse {
         return response(BASE64_PNG) { render(SIZE, SIZE).base64() }
     }
-
-    private fun <R> TypedArray.use(block: (TypedArray) -> R): R {
-        val r = block(this)
-        recycle()
-        return r
-    }
-
-    private fun ByteArray.base64(): String {
-        return Base64.encodeToString(this, Base64.NO_WRAP)
-    }
 }

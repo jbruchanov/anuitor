@@ -2,13 +2,8 @@ package com.scurab.android.anuitor.tools
 
 import android.graphics.*
 import android.os.Build
-import android.util.Base64
 import android.view.View
 import com.scurab.android.anuitor.extract2.DetailExtractor
-import com.scurab.android.anuitor.nanoplugin.BasePlugin
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
 
 internal val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
@@ -67,17 +62,6 @@ fun View.render(includeLocationOnScreen : Boolean = false): Bitmap {
         buildDrawingCache(false)
         drawingCache
     }
-}
-
-/**
- * Render View to PNG
- */
-fun View.renderToPng(includeLocationOnScreen: Boolean = false): ByteArray {
-    val baos = ByteArrayOutputStream()
-    val bitmap = render(includeLocationOnScreen)
-    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-    bitmap.recycle()
-    return baos.toByteArray()
 }
 
 /**

@@ -33,8 +33,5 @@ fun Drawable.renderWithSize(w: Int, h: Int, setBounds: Boolean): ByteArray {
         draw(this)
     }
 
-    return ByteArrayOutputStream(b.byteCount).apply {
-        b.compress(Bitmap.CompressFormat.PNG, 100, this)
-        b.recycle()
-    }.toByteArray()
+    return b.save()
 }
