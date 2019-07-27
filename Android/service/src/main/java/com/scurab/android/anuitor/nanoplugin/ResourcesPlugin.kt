@@ -12,6 +12,7 @@ import android.util.TypedValue
 import com.scurab.android.anuitor.extract2.TranslatorName
 import com.scurab.android.anuitor.extract2.Translators
 import com.scurab.android.anuitor.extract2.getActivity
+import com.scurab.android.anuitor.extract2.stringColor
 import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.model.ResourceResponse
 import com.scurab.android.anuitor.nanoplugin.ActivityPlugin.Companion.SCREEN_INDEX
@@ -186,7 +187,7 @@ class ResourcesPlugin(private val appRes: Resources,
             response("color") {
                 themeApiValue(
                         preTheme = { getColor(resId) },
-                        theme = { getColor(resId, theme) }).toHexColor()
+                        theme = { getColor(resId, theme) }).stringColor()
             }
         }
     }
@@ -211,7 +212,7 @@ class ResourcesPlugin(private val appRes: Resources,
                             val y = colorStateList.getColorForState(colorState, Integer.MAX_VALUE)
                             //just ask twice and compare values, if they are same, default value wasn't involved
                             if (x == y) {
-                                HttpTools.getStringColor(x)
+                                x.stringColor()
                             } else {
                                 "Unable to get Color for state"
                             }
