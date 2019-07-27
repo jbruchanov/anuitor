@@ -68,24 +68,6 @@ public class ViewHierarchyPluginTest {
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
         NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
-        String data = IOUtils.toString(response.getData());
-        ViewNode vn = new Gson().fromJson(data, ViewNode.class);
-
-        assertNotNull(vn);
-        assertTrue(vn.getData().size() > 0);
-        assertEquals(2, vn.getChildCount());
-        assertEquals(0, vn.getLevel());
-        assertEquals(0, vn.getPosition());
-
-        assertEquals(android.R.id.text1, vn.getChildAt(0).getId());
-        assertEquals(android.R.id.text2, vn.getChildAt(1).getId());
-        //very simple check
-        for (int i = 0, n = vn.getChildCount(); i < n; i++) {
-            ViewNode vnc = vn.getChildAt(i);
-            assertTrue(vnc.getData().size() > 0);
-            assertEquals(0, vnc.getChildCount());
-            assertEquals(1, vnc.getLevel());
-            assertEquals(i + 1, vnc.getPosition());
-        }
+        assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
     }
 }

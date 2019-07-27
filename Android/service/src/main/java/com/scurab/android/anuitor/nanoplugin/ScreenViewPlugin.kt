@@ -20,7 +20,7 @@ class ScreenViewPlugin(windowManager: WindowManager) : ActivityPlugin(windowMana
     override fun files(): Array<String> = arrayOf(SCREEN_PNG)
 
     override fun handleRequest(uri: String, headers: Map<String, String>, session: NanoHTTPD.IHTTPSession, file: File, mimeType: String): NanoHTTPD.Response {
-        val view = session.queryParameterString.currentRootView()
+        val view = session.queryParameterString?.currentRootView()
         val response: NanoHTTPD.Response
 
         if (view != null) {

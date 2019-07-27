@@ -71,9 +71,9 @@ public class AggregateMimePluginTest {
         assertTrue(bp1.canServeUri("/f1", null));
 
         AggregateMimePlugin aggregateMimePlugin = new AggregateMimePlugin(bp1, bp2);
-        assertNull(aggregateMimePlugin.getServeCandidate("/f3", null));
-        assertTrue(bp1 == aggregateMimePlugin.getServeCandidate("/f1", null));
-        assertTrue(bp2 == aggregateMimePlugin.getServeCandidate("/f2", null));
+        assertNull(aggregateMimePlugin.getServeCandidate("/f3", new File("/")));
+        assertTrue(bp1 == aggregateMimePlugin.getServeCandidate("/f1", new File("/")));
+        assertTrue(bp2 == aggregateMimePlugin.getServeCandidate("/f2", new File("/")));
     }
 
     @Test
@@ -113,6 +113,7 @@ public class AggregateMimePluginTest {
         doCallRealMethod().when(bp).canServeUri(anyString(), isNull());
         doReturn(mime).when(bp).mimeType();
         doReturn(new String[]{uri}).when(bp).files();
+        doReturn(mock(NanoHTTPD.Response.class)).when(bp).serveFile(any(), any(), any(), any(), anyString());
         return bp;
     }
 

@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.nanoplugin
 
-import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.view.View
 import com.scurab.android.anuitor.Constants
@@ -24,21 +23,18 @@ private const val PATH = "/$FILE"
 
 class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowManager) {
 
-    private val clearPaint = Paint()
     private var reflectionExtractor: ReflectionExtractor? = null
-
-    init {
-        clearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-    }
 
     override fun files(): Array<String> = arrayOf(FILE)
     override fun mimeType(): String = HttpTools.MimeType.APP_JSON
     override fun canServeUri(uri: String, rootDir: File): Boolean = PATH == uri
 
-    override fun handleRequest(uri: String, headers: Map<String, String>,
+    override fun handleRequest(uri: String,
+                               headers: Map<String, String>,
                                session: NanoHTTPD.IHTTPSession,
                                file: File,
                                mimeType: String): NanoHTTPD.Response {
+
         var response: NanoHTTPD.Response =
                 NanoHTTPD.Response(NanoHTTPD.Response.Status.NO_CONTENT, mimeType,
                         "Missing/Invalid 'position' and/or 'property' query string arguments ")
@@ -122,7 +118,6 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
             response.Context = data
 
             if (item is Drawable) {
-                //TODO: replace by ext methods when resources plugin migrated to kt
                 response.Data = item.renderWithBounds().base64()
                 response.DataType = BASE64_PNG
             } else if (item is View) {

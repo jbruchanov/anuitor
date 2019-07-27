@@ -35,7 +35,7 @@ class AggregateMimePlugin(vararg plugins: BasePlugin) : BasePlugin() {
                 .serveFile(uri, headers, session, file, mimeType)
     }
 
-    private fun getServeCandidate(uri: String, rootDir: File): BasePlugin? {
+    fun getServeCandidate(uri: String, rootDir: File): BasePlugin? {
         return plugins.firstOrNull { it.canServeUri(uri, rootDir) }
     }
 

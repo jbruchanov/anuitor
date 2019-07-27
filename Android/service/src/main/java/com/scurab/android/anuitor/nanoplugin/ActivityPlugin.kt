@@ -8,8 +8,6 @@ import fi.iki.elonen.NanoHTTPD
 import java.io.File
 import java.util.HashMap
 
-private const val APPLICATION_IS_NOT_ACTIVE = "Application is not active"
-
 abstract class ActivityPlugin protected constructor(private val windowManager: WindowManager) : BasePlugin() {
 
     val currentActivity: Activity
@@ -60,5 +58,6 @@ abstract class ActivityPlugin protected constructor(private val windowManager: W
     companion object {
         const val POSITION = "position"
         const val SCREEN_INDEX = "screenIndex"
+        const val APPLICATION_IS_NOT_ACTIVE = "Application is not active"
     }
 }
