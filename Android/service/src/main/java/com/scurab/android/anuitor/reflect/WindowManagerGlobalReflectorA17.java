@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 
+import com.scurab.android.anuitor.extract2.ExtractorExtMethodsKt;
+
 import java.lang.reflect.Method;
 
 /**
@@ -34,8 +36,7 @@ public class WindowManagerGlobalReflectorA17 extends Reflector<Object> implement
     public Activity getCurrentActivity() {
         View currentRootView = getCurrentRootView();
         if (currentRootView != null) {
-            Context context = currentRootView.getContext();
-            return context instanceof Activity ? ((Activity) context) : null;
+            return ExtractorExtMethodsKt.getActivity(currentRootView);
         }
         return null;
     }

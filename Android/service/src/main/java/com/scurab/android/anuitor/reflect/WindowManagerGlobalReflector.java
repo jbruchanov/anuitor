@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 
+import com.scurab.android.anuitor.extract2.ExtractorExtMethodsKt;
+
 import java.lang.reflect.Method;
 import java.util.HashSet;
 
@@ -44,9 +46,9 @@ public class WindowManagerGlobalReflector extends Reflector<Object> implements W
         for (String s : getViewRootNames()) {
             View v = getRootView(s);
             if (v != null) {
-                Context c = v.getContext();
-                if (c instanceof Activity) {
-                    result.add((Activity) c);
+                Activity a = ExtractorExtMethodsKt.getActivity(v);
+                if (a != null) {
+                    result.add(a);
                 }
             }
         }
@@ -59,9 +61,8 @@ public class WindowManagerGlobalReflector extends Reflector<Object> implements W
         for (int i = viewRootNames.length - 1; i >= 0; i--) {
             String name = viewRootNames[i];
             View v = getRootView(name);
-            Context c;
-            if (v != null && (c = v.getContext()) instanceof Activity) {
-                return (Activity) c;
+            if (v != null) {
+                return ExtractorExtMethodsKt.getActivity(v);
             }
         }
         return null;

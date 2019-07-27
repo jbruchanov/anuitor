@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
+import com.scurab.android.anuitor.extract2.ExtractorExtMethodsKt;
+
 import java.lang.reflect.Method;
 
 /**
@@ -33,9 +35,9 @@ public class WindowManagerImplReflector extends Reflector<Object> implements Win
     public Activity getCurrentActivity() {
         ViewRootImplReflector[] roots = getRoots();
         if(roots != null && roots.length > 0){
-            Context context = roots[roots.length - 1].getView().getContext();
-            if(context instanceof Activity){
-                return (Activity) context;
+            View v = roots[roots.length - 1].getView();
+            if (v != null) {
+                return ExtractorExtMethodsKt.getActivity(v);
             }
         }
         return null;
