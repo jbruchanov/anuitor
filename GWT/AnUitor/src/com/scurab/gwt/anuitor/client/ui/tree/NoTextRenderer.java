@@ -58,4 +58,9 @@ public class NoTextRenderer implements RenderDelegate {
     public double getTextOffset() {
         return 0;
     }
+    
+    @Override
+    public boolean swapsSizes() {
+        return mRendering.swapsSizes(); 
+    }
 }
