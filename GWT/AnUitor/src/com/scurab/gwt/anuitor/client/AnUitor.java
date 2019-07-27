@@ -111,7 +111,7 @@ public class AnUitor implements EntryPoint {
             if (sorryDemoNotSupported()) {
                 return;
             }
-            toOpen = new ResourcesPage();
+            toOpen = new ResourcesPage(screenIndex);
         } else if ("FileStorage".equals(screen)) {
             if (sorryDemoNotSupported()) {
                 return;
