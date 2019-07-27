@@ -28,11 +28,11 @@ class ViewshotPlugin(windowManager: WindowManager) : ActivityPlugin(windowManage
         b
     }
 
-    override fun handleRequest(uri: String,
-                               headers: Map<String, String>,
-                               session: NanoHTTPD.IHTTPSession,
-                               file: File,
-                               mimeType: String): NanoHTTPD.Response {
+    override fun onRequest(uri: String,
+                           headers: Map<String, String>,
+                           session: NanoHTTPD.IHTTPSession,
+                           file: File,
+                           mimeType: String): NanoHTTPD.Response {
         val queryString = session.queryParameterString
         val len = queryString?.length ?: 0
         var resultInputStream: ByteArrayInputStream? = null

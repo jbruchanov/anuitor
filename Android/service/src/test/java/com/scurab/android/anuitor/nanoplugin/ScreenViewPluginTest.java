@@ -57,7 +57,7 @@ public class ScreenViewPluginTest {
 
         ScreenViewPlugin svp = new ScreenViewPlugin(wm);
         NanoHTTPD.IHTTPSession session = mock(NanoHTTPD.IHTTPSession.class);
-        NanoHTTPD.Response response = svp.handleRequest(URL, Collections.emptyMap(), session, new File(""), "");
+        NanoHTTPD.Response response = svp.onRequest(URL, Collections.emptyMap(), session, new File(""), "");
         assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
         assertNull(response.getData());
     }
@@ -74,7 +74,7 @@ public class ScreenViewPluginTest {
         ScreenViewPlugin svp = new ScreenViewPlugin(wm);
         NanoHTTPD.IHTTPSession session = mock(NanoHTTPD.IHTTPSession.class);
         doReturn(URL).when(session).getQueryParameterString();
-        NanoHTTPD.Response response = svp.handleRequest(URL, Collections.emptyMap(), session, new File(""), "");
+        NanoHTTPD.Response response = svp.onRequest(URL, Collections.emptyMap(), session, new File(""), "");
 
         verify(v).destroyDrawingCache();
         verify(v).buildDrawingCache(anyBoolean());

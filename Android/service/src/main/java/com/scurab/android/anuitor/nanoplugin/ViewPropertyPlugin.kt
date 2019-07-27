@@ -29,11 +29,11 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
     override fun mimeType(): String = HttpTools.MimeType.APP_JSON
     override fun canServeUri(uri: String, rootDir: File): Boolean = PATH == uri
 
-    override fun handleRequest(uri: String,
-                               headers: Map<String, String>,
-                               session: NanoHTTPD.IHTTPSession,
-                               file: File,
-                               mimeType: String): NanoHTTPD.Response {
+    override fun onRequest(uri: String,
+                           headers: Map<String, String>,
+                           session: NanoHTTPD.IHTTPSession,
+                           file: File,
+                           mimeType: String): NanoHTTPD.Response {
 
         var response: NanoHTTPD.Response =
                 NanoHTTPD.Response(NanoHTTPD.Response.Status.NO_CONTENT, mimeType,

@@ -50,7 +50,7 @@ public class ViewHierarchyPluginTest {
         doReturn(null).when(wm).getCurrentRootView();
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
-        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
+        NanoHTTPD.Response response = viewHierarchyPlugin.onRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
         assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
     }
@@ -62,7 +62,7 @@ public class ViewHierarchyPluginTest {
         doReturn(inflate).when(wm).getCurrentRootView();
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
-        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
+        NanoHTTPD.Response response = viewHierarchyPlugin.onRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
         assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
     }

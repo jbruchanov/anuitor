@@ -68,7 +68,7 @@ public class ActivityPluginTest {
         String mime = HttpTools.MimeType.APP_JSON;
 
         ap.serveFile(uri, headers, session, f, mime);
-        verify(ap, times(1)).handleRequest(uri, headers, session, f, mime);
+        verify(ap, times(1)).onRequest(uri, headers, session, f, mime);
     }
 
     private static class TestActivityPlugin extends ActivityPlugin {
@@ -78,7 +78,7 @@ public class ActivityPluginTest {
         }
 
         @Override
-        public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
+        public NanoHTTPD.Response onRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
             return mock(NanoHTTPD.Response.class);
         }
 

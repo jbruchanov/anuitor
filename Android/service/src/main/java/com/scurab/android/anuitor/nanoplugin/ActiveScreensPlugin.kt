@@ -15,11 +15,11 @@ class ActiveScreensPlugin(private val windowManager: WindowManager) : ActivityPl
     override fun mimeType(): String = APP_JSON
     override fun canServeUri(uri: String, rootDir: File) = PATH == uri
 
-    override fun handleRequest(uri: String,
-                               headers: Map<String, String>,
-                               session: NanoHTTPD.IHTTPSession,
-                               file: File,
-                               mimeType: String): NanoHTTPD.Response {
+    override fun onRequest(uri: String,
+                           headers: Map<String, String>,
+                           session: NanoHTTPD.IHTTPSession,
+                           file: File,
+                           mimeType: String): NanoHTTPD.Response {
         val json = BasePlugin.JSON.toJson(windowManager.viewRootNames)
         return OKResponse(APP_JSON, ByteArrayInputStream(json.toByteArray()))
     }

@@ -24,11 +24,11 @@ abstract class ActivityPlugin protected constructor(private val windowManager: W
                 OKResponse(HttpTools.MimeType.TEXT_PLAIN, APPLICATION_IS_NOT_ACTIVE)
             }
         } else {
-            handleRequest(uri, headers, session, file, mimeType)
+            onRequest(uri, headers, session, file, mimeType)
         }
     }
 
-    abstract fun handleRequest(uri: String, headers: Map<String, String>, session: NanoHTTPD.IHTTPSession, file: File, mimeType: String): NanoHTTPD.Response
+    abstract fun onRequest(uri: String, headers: Map<String, String>, session: NanoHTTPD.IHTTPSession, file: File, mimeType: String): NanoHTTPD.Response
 
     fun getCurrentRootView(index: Int): View {
         return if (index < 0) windowManager.currentRootView else windowManager.getRootView(index)
