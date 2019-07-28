@@ -45,22 +45,16 @@ fun View.render(includeLocationOnScreen : Boolean = false): Bitmap {
     DetailExtractor.getRenderArea(this)?.getRenderArea(this, renderArea)
     val w = location[0] + renderArea.width()
     val h = location[1] + renderArea.height()
-    return if ((location[0] != 0 || location[1] != 0) ||// includeLocationOnScreen
-            renderArea.width() != width || renderArea.height() != height)//or custom renderArea
-        Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888).apply {
-            Canvas(this).run {
-                //clear white background to get transparency
-                drawRect(0f, 0f, w.toFloat(), h.toFloat(), clearPaint)
-                //custom render area
-                translate((-renderArea.left).toFloat(), (-renderArea.top).toFloat())
-                //includeLocationOnScreen
-                translate(location[0].toFloat(), location[1].toFloat())
-                draw(this)
-            }
-        } else {
-        destroyDrawingCache()
-        buildDrawingCache(false)
-        drawingCache
+    return Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888).apply {
+        Canvas(this).run {
+            //clear white background to get transparency
+            drawRect(0f, 0f, w.toFloat(), h.toFloat(), clearPaint)
+            //custom render area
+            translate((-renderArea.left).toFloat(), (-renderArea.top).toFloat())
+            //includeLocationOnScreen
+            translate(location[0].toFloat(), location[1].toFloat())
+            draw(this)
+        }
     }
 }
 
