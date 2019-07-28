@@ -115,7 +115,7 @@ class ScreenComponentsPlugin(private val windowManager: WindowManager) : BasePlu
 
     private fun Node.toSimpleString(sb: StringBuilder, textFormat: TextFormatter, depth: Int = 0) {
         this.forEach { (name, list) ->
-            sb.append(textFormat.space(depth)).append(textFormat.text(name)).append(textFormat.newLine())
+            sb.append(textFormat.space(depth)).append(textFormat.text(name)).append(textFormat.newLine)
             if (list.isNotEmpty()) {
                 list.forEach { n ->
                     (n as Node).toSimpleString(sb, textFormat, depth + 1)
@@ -127,13 +127,13 @@ class ScreenComponentsPlugin(private val windowManager: WindowManager) : BasePlu
     private interface TextFormatter {
         val space: (Int) -> String
         val text: (String) -> String
-        val newLine: () -> String
+        val newLine: String
         val mime: String
         val wrap: (String) -> String
     }
 
     private val simpleTextFormatError = object : TextFormatter {
-        override val newLine: () -> String = { "\n" }
+        override val newLine = "\n"
         override val space: (Int) -> String = { "   ".repeat(it) }
         override val text: (String) -> String = { it }
         override val mime: String = TEXT_PLAIN
@@ -156,7 +156,7 @@ class ScreenComponentsPlugin(private val windowManager: WindowManager) : BasePlu
             <body>%s</body></html>
         """.trimIndent()
 
-        override val newLine: () -> String = { "<br/>" }
+        override val newLine = "<br/>"
         override val space: (Int) -> String = { "&nbsp;".repeat(it * 4) }
         override val text: (String) -> String = { it.formattedClass() }
         override val mime: String = TEXT_HTML
