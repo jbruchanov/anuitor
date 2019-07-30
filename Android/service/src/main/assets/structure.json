@@ -959,6 +959,32 @@
         ]
       }
     },
+    "androidx.appcompat.widget.SwitchCompat" : {
+      "parent": "android.widget.CompoundButton",
+      "items": {
+        "1": [
+          {"m": "getCompoundPaddingLeft"},
+          {"m": "getCompoundPaddingRight"},
+          {"m": "getShowText"},
+          {"m": "getSplitTrack"},
+          {"m": "getSwitchMinWidth"},
+          {"m": "getSwitchPadding"},
+          {"m": "getTextOff"},
+          {"m": "getTextOn"},
+          {
+            "n": "ThumbDrawable:",
+            "m": "getThumbDrawable"
+          },
+          {"m": "getThumbTextPadding"},
+          {"m": "getThumbTintMode"},
+          {
+            "n": "TrackDrawable:",
+            "m": "getTrackDrawable"
+          },
+          {"m": "getThumbTintMode"}
+        ]
+      }
+    },
     "androidx.cardview.widget.CardView": {
       "parent": "android.view.ViewGroup",
       "items": {
@@ -2054,32 +2080,6 @@
           {"m":"verticalBias", "p": true},
           {"m":"verticalChainStyle", "p": true},
           {"m":"verticalWeight", "p": true}
-        ]
-      }
-    },
-    "androidx.appcompat.widget.SwitchCompat" : {
-      "parent": "android.widget.CompoundButton",
-      "items": {
-        "1": [
-          {"m": "getCompoundPaddingLeft"},
-          {"m": "getCompoundPaddingRight"},
-          {"m": "getShowText"},
-          {"m": "getSplitTrack"},
-          {"m": "getSwitchMinWidth"},
-          {"m": "getSwitchPadding"},
-          {"m": "getTextOff"},
-          {"m": "getTextOn"},
-          {
-            "n": "ThumbDrawable:",
-            "m": "getThumbDrawable"
-          },
-          {"m": "getThumbTextPadding"},
-          {"m": "getThumbTintMode"},
-          {
-            "n": "TrackDrawable:",
-            "m": "getTrackDrawable"
-          },
-          {"m": "getThumbTintMode"}
         ]
       }
     }
