@@ -7,7 +7,6 @@ fun View.parentViews(): Iterator<ViewGroup> {
     return ParentViewIterator(this)
 }
 
-
 internal class ParentViewIterator(val view: View) : Iterator<ViewGroup> {
     private var actualView = view
     override fun hasNext(): Boolean {

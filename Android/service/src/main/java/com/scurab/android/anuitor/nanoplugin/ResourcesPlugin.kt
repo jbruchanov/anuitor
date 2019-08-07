@@ -287,7 +287,6 @@ class ResourcesPlugin(private val appRes: Resources,
         return response(ARRAY) {
             arrayOfNulls<ResourceResponse>(numberOfFrames).mapIndexed { i, _ ->
                 response(BASE64_PNG) {
-                    //it.id = resId ?
                     it.Context = "Frame:$i"
                     getFrame(i).render(SIZE, SIZE).base64()
                 }
