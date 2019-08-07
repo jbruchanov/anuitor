@@ -31,7 +31,7 @@ fun View.absoluteScale(): Pair<Float, Float> {
 fun View.hasSize() = width != 0 && height != 0
 
 /**
- * Render view into bitma
+ * Render view into bitmap
  * @param includeLocationOnScreen - add spacing if the rootview is doesn't have origin [0,0],
  * this is necessary for ScreenPreview (just easier to avoid coords recalculation)
  */
