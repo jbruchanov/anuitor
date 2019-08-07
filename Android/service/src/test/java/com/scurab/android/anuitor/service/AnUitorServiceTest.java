@@ -120,7 +120,7 @@ public class AnUitorServiceTest {
         rootFolder.delete();
 
         AnUitorService service = mock(AnUitorService.class);
-        AnUiHttpServer server = mock(AnUiHttpServer.class);
+        AnUitorHttpServer server = mock(AnUitorHttpServer.class);
 
         doReturn(server).when(service).onCreateServer(anyInt(), anyString());
         doReturn(RuntimeEnvironment.application).when(service).getBaseContext();
@@ -146,7 +146,7 @@ public class AnUitorServiceTest {
         rootFolder.delete();
 
         AnUitorService service = mock(AnUitorService.class);
-        AnUiHttpServer server = mock(AnUiHttpServer.class);
+        AnUitorHttpServer server = mock(AnUitorHttpServer.class);
 
         doReturn(server).when(service).onCreateServer(anyInt(), anyString());
         String errMsg = "Intended";
@@ -187,7 +187,7 @@ public class AnUitorServiceTest {
         File rootFolder = new File(absPath);
 
         AnUitorService service = mock(AnUitorService.class);
-        AnUiHttpServer server = mock(AnUiHttpServer.class);
+        AnUitorHttpServer server = mock(AnUitorHttpServer.class);
 
         doReturn(server).when(service).onCreateServer(anyInt(), anyString());
         doReturn(RuntimeEnvironment.application).when(service).getBaseContext();
