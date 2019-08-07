@@ -3,7 +3,6 @@ package com.scurab.android.anuitor.nanoplugin
 import com.scurab.android.anuitor.extract2.DetailExtractor
 import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.Executor
-import com.scurab.android.anuitor.tools.HttpTools
 import com.scurab.android.anuitor.tools.HttpTools.MimeType.APP_JSON
 import fi.iki.elonen.NanoHTTPD
 import java.io.ByteArrayInputStream
@@ -21,8 +20,8 @@ class ViewHierarchyPlugin(windowManager: WindowManager) : ActivityPlugin(windowM
     override fun files(): Array<String> = arrayOf(TREE_JSON)
     override fun mimeType(): String = APP_JSON
 
-    override fun handleRequest(uri: String, headers: Map<String, String>, session: NanoHTTPD.IHTTPSession, file: File, mimeType: String): NanoHTTPD.Response {
-        val view = getCurrentRootView(HttpTools.parseQueryString(session.queryParameterString))
+    override fun onRequest(uri: String, headers: Map<String, String>, session: NanoHTTPD.IHTTPSession, file: File, mimeType: String): NanoHTTPD.Response {
+        val view = session.queryParameterString?.currentRootView()
 
         val response: NanoHTTPD.Response
         if (view != null) {

@@ -55,4 +55,9 @@ public class ShortNameRenderer implements RenderDelegate {
     public double getTextOffset() {        
         return 2.5;
     }
+
+    @Override
+    public boolean swapsSizes() {
+        return mRendering.swapsSizes(); 
+    }
 }

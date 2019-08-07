@@ -33,6 +33,7 @@ public class MenuFragment extends BaseFragment {
             CustomWidgetsFragment.class,
             DrawOutsideBoundsFragment.class,
             RecyclerViewFragment.class,
+            ConstraintLayoutFragment.class,
             CoordinatorLayoutFragment.class,
             NavigationViewFragment.class,
             ChildFragments.class,

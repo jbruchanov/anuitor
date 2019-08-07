@@ -21,4 +21,10 @@ public interface Rendering {
      * @return
      */
     DoublePair treeSize(List<Integer> levelItems);
+    
+    /**
+     * Return true if the sizes are svgSize/treeSize coords are swapped for rendering
+     * @return
+     */
+    boolean swapsSizes();
 }

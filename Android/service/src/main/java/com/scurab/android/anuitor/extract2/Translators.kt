@@ -12,6 +12,7 @@ import android.webkit.WebSettings
 import android.widget.AbsListView
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.Barrier
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.gridlayout.widget.GridLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,7 @@ enum class TranslatorName {
     Ellipsize,
     TextStyle,
     ScaleType,
+    CoordinatorLayoutBarrierType,
     ViewPager2ScrollState,
     ViewOverScroll,
     ViewImportantForAutoFill,
@@ -373,6 +375,16 @@ object Translators {
             +(ViewPager2.SCROLL_STATE_SETTLING to "SCROLL_STATE_SETTLING")
             +(ViewPager2.SCROLL_STATE_IDLE to "SCROLL_STATE_IDLE")
         }
+
+        itemTranslator(TranslatorName.CoordinatorLayoutBarrierType) {
+            +(Barrier.LEFT to "LEFT")
+            +(Barrier.RIGHT to "RIGHT")
+            +(Barrier.TOP to "TOP")
+            +(Barrier.BOTTOM to "BOTTOM")
+            +(Barrier.START to "START")
+            +(Barrier.END to "END")
+        }
+
     }
 
     private fun itemTranslator(name: TranslatorName, function: ItemTranslator.() -> Unit) {

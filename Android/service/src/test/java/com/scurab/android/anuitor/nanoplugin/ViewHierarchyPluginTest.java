@@ -2,26 +2,22 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import android.view.View;
 
-import com.google.gson.Gson;
 import com.scurab.android.anuitor.C;
-import com.scurab.android.anuitor.model.ViewNode;
 import com.scurab.android.anuitor.reflect.WindowManager;
 import com.scurab.android.anuitor.tools.HttpTools;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 
 import fi.iki.elonen.NanoHTTPD;
 
 import static java.util.Collections.emptyMap;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
@@ -54,7 +50,7 @@ public class ViewHierarchyPluginTest {
         doReturn(null).when(wm).getCurrentRootView();
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
-        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
+        NanoHTTPD.Response response = viewHierarchyPlugin.onRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
         assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
     }
@@ -66,26 +62,8 @@ public class ViewHierarchyPluginTest {
         doReturn(inflate).when(wm).getCurrentRootView();
 
         ViewHierarchyPlugin viewHierarchyPlugin = new ViewHierarchyPlugin(wm);
-        NanoHTTPD.Response response = viewHierarchyPlugin.handleRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
+        NanoHTTPD.Response response = viewHierarchyPlugin.onRequest(EMPTY_STRING, emptyMap(), mock(NanoHTTPD.IHTTPSession.class), EMPTY_FILE, EMPTY_STRING);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
-        String data = IOUtils.toString(response.getData());
-        ViewNode vn = new Gson().fromJson(data, ViewNode.class);
-
-        assertNotNull(vn);
-        assertTrue(vn.getData().size() > 0);
-        assertEquals(2, vn.getChildCount());
-        assertEquals(0, vn.getLevel());
-        assertEquals(0, vn.getPosition());
-
-        assertEquals(android.R.id.text1, vn.getChildAt(0).getId());
-        assertEquals(android.R.id.text2, vn.getChildAt(1).getId());
-        //very simple check
-        for (int i = 0, n = vn.getChildCount(); i < n; i++) {
-            ViewNode vnc = vn.getChildAt(i);
-            assertTrue(vnc.getData().size() > 0);
-            assertEquals(0, vnc.getChildCount());
-            assertEquals(1, vnc.getLevel());
-            assertEquals(i + 1, vnc.getPosition());
-        }
+        assertEquals(NanoHTTPD.Response.Status.NOT_FOUND, response.getStatus());
     }
 }

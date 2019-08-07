@@ -56,9 +56,11 @@ public class ResourcesPage extends Composite {
     /* Comparator for alphabetical sort */
     private ResItemComparator mComparator = new ResItemComparator();
     /* Loaded data */
-    private HashMap<String, HashMap<String, ResourceItemJSO>> mData;   
+    private HashMap<String, HashMap<String, ResourceItemJSO>> mData;
+    private int mScreenId = -1;
    
-    public ResourcesPage() {
+    public ResourcesPage(int screenId) {
+        mScreenId = screenId;
         initWidget(uiBinder.createAndBindUi(this));
         initGroupsTable();
         initItemsTable();   
@@ -81,7 +83,7 @@ public class ResourcesPage extends Composite {
      * Load list from server
      */
     protected void loadData() {
-        DataProvider.getResources(new AsyncCallback<ObjectJSO>() {
+        DataProvider.getResources(mScreenId, new AsyncCallback<ObjectJSO>() {
             @Override
             public void onError(Request req, Response res, Throwable t) {
                 Window.alert(t.getMessage());
@@ -218,7 +220,7 @@ public class ResourcesPage extends Composite {
      * @param item
      */
     protected void onSelectionItemChanged(String group, final ResourceItemJSO item) {
-        DataProvider.getResource(item.getKey(), new AsyncCallback<ResourceDetailJSO>() {
+        DataProvider.getResource(item.getKey(), mScreenId, new AsyncCallback<ResourceDetailJSO>() {
             @Override
             public void onError(Request req, Response res, Throwable t) {
                 Window.alert(t.getMessage());

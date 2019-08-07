@@ -224,7 +224,10 @@
         ],
         "18": [
           {"m": "getClipBounds" },
-          {"m": "getOverlay" },
+          {
+            "n": "Overlay:",
+            "m": "getOverlay"
+          },
           {
             "n": "WindowId:",
             "m": "getWindowId"
@@ -956,6 +959,32 @@
         ]
       }
     },
+    "androidx.appcompat.widget.SwitchCompat" : {
+      "parent": "android.widget.CompoundButton",
+      "items": {
+        "1": [
+          {"m": "getCompoundPaddingLeft"},
+          {"m": "getCompoundPaddingRight"},
+          {"m": "getShowText"},
+          {"m": "getSplitTrack"},
+          {"m": "getSwitchMinWidth"},
+          {"m": "getSwitchPadding"},
+          {"m": "getTextOff"},
+          {"m": "getTextOn"},
+          {
+            "n": "ThumbDrawable:",
+            "m": "getThumbDrawable"
+          },
+          {"m": "getThumbTextPadding"},
+          {"m": "getThumbTintMode"},
+          {
+            "n": "TrackDrawable:",
+            "m": "getTrackDrawable"
+          },
+          {"m": "getThumbTintMode"}
+        ]
+      }
+    },
     "androidx.cardview.widget.CardView": {
       "parent": "android.view.ViewGroup",
       "items": {
@@ -1142,6 +1171,36 @@
           {"m": "getMaxWidth"},
           {"m": "getMaxHeight"},
           {"m": "getOptimizationLevel"}
+        ]
+      }
+    },
+    "androidx.constraintlayout.widget.Barrier": {
+      "className" : "CoordinatorLayoutBarrier",
+      "parent": "android.view.View",
+      "items": {
+        "1": [
+          {"m": "allowsGoneWidget"},
+          {"m": "getMargin"},
+          {
+            "m": "getReferencedIds",
+            "c": "getReferencedIds().idsName()"
+          },
+          {
+            "m": "getType",
+            "t": "CoordinatorLayoutBarrierType"
+          }
+        ]
+      }
+    },
+    "androidx.constraintlayout.widget.Group": {
+      "className" : "CoordinatorLayoutGroup",
+      "parent": "android.view.View",
+      "items": {
+        "1": [
+          {
+            "m": "getReferencedIds",
+            "c": "getReferencedIds().idsName()"
+          }
         ]
       }
     },
@@ -2021,32 +2080,6 @@
           {"m":"verticalBias", "p": true},
           {"m":"verticalChainStyle", "p": true},
           {"m":"verticalWeight", "p": true}
-        ]
-      }
-    },
-    "androidx.appcompat.widget.SwitchCompat" : {
-      "parent": "android.widget.CompoundButton",
-      "items": {
-        "1": [
-          {"m": "getCompoundPaddingLeft"},
-          {"m": "getCompoundPaddingRight"},
-          {"m": "getShowText"},
-          {"m": "getSplitTrack"},
-          {"m": "getSwitchMinWidth"},
-          {"m": "getSwitchPadding"},
-          {"m": "getTextOff"},
-          {"m": "getTextOn"},
-          {
-            "n": "ThumbDrawable:",
-            "m": "getThumbDrawable"
-          },
-          {"m": "getThumbTextPadding"},
-          {"m": "getThumbTintMode"},
-          {
-            "n": "TrackDrawable:",
-            "m": "getTrackDrawable"
-          },
-          {"m": "getThumbTintMode"}
         ]
       }
     }

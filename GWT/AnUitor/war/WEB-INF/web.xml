@@ -19,7 +19,7 @@
 		<url-pattern>/resources.json</url-pattern>
 		<url-pattern>/storage.json</url-pattern>		
 		<url-pattern>/screenstructure.json</url-pattern>
-		<url-pattern>/screencomponents.json</url-pattern>
+		<url-pattern>/screencomponents.html</url-pattern>
 		<url-pattern>/screens.json</url-pattern>		
 		<url-pattern>/logcat.txt</url-pattern>
 		<url-pattern>/viewproperty.json</url-pattern>

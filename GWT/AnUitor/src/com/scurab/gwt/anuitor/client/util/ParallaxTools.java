@@ -49,6 +49,13 @@ public final class ParallaxTools {
         double w = view.getWidth();
         double h = view.getHeight();      
         
+        double scaleX, scaleY;                   
+        scaleX = view.hasKey(ViewFields.Internal.SCALE_X) ? view.getDouble(ViewFields.Internal.SCALE_X) : 1.0;
+        scaleY = view.hasKey(ViewFields.Internal.SCALE_Y) ? view.getDouble(ViewFields.Internal.SCALE_Y) : 1.0;
+        
+        w *= scaleX;
+        h *= scaleY;
+        
         double d = DEPTH;
 
         // moving coordinates because [0,0,0] is center of gravity for cube

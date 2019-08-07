@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">   
    <head>
@@ -27,13 +28,15 @@
          <div class="container">
             <div class="row">            
                <div class="spinlike title">
-                  <h1>AnUitor</h1>
+                  <h1>AnUitor<sup style="margin-left:10px;font-size:0.5em">1.0.0</sup></h1>
                </div>
                <div class="spinlike">
                   <menu>
-                     <ul>                        
-                        <li><a href="/download/anuitor.zip" class="menu download"><span class="version-tag">WEB</span></a></li>
-                        <li><a href="/download/anuitor_v0.9.5.jar" class="menu download">JAR <span class="version-tag">v0.9.5</span></a></li>
+                     <ul>           
+      <li><a href="/jdoc/" target="_blank" class="menu download"><span class="version-tag">JDocs<span></a></li>            
+      <li><a href="/demo/" target="_blank" class="menu download"><span class="version-tag">DEMO</span></a></li>
+                        <!-- <li><a href="/download/anuitor.zip" class="menu download"><span class="version-tag">WEB</span></a></li>
+                        <li><a href="/download/anuitor_v0.9.11.aar" class="menu download">AAR <span class="version-tag">v0.9.11</span></a></li> -->
                         <li><a href="http://github.com/jbruchanov/anuitor"><img src="static/github.png" alt="GitHub"></a></li>
                         <li><a href="http://www.bruchanov.name" class="menu square" title=""><img src="http://www.gravatar.com/avatar/a6ee76bf313912060b7d9e558c4765e1" alt="logo" /></a></li>
                      </ul>
@@ -57,12 +60,12 @@
                <div>
                   <br/><br/><br/><br/>
                   <h3 id="introduction">Introduction</h3>
-                  <p>AnUitor is a result of my rebranding experiences of one android app what i was working on. Because of structure of project(s), not using themes, complexity of UI and app itself, 
-                     it was really hell and time consuming work to finish app rebranding. Project structure had been done like sub-projects, because of big amount of different assets, logic, etc. I found out also 
-                     AnUitor very useful in time of UI refactoring/bugfixing other apps what i didn't know much deeply from UI perspective.
-                     <p>So this is it, combination what i'd met, seen and few my own ideas. You can see a simple (not completely working) demo <a href="/demo/">here</a>.<br/>
+                  <p>AnUitor is a result of my rebranding experiences of one android app what I was working on. Because of structure of project(s), not using themes, complexity of UI and app itself, 
+                     it was really hell and time consuming work to finish the app rebranding. Project structure had been done like sub-projects, because of big amount of different assets, logic, etc. I found out also 
+                     AnUitor very useful in time of UI refactoring/bugfixing other apps what I didn't know much deeply from UI perspective.
+                     <p>So this is it, combination what I'd met, seen and few my own ideas. You can see a simple (not completely working though) demo <a href="/demo/">here</a>.<br/>
                      <em class="note">Web part is optimized for Chrome and Firefox only. Other browsers had problems with WebGL or performance. So get
-                     <a href="https://www.google.com/intl/en/chrome/browser/">Chrome</a> for the best UX…</em>
+                     <a href="https://www.google.com/intl/en/chrome/">Chrome</a> for the best UX…</em>
                   </p>
 
                   <p>App is separated into following different screens.</p>
@@ -78,96 +81,66 @@
                   <p>Simple and effective resources browser running under actual device context. You will see used drawables, layouts, values.
                    Specially for drawables and layouts notice <code>Source:</code> for identifying your source if you have some resource qualifier issues.</p>
                   <h4>FileStorage</h4>
-                  <p>Simple file browser. You can access app folder or SDCard if you have proper rights. Seeing your <code>shared_prefs.xml</code> file or getting some in-app created files is now super easy…</p>
+                  <p>Simple file browser. You can access app folder or SDCard (be sure you have enabled storage permissions). Seeing your <code>shared_prefs.xml</code> file or getting some in-app created files is now super easy…</p>
                   <h4>Windows</h4>
+                  <p>Simple preview of running activities and all running fragments</p>
+                  <h4>WindowsDetailed</h4>
                   <p>This screen shows current running Activities structure including (child) fragments. You can see though intents, bundles, some useful values from Activities, Fragments, Dialogs etc.
                      Because it's quite complex hierarchy i didn't figure out some nice UI around this dataset so it's just a simple JSON. 
                      For better viewing use some nice browser plugin for json beautifing like <a href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en">JSONView</a> or similar tool.</p>
                   <h4>Screenshot</h4>
-                  <p>Just a simple screenshot. As it isn't designed for rooted devices, you won't be able to see Android Notification Bar content at all.</p>
+                  <p>Simple screenshot. As it isn't designed for rooted devices, you won't be able to see Android Notification Bar content at all.</p>
+                  <h4>LogCat</h4>
+                  <p>Just logcat output showing only the app logs</p>
+                  <h4>Groovy</h4>
+                  <p>Coding console. Write a script in groovy and let it execute in the app. Supported only for apps having minSdk=26</p>
 
                   <h3 id="using">Install AnUitor</h3>
-                  <ul>
-                      <li>Download <a href="/download/anuitor_v0.9.5.jar">AnUitor jar file</a> and add it into your project.</li>
-                      <li>Optionally download <a href="/download/anuitor.zip">Web app</a> and put it into your raw resources folder (<code>…/res/raw/anuitor.zip</code>).<br />
-                      <em class="note">Be sure that device will have access to <a href="/download/anuitor.zip">Web app</a> during first start if you don't put web-app into app resources...</em>
-                      </li>
-                      <li>AnUitor depends on <a href="https://code.google.com/p/google-gson/">gson</a> and <a href="http://developer.android.com/tools/support-library/index.html">support library v4</a> so please add it into your project. You can find gson <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.google.code.gson%22">here</a> and support library in your <code>SDK_FOLDER/extras/android/support/v4/android-support-v4.jar</code></li>
-                  </ul>                  
                       Gradle                      
                       <pre class="code prettyprint" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
-dependecies{                      
-  compile 'com.android.support:support-v4:20.0.0'
-  compile 'com.scurab:anuitor:0.9.5'
-  compile 'com.google.code.gson:gson:2.2.4'
-}</pre>
-                      Maven                      
-                      <pre class="code prettyprint" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
-&lt;dependency&gt;<br/>    &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;<br/>    &lt;artifactId&gt;gson&lt;/artifactId&gt;<br/>    &lt;version&gt;2.2.4&lt;/version&gt;<br/>&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;com.scurab&lt;/groupId&gt;
-    &lt;artifactId&gt;anuitor&lt;/artifactId&gt;
-    &lt;version&gt;0.9.5&lt;/version&gt;
-&lt;/dependency&gt;</pre>
-                    <ul>                       
-                      <li>Then update your AndroidManifest.xml</li>
-                   </ul>                  
-                   <pre class="code prettyprint" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
-&lt;manifest&gt;
-   &lt;!-- Allow network layer --&gt;
-   &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+//your app/build.gradle
+dependecies { 
+  implementation 'com.scurab:anuitor:1.0.0@aar'
+  if (android.defaultConfig.minSdkVersion >= 26) {
+    //groovy support is supported only for min 26+ API
+    implementation 'com.scurab:anuitor-groovy:1.0.0@aar'
+  }
 
-   &lt;!-- Optionally allow external storage for file browser --&gt;
-   &lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot; /&gt;
-   &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
-
-   &lt;application&gt;
-   …
-      &lt;!-- 
-         Define AnUitor service 
-         Don't specify android:process with ':' otherwise service will be started 
-         in a different process and won't have access to app view hierarchy!
-         http://developer.android.com/guide/topics/manifest/application-element.html#proc
-      --&gt;
-      &lt;service android:name=&quot;com.scurab.android.anuitor.service.AnUitorService&quot; /&gt; 
-   &lt;/application&gt;
-&lt;/manifest&gt;
-</pre>     
-
+  //be sure you have included Gson or Jackson
+  //I do have better experience with Jackson
+  //implementation 'com.google.code.gson:gson:2.8.0' 
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
+}</pre>                
                   <ul>
                       <li>And finally start it somewhere in your code.</li>
                   </ul>
                   <pre class="code prettyprint lang-java" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
 Context context = ...;
-//start service asyncly with optional ref to our anuitor.zip (web)
-AnUitorService.startService(context, 0 /* or pass R.raw.anuitor*/);</pre> 
-                  <ul>
-			<li>Are you using gradle flavors and your applicationId is different than default one ?
-	          </ul>
-		 <pre class="code prettyprint lang-java" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
-//Load resources manually
-try {
-   IdsHelper.loadValues(com.application.R.class);
-} catch(Exception e) {
-   e.printStackTrace();
-}</pre>
-		  <br/>
+//start service asyncly
+AnUitorService.startService(context);
+
+//load your R.class res values 
+//mostlikely necessary if you have any more than 1 project module, flavors, ...
+IdsHelper.loadValues(com.application.R.class);
+</pre> 
+
                   <p>That's it, in a few seconds you should see in Android Notification Bar a notification about running AnUitor where you can see ip address(es) and port used by the service.
-                  Just open it in your browser and you should see exactly same "homepage" like in <a href="/demo/">Demo</a>.</p>
-                  <em class="note">Be sure that your WiFi AP doesn't block communication between you and your device!</em>                
- 
+                  Just open it in your browser and you should see exactly same "homepage" like in <a href="/demo/" target="_blank">Demo (v0.9.1)</a>.</p>
+                  <em class="note">Be sure that your WiFi AP doesn't block communication between you and your device!</em><br/>                
+      <em class="note">Or use just `adb forward tcp:8080 tcp:8080` and access it via http://localhost:8080</em>
                   <h4>Custom views</h4>
-                  <p>For extracting details about custom views you have two options.</p>
-                  <p>Flag your View subclass by <code><a href="/jdoc/com/scurab/android/anuitor/hierarchy/ExportView.html">@ExportView</a></code> annotation and any (even private) field flag by <code><a href="/jdoc/com/scurab/android/anuitor/hierarchy/ExportField.html">@ExportField</a></code> annotation with a string as your property name. 
-                     Then your field values will be used in detail window.</p>
-                  <p>Or write your own code for it, create subclass of <code><a href="/jdoc/com/scurab/android/anuitor/extract/view/ViewExtractor.html">ViewExtractor</a></code> (or any better candidate if your view is not "pure" view). Check classes in 
-                     <code><a href="/jdoc/com/scurab/android/anuitor/extract/view/package-frame.html">com.scurab.android.anuitor.extract.view</a></code> package. Then register your subclass by <code><a href="/jdoc/com/scurab/android/anuitor/extract/DetailExtractor.html#registerExtractor(java.lang.Class, com.scurab.android.anuitor.extract.BaseExtractor)">DetailExtractor.registerExtractor(Class, Extractor);</a></code>
-                     Translator is just simple helper for translating android magic values as something more human readable, you can just simply pass <code>new <a href="/jdoc/com/scurab/android/anuitor/extract/Translator.html">Translator</a>()</code>.
+                  <p>If you want to extract values for your custom view. Just create new implementation of ViewExtractor (or any other subclass) like <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L38-L48">here</a>.You can found all defined extractors in <code>com.scurab.android.anuitor.extract2</code> package.
+                  </p>
+                  <p>
+                    In case your custom view renders outside bounds, you can register a <a href="/jdoc/com/scurab/android/anuitor/extract/RenderAreaWrapper.html">RenderAreaWrapper</a> by 
+                    <a href="/jdoc/com/scurab/android/anuitor/extract/DetailExtractor.html#registerRenderArea(java.lang.Class,%20com.scurab.android.anuitor.extract.RenderAreaWrapper)">
+                      DetailExtractor.html#registerRenderArea
+                    </a>. This is only necessary for proper renderin in 3D screen.
                   </p>
 
                   <h3 id="download">Download</h3>
                   <p>
-                    AnUitor is currently published on <a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22anuitor%22">Maven</a> repository or you can download JAR file directly...
+                    AnUitor is currently published on <a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22anuitor%22">Maven</a> repository or you can download AAR file directly...
                   </p>
                   <p>
                      You can easily get a sample application using AnUitor <a href="/download/anuitor_sample.apk">here</a>.                     
@@ -176,10 +149,26 @@ try {
                      <img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor_sample.apk" alt="qrcode" />
                   </div>
 
+                  <h3 id="tips">Known issues & tips</h3>
+                  <ul>
+                    <li><p>View rendering is done using SW layer. That means that view doesn't have to look exactly same as on device. You're missing shadows for your CardView ? That's exactly it.</p></li>
+                    <li><p>In right view properties section. Take a look specially Owner, this will tell you what Fragment/Activity is your view located in.</p></li>
+                    <li><p>If you use MVP or you would like to add some informations from Activity/Fragment etc. Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L28-L48">How to add custom extractor for your types</a></p></li>
+                    <li><p>Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L19">AnUitorClientConfig</a> 
+                      You can control few web settings, like type higlighting, add ignoring views for mouse cursor in ScreenPreview.</p></li>
+                    <li><p>Wondering what classes are supported by AnUitor ? Take a look this <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/service/src/main/assets/structure.json">json</a>.</p></li>
+                  </ul>
+                  
+                  
                   <h3 id="fewwords">Few words before you start</h3>
                   <p>I mostly did everything with my Nexus 4 (A4.4.3) and worked correctly. As i got 4.4.4 i've noticed sometimes a native crash in some image-processing libraries.
                    The oldest device what i tested AnUitor with was Samsung Galaxy Ace with A2.3.x, it worked slowly and similar crashes with image-processing libraries. 
                    It's not perfect but currently i'm not much interested in those bugs as there is not much what i can do with and they were pretty rare.
+                   </p><p>
+                   Another small issue here is taking a screenshot. If you have HW acceleration enabled (by default since Honeycomb) there can be a difference
+                   between screenshot and real image what you can see on the device. It's because taking a screenshot is hapenning in SW mode (no HW acceleration) as you might know
+                   some stuff e.g. Canvas Clipping is not fully implemented with HW acceleration). Unfortunatelly there is no official way how to get the screenshot with HW acceleration, so
+                   there is (i guess) no way how to do it.
                   </p>
                   <p>
                      As the nature of this is inside-app running module, you "can't" start anuitor in app what you don't have source code for, because it needs to get direct references to your view hierarchy children.
@@ -206,7 +195,7 @@ limitations under the License.</pre>
             </div>
             <div class="row">
                <div class="logo">
-                  <div class="copyright">Copyright 2014 Jiri Bruchanov</div>
+                  <div class="copyright">Copyright 2019 Jiri Bruchanov</div>
                   <a href="http://www.bruchanov.name"><img style="border: 1px solid rgba(0, 0, 0, 0.1);" src="http://www.gravatar.com/avatar/a6ee76bf313912060b7d9e558c4765e1" alt="logo" /></a>
                </div>
                <br/><br/><br/><br/> <!-- keep some space to better auto scrolling menu feature better -->
@@ -216,29 +205,43 @@ limitations under the License.</pre>
                   <li class="active"><a href="#introduction">Introduction</a></li>
                   <li class=""><a href="#using">Using AnUitor</a></li>
                   <li class=""><a href="#download">Download</a></li>
-                  <li class=""><a href="#fewwords">Few words…</a></li>                  
+                  <li class=""><a href="#tips">Tips</a></li>
+                  <li class=""><a href="#fewwords">Few words…</a></li>
                   <li class=""><a href="#license">License</a></li>
                </ul>
                <ul class="nav secondary">
-                  <li><a href="/jdoc/">Javadoc</a></li>
+                  <!--li><a href="/jdoc/">Javadoc</a></li>
                   <li><a href="https://groups.google.com/d/forum/anuitor-discuss">anuitor-discuss@</a></li>                  
-                  <li><a href="/demo/">Demo</a></li>
+                  <li><a href="/demo/">Demo (v0.9.1)</a></li--!>
                   <li>
                   <div style="padding-top:5px">
-					<!-- Place this tag where you want the +1 button to render. -->
-					<div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300" data-href="http://anuitor.scurab.com"></div>
+          <!-- Place this tag where you want the +1 button to render. -->
+          <div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300" data-href="http://anuitor.scurab.com"></div>
 
-					<!-- Place this tag after the last +1 button tag. -->
-					<script type="text/javascript">
-					  (function() {
-						var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-						po.src = 'https://apis.google.com/js/platform.js';
-						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-					  })();
-					</script>
-					</div>
+          <!-- Place this tag after the last +1 button tag. -->
+          <script type="text/javascript">
+            (function() {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/platform.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+          </script>
+          </div>
                   </li>
+                  
                </ul>
+               <br/>
+               <div style="font-size:0.8em">
+                  <li>
+                    <ul><b>2019-09-01</b> A lot (androidx, kotlin, new props, support Android Q,...)</ul>
+                    <ul><b>2017-04-25</b> bugfixing, type/property highlighting, client config</ul>
+                    <ul><b>2017-03-30</b> bugfixing, improved error handling</ul>
+                    <ul><b>2017-03-14</b> web client added grid, bugfixing, added design library extractors</ul>
+                    <!--ul><b>2017-01-23</b> updated web client, Android 7.1 supported, added Groovy inapp compiling support</ul>
+                    <<ul><b>2016-02-21</b> updated web client, some property details, added support for more views, Marshmellow</ul>
+                    <ul><b>2015-01-21</b> updated web client, added support for screen selection (needs v0.9.5) </ul>-->
+                  </li>
+               </div>
             </div>
          </div>
       </section>   

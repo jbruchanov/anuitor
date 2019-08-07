@@ -34,11 +34,11 @@ public class DefaultRenderer implements RenderDelegate {
     }
 
     @Override
-    public DoublePair svgSize(List<Integer> levelItems) {
+    public DoublePair svgSize(List<Integer> levelItems) {                
         return mRendering.svgSize(levelItems)
                 .multiply(SIZING.first, SIZING.second)
-                .plus(SIZING.first, 0)
-                .atLeast(Window.getClientHeight() * 0.75, Window.getClientWidth() * 0.75);
+                .atLeast(treeSize(levelItems).swap(swapsSizes()))
+                .plus(SIZING.first, 0);
     }
 
     @Override
@@ -56,5 +56,10 @@ public class DefaultRenderer implements RenderDelegate {
     @Override
     public double getTextOffset() {
         return 0;
+    }
+    
+    @Override
+    public boolean swapsSizes() {
+        return mRendering.swapsSizes(); 
     }
 }

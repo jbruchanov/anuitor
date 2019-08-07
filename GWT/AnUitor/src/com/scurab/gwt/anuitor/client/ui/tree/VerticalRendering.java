@@ -30,4 +30,9 @@ public class VerticalRendering implements Rendering {
     public DoublePair treeSize(List<Integer> levelItems) {
         return svgSize(levelItems);
     }
+
+    @Override
+    public boolean swapsSizes() {
+        return false;
+    }
 }

@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.scurab.android.anuitor.R;
@@ -248,7 +247,7 @@ public class AnUitorService extends Service {
                         .setContentTitle(title)
                         .setAutoCancel(true)
                         .setDefaults(defaults)
-                        .setContentText(msg)
+                        .setContentText(StringUtils.valueIfNull(msg, "Null msg"))
                         .setSmallIcon(ICON_RES_ID);
 
                 if (contentIntent != null) {

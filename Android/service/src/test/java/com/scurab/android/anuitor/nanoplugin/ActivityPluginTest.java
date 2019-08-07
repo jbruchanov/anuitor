@@ -12,6 +12,7 @@ import org.robolectric.annotation.Config;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -36,7 +37,7 @@ public class ActivityPluginTest {
         doReturn(null).when(wm).getCurrentActivity();
 
         ActivityPlugin ap = spy(new TestActivityPlugin(wm));
-        NanoHTTPD.Response response = ap.serveFile("someuri", null, mock(NanoHTTPD.IHTTPSession.class), mock(File.class), HttpTools.MimeType.APP_JSON);
+        NanoHTTPD.Response response = ap.serveFile("someuri", Collections.emptyMap(), mock(NanoHTTPD.IHTTPSession.class), mock(File.class), HttpTools.MimeType.APP_JSON);
         String data = IOUtils.toString(response.getData());
         assertEquals("[]", data);
         assertEquals(HttpTools.MimeType.APP_JSON, response.getMimeType());
@@ -48,7 +49,7 @@ public class ActivityPluginTest {
         doReturn(null).when(wm).getCurrentActivity();
 
         ActivityPlugin ap = spy(new TestActivityPlugin(wm));
-        NanoHTTPD.Response response = ap.serveFile("someuri", null, mock(NanoHTTPD.IHTTPSession.class), mock(File.class), HttpTools.MimeType.TEXT_PLAIN);
+        NanoHTTPD.Response response = ap.serveFile("someuri", Collections.emptyMap(), mock(NanoHTTPD.IHTTPSession.class), mock(File.class), HttpTools.MimeType.TEXT_PLAIN);
         String data = IOUtils.toString(response.getData());
         assertEquals(ActivityPlugin.APPLICATION_IS_NOT_ACTIVE, data);
         assertEquals(HttpTools.MimeType.TEXT_PLAIN, response.getMimeType());
@@ -67,7 +68,7 @@ public class ActivityPluginTest {
         String mime = HttpTools.MimeType.APP_JSON;
 
         ap.serveFile(uri, headers, session, f, mime);
-        verify(ap, times(1)).handleRequest(uri, headers, session, f, mime);
+        verify(ap, times(1)).onRequest(uri, headers, session, f, mime);
     }
 
     private static class TestActivityPlugin extends ActivityPlugin {
@@ -77,7 +78,7 @@ public class ActivityPluginTest {
         }
 
         @Override
-        public NanoHTTPD.Response handleRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
+        public NanoHTTPD.Response onRequest(String uri, Map<String, String> headers, NanoHTTPD.IHTTPSession session, File file, String mimeType) {
             return mock(NanoHTTPD.Response.class);
         }
 

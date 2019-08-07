@@ -13,6 +13,7 @@ import com.scurab.android.anuitor.nanoplugin.LogCatPlugin;
 import com.scurab.android.anuitor.nanoplugin.ResourcesPlugin;
 import com.scurab.android.anuitor.nanoplugin.ScreenStructurePlugin;
 import com.scurab.android.anuitor.nanoplugin.ScreenViewPlugin;
+import com.scurab.android.anuitor.nanoplugin.ScreenComponentsPlugin;
 import com.scurab.android.anuitor.nanoplugin.ViewHierarchyPlugin;
 import com.scurab.android.anuitor.nanoplugin.ViewPropertyPlugin;
 import com.scurab.android.anuitor.nanoplugin.ViewshotPlugin;
@@ -51,10 +52,11 @@ public class AnUiHttpServer extends SimpleWebServer {
                 new ActiveScreensPlugin(windowManager),
                 new ViewHierarchyPlugin(windowManager),
                 new FileStoragePlugin(context),
-                new ResourcesPlugin(context.getResources()),
+                new ResourcesPlugin(context.getApplicationContext().getResources(), windowManager),
                 new ScreenStructurePlugin(windowManager),
                 new ViewPropertyPlugin(windowManager)));
         registerPluginForMimeType(new LogCatPlugin());
+        registerPluginForMimeType(new ScreenComponentsPlugin(windowManager));
     }
 
     public static void registerPluginForMimeType(BasePlugin plugin) {

@@ -1,16 +1,14 @@
 package com.scurab.android.anuitor.extract2
 
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
-
 private const val CYCLE_PARENT_CHECK = "_cycleParentCheck"
 //necessary for child fragments so FragmentExtractor might be used multiple times
-private const val CYCLE_DEPTH_CHECK = 5
+//Having (CYCLE_DEPTH_CHECK + 1) child fragments depth will throw an exception
+private const val CYCLE_DEPTH_CHECK = 10
 abstract class BaseExtractor {
 
     abstract val parent: Class<*>?
 
-    open fun fillValues(item: Any, context: ExtractingContext): MutableMap<String, Any> {
+    internal open fun fillValues(item: Any, context: ExtractingContext): MutableMap<String, Any> {
         if (!context.data.containsKey("Type")) {
             context.put("Inheritance", 0, item) { inheritance() }
             context.put("Type", 0, item) { item.javaClass.name }
@@ -42,8 +40,8 @@ abstract class BaseExtractor {
                 if (counter > CYCLE_DEPTH_CHECK) {
                     throw IllegalStateException("Parent class extraction cycle detected!\n" +
                             "Extractor:'${this.javaClass.name}' is trying to use parent:'${parent.name}'\n" +
-                            "This parent has been already used for extracting. Update your extractor " +
-                            "to use correct parent!")
+                            "This parent has been already used for extracting $counter times.\n" +
+                            "Update your extractor to use correct parent!")
                 }
             }
         }

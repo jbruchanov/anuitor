@@ -7,7 +7,7 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="wrap_content"
@@ -19,12 +19,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:drawableLeft="@drawable/ic_comment_24dp"
+            android:drawableRight="@drawable/ic_launcher"
+            android:drawablePadding="@dimen/gap_large"
+            android:gravity="center"
             android:text="Large Text"
             android:id="@+id/textView2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_notifications_black_24dp"
+            android:drawableBottom="@drawable/ic_home_black_24dp"
+            android:drawableTint="@color/colorAccent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
             android:id="@+id/textView3" />

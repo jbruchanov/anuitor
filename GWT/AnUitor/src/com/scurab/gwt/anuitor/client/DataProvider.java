@@ -39,12 +39,12 @@ public class DataProvider {
     private static final String GROOVY = "/groovy";
     
     public static final int HTTP_OK = 200;
-    public static final int HTTP_NOT_FOUND = 404;  
+    public static final int HTTP_NOT_FOUND = 404;
     public static final String QRY_PARAM_SCREEN_INDEX = "screenIndex";
     public static final String SCREEN_INDEX_QRY = "?" + QRY_PARAM_SCREEN_INDEX + "=";
     public static final String SCREEN = (DEMO ? SAMPLE_DATA : "") + "/screen.png";
     public static final String SCREEN_SCTRUCTURE = (DEMO ? SAMPLE_DATA : "") + "/screenstructure.json";
-    public static final String SCREEN_SCTRUCTURE_SIMPLE = (DEMO ? SAMPLE_DATA : "") + "/screencomponents.json";
+    public static final String SCREEN_SCTRUCTURE_SIMPLE = (DEMO ? SAMPLE_DATA : "") + "/screencomponents.html";
     
     public static final String QRY_PARAM_POSITION = "position";
     public static final String QRY_PARAM_PROPERTY = "property";    
@@ -73,12 +73,16 @@ public class DataProvider {
         sendRequest(VIEW_TREE_HIERARCHY + SCREEN_INDEX_QRY + screenIndex, callback);
     }
 
-    public static void getResources(final AsyncCallback<ObjectJSO> callback) {
-        sendRequest(RESOURCES, callback);
-    }
+    public static void getResources(int screenIndex, final AsyncCallback<ObjectJSO> callback) {
+        sendRequest(RESOURCES + "?" + QRY_PARAM_SCREEN_INDEX + "=" + screenIndex, callback);
+    } 
 
-    public static void getResource(int id, final AsyncCallback<ResourceDetailJSO> callback) {        
-        sendRequest(RESOURCE_ID_X + id, callback);
+    public static void getResource(int id, int screenIndex, final AsyncCallback<ResourceDetailJSO> callback) {               
+        String url = RESOURCE_ID_X + id;
+        if (screenIndex >= 0) {
+            url += "&" + QRY_PARAM_SCREEN_INDEX + "=" + screenIndex;
+        }
+        sendRequest(url, callback);
     }
     
     public static void getFiles(String folder, AsyncCallback<JsArray<FSItemJSO>> asyncCallback) {        

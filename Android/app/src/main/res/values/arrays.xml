@@ -11,4 +11,20 @@
         <item>Neptune</item>
         <item>Not found yet :P</item>
     </string-array>
+
+    <integer-array name="fibonacci">
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>8</item>
+        <item>13</item>
+    </integer-array>
+
+    <array name="drawables">
+        <item>@drawable/circle</item>
+        <item>@drawable/divider_normal</item>
+        <item>@drawable/ic_comment_24dp</item>
+    </array>
 </resources>

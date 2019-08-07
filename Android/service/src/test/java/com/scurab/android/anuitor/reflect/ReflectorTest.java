@@ -3,7 +3,8 @@ package com.scurab.android.anuitor.reflect;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Created by JBruchanov on 12/03/2017.

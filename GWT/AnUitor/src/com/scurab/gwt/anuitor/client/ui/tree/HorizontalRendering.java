@@ -22,4 +22,10 @@ public class HorizontalRendering implements Rendering {
     public DoublePair treeSize(List<Integer> levelItems) {        
         return svgSize(levelItems).swap();
     }
+
+    @Override
+    public boolean swapsSizes() {        
+        return true;
+    }
+    
 }

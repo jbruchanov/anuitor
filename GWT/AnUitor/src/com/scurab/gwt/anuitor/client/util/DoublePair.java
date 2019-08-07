@@ -15,6 +15,14 @@ public class DoublePair {
     public DoublePair swap() {
         return new DoublePair(second, first);
     }
+    
+    public DoublePair swap(boolean swap) {
+        if (swap) {
+            return new DoublePair(second, first);
+        } else {
+            return this;
+        }
+    }
 
     public Array<Double> toArray() {
         Array<Double> arr = Array.create();
@@ -43,5 +51,9 @@ public class DoublePair {
         double a = (this.first > first) ? this.first : first;
         double b = (this.second > second) ? this.second : second;
         return new DoublePair(a, b);
+    }
+    
+    public DoublePair atLeast(DoublePair other) {
+        return atLeast(other.first, other.second);
     }
 }

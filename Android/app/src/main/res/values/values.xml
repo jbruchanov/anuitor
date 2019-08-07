@@ -3,4 +3,7 @@
     <item name="tag_position" type="id" />
     <item name="tag_test1" type="id" />
     <item name="tag_test2" type="id" />
+
+    <item name="fraction_1" type="fraction">20%</item>
+    <item name="float_1" type="fraction" format="float">0.5</item>
 </resources>
