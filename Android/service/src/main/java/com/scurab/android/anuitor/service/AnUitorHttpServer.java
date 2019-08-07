@@ -29,9 +29,9 @@ import fi.iki.elonen.SimpleWebServer;
  * Date: 12/05/2014
  * Time: 11:24
  */
-public class AnUiHttpServer extends SimpleWebServer {
+public class AnUitorHttpServer extends SimpleWebServer {
 
-    public AnUiHttpServer(Context context, int port, File wwwroot, boolean quiet, WindowManager windowManager) {
+    public AnUitorHttpServer(Context context, int port, File wwwroot, boolean quiet, WindowManager windowManager) {
         super(null, port, wwwroot, quiet);
         initPlugins(context, windowManager);
     }
@@ -46,7 +46,7 @@ public class AnUiHttpServer extends SimpleWebServer {
             registerPluginForMimeType(new GroovyPlugin(tmp));
             hasGroovySupport = true;
         } catch (Throwable e) {
-            Log.v("AnUiHttpServer", "Unable to register GroovyPlugin");
+            Log.v("AnUitorHttpServer", "Unable to register GroovyPlugin");
         }
 
         registerPluginForMimeType(new AggregateMimePlugin(
