@@ -51,10 +51,8 @@ afterEvaluate {
 }
 
 dependencies {
-    //region fatAar
     compileOnly "com.google.code.gson:gson:${gson}"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"
-    //endregion
 
     compileOnly project(":service-groovy")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

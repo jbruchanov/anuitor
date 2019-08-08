@@ -50,6 +50,9 @@ public class ResourcesPage extends Composite {
     CellTable<String> groups = new CellTable<String>();
     @UiField(provided = true)
     CellTable<ResourceItemJSO> items = new CellTable<ResourceItemJSO>();
+    
+    private static final int GROUPS_WIDTH = 200;
+    private static final int ITEMS_WIDTH = 400;
 
     /* Detail view generates content for particular resource details */
     private ResourceDetailView mDetailView = new ResourceDetailView();
@@ -67,12 +70,11 @@ public class ResourcesPage extends Composite {
         
         mDetailView.setStyleName("detailView");
         detailScrollPanel.add(mDetailView);        
-        updateScrollContentHeight();
-        Window.addResizeHandler(new ResizeHandler() {
-            
+        updateScrollContentSizes();
+        Window.addResizeHandler(new ResizeHandler() {            
             @Override
             public void onResize(ResizeEvent event) {              
-                updateScrollContentHeight();
+                updateScrollContentSizes();
             }
         });
         
@@ -137,11 +139,12 @@ public class ResourcesPage extends Composite {
     /**
      * Update scrollpanel height based on current window size
      */
-    private void updateScrollContentHeight(){
+    private void updateScrollContentSizes() {
         String h = Window.getClientHeight() + "px";
         groupsScrollPanel.setHeight(h);
         itemsScrollPanel.setHeight(h);
-        detailScrollPanel.setHeight(h);        
+        detailScrollPanel.setHeight(h);
+        detailScrollPanel.setWidth(Window.getClientWidth() - GROUPS_WIDTH - ITEMS_WIDTH + "px");
     }
 
     /** 
@@ -157,7 +160,7 @@ public class ResourcesPage extends Composite {
         };
         column.setCellStyleNames("tableLabel");
         groups.addColumn(column, "Group");
-        groups.setColumnWidth(column, "200px");
+        groups.setColumnWidth(column, GROUPS_WIDTH + "px");
         
         final SingleSelectionModel<String> ssm = new SingleSelectionModel<String>();
         groups.setSelectionModel(ssm);
@@ -184,7 +187,7 @@ public class ResourcesPage extends Composite {
         };
         column.setCellStyleNames("tableLabel");
         items.addColumn(column, "Item");
-        items.setColumnWidth(column, "400px");
+        items.setColumnWidth(column, ITEMS_WIDTH + "px");
         
         final SingleSelectionModel<ResourceItemJSO> ssm = new SingleSelectionModel<ResourceItemJSO>();
         items.setSelectionModel(ssm);

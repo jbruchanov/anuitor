@@ -1,6 +1,7 @@
 package com.scurab.android.anuitor.service;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import com.scurab.android.anuitor.nanoplugin.ActiveScreensPlugin;
@@ -28,9 +29,9 @@ import fi.iki.elonen.SimpleWebServer;
  * Date: 12/05/2014
  * Time: 11:24
  */
-public class AnUiHttpServer extends SimpleWebServer {
+public class AnUitorHttpServer extends SimpleWebServer {
 
-    public AnUiHttpServer(Context context, int port, File wwwroot, boolean quiet, WindowManager windowManager) {
+    public AnUitorHttpServer(Context context, int port, File wwwroot, boolean quiet, WindowManager windowManager) {
         super(null, port, wwwroot, quiet);
         initPlugins(context, windowManager);
     }
@@ -38,10 +39,14 @@ public class AnUiHttpServer extends SimpleWebServer {
     protected void initPlugins(Context context, WindowManager windowManager) {
         boolean hasGroovySupport = false;
         try {
-            registerPluginForMimeType(new GroovyPlugin(context.getCacheDir()));
+            //TODO: check more cacheDir sometimes fails on permission_denied exception
+            File tmp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                    ? context.getCodeCacheDir()
+                    : context.getCacheDir();
+            registerPluginForMimeType(new GroovyPlugin(tmp));
             hasGroovySupport = true;
         } catch (Throwable e) {
-            Log.v("AnUiHttpServer", "Unable to register GroovyPlugin");
+            Log.v("AnUitorHttpServer", "Unable to register GroovyPlugin");
         }
 
         registerPluginForMimeType(new AggregateMimePlugin(

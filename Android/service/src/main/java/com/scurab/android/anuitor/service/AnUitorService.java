@@ -47,7 +47,7 @@ public class AnUitorService extends Service {
     public static final String ROOT_FOLDER = "ROOT_FOLDER";
     public static final String DEFAULT_ROOT_FOLDER = "anuitor";
 
-    private AnUiHttpServer mServer;
+    private AnUitorHttpServer mServer;
 
     public static final int NOTIF_ID = 0x375012AF;
     public static final int ICON_RES_ID = android.R.drawable.ic_dialog_alert;
@@ -135,8 +135,8 @@ public class AnUitorService extends Service {
         return (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
-    protected AnUiHttpServer onCreateServer(int port, String root) {
-        return new AnUiHttpServer(getApplicationContext(), port, new File(root), true, WindowManagerProvider.getManager());
+    protected AnUitorHttpServer onCreateServer(int port, String root) {
+        return new AnUitorHttpServer(getApplicationContext(), port, new File(root), true, WindowManagerProvider.getManager());
     }
 
     /**
