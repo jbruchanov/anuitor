@@ -32,19 +32,29 @@ fi
 echo Version:$VERSION
 
 sed -e 's/{VERSION}/'$VERSION'/g' template.pom > anuitor-$VERSION.pom
+sed -e 's/{VERSION}/'$VERSION'/g' template-groovy.pom > anuitor-groovy-$VERSION.pom
 
 #generate anuitor.aar
 pushd ..
 chmod +x gradlew
-gradlew assembleRelease
+gradlew clean assembleRelease
 popd
-mv ../service/build/outputs/aar/service-release.aar anuitor-$VERSION.aar
+cp ../service/build/outputs/aar/service-release.aar anuitor-$VERSION.aar
+
+#generate anuitor-groovy.aar
+cp ../service-groovy/build/outputs/aar/service-groovy-release.aar anuitor-groovy-$VERSION.aar
 
 #generate anuitor-sources.jar
 pushd ../service/src/main/java
 jar cf anuitor-$VERSION-sources.jar .
 popd
 mv ../service/src/main/java/anuitor-$VERSION-sources.jar .
+
+#generate anuitor-groovy-sources.jar
+pushd ../service-groovy/src/main/java
+jar cf anuitor-groovy-$VERSION-sources.jar .
+popd
+mv ../service-groovy/src/main/java/anuitor-groovy-$VERSION-sources.jar .
 
 #generate anuitor-javadoc.jar
 pushd ../service/src/main/java/com/scurab/android/anuitor
@@ -56,8 +66,18 @@ rm -R jdoc
 popd
 mv ../service/src/main/java/com/scurab/android/anuitor/anuitor-$VERSION-javadoc.jar .
 
+#generate anuitor-grovy-javadoc.jar
+pushd ../service-groovy/src/main/java/com/scurab/android/anuitor
+find . -type f -name "*.java" | xargs javadoc -d jdoc 
+pushd jdoc
+jar cvf ../anuitor-groovy-$VERSION-javadoc.jar *
+popd
+rm -R jdoc
+popd
+mv ../service-groovy/src/main/java/com/scurab/android/anuitor/anuitor-groovy-$VERSION-javadoc.jar .
 
-FILES=(anuitor-$VERSION.pom anuitor-$VERSION.aar anuitor-$VERSION-sources.jar anuitor-$VERSION-javadoc.jar)
+
+FILES=(anuitor-$VERSION.pom anuitor-$VERSION.aar anuitor-$VERSION-sources.jar anuitor-$VERSION-javadoc.jar anuitor-groovy-$VERSION.pom anuitor-groovy-$VERSION.aar anuitor-groovy-$VERSION-sources.jar anuitor-groovy-$VERSION-javadoc.jar)
 for file in "${FILES[@]}"
 do
 	if [ ! -f $file ]; then
@@ -73,3 +93,9 @@ gpg -ab anuitor-$VERSION.aar
 gpg -ab anuitor-$VERSION-sources.jar
 gpg -ab anuitor-$VERSION-javadoc.jar
 jar -cvf anuitor-$VERSION-bundle.jar anuitor-$VERSION.pom anuitor-$VERSION.pom.asc anuitor-$VERSION.aar anuitor-$VERSION.aar.asc anuitor-$VERSION-javadoc.jar anuitor-$VERSION-javadoc.jar.asc anuitor-$VERSION-sources.jar anuitor-$VERSION-sources.jar.asc
+
+gpg -ab anuitor-groovy-$VERSION.pom
+gpg -ab anuitor-groovy-$VERSION.aar
+gpg -ab anuitor-groovy-$VERSION-sources.jar
+gpg -ab anuitor-groovy-$VERSION-javadoc.jar
+jar -cvf anuitor-groovy-$VERSION-bundle.jar anuitor-groovy-$VERSION.pom anuitor-groovy-$VERSION.pom.asc anuitor-groovy-$VERSION.aar anuitor-groovy-$VERSION.aar.asc anuitor-groovy-$VERSION-javadoc.jar anuitor-groovy-$VERSION-javadoc.jar.asc anuitor-groovy-$VERSION-sources.jar anuitor-groovy-$VERSION-sources.jar.asc

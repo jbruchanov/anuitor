@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.scurab</groupId>
-  <artifactId>anuitor</artifactId>
+  <artifactId>anuitor-groovy</artifactId>
   <version>{VERSION}</version>
   <packaging>aar</packaging>
-  <name>AnUitor</name>
+  <name>AnUitor - Groovy plugin</name>
   <description>UI debug tool for Android</description>
   <url>http://anuitor.scurab.com</url>
   <licenses>
@@ -29,8 +29,20 @@
   </scm>
   <dependencies>
     <dependency>
+      <groupId>com.google.android.tools</groupId>
+      <artifactId>dx</artifactId>
+      <version>1.7</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy</artifactId>
+      <version>2.4.8</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <artifactId>kotlin-stdlib-jdk7</artifactId>
       <version>1.3.40</version>
       <scope>runtime</scope>
     </dependency>
