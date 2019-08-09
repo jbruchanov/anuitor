@@ -28,7 +28,7 @@
          <div class="container">
             <div class="row">            
                <div class="spinlike title">
-                  <h1>AnUitor<sup style="margin-left:10px;font-size:0.5em">1.0.0</sup></h1>
+                  <h1>AnUitor<sup style="margin-left:10px;font-size:0.5em">1.0.1</sup></h1>
                </div>
                <div class="spinlike">
                   <menu>
@@ -99,11 +99,23 @@
                       Gradle                      
                       <pre class="code prettyprint" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
 //your app/build.gradle
+android {
+  //be sure to have Java 1.8 enabled
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  // For Kotlin projects
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
+
 dependecies { 
-  implementation 'com.scurab:anuitor:1.0.0@aar'
+  implementation 'com.scurab:anuitor:1.0.1@aar'
   if (android.defaultConfig.minSdkVersion >= 26) {
     //groovy support is supported only for min 26+ API
-    implementation 'com.scurab:anuitor-groovy:1.0.0@aar'
+    implementation 'com.scurab:anuitor-groovy:1.0.1@aar'
   }
 
   //be sure you have included Gson or Jackson
@@ -143,11 +155,16 @@ IdsHelper.loadValues(com.application.R.class);
                     AnUitor is currently published on <a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22anuitor%22">Maven</a> repository or you can download AAR file directly...
                   </p>
                   <p>
-                     You can easily get a sample application using AnUitor <a href="/download/anuitor_sample.apk">here</a>.                     
+                     You can easily get a sample application using AnUitor <a href="/download/anuitor-groovy_sample.apk">here</a> or 
+                     <a href="/download/anuitor_sample.apk">here (API26+ Devices with Groovy support)</a>.
                   </p>
-                  <div class="logo">                                                                                                                               
-                     <img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor_sample.apk" alt="qrcode" />
-                  </div>
+                  <table class="logo" style="margin: auto;border-spacing: 60pt 0pt;">
+                    <tr>
+                      <td>All Devices</td>
+                      <td>API26+ Devices</td>
+                    </tr> 
+                    <tr>
+                    <td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor_sample.apk" alt="qrcode" /></td><td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor-groovy_sample.apk" alt="qrcode" /></td></table>
 
                   <h3 id="tips">Known issues & tips</h3>
                   <ul>
@@ -157,6 +174,7 @@ IdsHelper.loadValues(com.application.R.class);
                     <li><p>Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L19">AnUitorClientConfig</a> 
                       You can control few web settings, like type higlighting, add ignoring views for mouse cursor in ScreenPreview.</p></li>
                     <li><p>Wondering what classes are supported by AnUitor ? Take a look this <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/service/src/main/assets/structure.json">json</a>.</p></li>
+                    <li><p>3D preview camera controlling is not the best UX, try to use mouse + ASD keys for rotation/distance/position move.</p></li>
                   </ul>
                   
                   
@@ -234,10 +252,10 @@ limitations under the License.</pre>
                <div style="font-size:0.8em">
                   <li>
                     <ul><b>2019-09-01</b> A lot (androidx, kotlin, new props, support Android Q,...)</ul>
-                    <ul><b>2017-04-25</b> bugfixing, type/property highlighting, client config</ul>
+                    <!--ul><b>2017-04-25</b> bugfixing, type/property highlighting, client config</ul>
                     <ul><b>2017-03-30</b> bugfixing, improved error handling</ul>
                     <ul><b>2017-03-14</b> web client added grid, bugfixing, added design library extractors</ul>
-                    <!--ul><b>2017-01-23</b> updated web client, Android 7.1 supported, added Groovy inapp compiling support</ul>
+                    <ul><b>2017-01-23</b> updated web client, Android 7.1 supported, added Groovy inapp compiling support</ul>
                     <<ul><b>2016-02-21</b> updated web client, some property details, added support for more views, Marshmellow</ul>
                     <ul><b>2015-01-21</b> updated web client, added support for screen selection (needs v0.9.5) </ul>-->
                   </li>
