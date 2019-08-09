@@ -125,6 +125,7 @@ public class AnUitorService extends Service {
             startForeground();
             return true;
         } catch (Throwable e) {
+            Log.e(TAG, e.getMessage());
             NotificationManager nm = getNotificationManager();
             nm.notify(NOTIF_ID, createNotification(this, e.getMessage()));
         }

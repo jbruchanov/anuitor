@@ -916,6 +916,7 @@
       }
     },
     "androidx.appcompat.widget.Toolbar": {
+      "className" : "AndroidXToolbar",
       "parent": "android.view.ViewGroup",
       "items": {
         "1" : [
