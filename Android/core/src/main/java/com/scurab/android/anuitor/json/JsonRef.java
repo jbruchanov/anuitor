@@ -22,6 +22,11 @@ public class JsonRef {
             JSON = tryCreateSerializer("com.fasterxml.jackson.databind.ObjectMapper", "JacksonSerializer");
         }
 
+        if (JSON == null) {
+            throw new IllegalStateException("Unable to create instance of Gson or ObjectMapper (jackson).\n" +
+                    "Did you add one of this dependency into your build.gradle?");
+        }
+
         return JSON;
     }
 

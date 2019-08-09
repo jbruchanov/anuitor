@@ -54,11 +54,14 @@ dependencies {
     compileOnly "com.google.code.gson:gson:${gson}"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"
 
+    implementation "androidx.annotation:annotation:${androidXAnnotations}"
+    //necessary for service
+    implementation "androidx.core:core:${androidXCore}"
+    implementation "androidx.fragment:fragment:${androidXFragments}"
+
     compileOnly project(":service-groovy")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    compileOnly "androidx.legacy:legacy-support-core-ui:${androidX}"
-    compileOnly "androidx.fragment:fragment:${androidX}"
     compileOnly "androidx.recyclerview:recyclerview:${androidX}"
     compileOnly "androidx.cardview:cardview:${androidX}"
     compileOnly "androidx.gridlayout:gridlayout:${androidX}"
