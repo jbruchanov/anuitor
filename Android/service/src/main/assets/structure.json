@@ -4,7 +4,7 @@
       "parentExtractor": "com.scurab.android.anuitor.extract2.BaseViewExtractor",
       "items": {
         "1": [
-          {"m": "getBaseline" },
+          {"m": "getBaseline"},
           {
             "m": "getBackground",
             "n": "Background:"
@@ -14,23 +14,23 @@
             "m": "getContext",
             "c": "getContext()?.toString()"
           },
-          {"m": "getContentDescription" },
-          {"m": "isClickable" },
-          {"m": "isLongClickable" },
-          {"m": "isEnabled" },
-          {"m": "isFocusable" },
-          {"m": "isFocusableInTouchMode" },
-          {"m": "isDuplicateParentStateEnabled" },
-          {"m": "isShown" },
-          {"m": "getKeepScreenOn" },
-          {"m": "getLeft" },
-          {"m": "getTop" },
-          {"m": "getRight" },
-          {"m": "getBottom" },
-          {"m": "getPaddingLeft" },
-          {"m": "getPaddingTop" },
-          {"m": "getPaddingRight" },
-          {"m": "getPaddingBottom" },
+          {"m": "getContentDescription"},
+          {"m": "isClickable"},
+          {"m": "isLongClickable"},
+          {"m": "isEnabled"},
+          {"m": "isFocusable"},
+          {"m": "isFocusableInTouchMode"},
+          {"m": "isDuplicateParentStateEnabled"},
+          {"m": "isShown"},
+          {"m": "getKeepScreenOn"},
+          {"m": "getLeft"},
+          {"m": "getTop"},
+          {"m": "getRight"},
+          {"m": "getBottom"},
+          {"m": "getPaddingLeft"},
+          {"m": "getPaddingTop"},
+          {"m": "getPaddingRight"},
+          {"m": "getPaddingBottom"},
           {
             "m": "getVisibility",
             "t": "Visibility"
@@ -51,22 +51,22 @@
             "m": "getNextFocusUpId",
             "c": "getNextFocusUpId().idName()"
           },
-          {"m": "getScrollX" },
-          {"m": "getScrollY" },
+          {"m": "getScrollX"},
+          {"m": "getScrollY"},
           {
             "m": "getTag",
             "n": "Tag:"
           },
-          {"m": "hasFocus" },
-          {"m": "hasFocusable" },
-          {"m": "isOpaque" },
-          {"m": "isPressed" },
-          {"m": "isSelected" },
-          {"m": "isSoundEffectsEnabled" },
-          {"m": "willNotDraw" },
-          {"m": "willNotCacheDrawing" },
-          {"m": "getHitRect" },
-          {"m": "getAnimation" },
+          {"m": "hasFocus"},
+          {"m": "hasFocusable"},
+          {"m": "isOpaque"},
+          {"m": "isPressed"},
+          {"m": "isSelected"},
+          {"m": "isSoundEffectsEnabled"},
+          {"m": "willNotDraw"},
+          {"m": "willNotCacheDrawing"},
+          {"m": "getHitRect"},
+          {"m": "getAnimation"},
           {
             "n": "ApplicationWindowToken:",
             "m": "getApplicationWindowToken"
@@ -75,14 +75,14 @@
             "m": "getDrawableState",
             "t": "DrawableState"
           },
-          {"m": "getDrawingCache" },
-          {"m": "getDrawingCacheBackgroundColor" },
-          {"m": "getDrawingCacheQuality" },
-          {"m": "getDrawingTime" },
-          {"m": "getFilterTouchesWhenObscured" },
-          {"m": "getHorizontalFadingEdgeLength" },
-          {"m": "getMeasuredHeight" },
-          {"m": "getMeasuredWidth" },
+          {"m": "getDrawingCache"},
+          {"m": "getDrawingCacheBackgroundColor"},
+          {"m": "getDrawingCacheQuality"},
+          {"m": "getDrawingTime"},
+          {"m": "getFilterTouchesWhenObscured"},
+          {"m": "getHorizontalFadingEdgeLength"},
+          {"m": "getMeasuredHeight"},
+          {"m": "getMeasuredWidth"},
           {"m": "getOnFocusChangeListener"},
           {
             "m": "getOverScrollMode",
@@ -96,13 +96,13 @@
             "n": "RootView:",
             "m": "getRootView"
           },
-          {"m": "getScrollBarStyle" },
+          {"m": "getScrollBarStyle"},
           {
             "m": "getSolidColor",
             "c": "getSolidColor()?.stringColor()"
           },
-          {"m": "getVerticalScrollbarWidth" },
-          {"m": "getViewTreeObserver" },
+          {"m": "getVerticalScrollbarWidth"},
+          {"m": "getViewTreeObserver"},
           {
             "n": "WindowToken:",
             "m": "getWindowToken"
@@ -111,22 +111,22 @@
             "m": "getWindowVisibility",
             "t": "Visibility"
           },
-          {"m": "hasWindowFocus" },
-          {"m": "isDrawingCacheEnabled" },
-          {"m": "isFocused" },
-          {"m": "isHapticFeedbackEnabled" },
-          {"m": "isHorizontalFadingEdgeEnabled" },
-          {"m": "isHorizontalScrollBarEnabled" },
-          {"m": "isInEditMode" },
-          {"m": "isInTouchMode" },
-          {"m": "isLayoutRequested" },
-          {"m": "isSaveEnabled" },
-          {"m": "isScrollbarFadingEnabled" },
-          {"m": "isVerticalFadingEdgeEnabled" },
-          {"m": "isVerticalScrollBarEnabled" },
-          {"m": "getTouchDelegate" },
-          {"m": "getTouchables" },
-          {"m": "getVerticalFadingEdgeLength" }
+          {"m": "hasWindowFocus"},
+          {"m": "isDrawingCacheEnabled"},
+          {"m": "isFocused"},
+          {"m": "isHapticFeedbackEnabled"},
+          {"m": "isHorizontalFadingEdgeEnabled"},
+          {"m": "isHorizontalScrollBarEnabled"},
+          {"m": "isInEditMode"},
+          {"m": "isInTouchMode"},
+          {"m": "isLayoutRequested"},
+          {"m": "isSaveEnabled"},
+          {"m": "isScrollbarFadingEnabled"},
+          {"m": "isVerticalFadingEdgeEnabled"},
+          {"m": "isVerticalScrollBarEnabled"},
+          {"m": "getTouchDelegate"},
+          {"m": "getTouchables"},
+          {"m": "getVerticalFadingEdgeLength"}
         ],
         "4": [
           {
@@ -136,66 +136,66 @@
           }
         ],
         "11": [
-          {"m": "getAlpha" },
-          {"m": "getRotation" },
-          {"m": "getRotationX" },
-          {"m": "getRotationY" },
-          {"m": "getPivotX" },
-          {"m": "getPivotY" },
-          {"m": "getTranslationX" },
-          {"m": "getTranslationY" },
-          {"m": "isHardwareAccelerated" },
+          {"m": "getAlpha"},
+          {"m": "getRotation"},
+          {"m": "getRotationX"},
+          {"m": "getRotationY"},
+          {"m": "getPivotX"},
+          {"m": "getPivotY"},
+          {"m": "getTranslationX"},
+          {"m": "getTranslationY"},
+          {"m": "isHardwareAccelerated"},
           {
             "m": "getLayerType",
             "t": "ViewLayerType"
           },
-          {"m": "getMatrix" },
+          {"m": "getMatrix"},
           {
             "m": "getNextFocusForwardId",
             "c": "getNextFocusForwardId().idName()"
           },
-          {"m": "getX" },
-          {"m": "getY" },
-          {"m": "getMeasuredHeightAndState" },
-          {"m": "getMeasuredState" },
-          {"m": "getMeasuredWidthAndState" },
+          {"m": "getX"},
+          {"m": "getY"},
+          {"m": "getMeasuredHeightAndState"},
+          {"m": "getMeasuredState"},
+          {"m": "getMeasuredWidthAndState"},
           {
             "m": "getSystemUiVisibility",
             "t": "Visibility"
           },
-          {"m": "getVerticalScrollbarPosition" },
-          {"m": "isActivated" },
-          {"m": "isDirty" },
-          {"m": "isSaveFromParentEnabled" }
+          {"m": "getVerticalScrollbarPosition"},
+          {"m": "isActivated"},
+          {"m": "isDirty"},
+          {"m": "isSaveFromParentEnabled"}
         ],
         "14": [
-          {"m": "isHovered" }
+          {"m": "isHovered"}
         ],
         "15": [
-          {"m": "hasOnClickListeners" }
+          {"m": "hasOnClickListeners"}
         ],
         "16": [
-          {"m": "getResources" },
-          {"m": "getCameraDistance" },
+          {"m": "getResources"},
+          {"m": "getCameraDistance"},
           {
             "m": "getImportantForAccessibility",
             "t": "ImportantForA11Y"
           },
-          {"m": "getMinimumWidth" },
-          {"m": "getMinimumHeight" },
-          {"m": "getAccessibilityNodeProvider" },
-          {"m": "getFitsSystemWindows" },
-          {"m": "getScrollBarDefaultDelayBeforeFade" },
-          {"m": "getScrollBarFadeDuration" },
-          {"m": "getScrollBarSize" },
-          {"m": "isScrollContainer" },
-          {"m": "getParentForAccessibility" },
+          {"m": "getMinimumWidth"},
+          {"m": "getMinimumHeight"},
+          {"m": "getAccessibilityNodeProvider"},
+          {"m": "getFitsSystemWindows"},
+          {"m": "getScrollBarDefaultDelayBeforeFade"},
+          {"m": "getScrollBarFadeDuration"},
+          {"m": "getScrollBarSize"},
+          {"m": "isScrollContainer"},
+          {"m": "getParentForAccessibility"},
           {
             "m": "getWindowSystemUiVisibility",
             "t": "Visibility"
           },
-          {"m": "hasOverlappingRendering" },
-          {"m": "hasTransientState" }
+          {"m": "hasOverlappingRendering"},
+          {"m": "hasTransientState"}
         ],
         "17": [
           {
@@ -210,8 +210,8 @@
             "n": "Display:",
             "m": "getDisplay"
           },
-          {"m": "getPaddingEnd" },
-          {"m": "getPaddingStart" },
+          {"m": "getPaddingEnd"},
+          {"m": "getPaddingStart"},
           {
             "m": "getTextAlignment",
             "t": "ViewTextAlignment"
@@ -220,10 +220,10 @@
             "m": "getTextDirection",
             "t": "ViewTextDirection"
           },
-          {"m": "isPaddingRelative" }
+          {"m": "isPaddingRelative"}
         ],
         "18": [
-          {"m": "getClipBounds" },
+          {"m": "getClipBounds"},
           {
             "n": "Overlay:",
             "m": "getOverlay"
@@ -232,33 +232,33 @@
             "n": "WindowId:",
             "m": "getWindowId"
           },
-          {"m": "isInLayout" }
+          {"m": "isInLayout"}
         ],
         "19": [
-          {"m": "canResolveLayoutDirection" },
-          {"m": "canResolveTextAlignment" },
-          {"m": "canResolveTextDirection" },
-          {"m": "getAccessibilityLiveRegion" },
-          {"m": "isTextAlignmentResolved" },
-          {"m": "isTextDirectionResolved" },
-          {"m": "isAttachedToWindow" },
-          {"m": "isLaidOut" },
-          {"m": "isLayoutDirectionResolved" }
+          {"m": "canResolveLayoutDirection"},
+          {"m": "canResolveTextAlignment"},
+          {"m": "canResolveTextDirection"},
+          {"m": "getAccessibilityLiveRegion"},
+          {"m": "isTextAlignmentResolved"},
+          {"m": "isTextDirectionResolved"},
+          {"m": "isAttachedToWindow"},
+          {"m": "isLaidOut"},
+          {"m": "isLayoutDirectionResolved"}
         ],
         "21": [
-          {"m": "getBackgroundTintList" },
-          {"m": "getBackgroundTintMode" },
-          {"m": "getClipToOutline" },
-          {"m": "getElevation" },
-          {"m": "getTransitionName" },
-          {"m": "getTranslationZ" },
-          {"m": "getZ" },
-          {"m": "hasNestedScrollingParent" },
-          {"m": "getStateListAnimator" },
-          {"m": "getOutlineProvider" },
-          {"m": "isAccessibilityFocused" },
-          {"m": "isImportantForAccessibility" },
-          {"m": "isNestedScrollingEnabled" }
+          {"m": "getBackgroundTintList"},
+          {"m": "getBackgroundTintMode"},
+          {"m": "getClipToOutline"},
+          {"m": "getElevation"},
+          {"m": "getTransitionName"},
+          {"m": "getTranslationZ"},
+          {"m": "getZ"},
+          {"m": "hasNestedScrollingParent"},
+          {"m": "getStateListAnimator"},
+          {"m": "getOutlineProvider"},
+          {"m": "isAccessibilityFocused"},
+          {"m": "isImportantForAccessibility"},
+          {"m": "isNestedScrollingEnabled"}
         ],
         "22": [
           {
@@ -271,19 +271,19 @@
           }
         ],
         "23": [
-          {"m": "getAccessibilityClassName" },
+          {"m": "getAccessibilityClassName"},
           {
             "n": "Foreground:",
             "m": "getForeground"
           },
-          {"m": "getForegroundTintMode" },
-          {"m": "isContextClickable" },
-          {"m": "getScrollIndicators" },
+          {"m": "getForegroundTintMode"},
+          {"m": "isContextClickable"},
+          {"m": "getScrollIndicators"},
           {
             "m": "getForegroundGravity",
             "t": "Gravity"
           },
-          {"m": "getForegroundTintList" },
+          {"m": "getForegroundTintList"},
           {
             "n": "RootWindowInsets:",
             "m": "getRootWindowInsets"
@@ -294,16 +294,16 @@
             "n": "getHasOverlappingRendering",
             "m": "getHasOverlappingRendering"
           },
-          {"m": "isTemporarilyDetached" }
+          {"m": "isTemporarilyDetached"}
         ],
         "25": [
-          {"m": "getRevealOnFocusHint" }
+          {"m": "getRevealOnFocusHint"}
         ],
         "26": [
-          {"m": "getAutofillHints" },
-          {"m": "getAutofillType" },
-          {"m": "getAutofillValue" },
-          {"m": "getDefaultFocusHighlightEnabled" },
+          {"m": "getAutofillHints"},
+          {"m": "getAutofillType"},
+          {"m": "getAutofillValue"},
+          {"m": "getDefaultFocusHighlightEnabled"},
           {
             "m": "getFocusable",
             "t": "ViewFocusable"
@@ -316,15 +316,15 @@
             "m": "getNextClusterForwardId",
             "c": "getNextClusterForwardId().idName()"
           },
-          {"m": "getTooltipText" },
-          {"m": "hasExplicitFocusable" },
-          {"m": "hasPointerCapture" },
-          {"m": "isFocusedByDefault" },
-          {"m": "isImportantForAutofill" },
-          {"m": "isKeyboardNavigationCluster" }
+          {"m": "getTooltipText"},
+          {"m": "hasExplicitFocusable"},
+          {"m": "hasPointerCapture"},
+          {"m": "isFocusedByDefault"},
+          {"m": "isImportantForAutofill"},
+          {"m": "isKeyboardNavigationCluster"}
         ],
         "28": [
-          {"m": "getAccessibilityPaneTitle" },
+          {"m": "getAccessibilityPaneTitle"},
           {
             "m": "getOutlineAmbientShadowColor",
             "c": "getOutlineAmbientShadowColor().stringColor()"
@@ -333,9 +333,9 @@
             "m": "getOutlineSpotShadowColor",
             "c": "getOutlineAmbientShadowColor().stringColor()"
           },
-          {"m": "isAccessibilityHeading" },
-          {"m": "isPivotSet" },
-          {"m": "isScreenReaderFocusable" }
+          {"m": "isAccessibilityHeading"},
+          {"m": "isPivotSet"},
+          {"m": "isScreenReaderFocusable"}
         ],
         "29": [
           {
@@ -406,7 +406,7 @@
           {"m" : "isTransitionGroup"}
         ],
         "29": [
-          {"m": "isLayoutSuppressed" }
+          {"m": "isLayoutSuppressed"}
         ]
       }
     },
@@ -431,7 +431,7 @@
     },
     "android.widget.AbsListView": {
       "parent": "android.widget.AdapterView",
-      "items":  {
+      "items": {
         "1": [
           {
             "m": "getChoiceMode",
