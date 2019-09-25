@@ -26,9 +26,10 @@ class SampleApplication : MultiDexApplication() {
         DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView::class.java,
                 RenderAreaWrapper { view, outRect -> view.getDrawingSize(outRect) })
 
-        DetailExtractor.registerExtractor(BaseFragment::class.java, object : AndroidXFragmentExtractor() {
+        DetailExtractor.registerExtractor(BaseFragment::class.java, object : BaseExtractor() {
+            override val parent: Class<*> = Fragment::class.java
+
             override fun onFillValues(item: Any, context: ExtractingContext) {
-                super.onFillValues(item, context)
                 val baseFragment = item as BaseFragment
                 context.put("FakePresenter", baseFragment.fakePresenter)
             }

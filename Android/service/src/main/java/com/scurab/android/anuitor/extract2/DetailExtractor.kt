@@ -288,7 +288,7 @@ object DetailExtractor {
         var clz: Class<*> = clazz
         var ve: R? = data[clz.requireCanonicalName()]
         while (ve == null && clz != Any::class.java) {//object just for sure that View is unregistered
-            clz = clz.superclass
+            clz = clz.superclass as Class<*>
             ve = data[clz.requireCanonicalName()]
         }
         return ve

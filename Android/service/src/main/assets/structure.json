@@ -336,6 +336,36 @@
           {"m": "isAccessibilityHeading" },
           {"m": "isPivotSet" },
           {"m": "isScreenReaderFocusable" }
+        ],
+        "29": [
+          {
+            "m": "getExplicitStyle",
+            "c": "getExplicitStyle().idName()"
+          },
+          {"m": "getForegroundTintBlendMode"},
+          {
+            "m": "getHorizontalScrollbarThumbDrawable",
+            "n": "HorizontalScrollbarThumbDrawable:"
+          },
+          {
+            "m": "getHorizontalScrollbarTrackDrawable",
+            "n": "HorizontalScrollbarTrackDrawable:"
+          },
+          {
+            "m": "getSourceLayoutResId",
+            "c": "getSourceLayoutResId().idName()"
+          },
+          {"m": "getTransitionAlpha"},
+          {"m": "getUniqueDrawingId"},
+          {
+            "m": "getVerticalScrollbarThumbDrawable",
+            "n": "VerticalScrollbarThumbDrawable:"
+          },
+          {
+            "m": "getVerticalScrollbarTrackDrawable",
+            "n": "VerticalScrollbarTrackDrawable:"
+          },
+          {"m": "isForceDarkAllowed"}
         ]
       }
     },
@@ -374,6 +404,9 @@
           {"m" : "getNestedScrollAxes"},
           {"m" : "getTouchscreenBlocksFocus"},
           {"m" : "isTransitionGroup"}
+        ],
+        "29": [
+          {"m": "isLayoutSuppressed" }
         ]
       }
     },
@@ -398,7 +431,7 @@
     },
     "android.widget.AbsListView": {
       "parent": "android.widget.AdapterView",
-      "items": {
+      "items":  {
         "1": [
           {
             "m": "getChoiceMode",
@@ -425,6 +458,17 @@
           {"m": "getCheckedItemCount"},
           {"m": "getCheckedItemPositions"},
           {"m": "isFastScrollAlwaysVisible"}
+        ],
+        "29": [
+          {
+            "m": "getBottomEdgeEffectColor",
+            "c": "getBottomEdgeEffectColor().stringColor()"
+          },
+          {
+            "m": "getTopEdgeEffectColor",
+            "c": "getTopEdgeEffectColor().stringColor()"
+          },
+          {"m": "isDrawSelectorOnTop"}
         ]
       }
     },
@@ -444,6 +488,10 @@
             "m": "getTickMark"
           },
           {"m": "getTickMarkTintMode"}
+        ],
+        "29": [
+          {"m": "getThumbTintBlendMode"},
+          {"m": "getTickMarkTintBlendMode"}
         ]
       }
     },
@@ -515,6 +563,9 @@
         ],
         "21" : [
           {"m": "getCheckMarkTintMode"}
+        ],
+        "29": [
+          {"m": "getCheckMarkTintBlendMode"}
         ]
       }
     },
@@ -529,6 +580,9 @@
         ],
         "23" : [
           {"m": "getButtonDrawable"}
+        ],
+        "29": [
+          {"m": "getButtonTintBlendMode"}
         ]
       }
     },
@@ -545,6 +599,16 @@
         ],
         "23" : [
           {"m": "getAccessibilityClassName"}
+        ],
+        "29": [
+          {
+            "m": "getLeftEdgeEffectColor",
+            "c": "getLeftEdgeEffectColor().stringColor()"
+          },
+          {
+            "m": "getRightEdgeEffectColor",
+            "c": "getRightEdgeEffectColor().stringColor()"
+          }
         ]
       }
     },
@@ -572,6 +636,9 @@
         ],
         "21" : [
           {"m": "getImageTintMode"}
+        ],
+        "29": [
+          {"m": "getImageTintBlendMode"}
         ]
       }
     },
@@ -630,6 +697,20 @@
           {"m": "getProgressTintMode"},
           {"m": "getProgressBackgroundTintMode"},
           {"m": "getSecondaryProgressTintMode"}
+        ],
+        "29": [
+          {
+            "m": "getCurrentDrawable",
+            "n": "CurrentDrawable:"
+          },
+          {"m": "getIndeterminateTintBlendMode"},
+          {"m": "getMaxHeight"},
+          {"m": "getMaxWidth"},
+          {"m": "getMinHeight"},
+          {"m": "getMinWidth"},
+          {"m": "getProgressBackgroundTintBlendMode"},
+          {"m": "getProgressTintBlendMode"},
+          {"m": "getSecondaryProgressTintBlendMode"}
         ]
       }
     },
@@ -643,6 +724,16 @@
         ],
         "14" : [
           {"m": "getMaxScrollAmount"}
+        ],
+        "29": [
+          {
+            "m": "getBottomEdgeEffectColor",
+            "c": "getBottomEdgeEffectColor().stringColor()"
+          },
+          {
+            "m": "getTopEdgeEffectColor",
+            "c": "getTopEdgeEffectColor().stringColor()"
+          }
         ]
       }
     },
@@ -661,6 +752,10 @@
         "21": [
           {"m": "getShowText"},
           {"m": "getSplitTrack"}
+        ],
+        "29": [
+          {"m": "getThumbTintBlendMode"},
+          {"m": "getTrackTintBlendMode"}
         ]
       }
     },
@@ -840,6 +935,28 @@
           {"m": "getFontFeatureSettings"},
           {"m": "getLetterSpacing"},
           {"m": "getShowSoftInputOnFocus"}
+        ],
+        "29": [
+          {"m": "getCompoundDrawableTintBlendMode"},
+          {
+            "m": "getTextCursorDrawable",
+            "n": "TextCursorDrawable:"
+          },
+          {"m": "getTextDirectionHeuristic"},
+          {
+            "m": "getTextSelectHandle",
+            "n": "TextSelectHandle:"
+          },
+          {
+            "m": "getTextSelectHandleLeft",
+            "n": "TextSelectHandleLeft:"
+          },
+          {
+            "m": "getTextSelectHandleRight",
+            "n": "TextSelectHandleRight:"
+          },
+          {"m": "isHorizontallyScrollable"},
+          {"m": "isSingleLine"}
         ]
       }
     },
@@ -889,6 +1006,13 @@
           {"m": "getTitleMarginEnd"},
           {"m": "getTitleMarginStart"},
           {"m": "getTitleMarginTop"}
+        ],
+        "29": [
+          {"m": "getCollapseContentDescription"},
+          {
+            "m": "getCollapseIcon",
+            "n": "CollapseIcon:"
+          }
         ]
       }
     },
@@ -1395,7 +1519,7 @@
           {"m": "isCloseIconVisible"}
         ]
       }
-      }
+    }
   },
   "components" : {
     "android.app.Activity": {
@@ -1564,6 +1688,10 @@
             "t": "ViewLayoutDirection"
           },
           {"m": "isFilterBitmap"}
+        ],
+        "29": [
+          {"m": "getOpticalInsets"},
+          {"m": "isProjected"}
         ]
       }
     },
@@ -1656,6 +1784,9 @@
         ],
         "4" : [
           {"m": "getPackage"}
+        ],
+        "29": [
+          {"m": "getIdentifier"}
         ]
       }
     },
@@ -1732,6 +1863,19 @@
           {"m": "getFontFeatureSettings"},
           {"m": "getLetterSpacing"},
           {"m": "isElegantTextHeight"}
+        ],
+        "29": [
+          {"m": "getBlendMode"},
+          {"m": "getColorLong"},
+          {"m": "getEndHyphenEdit"},
+          {"m": "getShadowLayerColor"},
+          {"m": "getShadowLayerColorLong"},
+          {"m": "getShadowLayerDx"},
+          {"m": "getShadowLayerDy"},
+          {"m": "getShadowLayerRadius"},
+          {"m": "getStartHyphenEdit"},
+          {"m": "getStrikeThruPosition"},
+          {"m": "getStrikeThruThickness"}
         ]
       }
     },
@@ -1809,6 +1953,12 @@
         ],
         "26": [
           {"m": "getSafeBrowsingEnabled"}
+        ],
+        "29": [
+          {
+            "m": "getForceDark",
+            "t": "WebSettingsForceDark"
+          }
         ]
       }
     },
