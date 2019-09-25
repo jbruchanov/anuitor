@@ -58,7 +58,9 @@ enum class TranslatorName {
     ViewTextDirection,
     ViewScrollBarType,
     ViewGroupDescendantFocusability,
-    WebSettingsMixedContentMode;
+    WebSettingsMixedContentMode,
+    WebSettingsForceDark,
+    ;
 }
 
 
@@ -284,6 +286,14 @@ object Translators {
                 +(WebSettings.MIXED_CONTENT_NEVER_ALLOW to "MIXED_CONTENT_NEVER_ALLOW")
                 +(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW to "MIXED_CONTENT_ALWAYS_ALLOW")
                 +(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE to "MIXED_CONTENT_COMPATIBILITY_MODE")
+            }
+        }
+
+        atLeastApi(Build.VERSION_CODES.Q) {
+            itemTranslator(TranslatorName.WebSettingsForceDark) {
+                +(WebSettings.FORCE_DARK_AUTO to "FORCE_DARK_AUTO")
+                +(WebSettings.FORCE_DARK_ON to "FORCE_DARK_ON")
+                +(WebSettings.FORCE_DARK_OFF to "FORCE_DARK_OFF")
             }
         }
 
