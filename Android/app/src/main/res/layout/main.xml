@@ -2,8 +2,7 @@
 <FrameLayout android:id="@+id/root"
              xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:fitsSystemWindows="true">
+             android:layout_height="match_parent">
 
     <androidx.slidingpanelayout.widget.SlidingPaneLayout
         android:id="@+id/sliding_pane_layout"
