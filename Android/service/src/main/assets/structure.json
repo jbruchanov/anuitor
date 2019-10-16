@@ -291,8 +291,9 @@
         ],
         "24": [
           {
-            "n": "getHasOverlappingRendering",
-            "m": "getHasOverlappingRendering"
+            "_": "the name is correct, there is another `hasOverlappingRendering`",
+            "m": "getHasOverlappingRendering",
+            "n": "GetHasOverlappingRendering"
           },
           {"m": "isTemporarilyDetached"}
         ],
