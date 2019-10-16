@@ -37,7 +37,7 @@ sed -e 's/{VERSION}/'$VERSION'/g' template-groovy.pom > anuitor-groovy-$VERSION.
 #generate anuitor.aar
 pushd ..
 chmod +x gradlew
-gradlew clean assembleRelease
+gradlew clean assembleRelease service-groovy:assembleRelease
 popd
 cp ../service/build/outputs/aar/service-release.aar anuitor-$VERSION.aar
 
