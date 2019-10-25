@@ -21,11 +21,11 @@ class ViewshotPlugin(windowManager: WindowManager) : ActivityPlugin(windowManage
     override fun canServeUri(uri: String, rootDir: File): Boolean = PATH == uri
 
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
-    private val emptyBitmap: Bitmap by lazy {
+    private val emptyBitmap: ByteArray by lazy {
         val b = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
         val c = Canvas(b)
         c.drawRect(0f, 0f, 1f, 1f, clearPaint)
-        b
+        b.save()
     }
 
     override fun onRequest(uri: String,
@@ -64,8 +64,8 @@ class ViewshotPlugin(windowManager: WindowManager) : ActivityPlugin(windowManage
                                             }
                                         }
                                         bitmap
-                                    } ?: emptyBitmap
-                            ByteArrayInputStream(bitmap.save())
+                                    }
+                            ByteArrayInputStream(bitmap?.save() ?: emptyBitmap)
                         }
             }
 
