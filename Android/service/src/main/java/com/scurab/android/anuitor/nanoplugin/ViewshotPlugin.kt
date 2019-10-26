@@ -13,6 +13,7 @@ import java.io.File
 
 private const val VIEW_PNG = "view.png"
 private const val PATH = "/$VIEW_PNG"
+private val LOCK = Any()
 
 class ViewshotPlugin(windowManager: WindowManager) : ActivityPlugin(windowManager) {
 
@@ -41,29 +42,36 @@ class ViewshotPlugin(windowManager: WindowManager) : ActivityPlugin(windowManage
             val qsValue = HttpTools.parseQueryString(queryString)
             if (qsValue.containsKey(POSITION)) {
                 resultInputStream = qsValue.currentRootView()
-                        ?.let { DetailExtractor.findViewByPosition(it, qsValue[POSITION]?.toInt() ?: 0) }
+                        ?.let {
+                            DetailExtractor.findViewByPosition(it, qsValue[POSITION]?.toInt() ?: 0)
+                        }
                         ?.let { view ->
                             val bitmap = view
                                     .takeIf { it.visibility == View.VISIBLE && it.hasSize() }
                                     ?.let {
-                                        Executor.runInMainThreadBlockingOnlyIfCrashing {
-                                            view.takeIf { it is ViewGroup && !DetailExtractor.isExcludedViewGroup(it.javaClass.name) }
-                                                    ?.let { view.renderBackground() }
-                                                    ?: view.render()
-                                        }
-                                    }?.let {
-                                        var bitmap = it
-                                        val (scaleX, scaleY) = view.absoluteScale()
-                                        if (scaleX != 1f || scaleY != 1f && it.width > 0 && it.height > 0) {
-                                            val scaledW = ((it.width * scaleX) + 0.5f).toInt()
-                                            val scaledH = ((it.height * scaleY) + 0.5f).toInt()
-                                            if (scaledW > 0 && scaledH > 0) {//just prevention about some nonsense
-                                                val scaled = Bitmap.createScaledBitmap(bitmap, scaledW, scaledH, false)
-                                                it.recycle()
-                                                bitmap = scaled
+                                        //lock rendering to 1 view a time
+                                        //hammering this crashing the app
+                                        synchronized(LOCK) {
+                                            Executor.runInMainThreadBlockingOnlyIfCrashing {
+                                                view.takeIf { it is ViewGroup && !DetailExtractor.isExcludedViewGroup(it.javaClass.name) }
+                                                        ?.let { view.renderBackground() }
+                                                        ?: view.render()
                                             }
+                                        }?.let {
+                                            var bitmap = it
+                                            //TODO: add scaling directly to render
+                                            val (scaleX, scaleY) = view.absoluteScale()
+                                            if (scaleX != 1f || scaleY != 1f && it.width > 0 && it.height > 0) {
+                                                val scaledW = ((it.width * scaleX) + 0.5f).toInt()
+                                                val scaledH = ((it.height * scaleY) + 0.5f).toInt()
+                                                if (scaledW > 0 && scaledH > 0) {//just prevention about some nonsense
+                                                    val scaled = Bitmap.createScaledBitmap(bitmap, scaledW, scaledH, false)
+                                                    it.recycle()
+                                                    bitmap = scaled
+                                                }
+                                            }
+                                            bitmap
                                         }
-                                        bitmap
                                     }
                             ByteArrayInputStream(bitmap?.save() ?: emptyBitmap)
                         }
