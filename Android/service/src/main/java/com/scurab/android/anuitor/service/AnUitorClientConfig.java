@@ -45,6 +45,10 @@ public class AnUitorClientConfig {
         device.put("DisplayDensity", String.format("%.2f", context.getResources().getDisplayMetrics().density));
         CONFIG.put("Device", device);
         CONFIG.put("Groovy", hasGroovySupport);
+        CONFIG.put("Pages", new String[]{"LayoutInspectorPage", "TidyTreePage", "ThreeDPage",
+                "ResourcesPage", "FileBrowserPage", "WindowsPage",
+                "WindowsDetailedPage", "ScreenshotPage", "LogCatPage",
+                hasGroovySupport ? "GroovyPage" : ""});
 
         setSelectionColor(COLOR_RED);
         initDefaultHighlights();
