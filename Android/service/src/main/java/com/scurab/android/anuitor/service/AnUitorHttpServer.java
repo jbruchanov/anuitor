@@ -59,9 +59,9 @@ public class AnUitorHttpServer extends SimpleWebServer {
                 new FileStoragePlugin(context),
                 new ResourcesPlugin(context.getApplicationContext().getResources(), windowManager),
                 new ScreenStructurePlugin(windowManager),
-                new ViewPropertyPlugin(windowManager)));
+                new ViewPropertyPlugin(windowManager),
+                new ScreenComponentsPlugin(windowManager)));
         registerPluginForMimeType(new LogCatPlugin());
-        registerPluginForMimeType(new ScreenComponentsPlugin(windowManager));
     }
 
     public static void registerPluginForMimeType(BasePlugin plugin) {
