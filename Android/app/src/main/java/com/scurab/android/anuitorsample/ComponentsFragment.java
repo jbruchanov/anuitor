@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.core.content.ContextCompat;
@@ -55,12 +56,21 @@ public class ComponentsFragment extends DialogFragment {
                 v -> Toast.makeText(requireContext(), "Ignored by pointer Clicked", Toast.LENGTH_LONG).show());
         ignoredByPointer.setId(R.id.pointer_ignore);
         ll.addView(ignoredByPointer);
+        ll.addView(createThemedButton("ThemeWrappedButton", v ->
+                Toast.makeText(requireContext(), "Theme.AppCompat.Light", Toast.LENGTH_SHORT).show()));
 
         return ll;
     }
 
     private Button createButton(String title, View.OnClickListener clickListener) {
         Button button = new Button(requireActivity());
+        button.setText(title);
+        button.setOnClickListener(clickListener);
+        return button;
+    }
+
+    private Button createThemedButton(String title, View.OnClickListener clickListener) {
+        Button button = new Button(new ContextThemeWrapper(requireActivity(), R.style.Theme_AppCompat_Light));
         button.setText(title);
         button.setOnClickListener(clickListener);
         return button;

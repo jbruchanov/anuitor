@@ -1523,6 +1523,29 @@
     }
   },
   "components" : {
+    "android.view.ContextThemeWrapper": {
+      "items" : {
+        "1": [
+          {"m": "getBaseContext"},
+          {
+            "m": "getThemeResId",
+            "c": "reflection(\"getThemeResId\")?.toString()?.toIntOrNull()?.idName()"
+          }
+        ]
+      }
+    },
+    "androidx.appcompat.view.ContextThemeWrapper": {
+      "className" : "AndroidXContextThemeWrapper",
+      "items" : {
+        "1": [
+          {"m": "getBaseContext"},
+          {
+            "m": "getThemeResId",
+            "c": "getThemeResId().idName()"
+          }
+        ]
+      }
+    },
     "android.app.Activity": {
       "items" : {
         "1": [
