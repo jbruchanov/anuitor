@@ -30,7 +30,6 @@ import com.scurab.android.anuitor.tools.ZipTools;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * User: jbruchanov
@@ -217,7 +216,7 @@ public class AnUitorService extends Service {
     @Nullable
     private static Notification createNotification(@NonNull Context context,
                                                    @NonNull String msg) {
-        return createNotification(context, TAG, msg, NotificationCompat.PRIORITY_HIGH, null, null);
+        return createNotification(context, TAG, msg, NotificationCompat.PRIORITY_DEFAULT, null, null);
     }
 
     @Nullable
@@ -227,48 +226,19 @@ public class AnUitorService extends Service {
                                                    int defaults,
                                                    @Nullable PendingIntent contentIntent,
                                                    @Nullable PendingIntent stopIntent) {
-        try {
-            NotificationCompat.Builder notib = new NotificationCompat.Builder(context, TAG)
-                    .setContentTitle(StringUtils.valueIfNull(title, TAG))
-                    .setAutoCancel(true)
-                    .setDefaults(defaults)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setContentText(StringUtils.valueIfNull(msg, "Null msg"))
-                    .setSmallIcon(ICON_RES_ID)
-                    .setContentIntent(contentIntent)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
+        NotificationCompat.Builder notib = new NotificationCompat.Builder(context, TAG)
+                .setContentTitle(StringUtils.valueIfNull(title, TAG))
+                .setAutoCancel(true)
+                .setDefaults(defaults)
+                .setContentText(StringUtils.valueIfNull(msg, "Null msg"))
+                .setSmallIcon(ICON_RES_ID)
+                .setContentIntent(contentIntent)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
 
-            if (stopIntent != null) {
-                notib.addAction(0, STOP, stopIntent);
-            }
-            return notib.build();
-        } catch (Throwable e) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                Notification.Builder builder = new Notification.Builder(context)
-                        .setContentTitle(title)
-                        .setAutoCancel(true)
-                        .setDefaults(defaults)
-                        .setContentText(StringUtils.valueIfNull(msg, "Null msg"))
-                        .setSmallIcon(ICON_RES_ID);
-
-                if (contentIntent != null) {
-                    builder.setContentIntent(contentIntent);
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    if (stopIntent != null) {
-                        builder.addAction(0, STOP, stopIntent);
-                    }
-                    builder.setPriority(Notification.PRIORITY_HIGH);
-                    builder.setStyle(new Notification.BigTextStyle().bigText(msg));
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    builder.setChannelId(TAG);
-                }
-                return builder.getNotification();
-            }
+        if (stopIntent != null) {
+            notib.addAction(0, STOP, stopIntent);
         }
-        return null;
+        return notib.build();
     }
 
     /**
@@ -330,7 +300,7 @@ public class AnUitorService extends Service {
      * @param context
      */
     public static void startService(Context context) {
-        startService(context, DEFAULT_PORT, R.raw.anuitor, false, null);
+        startService(context, DEFAULT_PORT, false, null);
     }
 
     /**
@@ -340,17 +310,7 @@ public class AnUitorService extends Service {
      * @param port
      */
     public static void startServiceUsingPort(Context context, int port) {
-        startService(context, port, R.raw.anuitor, false, null);
-    }
-
-    /**
-     * Start service
-     *
-     * @param context
-     * @param rawWebZipFileRes {@link #startService(android.content.Context, int, int, boolean, Runnable)}
-     */
-    public static void startService(Context context, int rawWebZipFileRes) {
-        startService(context, DEFAULT_PORT, rawWebZipFileRes, false, null);
+        startService(context, port, false, null);
     }
 
     /**
@@ -359,8 +319,8 @@ public class AnUitorService extends Service {
      * @param overwriteWebFolder
      * @param onFinishCallback
      */
-    public static void startService(Context context, boolean overwriteWebFolder, Runnable onFinishCallback) {
-        startService(context, DEFAULT_PORT, R.raw.anuitor, overwriteWebFolder, onFinishCallback);
+    public static void startService(Context context, boolean overwriteWebFolder, @Nullable Runnable onFinishCallback) {
+        startService(context, DEFAULT_PORT, overwriteWebFolder, onFinishCallback);
     }
 
     /**
@@ -368,12 +328,11 @@ public class AnUitorService extends Service {
      * Throws RuntimeException in async thread if there is an exception from unzip process.
      *
      * @param context
-     * @param rawWebZipFileRes   resource id for zip file of web, if -1 'http://anuitor.scurab.com/download/anuitor.zip' is used as link to download app, 0 is used default included zip, otherwise your own asset file
      * @param overwriteWebFolder true to delete old web folder and unzip again
      * @param onFinishCallback   called when {@link Context#startService(android.content.Intent)} has been called, can be null, is called in non main thread!
      * @throws IllegalStateException if application object doesn't implement {@link com.scurab.android.anuitor.reflect.WindowManager}
      */
-    public static void startService(@NonNull final Context context, final int port, final int rawWebZipFileRes, final boolean overwriteWebFolder, final Runnable onFinishCallback) {
+    public static void startService(@NonNull final Context context, final int port, final boolean overwriteWebFolder, @Nullable final Runnable onFinishCallback) {
         JsonRef.initJson();
         createNotificationChannel(context);
         new Thread(() -> {
@@ -384,17 +343,7 @@ public class AnUitorService extends Service {
                 f.mkdir();
                 try {
                     String zipFile = folder + "/web.zip";
-                    if (rawWebZipFileRes == -1) {
-                        new File(zipFile).delete();
-                        URL website = new URL("http://anuitor.scurab.com/download/anuitor.zip");
-                        FileSystemTools.copyFile(website.openStream(), zipFile);
-                    } else {
-                        int resId = rawWebZipFileRes;
-                        if (resId == 0) {
-                            resId = R.raw.anuitor;
-                        }
-                        ZipTools.copyFileIntoInternalStorageIfNecessary(context, resId, zipFile);
-                    }
+                    ZipTools.copyFileIntoInternalStorageIfNecessary(context, R.raw.anuitor, zipFile);
                     ZipTools.extractFolder(zipFile, folder);
                 } catch (Throwable e) {
                     Notification notification = createNotification(context,
