@@ -284,7 +284,7 @@ public class DOM2XmlPullBuilder {
      * @throws IOException
      * @throws XmlPullParserException
      */
-    public static String naiveFormat(String xml) throws IOException, XmlPullParserException {
+    public static String naiveFormat(String xml) {
         String[] lines = xml.split("\\n");
         StringBuilder sb = new StringBuilder();
         for (String line : lines) {
@@ -311,11 +311,11 @@ public class DOM2XmlPullBuilder {
         if (attrs.size() == 1) {
             return line + "\n";
         }
-        boolean singleLineXmlElement = attrs.size() >= 2
+        boolean innerTextValueXmlElement = attrs.size() >= 2
                 && attrs.get(0).replaceAll("</", "").equals(attrs.get(1).replaceAll("<", ""));
 
         StringBuilder sb = new StringBuilder();
-        if (singleLineXmlElement) {
+        if (innerTextValueXmlElement) {
             insertChar(sb, SPACE, offset);
             sb.append(line).append("\n");
         } else {
