@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:orientation="vertical"
@@ -22,12 +23,12 @@
             android:fontFamily="@font/lobster"
             />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:drawableLeft="@drawable/ic_comment_24dp"
-            android:drawableRight="@drawable/ic_launcher"
+            tools:drawableLeft="@drawable/ic_comment_24dp"
+            tools:drawableRight="@drawable/ic_launcher"
             android:drawablePadding="@dimen/gap_large"
             android:gravity="center"
             android:text="Large Text"
@@ -36,9 +37,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_notifications_black_24dp"
-            android:drawableBottom="@drawable/ic_home_black_24dp"
-            android:drawableTint="@color/colorAccent"
+            tools:drawableTop="@drawable/ic_notifications_black_24dp"
+            tools:drawableBottom="@drawable/ic_home_black_24dp"
+            tools:drawableTint="@color/colorAccent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
             android:id="@+id/textView3" />

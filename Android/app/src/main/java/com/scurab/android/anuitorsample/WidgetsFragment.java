@@ -1,14 +1,22 @@
 package com.scurab.android.anuitorsample;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.scurab.android.anuitorsample.common.BaseFragment;
 
@@ -32,6 +40,27 @@ public class WidgetsFragment extends BaseFragment {
         Context context = view.getContext();
         initSpinner(view, context);
         initAutoCompleteTextView(view, context);
+
+        Resources res = getResources();
+        //vector drawable crashing on Kitkat
+        ((TextView)view.findViewById(R.id.textView2))
+                .setCompoundDrawablesWithIntrinsicBounds(
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_comment_24dp),
+                        null,
+                        res.getDrawable(R.drawable.ic_launcher),
+                        null);
+
+        Drawable drawableTop = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_notifications_black_24dp);
+        Drawable drawableBottom = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_home_black_24dp);
+        DrawableCompat.setTint(drawableTop, res.getColor(R.color.colorAccent));
+        DrawableCompat.setTint(drawableBottom, res.getColor(R.color.colorAccent));
+
+        ((TextView)view.findViewById(R.id.textView3))
+                .setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        drawableTop,
+                        null,
+                        drawableBottom);
     }
 
     private void initAutoCompleteTextView(View view, Context context) {
