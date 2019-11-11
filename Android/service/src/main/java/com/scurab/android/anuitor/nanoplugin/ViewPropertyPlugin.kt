@@ -75,7 +75,7 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
     private fun getPropertyValue(property: String, view: View, reflection: Boolean, maxDepth: Int): DataResponse {
         var propertyValue: Any?
         val methodName: String
-        if (Constants.OWNER == property) {
+        if (Constants.OWNER.substringBefore(":") == property) {
             propertyValue = view.components().findOwnerComponent(view)
             if (propertyValue is IFragmentDelegate) {
                 propertyValue = propertyValue.fragment
