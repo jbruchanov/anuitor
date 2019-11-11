@@ -16,10 +16,13 @@ fun ByteArray.base64(): String {
 }
 
 fun Bitmap.save(format: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG,
-                    quality: Int = 80): ByteArray {
+                quality: Int = 80,
+                recycle: Boolean = true): ByteArray {
     val bos = ByteArrayOutputStream()
     compress(format, quality, bos)
     val result = bos.toByteArray()
-    recycle()
+    if (recycle) {
+        recycle()
+    }
     return result
 }

@@ -1,5 +1,6 @@
 package com.scurab.android.anuitor.nanoplugin
 
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import com.scurab.android.anuitor.Constants
@@ -120,12 +121,19 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
             data["4Extractor"] = extractor.javaClass.name
             response.Context = data
 
-            if (item is Drawable) {
-                response.Data = item.renderWithBounds().base64()
-                response.DataType = BASE64_PNG
-            } else if (item is View) {
-                response.Data = item.render(false).save().base64()
-                response.DataType = BASE64_PNG
+            when (item) {
+                is BitmapDrawable -> {
+                    response.Data = item.bitmap.save(recycle = false).base64()
+                    response.DataType = BASE64_PNG
+                }
+                is Drawable -> {
+                    response.Data = item.renderWithBounds().base64()
+                    response.DataType = BASE64_PNG
+                }
+                is View -> {
+                    response.Data = item.render(false).save().base64()
+                    response.DataType = BASE64_PNG
+                }
             }
         } else {
             response.Context = "Null object"
