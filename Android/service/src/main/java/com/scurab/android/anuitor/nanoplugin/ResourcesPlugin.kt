@@ -2,13 +2,16 @@ package com.scurab.android.anuitor.nanoplugin
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.NinePatchDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.util.TypedValue
+import androidx.appcompat.widget.AppCompatTextView
 import com.scurab.android.anuitor.extract2.TranslatorName
 import com.scurab.android.anuitor.extract2.Translators
 import com.scurab.android.anuitor.extract2.getActivity
@@ -27,6 +30,12 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import kotlin.math.max
 import kotlin.math.min
+import android.graphics.Typeface
+import android.view.View
+import androidx.core.content.res.ResourcesCompat
+import com.scurab.android.anuitor.nanoplugin.ResourcesPlugin
+import kotlin.math.roundToInt
+
 
 private const val MAX_9PATCH_SIZE = 600
 private const val MIN_9PATCH_SIZE = 100
@@ -100,6 +109,7 @@ class ResourcesPlugin(private val appRes: Resources,
                     IdsHelper.RefType.dimen -> response(NUMBER) { res.getDimension(resId) }
                     IdsHelper.RefType.drawable, IdsHelper.RefType.mipmap -> res.extractDrawable(resId, theme)
                     IdsHelper.RefType.fraction -> res.extractFraction(resId)
+                    IdsHelper.RefType.font -> res.extractFont(resId, windowManager.currentRootView.context)
                     IdsHelper.RefType.id, IdsHelper.RefType.integer ->
                         response(Int::class.javaPrimitiveType?.simpleName ?: STRING_DATA_TYPE) { resId }
                     IdsHelper.RefType.menu, IdsHelper.RefType.layout, IdsHelper.RefType.transition ->
@@ -257,6 +267,34 @@ class ResourcesPlugin(private val appRes: Resources,
         return when (tv.type) {
             TypedValue.TYPE_FRACTION -> response(NUMBER) { getFraction(resId, 100, 100) }
             TypedValue.TYPE_FLOAT -> response(NUMBER) { tv.float }
+            else -> response(STRING_DATA_TYPE) { "Not implemented fraction for TypedValue.type='${tv.type}'" }
+        }
+    }
+
+    private fun Resources.extractFont(resId:Int, context: Context): ResourceResponse {
+        val tv = resId.resolveTypedValue(this)
+        return when (tv.type) {
+            TypedValue.TYPE_STRING -> {
+                val font = tv.string.toString()
+                if(font.endsWith("xml")) {
+                    return response(XML) { DOM2XmlPullBuilder.transform(getXml(resId)) }
+                } else {
+                    val tv = AppCompatTextView(context).apply {
+                        setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                        text = "The quick brown fox jumps over the lazy dog 01234567890\n" +
+                                "\uD83D\uDE01 ✋ \uD83D\uDE80 \uD83C\uDDEC\uD83C\uDDE7 \uD83C\uDF7B \uD83C\uDF79"
+                        val padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, displayMetrics).roundToInt()
+                        setPadding(padding, padding, padding, padding)
+                        measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+                        layout(0, 0, measuredWidth, measuredHeight)
+                        setBackgroundColor(Color.BLACK)
+                        setTextColor(Color.WHITE)
+                        typeface = ResourcesCompat.getFont(context, resId)
+                    }
+                    response(BASE64_PNG) { tv.render(false).save().base64() }
+                }
+            }
             else -> response(STRING_DATA_TYPE) { "Not implemented fraction for TypedValue.type='${tv.type}'" }
         }
     }

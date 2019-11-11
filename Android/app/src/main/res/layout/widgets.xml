@@ -18,6 +18,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Lobster Font Text"
+            android:fontFamily="@font/lobster"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:drawableLeft="@drawable/ic_comment_24dp"
             android:drawableRight="@drawable/ic_launcher"

@@ -30,7 +30,7 @@ public class IdsHelper {
         bool,
         color,
         dimen, drawable,
-        fraction,
+        fraction, font,
         id, integer, interpolator,
         layout,
         menu, mipmap,
