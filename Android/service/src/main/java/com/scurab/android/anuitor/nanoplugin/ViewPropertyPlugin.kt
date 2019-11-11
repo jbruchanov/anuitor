@@ -109,8 +109,11 @@ class ViewPropertyPlugin(windowManager: WindowManager) : ActivityPlugin(windowMa
                 extractor = reflectionExtractor
             }
             val data = extractor!!.fillValues(item, ExtractingContext())
+            //owner of owner is not wanted
             data.remove("Owner")
-            data["Type"] = item.javaClass.name
+            //renaming key
+            data["0Type"] = data.remove("Type")
+                    ?: throw NullPointerException("Type is not present?!")
             data["1ParentType"] = parentType
             data["2Name"] = name
             data["3MethodName"] = methodName
