@@ -284,7 +284,7 @@ public class DOM2XmlPullBuilder {
      * @throws IOException
      * @throws XmlPullParserException
      */
-    public static String naiveFormat(String xml) throws IOException, XmlPullParserException {
+    public static String naiveFormat(String xml) {
         String[] lines = xml.split("\\n");
         StringBuilder sb = new StringBuilder();
         for (String line : lines) {
@@ -311,16 +311,23 @@ public class DOM2XmlPullBuilder {
         if (attrs.size() == 1) {
             return line + "\n";
         }
-        boolean closesTag = line.endsWith("/>");
+        boolean innerTextValueXmlElement = attrs.size() >= 2
+                && attrs.get(0).replaceAll("</", "").equals(attrs.get(1).replaceAll("<", ""));
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0, n = attrs.size(); i < n; i++) {
-            String value = attrs.get(i);
-            insertChar(sb, SPACE, i == 0 ? offset : offset + 4);
-            sb.append(value).append("\n");
+        if (innerTextValueXmlElement) {
+            insertChar(sb, SPACE, offset);
+            sb.append(line).append("\n");
+        } else {
+            boolean closesTag = line.endsWith("/>");
+            for (int i = 0, n = attrs.size(); i < n; i++) {
+                String value = attrs.get(i);
+                insertChar(sb, SPACE, i == 0 ? offset : offset + 4);
+                sb.append(value).append("\n");
+            }
+            sb.setLength(sb.length() - 1);
+            sb.append(closesTag ? "/>" : ">").append("\n");
         }
-        sb.setLength(sb.length() - 1);
-        sb.append(closesTag ? "/>" : ">").append("\n");
         return sb.toString();
     }
 
@@ -347,3 +354,4 @@ public class DOM2XmlPullBuilder {
     private static final String COMMENT = "<!--\n This XML file is recreated based on XMLPullParser, it's not a direct copy of XML file!\n-->\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 }
 
+//<domain includeSubdomains="true">anuitor.scurab.com</domain>

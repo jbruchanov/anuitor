@@ -20,7 +20,7 @@ class SampleApplication : MultiDexApplication() {
         AnUitorClientConfig.addTypeHighlighting(Button::class.java, "rgba(255, 0, 255, 0.5)")
         AnUitorClientConfig.addPropertyHighlighting("text.*|.*TextColor.*|CanResolveText.*", "rgba(255, 0, 255, 1)")
         AnUitorClientConfig.addPointerIgnoreViewId(R.id.pointer_ignore)
-        AnUitorService.startService(this, 8081, 0, true, null)
+        AnUitorService.startService(this, 8081, true, null)
         IdsHelper.loadValues(R::class.java)
 
         DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView::class.java,
