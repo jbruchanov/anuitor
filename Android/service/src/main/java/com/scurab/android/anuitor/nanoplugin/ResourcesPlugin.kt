@@ -112,7 +112,7 @@ class ResourcesPlugin(private val appRes: Resources,
                     IdsHelper.RefType.font -> res.extractFont(resId, windowManager.currentRootView.context)
                     IdsHelper.RefType.id, IdsHelper.RefType.integer ->
                         response(Int::class.javaPrimitiveType?.simpleName ?: STRING_DATA_TYPE) { resId }
-                    IdsHelper.RefType.menu, IdsHelper.RefType.layout, IdsHelper.RefType.transition ->
+                    IdsHelper.RefType.menu, IdsHelper.RefType.navigation, IdsHelper.RefType.layout, IdsHelper.RefType.transition ->
                         response(XML) { ResourcesReflector(res).load(resId) }
                     IdsHelper.RefType.plurals -> res.extractPlurals(resId)
                     IdsHelper.RefType.string -> response(STRING_DATA_TYPE) { res.getString(resId) }

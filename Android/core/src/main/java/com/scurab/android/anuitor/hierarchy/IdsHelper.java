@@ -34,6 +34,7 @@ public class IdsHelper {
         id, integer, interpolator,
         layout,
         menu, mipmap,
+        navigation,
         plurals,
         raw,
         string, style, styleable,
