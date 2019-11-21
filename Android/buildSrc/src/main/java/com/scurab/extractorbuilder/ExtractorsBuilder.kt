@@ -58,11 +58,15 @@ class ExtractorsBuilder {
 
     private fun String.simpleClassName() = substring(lastIndexOf(".") + 1).replace("$", "")
 
+    @Suppress("ConstantConditionIf")
     private fun createPutStatement(mi: Structure.MethodInfo, minApi: Int): String {
         var convertToString = ""
         val call = when {
             mi.customCode != null && mi.isId -> mi.customCode
-            mi.customCode != null -> mi.customCode
+            mi.customCode != null -> {
+                if(mi.useExtractor) convertToString = ", false"
+                mi.customCode
+            }
             mi.useReflection && mi.translatorMethod != null -> "reflectionInt(\"${mi.methodName}\")"
             mi.useReflection -> "reflection(\"${mi.methodName}\")"
             mi.isId -> "${mi.methodName}().idName()"

@@ -1656,7 +1656,12 @@
     "android.app.FragmentManager": {
       "items": {
         "11": [
-          {"m": "getBackStackEntryCount"}
+          {"m": "getBackStackEntryCount"},
+          {
+            "n": "BackStack",
+            "c": "extractBackStack()",
+            "e": true
+          }
         ],
         "17": [
           {"m": "isDestroyed"}
@@ -2085,7 +2090,78 @@
             "e": true
           },
           {"m": "isDestroyed"},
-          {"m": "isStateSaved"}
+          {"m": "isStateSaved"},
+          {
+            "n": "BackStack",
+            "c": "extractBackStack()",
+            "e": true
+          }
+        ]
+      }
+    },
+    "androidx.navigation.fragment.NavHostFragment": {
+      "parent": "androidx.fragment.app.Fragment",
+      "items": {
+        "1": [
+          {
+            "m": "getNavController",
+            "e": true
+          }
+        ]
+      }
+    },
+    "androidx.navigation.NavController": {
+      "items": {
+        "1": [
+          {
+            "m": "getGraph",
+            "e": true
+          },
+          {
+            "m": "getCurrentDestination",
+            "e": true
+          },
+          {
+            "m": "BackStack",
+            "c": "extractBackStack()",
+            "e": true
+          }
+        ]
+      }
+    },
+    "androidx.navigation.NavGraph": {
+      "items": {
+        "1": [
+          {
+            "m": "getDisplayName",
+            "r": true
+          },
+          {
+            "m": "getStartDestDisplayName",
+            "c": "getStartDestination().idName()"
+          },
+          {
+            "n": "Destinations",
+            "c": "map{ it.getId().idName() }",
+            "e": true
+          }
+        ]
+      }
+    },
+    "androidx.navigation.NavDestination": {
+      "items": {
+        "1": [
+          {
+            "m": "getDisplayName",
+            "c": "getId().idName()"
+          },
+          {"m": "getNavigatorName"},
+          {
+            "m": "getArguments",
+            "e": true
+          },
+          {"m": "getId"},
+          {"m": "getLabel"}
         ]
       }
     },

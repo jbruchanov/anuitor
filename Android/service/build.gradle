@@ -70,6 +70,7 @@ dependencies {
     compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
     compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
     compileOnly "androidx.constraintlayout:constraintlayout:${constraintlayout}"
+    compileOnly "androidx.navigation:navigation-fragment:${androidXNavigation}"
 
     testImplementation "junit:junit:$junit"
     testImplementation project(":service-groovy")

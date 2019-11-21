@@ -62,11 +62,11 @@ abstract class BaseExtractor {
         if (this == null) {
             return "null"
         }
-        return when {
-            this is Iterable<*> -> this.filterNotNull().map {
+        return when (this) {
+            is Iterable<*> -> this.filterNotNull().map {
                 extractItem(it, context)
             }
-            this is Array<*> -> this.filterNotNull().map {
+            is Array<*> -> this.filterNotNull().map {
                 extractItem(it, context)
             }
             else -> extractItem(this, context)
