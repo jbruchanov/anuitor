@@ -81,6 +81,8 @@ public class ViewNode {
         }
     }
 
+    //seems like necessary evil, gson/jackson have troubles to do it
+    //because of serializing using reflection => circular references
     public JSONObject toJson() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("IDi", IDi);

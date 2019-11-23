@@ -8,7 +8,6 @@ import com.android.dx.dex.cf.CfTranslator;
 import com.android.dx.dex.code.PositionList;
 import com.android.dx.dex.file.ClassDefItem;
 import com.android.dx.dex.file.DexFile;
-import com.scurab.android.anuitor.model.OutRef;
 import com.scurab.android.anuitor.tools.Executor;
 import com.scurab.android.anuitor.tools.LogCatProvider;
 

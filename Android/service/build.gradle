@@ -5,6 +5,12 @@ apply from: "$rootDir/build-android.gradle"
 android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/kotlinx-io.kotlin_module'
+        exclude 'META-INF/io.netty.versions.properties'
+        exclude 'META-INF/atomicfu.kotlin_module'
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/kotlinx-coroutines-io.kotlin_module'
+        exclude 'META-INF/kotlinx-coroutines-core.kotlin_module'
     }
     sourceSets {
         main.java.srcDirs += file("src/extractors")
@@ -58,6 +64,8 @@ dependencies {
     //necessary for service
     implementation "androidx.core:core:${androidXCore}"
     implementation "androidx.fragment:fragment:${androidXFragments}"
+    def ktor = "1.2.5"
+    implementation "io.ktor:ktor-server-netty:$ktor"
 
     compileOnly project(":service-groovy")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

@@ -9,13 +9,13 @@ import android.os.Binder;
  */
 public class AnUitorServiceBinder extends Binder {
 
-    private final AnUitorService mService;
+    private final AnUitorServiceX mService;
 
-    public AnUitorServiceBinder(AnUitorService service) {
+    public AnUitorServiceBinder(AnUitorServiceX service) {
         mService = service;
     }
 
-    public AnUitorService getService() {
+    public AnUitorServiceX getService() {
         return mService;
     }
 }

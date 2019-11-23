@@ -36,7 +36,8 @@ import java.io.IOException;
  * Date: 12/05/2014
  * Time: 10:27
  */
-public class AnUitorService extends Service {
+@Deprecated
+public class AnUitorServiceX extends Service {
     private static final String TAG = "AnUitorService";
     private static final String TITLE = "AnUitor";
     public static final String STOP = "STOP";
@@ -276,7 +277,7 @@ public class AnUitorService extends Service {
      * @return
      */
     PendingIntent createStopIntent() {
-        Intent i = new Intent(this, AnUitorService.class);
+        Intent i = new Intent(this, AnUitorServiceX.class);
         i.setAction(STOP);
         return PendingIntent.getService(this, (int) System.currentTimeMillis(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -361,10 +362,10 @@ public class AnUitorService extends Service {
                 }
             }
 
-            Intent i = new Intent(context, AnUitorService.class);
-            i.setAction(AnUitorService.START);
-            i.putExtra(AnUitorService.ROOT_FOLDER, DEFAULT_ROOT_FOLDER);
-            i.putExtra(AnUitorService.PORT, port);
+            Intent i = new Intent(context, AnUitorServiceX.class);
+            i.setAction(AnUitorServiceX.START);
+            i.putExtra(AnUitorServiceX.ROOT_FOLDER, DEFAULT_ROOT_FOLDER);
+            i.putExtra(AnUitorServiceX.PORT, port);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(i);
             } else {
