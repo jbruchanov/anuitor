@@ -2,8 +2,6 @@ package com.scurab.android.anuitor.nanoplugin;
 
 import org.junit.Test;
 
-import fi.iki.elonen.NanoHTTPD;
-
 import static org.junit.Assert.assertEquals;
 
 /**

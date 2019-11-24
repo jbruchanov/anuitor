@@ -17,8 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 
-import fi.iki.elonen.NanoHTTPD;
-
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;

@@ -8,7 +8,6 @@ import android.util.TypedValue;
 import com.scurab.android.anuitor.json.JsonRef;
 import com.scurab.android.anuitor.model.Pair;
 import com.scurab.android.anuitor.model.Tuple;
-import com.scurab.android.anuitor.nanoplugin.BasePlugin;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

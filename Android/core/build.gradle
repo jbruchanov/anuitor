@@ -5,7 +5,6 @@ apply from: "$rootDir/build-android.gradle"
 dependencies {
     //any api/implementation has to be checked explicitly in sub modules
     //as they import only code, as fatAAR workaround, these are ignored
-    api project(":webserver")
     api "androidx.annotation:annotation:$androidXAnnotations"
 
     compileOnly "com.google.code.gson:gson:${gson}"

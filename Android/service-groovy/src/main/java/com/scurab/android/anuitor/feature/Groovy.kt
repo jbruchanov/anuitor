@@ -1,6 +1,5 @@
 package com.scurab.android.anuitor.feature
 
-import com.scurab.android.anuitor.nanoplugin.GroovyPlugin
 import groovy.lang.GrooidShell
 import io.ktor.application.call
 import io.ktor.http.ContentType
@@ -19,7 +18,7 @@ import java.io.StringWriter
 class Groovy(tempDir: File) {
 
     private val contentType = ContentType.parse("application/octet-stream")
-    private val shell = GrooidShell(tempDir, GroovyPlugin::class.java.classLoader)
+    private val shell = GrooidShell(tempDir, Groovy::class.java.classLoader)
     fun registerRoute(routing: Routing) {
         routing.post("/groovy") {
             val result = try {

@@ -22,7 +22,6 @@ import com.scurab.android.anuitor.extract2.stringColor
 import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.json.JsonSerializer
 import com.scurab.android.anuitor.model.ResourceResponse
-import com.scurab.android.anuitor.nanoplugin.BasePlugin
 import com.scurab.android.anuitor.reflect.*
 import com.scurab.android.anuitor.tools.*
 import io.ktor.application.call

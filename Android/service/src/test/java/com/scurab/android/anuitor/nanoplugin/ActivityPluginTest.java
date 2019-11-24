@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import fi.iki.elonen.NanoHTTPD;
-
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;

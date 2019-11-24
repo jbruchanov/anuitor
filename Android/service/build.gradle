@@ -16,7 +16,6 @@ android {
         main.java.srcDirs += file("src/extractors")
         //TODO: remove this and figure out better way for fatAar
         main.java.srcDirs += file("$rootDir/core/src/main/java")
-        main.java.srcDirs += file("$rootDir/webserver/src/main/java")
     }
 }
 
@@ -82,7 +81,6 @@ dependencies {
 
     testImplementation "junit:junit:$junit"
     testImplementation project(":service-groovy")
-    testImplementation project(":webserver")
     testImplementation "androidx.appcompat:appcompat:$androidXAppCompat"
     //androidTest only, not needed for the lib itself
     testImplementation "com.google.code.gson:gson:${gson}"

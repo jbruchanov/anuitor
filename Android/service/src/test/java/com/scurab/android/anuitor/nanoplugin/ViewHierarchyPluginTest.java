@@ -15,8 +15,6 @@ import org.robolectric.annotation.Config;
 import java.io.File;
 import java.io.IOException;
 
-import fi.iki.elonen.NanoHTTPD;
-
 import static java.util.Collections.emptyMap;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;

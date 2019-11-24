@@ -8,8 +8,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 
-import fi.iki.elonen.NanoHTTPD;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertTrue;
