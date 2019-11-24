@@ -8,8 +8,6 @@ import com.android.dx.dex.cf.CfTranslator;
 import com.android.dx.dex.code.PositionList;
 import com.android.dx.dex.file.ClassDefItem;
 import com.android.dx.dex.file.DexFile;
-import com.scurab.android.anuitor.tools.Executor;
-import com.scurab.android.anuitor.tools.LogCatProvider;
 
 import org.codehaus.groovy.control.CompilerConfiguration;
 
@@ -63,16 +61,17 @@ public class GrooidShell {
     }
 
     public EvalResult evaluateOnMainThread(final String scriptText) {
-        return Executor.runInMainThreadBlocking(10000, () -> {
-            EvalResult result;
-            try {
-                result = evaluate(scriptText);
-            } catch (Throwable t) {
-                t.printStackTrace();
-                result = new EvalResult(t);
-            }
-            return result;
-        });
+        throw new UnsupportedOperationException("More refactoring");
+//        return Executor.runInMainThreadBlocking(10000, () -> {
+//            EvalResult result;
+//            try {
+//                result = evaluate(scriptText);
+//            } catch (Throwable t) {
+//                t.printStackTrace();
+//                result = new EvalResult(t);
+//            }
+//            return result;
+//        });
     }
 
     public EvalResult evaluate(String scriptText) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {

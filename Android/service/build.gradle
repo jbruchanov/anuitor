@@ -63,7 +63,6 @@ dependencies {
     //necessary for service
     implementation "androidx.core:core:${androidXCore}"
     implementation "androidx.fragment:fragment:${androidXFragments}"
-    def ktor = "1.2.5"
     implementation "io.ktor:ktor-server-netty:$ktor"
 
     compileOnly project(":service-groovy")

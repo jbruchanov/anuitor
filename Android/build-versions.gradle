@@ -26,4 +26,6 @@ ext {
     constraintlayout = "2.0.0-beta3"
     viewPager2 = "1.0.0"
     coordinatorLayout = "1.1.0-rc01"
+
+    ktor = "1.2.5"
 }

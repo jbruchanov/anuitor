@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.feature
+package com.scurab.android.anuitor.provider
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,63 +13,30 @@ import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.res.ResourcesCompat
-import com.scurab.android.anuitor.ContentTypes
-import com.scurab.android.anuitor.FeaturePlugin
 import com.scurab.android.anuitor.extract2.TranslatorName
 import com.scurab.android.anuitor.extract2.Translators
 import com.scurab.android.anuitor.extract2.getActivity
 import com.scurab.android.anuitor.extract2.stringColor
 import com.scurab.android.anuitor.hierarchy.IdsHelper
-import com.scurab.android.anuitor.json.JsonSerializer
 import com.scurab.android.anuitor.model.ResourceResponse
 import com.scurab.android.anuitor.reflect.*
 import com.scurab.android.anuitor.tools.*
-import io.ktor.application.call
-import io.ktor.http.HttpStatusCode
-import io.ktor.response.respondText
-import io.ktor.routing.Routing
-import io.ktor.routing.get
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
-
-private const val STRING_DATA_TYPE = "string"
-private const val STRINGS_DATA_TYPE = "string[]"
-private const val BASE64_PNG = "base64_png"
-
-class Resources(windowManager: WindowManager,
-                private val json: JsonSerializer) : FeaturePlugin {
-
-    private val dataProvider = ResourcesProvider(windowManager)
-
-    override fun registerRoute(routing: Routing) {
-        routing.get("/resources/{screenIndex?}/{resId?}") {
-            val resId = call.parameters["resId"]?.toIntOrNull()
-            val screenIndex = call.parameters["screenIndex"]?.toIntOrNull() ?: 0
-            val json: String = try {
-                resId?.let {
-                    val response = dataProvider.createResourceResponse(it, screenIndex)
-                    json.toJson(response)
-                } ?: IdsHelper.toJson(dataProvider.resources)
-            } catch (e: Throwable) {
-                val response = ResourceResponse().apply {
-                    Data = e.message ?: "Null message"
-                    Context = e.javaClass.name
-                    DataType = STRING_DATA_TYPE
-                    Type = IdsHelper.RefType.unknown
-                }
-                json.toJson(response)
-            }
-            call.respondText(json, ContentTypes.json, HttpStatusCode.OK)
-        }
-    }
-}
 
 @SuppressLint("NewApi")
 internal class ResourcesProvider(private val windowManager: WindowManager) {
 
     private val activityThread = ActivityThreadReflector()
-    val resources
+
+    val context: Context
+        get() = kotlin.run {
+            activityThread.activities.firstOrNull()
+                    ?: activityThread.application
+        }
+
+    val resources: Resources
         get() = run {
             activityThread.activities.firstOrNull()?.resources
                     ?: activityThread.application.resources
@@ -77,7 +44,7 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
 
     fun createResourceResponse(resId: Int, screenIndex: Int): ResourceResponse {
         val res = resources
-        val activity = windowManager.getRootView(screenIndex).getActivity()
+        val activity = windowManager.getRootView(screenIndex)?.getActivity()
         val theme = activity?.theme
         val type = IdsHelper.getType(resId)
 
@@ -91,7 +58,7 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
                     IdsHelper.RefType.dimen -> response(NUMBER) { res.getDimension(resId) }
                     IdsHelper.RefType.drawable, IdsHelper.RefType.mipmap -> res.extractDrawable(resId, theme)
                     IdsHelper.RefType.fraction -> res.extractFraction(resId)
-                    IdsHelper.RefType.font -> res.extractFont(resId, windowManager.currentRootView.context)
+                    IdsHelper.RefType.font -> res.extractFont(resId, context)
                     IdsHelper.RefType.id, IdsHelper.RefType.integer ->
                         response(Int::class.javaPrimitiveType?.simpleName
                                 ?: STRING_DATA_TYPE) { resId }
@@ -374,5 +341,18 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
         private const val NUMBER = "number"
         private const val MAX_RAW_SIZE_FOR_STRING = 8 * 1024
         private val QUANTITIES = intArrayOf(-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50, 80, 99, 100, 1000, 10000)
+
+        private const val STRING_DATA_TYPE = "string"
+        private const val STRINGS_DATA_TYPE = "string[]"
+        private const val BASE64_PNG = "base64_png"
+
+        fun errorResponse(e: Throwable): ResourceResponse {
+            return ResourceResponse().apply {
+                Data = e.message ?: "Null message"
+                Context = e.javaClass.name
+                DataType = STRING_DATA_TYPE
+                Type = IdsHelper.RefType.unknown
+            }
+        }
     }
 }

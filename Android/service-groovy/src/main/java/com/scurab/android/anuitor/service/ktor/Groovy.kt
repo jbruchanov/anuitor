@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.feature
+package com.scurab.android.anuitor.service.ktor
 
 import groovy.lang.GrooidShell
 import io.ktor.application.call

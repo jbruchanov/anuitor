@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.feature
+package com.scurab.android.anuitor.provider
 
 import android.annotation.TargetApi
 import android.app.Activity
@@ -8,39 +8,17 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import com.scurab.android.anuitor.ContentTypes
-import com.scurab.android.anuitor.FeaturePlugin
 import com.scurab.android.anuitor.extract2.getActivity
-import com.scurab.android.anuitor.json.JsonSerializer
 import com.scurab.android.anuitor.reflect.ActivityThreadReflector
 import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.atLeastApi
-import io.ktor.application.call
-import io.ktor.http.HttpStatusCode
-import io.ktor.response.respondText
-import io.ktor.routing.Routing
-import io.ktor.routing.get
-
-class ScreenComponents(windowManager: WindowManager,
-                       private val json: JsonSerializer) : FeaturePlugin {
-
-    private val dataProvider = ScreenComponentsProvider(windowManager)
-
-    override fun registerRoute(routing: Routing) {
-        routing.get("/screencomponents") {
-            val node = dataProvider.getStructure()
-            val json = json.toJson(node)
-            call.respondText(json, ContentTypes.json, HttpStatusCode.OK)
-        }
-    }
-}
-
+import com.scurab.android.anuitor.tools.ise
 
 internal class ScreenComponentsProvider(private val windowManager: WindowManager) {
 
     private val activityThread = ActivityThreadReflector()
 
-    fun getStructure(): Node {
+    fun getStructure(): SimpleViewNode {
         return simpleStructure(activityThread.application)
     }
 
@@ -53,8 +31,10 @@ internal class ScreenComponentsProvider(private val windowManager: WindowManager
             }
             is Application -> {
                 windowManager.viewRootNames
-                        .mapNotNull { Pair(it, windowManager.getRootView(it)) }
-                        .forEach { (name, item) ->
+                        ?.mapNotNull { Pair(it, windowManager.getRootView(it)) }
+                        ?.filter { it.second != null }
+                        ?.forEach { (name, item) ->
+                            val item = item ?: ise("Filtered `!= null` and it's null!?")
                             //naive activity detection => app/activity/view
                             if (name.indexOfFirst { it == '/' } != name.indexOfLast { it == '/' }) {
                                 //view without activity as a context ?

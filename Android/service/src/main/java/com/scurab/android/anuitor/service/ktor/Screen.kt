@@ -1,4 +1,4 @@
-package com.scurab.android.anuitor.feature
+package com.scurab.android.anuitor.service.ktor
 
 import com.scurab.android.anuitor.ContentTypes
 import com.scurab.android.anuitor.FeaturePlugin

@@ -3,17 +3,24 @@ package com.scurab.android.anuitor.service
 import android.content.Context
 import android.os.Build
 import com.scurab.android.anuitor.FeaturePlugin
-import com.scurab.android.anuitor.feature.*
 import com.scurab.android.anuitor.json.JsonRef
 import com.scurab.android.anuitor.reflect.WindowManagerProvider
+import com.scurab.android.anuitor.service.ktor.ActiveScreens
+import com.scurab.android.anuitor.service.ktor.Config
+import com.scurab.android.anuitor.service.ktor.Groovy
+import com.scurab.android.anuitor.service.ktor.LogCat
+import com.scurab.android.anuitor.service.ktor.Resources
+import com.scurab.android.anuitor.service.ktor.Screen
+import com.scurab.android.anuitor.service.ktor.ScreenComponents
+import com.scurab.android.anuitor.service.ktor.ScreenStructure
+import com.scurab.android.anuitor.service.ktor.Storage
+import com.scurab.android.anuitor.service.ktor.ViewHierarchy
+import com.scurab.android.anuitor.service.ktor.ViewShot
 import com.scurab.android.anuitor.tools.ise
 import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.CallLogging
 import io.ktor.http.content.files
 import io.ktor.http.content.static
 import io.ktor.response.respondFile
-import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.routing
@@ -53,7 +60,8 @@ class KtorServer(context: Context) {
 
     private fun Routing.tryRegisterGroovy(): Boolean {
         var hasGroovySupport = false
-        //workaround for GroovyPlugin
+        //workaround for GroovyPlugin, need for having common module with FeaturePlugin iface
+        //as it's single module, let's treat it alone
         kotlin.runCatching {
             //TODO: check more cacheDir sometimes fails on permission_denied exception
             val context = contextRef()

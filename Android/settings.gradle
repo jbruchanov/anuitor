@@ -1,5 +1,4 @@
 include ':buildSrc'
-include ':core'
 include ':service-groovy'
 include ':service'
 include ':app'
