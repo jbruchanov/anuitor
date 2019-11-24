@@ -24,8 +24,6 @@ afterEvaluate {
 }
 
 dependencies {
-    compileOnly project(":core")
-
     implementation "com.google.android.tools:dx:${dx}"
     implementation "org.codehaus.groovy:groovy:${groovy}"
 

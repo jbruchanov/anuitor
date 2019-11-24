@@ -14,8 +14,8 @@ android {
     }
     sourceSets {
         main.java.srcDirs += file("src/extractors")
-        //TODO: remove this and figure out better way for fatAar
-        main.java.srcDirs += file("$rootDir/core/src/main/java")
+        //having core extracted for potential bigger in future modularisation
+        main.java.srcDirs += file("src/core")
     }
 }
 
