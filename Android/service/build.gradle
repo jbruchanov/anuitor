@@ -17,7 +17,43 @@ android {
         //having core extracted for potential bigger in future modularisation
         main.java.srcDirs += file("src/core")
     }
+    testOptions.unitTests.includeAndroidResources = true
 }
+
+dependencies {
+    compileOnly "com.google.code.gson:gson:${gson}"
+    compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"
+
+    implementation "androidx.annotation:annotation:${androidXAnnotations}"
+    //necessary for service
+    implementation "androidx.core:core:${androidXCore}"
+    implementation "androidx.fragment:fragment:${androidXFragments}"
+    implementation "io.ktor:ktor-server-netty:$ktor"
+
+    compileOnly project(":service-groovy")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    compileOnly "androidx.recyclerview:recyclerview:${androidX}"
+    compileOnly "androidx.cardview:cardview:${androidX}"
+    compileOnly "androidx.gridlayout:gridlayout:${androidX}"
+    compileOnly "androidx.percentlayout:percentlayout:${androidX}"
+    compileOnly "com.google.android.material:material:${androidX}"
+    compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
+    compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
+    compileOnly "androidx.constraintlayout:constraintlayout:${constraintlayout}"
+    compileOnly "androidx.navigation:navigation-fragment:${androidXNavigation}"
+
+    testImplementation "junit:junit:$junit"
+    testImplementation project(":service-groovy")
+    testImplementation "androidx.appcompat:appcompat:$androidXAppCompat"
+    //androidTest only, not needed for the lib itself
+    testImplementation "com.google.code.gson:gson:${gson}"
+    testImplementation "commons-io:commons-io:${commonsIo}"
+    testImplementation "org.robolectric:robolectric:${robolectric}"
+    testImplementation "org.mockito:mockito-core:${mockito}"
+    androidTestImplementation "org.mockito:mockito-core:${mockito}"
+}
+
 
 task createStructureClasses {
     def structure = "${project.projectDir}/src/main/assets/structure.json"
@@ -53,38 +89,4 @@ afterEvaluate {
             }
         }
     }
-}
-
-dependencies {
-    compileOnly "com.google.code.gson:gson:${gson}"
-    compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"
-
-    implementation "androidx.annotation:annotation:${androidXAnnotations}"
-    //necessary for service
-    implementation "androidx.core:core:${androidXCore}"
-    implementation "androidx.fragment:fragment:${androidXFragments}"
-    implementation "io.ktor:ktor-server-netty:$ktor"
-
-    compileOnly project(":service-groovy")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
-    compileOnly "androidx.recyclerview:recyclerview:${androidX}"
-    compileOnly "androidx.cardview:cardview:${androidX}"
-    compileOnly "androidx.gridlayout:gridlayout:${androidX}"
-    compileOnly "androidx.percentlayout:percentlayout:${androidX}"
-    compileOnly "com.google.android.material:material:${androidX}"
-    compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
-    compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
-    compileOnly "androidx.constraintlayout:constraintlayout:${constraintlayout}"
-    compileOnly "androidx.navigation:navigation-fragment:${androidXNavigation}"
-
-    testImplementation "junit:junit:$junit"
-    testImplementation project(":service-groovy")
-    testImplementation "androidx.appcompat:appcompat:$androidXAppCompat"
-    //androidTest only, not needed for the lib itself
-    testImplementation "com.google.code.gson:gson:${gson}"
-    testImplementation "commons-io:commons-io:${commonsIo}"
-    testImplementation "org.robolectric:robolectric:${robolectric}"
-    testImplementation "org.mockito:mockito-core:${mockito}"
-    androidTestImplementation "org.mockito:mockito-core:${mockito}"
 }

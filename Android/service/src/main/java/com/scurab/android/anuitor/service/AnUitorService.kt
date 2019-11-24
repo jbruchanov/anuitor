@@ -1,6 +1,10 @@
 package com.scurab.android.anuitor.service
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.NameNotFoundException
@@ -12,6 +16,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat.BigTextStyle
 import androidx.core.app.NotificationCompat.Builder
 import com.scurab.android.anuitor.R
+import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.tools.FileSystemTools
 import com.scurab.android.anuitor.tools.NetTools
 import com.scurab.android.anuitor.tools.ZipTools
@@ -20,7 +25,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.lang.NullPointerException
+
 
 private const val STOP = "STOP"
 private const val START = "START"
@@ -49,6 +54,19 @@ class AnUitorService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onCreate() {
+        try {
+            val rClassName = "$packageName.R"
+            val rclass = Class.forName(rClassName)
+            IdsHelper.loadValues(rclass)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Unable to load Resources, probably R class is not in your packageName => call IdsHelper.loadValues(com.application.R.class);")
+            Log.e(TAG, e.message)
+            e.printStackTrace()
+        }
+        super.onCreate()
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.action?.let { action ->

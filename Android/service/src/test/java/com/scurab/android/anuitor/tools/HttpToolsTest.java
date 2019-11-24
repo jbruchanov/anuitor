@@ -7,7 +7,6 @@ import java.util.HashMap;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
-//@Config(manifest = C.MANIFEST, sdk = 18)
 public class HttpToolsTest {
 
     @Test
