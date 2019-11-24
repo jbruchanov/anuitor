@@ -88,8 +88,8 @@ class AnUitorService : Service() {
      * @return
      */
     private fun createStopIntent(): PendingIntent? {
-        val i = Intent(this, AnUitorServiceX::class.java)
-        i.action = AnUitorServiceX.STOP
+        val i = Intent(this, AnUitorService::class.java)
+        i.action = STOP
         return PendingIntent.getService(this, System.currentTimeMillis().toInt(), i, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
@@ -150,7 +150,7 @@ class AnUitorService : Service() {
             createNotificationChannel(context)
             GlobalScope.launch {
                 val exception = withContext(Dispatchers.IO) {
-                    val folder = "${context.cacheDir}/${AnUitorServiceX.DEFAULT_ROOT_FOLDER}"
+                    val folder = "${context.cacheDir}/${DEFAULT_ROOT_FOLDER}"
                     val f = File(folder)
                     var exception: Throwable? = null
                     if (overwriteWebFolder || !f.exists()) {
