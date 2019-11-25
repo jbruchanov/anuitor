@@ -19,8 +19,17 @@ import com.scurab.android.anuitor.extract2.getActivity
 import com.scurab.android.anuitor.extract2.stringColor
 import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.model.ResourceResponse
-import com.scurab.android.anuitor.reflect.*
-import com.scurab.android.anuitor.tools.*
+import com.scurab.android.anuitor.reflect.ActivityThreadReflector
+import com.scurab.android.anuitor.reflect.ColorStateListReflector
+import com.scurab.android.anuitor.reflect.ResourcesReflector
+import com.scurab.android.anuitor.reflect.StateListDrawableReflector
+import com.scurab.android.anuitor.reflect.WindowManager
+import com.scurab.android.anuitor.tools.DOM2XmlPullBuilder
+import com.scurab.android.anuitor.tools.base64
+import com.scurab.android.anuitor.tools.render
+import com.scurab.android.anuitor.tools.renderWithSize
+import com.scurab.android.anuitor.tools.save
+import com.scurab.android.anuitor.tools.use
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -341,10 +350,6 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
         private const val NUMBER = "number"
         private const val MAX_RAW_SIZE_FOR_STRING = 8 * 1024
         private val QUANTITIES = intArrayOf(-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50, 80, 99, 100, 1000, 10000)
-
-        private const val STRING_DATA_TYPE = "string"
-        private const val STRINGS_DATA_TYPE = "string[]"
-        private const val BASE64_PNG = "base64_png"
 
         fun errorResponse(e: Throwable): ResourceResponse {
             return ResourceResponse().apply {

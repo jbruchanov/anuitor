@@ -15,6 +15,7 @@ import com.scurab.android.anuitor.service.ktor.ScreenComponents
 import com.scurab.android.anuitor.service.ktor.ScreenStructure
 import com.scurab.android.anuitor.service.ktor.Storage
 import com.scurab.android.anuitor.service.ktor.ViewHierarchy
+import com.scurab.android.anuitor.service.ktor.ViewProperty
 import com.scurab.android.anuitor.service.ktor.ViewShot
 import com.scurab.android.anuitor.tools.ise
 import io.ktor.application.call
@@ -96,6 +97,7 @@ class KtorServer(context: Context) {
             add(Storage(context, json))
             add(ViewHierarchy(windowManager))
             add(ViewShot(windowManager))
+            add(ViewProperty(windowManager, json))
         }
     }
 }
