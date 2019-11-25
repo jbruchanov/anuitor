@@ -81,7 +81,10 @@ class AnUitorService : Service() {
                         startForeground(NOTIF_ID, createSimpleNotification(null, true))
                     }
                 }
-                STOP -> server.stop()
+                STOP -> {
+                    stopForeground(true)
+                    server.stop()
+                }
             }
         }
         return START_NOT_STICKY
