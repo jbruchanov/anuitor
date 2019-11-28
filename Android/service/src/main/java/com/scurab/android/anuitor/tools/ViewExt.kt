@@ -35,13 +35,14 @@ fun View.hasSize() = width != 0 && height != 0
  * @param includeLocationOnScreen - add spacing if the rootview is doesn't have origin [0,0],
  * this is necessary for ScreenPreview (just easier to avoid coords recalculation)
  */
-fun View.render(includeLocationOnScreen : Boolean = false): Bitmap {
+fun View.render(includeLocationOnScreen: Boolean = false): Bitmap {
     val location = intArrayOf(0, 0)
     val renderArea = Rect(0, 0, width, height)
 
     if (includeLocationOnScreen) {
         getLocationOnScreen(location)
     }
+
     DetailExtractor.getRenderArea(this)?.getRenderArea(this, renderArea)
     val w = location[0] + renderArea.width()
     val h = location[1] + renderArea.height()
