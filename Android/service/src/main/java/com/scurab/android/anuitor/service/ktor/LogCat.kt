@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.service.ktor
 
 import com.scurab.android.anuitor.ContentTypes
 import com.scurab.android.anuitor.FeaturePlugin
+import com.scurab.android.anuitor.catching
 import com.scurab.android.anuitor.tools.LogCatProvider
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -14,10 +15,8 @@ class LogCat : FeaturePlugin {
     override fun registerRoute(routing: Routing) {
         routing.get("/logcat/{type?}") {
             val type = call.parameters["type"]
-            try {
+            catching {
                 call.respondText(LogCatProvider.dumpLogcat(type), ContentTypes.text, HttpStatusCode.OK)
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, e)
             }
         }
     }

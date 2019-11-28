@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.service.ktor
 
 import com.scurab.android.anuitor.ContentTypes
 import com.scurab.android.anuitor.FeaturePlugin
+import com.scurab.android.anuitor.catching
 import com.scurab.android.anuitor.hierarchy.IdsHelper
 import com.scurab.android.anuitor.json.JsonSerializer
 import com.scurab.android.anuitor.model.ResourceResponse
@@ -20,17 +21,19 @@ class Resources(windowManager: WindowManager,
 
     override fun registerRoute(routing: Routing) {
         routing.get("/resources/{screenIndex?}/{resId?}") {
-            val resId = call.parameters["resId"]?.toIntOrNull()
-            val screenIndex = call.parameters["screenIndex"]?.toIntOrNull() ?: 0
-            val json: String = try {
-                resId?.let {
-                    val response = dataProvider.createResourceResponse(it, screenIndex)
-                    json.toJson(response)
-                } ?: IdsHelper.toJson(dataProvider.resources)
-            } catch (e: Throwable) {
-                json.toJson(ResourcesProvider.errorResponse(e))
+            catching {
+                val resId = call.parameters["resId"]?.toIntOrNull()
+                val screenIndex = call.parameters["screenIndex"]?.toIntOrNull() ?: 0
+                val json: String = try {
+                    resId?.let {
+                        val response = dataProvider.createResourceResponse(it, screenIndex)
+                        json.toJson(response)
+                    } ?: IdsHelper.toJson(dataProvider.resources)
+                } catch (e: Throwable) {
+                    json.toJson(ResourcesProvider.errorResponse(e))
+                }
+                call.respondText(json, ContentTypes.json, HttpStatusCode.OK)
             }
-            call.respondText(json, ContentTypes.json, HttpStatusCode.OK)
         }
     }
 }

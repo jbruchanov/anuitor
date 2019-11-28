@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.service.ktor
 
 import com.scurab.android.anuitor.ContentTypes
 import com.scurab.android.anuitor.FeaturePlugin
+import com.scurab.android.anuitor.catching
 import com.scurab.android.anuitor.extract2.DetailExtractor
 import com.scurab.android.anuitor.reflect.WindowManager
 import com.scurab.android.anuitor.tools.Executor
@@ -17,16 +18,18 @@ private const val DEFAULT_TIMEOUT = 20000//20s
 class ViewHierarchy(private val windowManager: WindowManager) : FeaturePlugin {
     override fun registerRoute(routing: Routing) {
         routing.get("/viewhierarchy/{screenIndex}") {
-            val screenIndex = call.parameters["screenIndex"]?.toIntOrNull()
-            val rootView = screenIndex?.let { windowManager.getRootView(it) }
-            if (rootView != null) {
-                val node = Executor.runInMainThreadBlocking(DEFAULT_TIMEOUT) {
-                    DetailExtractor.parse(rootView, false)
+            catching {
+                val screenIndex = call.parameters["screenIndex"]?.toIntOrNull()
+                val rootView = screenIndex?.let { windowManager.getRootView(it) }
+                if (rootView != null) {
+                    val node = Executor.runInMainThreadBlocking(DEFAULT_TIMEOUT) {
+                        DetailExtractor.parse(rootView, false)
+                    }
+                    val json = node.toJson().toString()
+                    call.respondText(json, ContentTypes.json, HttpStatusCode.OK)
+                } else {
+                    call.respond(HttpStatusCode.NotFound)
                 }
-                val json = node.toJson().toString()
-                call.respondText(json, ContentTypes.json, HttpStatusCode.OK)
-            } else {
-                call.respond(HttpStatusCode.NotFound)
             }
         }
     }

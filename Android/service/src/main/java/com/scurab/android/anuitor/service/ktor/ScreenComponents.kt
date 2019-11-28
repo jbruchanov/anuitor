@@ -2,6 +2,7 @@ package com.scurab.android.anuitor.service.ktor
 
 import com.scurab.android.anuitor.ContentTypes
 import com.scurab.android.anuitor.FeaturePlugin
+import com.scurab.android.anuitor.catching
 import com.scurab.android.anuitor.json.JsonSerializer
 import com.scurab.android.anuitor.provider.ScreenComponentsProvider
 import com.scurab.android.anuitor.reflect.WindowManager
@@ -18,9 +19,11 @@ class ScreenComponents(windowManager: WindowManager,
 
     override fun registerRoute(routing: Routing) {
         routing.get("/screencomponents") {
-            val node = dataProvider.getStructure()
-            val json = json.toJson(node)
-            call.respondText(json, ContentTypes.json, HttpStatusCode.OK)
+            catching {
+                val node = dataProvider.getStructure()
+                val json = json.toJson(node)
+                call.respondText(json, ContentTypes.json, HttpStatusCode.OK)
+            }
         }
     }
 }
