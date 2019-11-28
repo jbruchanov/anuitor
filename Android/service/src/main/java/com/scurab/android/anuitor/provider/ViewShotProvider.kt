@@ -19,7 +19,7 @@ class ViewShotProvider(private val windowManager: WindowManager) {
                             Executor.runInMainThreadBlockingOnlyIfCrashing {
                                 view.takeIf { it is ViewGroup && !DetailExtractor.isExcludedViewGroup(it.javaClass.name) }
                                         ?.let { view.renderBackground() }
-                                        ?: view.render()
+                                        ?: view.takeIf { it.hasSize() }?.render()
                             }
                         }?.let {
                             var bitmap = it
