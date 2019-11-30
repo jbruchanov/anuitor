@@ -21,24 +21,32 @@ class Resources(windowManager: WindowManager,
 
     override fun registerRoute(routing: Routing) {
         routing.get("/resources/all") {
-            val data = IdsHelper.getAllResources(dataProvider.resources)
-            var groupIndex = 0
-            var groups = data.keys.size
-            val result = IdsHelper.getAllResources(dataProvider.resources).mapValues { (group, items) ->
-                val result = items.mapIndexed { index, item ->
-                    try {
-                        Log.d("Resources", "GroupIndex:$groupIndex/$groups ($group), item:$index/${items.size}")
-                        dataProvider.createResourceResponse(item.key, 0)
-                    } catch (e: Throwable) {
-                        ResourcesProvider.errorResponse(e)
+            catching {
+                val data = IdsHelper.getAllResources(dataProvider.resources)
+                var groupIndex = 0
+                var groups = data.keys.size
+                val result = IdsHelper.getAllResources(dataProvider.resources).mapValues { (group, items) ->
+                    val result = items.mapIndexed { index, item ->
+                        try {
+                            Log.d("Resources", "GroupIndex:$groupIndex/$groups ($group), item:$index/${items.size}")
+                            dataProvider.createResourceResponse(item.key, 0)
+                        } catch (e: Throwable) {
+                            ResourcesProvider.errorResponse(e)
+                        }
                     }
+                    groupIndex++
+                    result
                 }
-                groupIndex++
-                result
+                call.respondText(json.toJson(result), ContentTypes.json, HttpStatusCode.OK)
             }
-            call.respondText(json.toJson(result), ContentTypes.json, HttpStatusCode.OK)
         }
-        routing.get("/resources/{screenIndex?}/{resId?}") {
+        routing.get("/resources/list") {
+            catching {
+                val result = IdsHelper.getAllResources(dataProvider.resources)
+                call.respondText(json.toJson(result), ContentTypes.json, HttpStatusCode.OK)
+            }
+        }
+        routing.get("/resources/{screenIndex}/{resId}") {
             catching {
                 val resId = call.parameters["resId"]?.toIntOrNull()
                 val screenIndex = call.parameters["screenIndex"]?.toIntOrNull() ?: 0
