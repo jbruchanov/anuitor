@@ -31,6 +31,7 @@ public class AnUitorClientConfig {
     static final String GRID_STROKE_COLOR = "GridStrokeColor";
     static final String SELECTION_COLOR = "SelectionColor";
     static final String POINTER_IGNORE_IDS = "PointerIgnoreIds";
+    static final String SNAPSHOT_RESOURCES = "SnapshotResources";
 
     private AnUitorClientConfig() {
     }
@@ -92,6 +93,14 @@ public class AnUitorClientConfig {
             CONFIG.put(POINTER_IGNORE_IDS, ignore = new HashSet<>());
         }
         ignore.add(viewId);
+    }
+
+    /**
+     * Store resources in a snapshot
+     * @param enable to have them saved in snapshot (takes more time)
+     */
+    public static void setResourcesInSnapshot(boolean enable) {
+        CONFIG.put(SNAPSHOT_RESOURCES, enable);
     }
 
     /**

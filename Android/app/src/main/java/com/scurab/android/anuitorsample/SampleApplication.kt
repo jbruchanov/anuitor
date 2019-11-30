@@ -20,6 +20,7 @@ class SampleApplication : MultiDexApplication() {
         AnUitorClientConfig.addTypeHighlighting(Button::class.java, "rgba(255, 0, 255, 0.5)")
         AnUitorClientConfig.addPropertyHighlighting("text.*|.*TextColor.*|CanResolveText.*", "rgba(255, 0, 255, 1)")
         AnUitorClientConfig.addPointerIgnoreViewId(R.id.pointer_ignore)
+        AnUitorClientConfig.setResourcesInSnapshot(true)
         AnUitorService.startService(this, 8081)
         IdsHelper.loadValues(R::class.java)
 

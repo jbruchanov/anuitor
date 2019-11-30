@@ -18,6 +18,7 @@ import com.scurab.android.anuitor.extract2.Translators
 import com.scurab.android.anuitor.extract2.getActivity
 import com.scurab.android.anuitor.extract2.stringColor
 import com.scurab.android.anuitor.hierarchy.IdsHelper
+import com.scurab.android.anuitor.hierarchy.RefType
 import com.scurab.android.anuitor.model.ResourceResponse
 import com.scurab.android.anuitor.reflect.ActivityThreadReflector
 import com.scurab.android.anuitor.reflect.ColorStateListReflector
@@ -59,26 +60,24 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
 
         val response: ResourceResponse =
                 when (type) {
-                    IdsHelper.RefType.anim, IdsHelper.RefType.animator, IdsHelper.RefType.interpolator ->
-                        res.extractAnimation(resId)
-                    IdsHelper.RefType.array -> res.extractArray(resId)
-                    IdsHelper.RefType.bool -> response("boolean") { res.getBoolean(resId) }
-                    IdsHelper.RefType.color -> res.extractColor(resId, theme)
-                    IdsHelper.RefType.dimen -> response(NUMBER) { res.getDimension(resId) }
-                    IdsHelper.RefType.drawable, IdsHelper.RefType.mipmap -> res.extractDrawable(resId, theme)
-                    IdsHelper.RefType.fraction -> res.extractFraction(resId)
-                    IdsHelper.RefType.font -> res.extractFont(resId, context)
-                    IdsHelper.RefType.id, IdsHelper.RefType.integer ->
-                        response(Int::class.javaPrimitiveType?.simpleName
-                                ?: STRING_DATA_TYPE) { resId }
-                    IdsHelper.RefType.menu, IdsHelper.RefType.navigation, IdsHelper.RefType.layout, IdsHelper.RefType.transition ->
+                    RefType.anim, RefType.animator, RefType.interpolator -> res.extractAnimation(resId)
+                    RefType.array -> res.extractArray(resId)
+                    RefType.bool -> response("boolean") { res.getBoolean(resId) }
+                    RefType.color -> res.extractColor(resId, theme)
+                    RefType.dimen -> res.extractNumber(resId)
+                    RefType.drawable, RefType.mipmap -> res.extractDrawable(resId, theme)
+                    RefType.fraction -> res.extractNumber(resId)
+                    RefType.font -> res.extractFont(resId, context)
+                    RefType.id, RefType.integer -> response(Int::class.javaPrimitiveType?.simpleName
+                            ?: STRING_DATA_TYPE) { resId }
+                    RefType.menu, RefType.navigation, RefType.layout, RefType.transition ->
                         response(XML) { ResourcesReflector(res).load(resId) }
-                    IdsHelper.RefType.plurals -> res.extractPlurals(resId)
-                    IdsHelper.RefType.string -> response(STRING_DATA_TYPE) { res.getString(resId) }
-                    IdsHelper.RefType.xml -> response(XML) { DOM2XmlPullBuilder.transform(res.getXml(resId)) }
-                    IdsHelper.RefType.raw -> res.extractRaw(resId)
+                    RefType.plurals -> res.extractPlurals(resId)
+                    RefType.string -> response(STRING_DATA_TYPE) { res.getString(resId) }
+                    RefType.xml -> response(XML) { DOM2XmlPullBuilder.transform(res.getXml(resId)) }
+                    RefType.raw -> res.extractRaw(resId)
                     else -> {
-                        /*IdsHelper.RefType.attr, IdsHelper.RefType.style, IdsHelper.RefType.styleable, IdsHelper.RefType.unknown*/
+                        /*RefType.attr, RefType.style, RefType.styleable, RefType.unknown*/
                         response(STRING_DATA_TYPE) { "Type '$type' is not supported." }
                     }
                 }
@@ -219,10 +218,14 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
         }
     }
 
-    private fun Resources.extractFraction(resId: Int): ResourceResponse {
+    private fun Resources.extractNumber(resId: Int): ResourceResponse {
         val tv = resId.resolveTypedValue(this)
         return when (tv.type) {
-            TypedValue.TYPE_FRACTION -> response(NUMBER) { getFraction(resId, 100, 100) }
+            TypedValue.TYPE_DIMENSION -> response(NUMBER) { getDimension(resId) }
+            TypedValue.TYPE_FRACTION -> response(NUMBER) {
+                it.Context = "Fraction"
+                getFraction(resId, 100, 100)
+            }
             TypedValue.TYPE_FLOAT -> response(NUMBER) { tv.float }
             else -> response(STRING_DATA_TYPE) { "Not implemented fraction for TypedValue.type='${tv.type}'" }
         }
@@ -356,7 +359,7 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
                 Data = e.message ?: "Null message"
                 Context = e.javaClass.name
                 DataType = STRING_DATA_TYPE
-                Type = IdsHelper.RefType.unknown
+                Type = RefType.unknown
             }
         }
     }
