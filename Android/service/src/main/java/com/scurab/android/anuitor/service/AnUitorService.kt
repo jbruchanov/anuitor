@@ -176,7 +176,7 @@ class AnUitorService : Service() {
                     var exception: Throwable? = null
                     if (overwriteWebFolder || !f.exists()) {
                         FileSystemTools.deleteFolder(f)
-                        f.mkdir()
+                        f.mkdirs()
                         try {
                             val zipFile = "$folder/web.zip"
                             ZipTools.copyFileIntoInternalStorageIfNecessary(context, R.raw.anuitor, zipFile)
