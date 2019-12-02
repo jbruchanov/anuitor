@@ -6,6 +6,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import java.io.File
 
+/**
+ * Simple wrapper to use coroutines
+ */
 class GrooidShellKt(tmp: File,
                     classLoader: ClassLoader) {
     private val shell = GrooidShell(tmp, classLoader)
