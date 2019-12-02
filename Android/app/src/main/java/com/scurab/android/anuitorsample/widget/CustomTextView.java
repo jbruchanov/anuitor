@@ -8,7 +8,7 @@ import android.widget.TextView;
 /**
  * Created by jbruchanov on 01/07/2014.
  */
-public class CustomTextView extends TextView {
+public class CustomTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     private int mAngle;
 

@@ -24,8 +24,6 @@ import com.scurab.android.anuitor.tools.save
 
 class ViewPropertyProvider(private val windowManager: WindowManager) {
 
-    private var reflectionExtractor: ReflectionExtractor? = null
-
     fun getViewProperty(screenIndex: Int,
                         viewIndex: Int,
                         property: String?,
@@ -78,10 +76,9 @@ class ViewPropertyProvider(private val windowManager: WindowManager) {
         if (item != null) {
             var extractor: BaseExtractor? = if (reflection) null else DetailExtractor.findExtractor(item.javaClass)
             if (extractor == null) {
-                reflectionExtractor = ReflectionExtractor(true, maxDepth)
-                extractor = reflectionExtractor
+                extractor = ReflectionExtractor(true, maxDepth)
             }
-            val data = extractor!!.fillValues(item, ExtractingContext())
+            val data = extractor.fillValues(item, ExtractingContext())
             //owner of owner is not wanted
             data.remove("Owner")
             //renaming key
