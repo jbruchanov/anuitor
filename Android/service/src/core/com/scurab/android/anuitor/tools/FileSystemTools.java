@@ -148,6 +148,8 @@ public class FileSystemTools {
      * @throws IOException
      */
     public static void copyFile(InputStream inputStream, String targetFile) throws IOException {
+        //ensure all folders created
+        new File(targetFile).getParentFile().mkdirs();
         FileOutputStream out = new FileOutputStream(targetFile);
         byte[] buf = new byte[BUFFER];
         int len;
