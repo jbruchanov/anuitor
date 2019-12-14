@@ -1,5 +1,5 @@
 <manifest
-    package="com.scurab.android.anuitor"
+    package="com.scurab.android.uitor"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
-        <service android:name="com.scurab.android.anuitor.service.AnUitorService" />
+        <service android:name="com.scurab.android.uitor.service.UitorService" />
     </application>
 
 </manifest>

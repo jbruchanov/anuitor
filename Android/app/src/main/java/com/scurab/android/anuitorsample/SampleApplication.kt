@@ -4,12 +4,12 @@ import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.multidex.MultiDexApplication
-import com.scurab.android.anuitor.Constants
-import com.scurab.android.anuitor.extract.RenderAreaWrapper
-import com.scurab.android.anuitor.extract2.*
-import com.scurab.android.anuitor.hierarchy.IdsHelper
-import com.scurab.android.anuitor.service.AnUitorClientConfig
-import com.scurab.android.anuitor.service.AnUitorService
+import com.scurab.android.uitor.Constants
+import com.scurab.android.uitor.extract.RenderAreaWrapper
+import com.scurab.android.uitor.extract2.*
+import com.scurab.android.uitor.hierarchy.IdsHelper
+import com.scurab.android.uitor.service.UitorClientConfig
+import com.scurab.android.uitor.service.UitorService
 import com.scurab.android.anuitorsample.common.BaseFragment
 
 class SampleApplication : MultiDexApplication() {
@@ -17,11 +17,11 @@ class SampleApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        AnUitorClientConfig.addTypeHighlighting(Button::class.java, "rgba(255, 0, 255, 0.5)")
-        AnUitorClientConfig.addPropertyHighlighting("text.*|.*TextColor.*|CanResolveText.*", "rgba(255, 0, 255, 1)")
-        AnUitorClientConfig.addPointerIgnoreViewId(R.id.pointer_ignore)
-        AnUitorClientConfig.setResourcesInSnapshot(true)
-        AnUitorService.startService(this, 8081)
+        UitorClientConfig.addTypeHighlighting(Button::class.java, "rgba(255, 0, 255, 0.5)")
+        UitorClientConfig.addPropertyHighlighting("text.*|.*TextColor.*|CanResolveText.*", "rgba(255, 0, 255, 1)")
+        UitorClientConfig.addPointerIgnoreViewId(R.id.pointer_ignore)
+        UitorClientConfig.setResourcesInSnapshot(true)
+        UitorService.startService(this, 8081)
         IdsHelper.loadValues(R::class.java)
 
         DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView::class.java,

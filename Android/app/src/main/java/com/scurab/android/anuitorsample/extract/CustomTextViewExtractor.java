@@ -1,7 +1,7 @@
 package com.scurab.android.anuitorsample.extract;
 
-import com.scurab.android.anuitor.extract2.ExtractingContext;
-import com.scurab.android.anuitor.extract2.TextViewExtractor;
+import com.scurab.android.uitor.extract2.ExtractingContext;
+import com.scurab.android.uitor.extract2.TextViewExtractor;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
 
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="anuitor_resource_type">values-xxxhdpi</string>
+    <string name="uitor_resource_type">values-xxxhdpi</string>
 </resources>

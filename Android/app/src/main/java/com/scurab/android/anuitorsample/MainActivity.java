@@ -12,7 +12,7 @@ import android.view.animation.AnimationUtils;
 import androidx.fragment.app.Fragment;
 import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
-import com.scurab.android.anuitor.extract2.DetailExtractor;
+import com.scurab.android.uitor.extract2.DetailExtractor;
 import com.scurab.android.anuitorsample.extract.CustomTextViewExtractor;
 import com.scurab.android.anuitorsample.widget.CustomTextView;
 

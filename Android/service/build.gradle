@@ -50,8 +50,8 @@ dependencies {
 task createStructureClasses {
     def structure = "${project.projectDir}/src/main/assets/structure.json"
     doLast {
-        def targetPackage = 'com.scurab.android.anuitor.extract2'
-        com.scurab.anutior.buildsrc.Script.generateClasses(targetPackage, structure, "${project.projectDir}/src/extractors")
+        def targetPackage = 'com.scurab.android.uitor.extract2'
+        com.scurab.utior.buildsrc.Script.generateClasses(targetPackage, structure, "${project.projectDir}/src/extractors")
     }
     inputs.files(structure)
     outputs.dir("${project.projectDir}/src/extractors")

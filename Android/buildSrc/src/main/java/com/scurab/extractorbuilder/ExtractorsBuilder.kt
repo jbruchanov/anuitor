@@ -32,7 +32,7 @@ class ExtractorsBuilder {
                                 .addParameter("item", Any::class.asClassName())
                                 .addParameter(
                                         ParameterSpec
-                                                .builder("context", ClassName.bestGuess("com.scurab.android.anuitor.extract2.ExtractingContext"))
+                                                .builder("context", ClassName.bestGuess("com.scurab.android.uitor.extract2.ExtractingContext"))
                                                 .build())
                                 .apply {
                                     if (!parentClass.toString().endsWith(".BaseExtractor")) {

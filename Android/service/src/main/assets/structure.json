@@ -1,7 +1,7 @@
 {
   "views" : {
     "android.view.View": {
-      "parentExtractor": "com.scurab.android.anuitor.extract2.BaseViewExtractor",
+      "parentExtractor": "com.scurab.android.uitor.extract2.BaseViewExtractor",
       "items": {
         "1": [
           {"m": "getBaseline"},
