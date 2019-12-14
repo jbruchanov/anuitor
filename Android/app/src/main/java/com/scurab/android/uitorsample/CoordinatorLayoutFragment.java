@@ -1,13 +1,12 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.scurab.android.anuitorsample.common.BaseFragment;
+import com.scurab.android.uitorsample.common.BaseFragment;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
 import androidx.core.view.NestedScrollingParent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;

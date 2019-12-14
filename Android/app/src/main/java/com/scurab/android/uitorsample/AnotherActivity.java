@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import android.content.Context;
 import android.content.Intent;

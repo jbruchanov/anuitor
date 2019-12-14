@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.scurab.android.uitor.extract2.DetailExtractor;
-import com.scurab.android.anuitorsample.extract.CustomTextViewExtractor;
-import com.scurab.android.anuitorsample.widget.CustomTextView;
+import com.scurab.android.uitorsample.extract.CustomTextViewExtractor;
+import com.scurab.android.uitorsample.widget.CustomTextView;
 
 /**
  * Created by jbruchanov on 15.5.14.

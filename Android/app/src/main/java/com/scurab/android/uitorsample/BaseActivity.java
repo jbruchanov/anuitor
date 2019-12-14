@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;

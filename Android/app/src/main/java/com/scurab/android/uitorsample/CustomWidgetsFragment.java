@@ -1,8 +1,7 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.scurab.android.anuitorsample.common.BaseFragment;
-import com.scurab.android.anuitorsample.widget.CustomButton;
-import com.scurab.android.anuitorsample.widget.CustomTextView;
-import com.scurab.android.anuitorsample.widget.SubCustomButton;
-import com.scurab.android.anuitorsample.widget.SubCustomTextView;
+import com.scurab.android.uitorsample.common.BaseFragment;
+import com.scurab.android.uitorsample.widget.CustomButton;
+import com.scurab.android.uitorsample.widget.CustomTextView;
+import com.scurab.android.uitorsample.widget.SubCustomButton;
+import com.scurab.android.uitorsample.widget.SubCustomTextView;
 
 /**
  * Created by jbruchanov on 01/07/2014.

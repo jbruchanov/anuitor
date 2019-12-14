@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import android.os.Bundle;
 
@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.scurab.android.anuitorsample.common.BaseFragment;
+import com.scurab.android.uitorsample.common.BaseFragment;
 
 /**
  * Created by jbruchanov on 26/06/2014.

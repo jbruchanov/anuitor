@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample
+package com.scurab.android.uitorsample
 
 import android.view.View
 import android.widget.Button
@@ -10,7 +10,7 @@ import com.scurab.android.uitor.extract2.*
 import com.scurab.android.uitor.hierarchy.IdsHelper
 import com.scurab.android.uitor.service.UitorClientConfig
 import com.scurab.android.uitor.service.UitorService
-import com.scurab.android.anuitorsample.common.BaseFragment
+import com.scurab.android.uitorsample.common.BaseFragment
 
 class SampleApplication : MultiDexApplication() {
 

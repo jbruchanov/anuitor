@@ -1,12 +1,11 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import com.google.android.material.navigation.NavigationView;
-import com.scurab.android.anuitorsample.common.BaseFragment;
+import com.scurab.android.uitorsample.common.BaseFragment;
 
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

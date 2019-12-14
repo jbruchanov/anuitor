@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,8 +7,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.fragment.app.Fragment;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.scurab.android.anuitorsample.common.BaseFragment;
+import com.scurab.android.uitorsample.common.BaseFragment;
 
 /**
  * Created by jbruchanov on 26/06/2014.

@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample.common
+package com.scurab.android.uitorsample.common
 
 import androidx.fragment.app.Fragment
 

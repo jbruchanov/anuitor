@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample;
+package com.scurab.android.uitorsample;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;

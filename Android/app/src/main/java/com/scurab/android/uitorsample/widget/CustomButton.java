@@ -1,4 +1,4 @@
-package com.scurab.android.anuitorsample.widget;
+package com.scurab.android.uitorsample.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
