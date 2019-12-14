@@ -4,12 +4,12 @@
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
       <meta charset="utf-8" />
-      <title>AnUitor</title>
+      <title>UItor</title>
       <meta name="author" content="Jiri Bruchanov">
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="description" content="AnUitor android UI debug tool" />
+      <meta name="description" content="Uitor android UI debug tool" />
       <meta name="keywords" content="Android, UI Debug, Bruchanov" />
-      <meta property="og:image" content="http://anuitor.scurab.com/linkedin.jpg" />      
+      <meta property="og:image" content="http://uitor.scurab.com/linkedin.jpg" />      
       <link href="static/style.css" rel="stylesheet" type="text/css" />      
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto" />
    </head>
@@ -18,7 +18,7 @@
          <div class="container">
             <div class="row">            
                <div class="spinlike title">
-                  <h1>AnUitor<sup style="margin-left:10px;font-size:0.5em">2.0.0</sup></h1>
+                  <h1>UItor<sup style="margin-left:10px;font-size:0.5em">2.0.0</sup></h1>
                </div>
                <div class="spinlike">
                   <menu>
@@ -50,9 +50,9 @@
                <div>
                   <br/><br/><br/><br/>
                   <h3 id="introduction">Introduction</h3>
-                  <p>AnUitor is a result of my rebranding experiences of one android app what I was working on. Because of structure of project(s), not using themes, complexity of UI and app itself, 
+                  <p>UItor is a result of my rebranding experiences of one android app what I was working on. Because of structure of project(s), not using themes, complexity of UI and app itself, 
                      it was really hell and time consuming work to finish the app rebranding. Project structure had been done like sub-projects, because of big amount of different assets, logic, etc. I found out also 
-                     AnUitor very useful in time of UI refactoring/bugfixing other apps what I didn't know much deeply from UI perspective.
+                     UItor very useful in time of UI refactoring/bugfixing other apps what I didn't know much deeply from UI perspective.
                      <p>So this is it, combination what I'd met, seen and few my own ideas. You can see a simple (not completely working though) demo <a href="/demo/">here</a>.<br/>
                      <em class="note">Web part is optimized for Chrome and Firefox only. Other browsers had problems with WebGL or performance. So get
                      <a href="https://www.google.com/intl/en/chrome/">Chrome</a> for the best UX…</em>
@@ -62,7 +62,7 @@
                   <h4>Layout Inspector</h4>
                   <p>Android Studio Layout Inspetor similar screen with a preview, easy to identify and see any of views of current screen. By clicking on particular view, you will get a lot of (public) properties for selected View. Each view behave like a switch between mode detail/focus mode. Click on same view again (in preview/tree) to turn it off again</p>
                   <h4>3D Inspector</h4>
-                  <p>This is presumably the coolest screen in AnUitor, you can see whole view hierarchy in 3D space. You can though see more easily useless parents, backgrounds or whatever is hidden by z-order.
+                  <p>This is presumably the coolest screen in UItor, you can see whole view hierarchy in 3D space. You can though see more easily useless parents, backgrounds or whatever is hidden by z-order.
                      Use  <code>mouse + ASD keys</code> for better control over whole 3D app world. Click on particual view and you will get again view details.</p>
                   <h4>View Hierarchy</h4>
                   <p>Another view for app. View hierarchy is now presented as a tree structure to see how deep and complex is your view hierarchy structure.
@@ -86,7 +86,7 @@
                   <h4>Save/Load</h4>
                   <p>Snapshot mode. Simply save current state of the app for later. Only ignored part is the FileBrowser. Time for savings highly depends on the size of your resources, so be patient, it usually takes up to 10s.</p>
 
-                  <h3 id="using">Install AnUitor</h3>
+                  <h3 id="using">Install UItor</h3>
                       Gradle                      
                       <pre class="code prettyprint" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
 //your app/build.gradle
@@ -135,7 +135,7 @@ AnUitorService.startService(context);
 IdsHelper.loadValues(com.application.R.class);
 </pre> 
 
-                  <p>That's it, in a few seconds you should see in Android Notification Bar a notification about running AnUitor where you can see ip address(es) and port used by the service.
+                  <p>That's it, in a few seconds you should see in Android Notification Bar a notification about running UItor where you can see ip address(es) and port used by the service.
                   Just open it in your browser and you should see exactly same "homepage" like in <a href="/demo/" target="_blank">Demo</a>.</p>
                   <em class="note">Be sure that your WiFi AP doesn't block communication between you and your device!</em><br/>                
       <em class="note">Or use just `adb forward tcp:8080 tcp:8080` and access it via http://localhost:8080</em>
@@ -151,10 +151,10 @@ IdsHelper.loadValues(com.application.R.class);
 
                   <h3 id="download">Download</h3>
                   <p>
-                    AnUitor is currently published on <a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22anuitor%22">Maven</a> repository or you can download AAR file directly...
+                    UItor is currently published on <a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22anuitor%22">Maven</a> repository or you can download AAR file directly...
                   </p>
                   <p>
-                     You can easily get a sample application using AnUitor <a href="/download/anuitor_sample.apk">here</a> or 
+                     You can easily get a sample application using UItor <a href="/download/anuitor_sample.apk">here</a> or 
                      <a href="/download/anuitor-groovy_sample.apk">here (API26+ Devices with Groovy support)</a>.
                   </p>
                   <table class="logo" style="margin: auto;border-spacing: 60pt 0pt;">
@@ -163,7 +163,7 @@ IdsHelper.loadValues(com.application.R.class);
                       <td>API26+ Devices</td>
                     </tr> 
                     <tr>
-                    <td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor_sample.apk" alt="qrcode" /></td><td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor-groovy_sample.apk" alt="qrcode" /></td></table>
+                    <td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://uitor.scurab.com/download/anuitor_sample.apk" alt="qrcode" /></td><td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor-groovy_sample.apk" alt="qrcode" /></td></table>
 
                   <h3 id="tips">Known issues & tips</h3>
                   <ul>
@@ -172,7 +172,7 @@ IdsHelper.loadValues(com.application.R.class);
                     <li><p>If you use MVP or you would like to add some informations from Activity/Fragment etc. Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L28-L48">How to add custom extractor for your types</a></p></li>
                     <li><p>Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L19">AnUitorClientConfig</a> 
                       You can control few web settings, like type higlighting, add ignoring views for mouse cursor in ScreenPreview.</p></li>
-                    <li><p>Wondering what classes are supported by AnUitor ? Take a look this <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/service/src/main/assets/structure.json">json</a>.</p></li>
+                    <li><p>Wondering what classes are supported by UItor ? Take a look this <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/service/src/main/assets/structure.json">json</a>.</p></li>
                     <li><p>3D preview camera controlling is not the best UX, try to use mouse + ASD keys for rotation/distance/position move.</p></li>                    
                   </ul>
 
@@ -209,7 +209,7 @@ IdsHelper.loadValues(com.application.R.class);
                    there is (i guess) no way how to do it.
                   </p>
                   <p>
-                     As the nature of this is inside-app running module, you "can't" start anuitor in an app what you don't have source code for, because it needs to get direct references to your view hierarchy children.
+                     As the nature of this is inside-app running module, you "can't" start UItor in an app what you don't have source code for, because it needs to get direct references to your view hierarchy children.
                   </p>
 
                   <h3 id="license">License</h3>
@@ -237,7 +237,7 @@ limitations under the License.</pre>
             <div class="nav-menu content-nav">
                <ul class="nav nav-tabs nav-stacked primary">
                   <li class="active"><a href="#introduction">Introduction</a></li>
-                  <li class=""><a href="#using">Using AnUitor</a></li>
+                  <li class=""><a href="#using">Using UItor</a></li>
                   <li class=""><a href="#download">Download</a></li>
                   <li class=""><a href="#tips">Tips</a></li>
                   <li class=""><a href="#fewwords">Few words…</a></li>
@@ -250,7 +250,7 @@ limitations under the License.</pre>
                   <li>
                   <div style="padding-top:5px">
           <!-- Place this tag where you want the +1 button to render. -->
-          <div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300" data-href="http://anuitor.scurab.com"></div>
+          <div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300" data-href="http://uitor.scurab.com"></div>
 
           <!-- Place this tag after the last +1 button tag. -->
           <script type="text/javascript">
