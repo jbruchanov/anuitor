@@ -9,6 +9,7 @@ import com.scurab.android.anuitor.tools.FileSystemTools
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
+import io.ktor.response.respondBytes
 import io.ktor.response.respondFile
 import io.ktor.response.respondText
 import io.ktor.routing.Routing
@@ -29,7 +30,7 @@ class Storage(
                 val file = path?.let { File(it) }
 
                 if (file?.isFile == true) {
-                    call.respondFile(file)
+                    call.respondBytes(file.readBytes())
                 } else {
                     val files = file
                             ?.let { FileSystemTools.get(it) }
