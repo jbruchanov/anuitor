@@ -20,6 +20,8 @@ dependencies {
     implementation "androidx.core:core:${androidXCore}"
     implementation "androidx.fragment:fragment:${androidXFragments}"
     implementation "io.ktor:ktor-server-netty:$ktor"
+    //debug logging
+    //implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     compileOnly project(":service-groovy")

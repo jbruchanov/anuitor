@@ -2,34 +2,27 @@ package com.scurab.android.anuitor.service
 
 import android.content.Context
 import android.os.Build
+import com.scurab.android.anuitor.ContentTypes
 import com.scurab.android.anuitor.FeaturePlugin
 import com.scurab.android.anuitor.json.JsonRef
 import com.scurab.android.anuitor.reflect.WindowManagerProvider
-import com.scurab.android.anuitor.service.ktor.ActiveScreens
-import com.scurab.android.anuitor.service.ktor.Config
-import com.scurab.android.anuitor.service.ktor.Groovy
-import com.scurab.android.anuitor.service.ktor.LogCat
-import com.scurab.android.anuitor.service.ktor.Resources
-import com.scurab.android.anuitor.service.ktor.Screen
-import com.scurab.android.anuitor.service.ktor.ScreenComponents
-import com.scurab.android.anuitor.service.ktor.ScreenStructure
-import com.scurab.android.anuitor.service.ktor.Storage
-import com.scurab.android.anuitor.service.ktor.ViewHierarchy
-import com.scurab.android.anuitor.service.ktor.ViewProperty
-import com.scurab.android.anuitor.service.ktor.ViewShot
+import com.scurab.android.anuitor.service.ktor.*
 import com.scurab.android.anuitor.tools.ise
 import io.ktor.application.call
-import io.ktor.http.content.files
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.static
-import io.ktor.response.respondFile
+import io.ktor.http.content.staticRootFolder
+import io.ktor.response.respond
+import io.ktor.response.respondText
+import io.ktor.routing.Route
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.util.combineSafe
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 class KtorServer(context: Context) {
 
@@ -48,9 +41,13 @@ class KtorServer(context: Context) {
         }
         this.port = port
         engine = embeddedServer(Netty, port) {
+            //debug logging, need to enable dep in gradle script
+            //install(CallLogging) { level = Level.DEBUG }
             routing {
-                get("/") { call.respondFile(File(root, "index.html")) }
-                static { files(File(root)) }
+                get("/") {
+                    call.respondText(File(root, "index.html").readText(), ContentTypes.html, HttpStatusCode.OK)
+                }
+                static { supportFiles(File(root)) }
                 val hasGroovySupport = tryRegisterGroovy()
                 val plugins = createFeaturePlugins(hasGroovySupport)
                 featurePlugins = plugins
@@ -98,6 +95,26 @@ class KtorServer(context: Context) {
             add(ViewHierarchy(windowManager))
             add(ViewShot(windowManager))
             add(ViewProperty(windowManager, json))
+        }
+    }
+}
+
+/**
+ * Necessary workaround for jvm1.6 versions, because of dependency on java's Path API
+ */
+fun Route.supportFiles(folder: File) {
+    fun File?.combine(file: File) = when {
+        this == null -> file
+        else -> resolve(file)
+    }
+    val pathParameterName = "static-content-path-parameter"
+
+    val dir = staticRootFolder.combine(folder)
+    get("{$pathParameterName...}") {
+        val relativePath = call.parameters.getAll(pathParameterName)?.joinToString(File.separator) ?: return@get
+        val file = dir.combineSafe(relativePath)
+        if (file.isFile) {
+            call.respond(file.readBytes())
         }
     }
 }

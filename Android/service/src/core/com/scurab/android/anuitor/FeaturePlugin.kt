@@ -24,4 +24,5 @@ object ContentTypes {
     val text = io.ktor.http.ContentType.parse(HttpTools.MimeType.TEXT_PLAIN)
     val png = io.ktor.http.ContentType.parse(HttpTools.MimeType.IMAGE_PNG)
     val json = io.ktor.http.ContentType.parse(HttpTools.MimeType.APP_JSON)
+    val html = io.ktor.http.ContentType.parse(HttpTools.MimeType.TEXT_HTML)
 }
