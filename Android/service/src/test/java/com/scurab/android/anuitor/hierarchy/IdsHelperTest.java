@@ -1,38 +1,32 @@
 package com.scurab.android.anuitor.hierarchy;
 
-import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import com.scurab.android.anuitor.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-
-import java.util.HashMap;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jbruchanov on 12.6.2014.
  */
+@SuppressWarnings("KotlinInternalInJava")
 @RunWith(RobolectricTestRunner.class)
 public class IdsHelperTest {
 
     @Test
-    public void testLoadValues() throws NoSuchFieldException, ClassNotFoundException {
-        IdsHelper.VALUES.clear();
-        assertEquals(0, IdsHelper.VALUES.size());
+    public void testLoadValues() {
+        IdsHelper.getData$service_debug().clear();
+        assertEquals(0, IdsHelper.getData$service_debug().size());
         IdsHelper.loadValues(R.class);
-        assertTrue(IdsHelper.VALUES.size() > 0);
+        assertTrue(IdsHelper.getData$service_debug().size() > 0);
         int count = 0;
         boolean hasAndroid = false;
         boolean hasOwn = false;
-        for (String s : IdsHelper.VALUES.keySet()) {
-            count += IdsHelper.VALUES.get(s).size();
+        for (String s : IdsHelper.getData$service_debug().keySet()) {
+            count += IdsHelper.getData$service_debug().get(s).size();
             hasAndroid |= s.contains("android.R.");
             hasOwn |= s.startsWith("R.");
         }
@@ -40,27 +34,5 @@ public class IdsHelperTest {
         assertTrue(count > 0);
         assertTrue(hasAndroid);
         assertTrue(hasOwn);
-    }
-
-    @Test
-    public void testGetJson() {
-        IdsHelper.loadValues(R.class);
-        String s = IdsHelper.toJson();
-        HashMap hashMap = new Gson().fromJson(s, HashMap.class);
-        assertNotNull(hashMap);
-        assertEquals(hashMap.size(), IdsHelper.VALUES.size());
-    }
-
-    @Test
-    public void testGetJsonWithResources() throws NoSuchFieldException, ClassNotFoundException {
-        IdsHelper.loadValues(R.class);
-        String s = IdsHelper.toJson(RuntimeEnvironment.application.getResources());
-        HashMap hashMap = new Gson().fromJson(s, HashMap.class);
-        List<LinkedTreeMap> list = (List<LinkedTreeMap>) hashMap.get("android.R.layout");
-
-        for (LinkedTreeMap v : list) {
-            assertNotNull(v.get("Key"));
-            assertNotNull(v.get("Value"));
-        }
     }
 }

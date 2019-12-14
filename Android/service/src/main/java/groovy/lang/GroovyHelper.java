@@ -22,22 +22,25 @@ public class GroovyHelper {
 
     /**
      * Get resource id value from string
+     *
      * @param id string value of id, e.g. "R.id.myButton"
-     * @return
-     * @throws ClassNotFoundException
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
+     * @return*
      */
-    public static int id(String id) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+    public static int id(String id) {
         int index = id.lastIndexOf(".");
         String fieldName = id.substring(index + 1);
         String clsName = id.substring(1, index).replace('.', '$');//$id ,R removed
-        Class clz = Class.forName(IdsHelper.RClass.getName() + clsName);
-        return clz.getField(fieldName).getInt(null);
+        try {
+            Class clz = Class.forName(IdsHelper.getRClass().getName() + clsName);
+            return clz.getField(fieldName).getInt(null);
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
      * Get Application object instance
+     *
      * @return
      */
     public static Application getApplication() {
@@ -46,6 +49,7 @@ public class GroovyHelper {
 
     /**
      * Get list of created activities
+     *
      * @return
      */
     public static List<Activity> getActivities() {
@@ -54,6 +58,7 @@ public class GroovyHelper {
 
     /**
      * Get Root view of particular screen
+     *
      * @param index
      * @return
      */
@@ -63,6 +68,7 @@ public class GroovyHelper {
 
     /**
      * Get any view of particular screen
+     *
      * @param rootViewIndex
      * @param position
      * @return
@@ -74,6 +80,7 @@ public class GroovyHelper {
 
     /**
      * Get value for any field of object
+     *
      * @param src
      * @param name
      * @return
@@ -86,6 +93,7 @@ public class GroovyHelper {
 
     /**
      * Get value for any field of object
+     *
      * @param clz
      * @param name
      * @return

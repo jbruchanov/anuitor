@@ -8,9 +8,6 @@ import com.android.dx.dex.cf.CfTranslator;
 import com.android.dx.dex.code.PositionList;
 import com.android.dx.dex.file.ClassDefItem;
 import com.android.dx.dex.file.DexFile;
-import com.scurab.android.anuitor.model.OutRef;
-import com.scurab.android.anuitor.tools.Executor;
-import com.scurab.android.anuitor.tools.LogCatProvider;
 
 import org.codehaus.groovy.control.CompilerConfiguration;
 
@@ -38,7 +35,6 @@ import dalvik.system.DexClassLoader;
  */
 public class GrooidShell {
 
-    private static final int DEFAULT_TIMEOUT = 10000;
     private static final String DEX_IN_JAR_NAME = "classes.dex";
     private static final Attributes.Name CREATED_BY = new Attributes.Name("Created-By");
 
@@ -63,20 +59,7 @@ public class GrooidShell {
         cfOptions.statistics = false;
     }
 
-    public EvalResult evaluateOnMainThread(final String scriptText) {
-        return Executor.runInMainThreadBlocking(10000, () -> {
-            EvalResult result;
-            try {
-                result = evaluate(scriptText);
-            } catch (Throwable t) {
-                t.printStackTrace();
-                result = new EvalResult(t);
-            }
-            return result;
-        });
-    }
-
-    public EvalResult evaluate(String scriptText) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public Script compile(String code) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         long sd = System.nanoTime();
         final Set<String> classNames = new LinkedHashSet<String>();
         final DexFile dexFile = new DexFile(dexOptions);
@@ -89,7 +72,7 @@ public class GrooidShell {
         });
 
         GrooidClassLoader gcl = new GrooidClassLoader(this.classLoader, config);
-        gcl.parseClass(scriptText);
+        gcl.parseClass(code);
         byte[] dalvikBytecode = new byte[0];
         dalvikBytecode = dexFile.toDex(new OutputStreamWriter(new ByteArrayOutputStream()), false);
 
@@ -102,11 +85,20 @@ public class GrooidShell {
                 sd = System.nanoTime();
                 Script script = null;
                 script = (Script) scriptClass.newInstance();
-                result = script.run();
-                execTime = System.nanoTime() - sd;
-                break;
+                return script;
             }
         }
+        return null;
+    }
+
+    @Deprecated
+    public EvalResult evaluate(String scriptText) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        long sd = System.nanoTime();
+        Script compile = compile(scriptText);
+        long compilationTime = System.nanoTime() - sd;
+        sd = System.nanoTime();
+        Object result = compile.run();
+        long execTime = System.nanoTime() - compilationTime;
         return new EvalResult(compilationTime, execTime, result);
     }
 
@@ -152,7 +144,7 @@ public class GrooidShell {
         public final Object result;
 
         public EvalResult(Throwable throwable) {
-            this(0, 0, throwable.getMessage() + "\n" + LogCatProvider.getStackTrace(throwable));
+            this(0, 0, throwable.getMessage());
         }
 
         public EvalResult(long compilationTime, long execTime, Object result) {

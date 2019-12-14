@@ -11,13 +11,22 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
+
+    //necessary otherwise duplicated files error
+    packagingOptions {
+        pickFirst 'META-INF/kotlinx-coroutines-core.kotlin_module'
+        pickFirst 'META-INF/io.netty.versions.properties'
+        exclude 'META-INF/INDEX.LIST'
+    }
 }
 
 dependencies {
     def localMaven = false
     if(localMaven) {
         implementation "com.scurab:anuitor:${project.releaseVersion}"
-        implementation "com.scurab:anuitor-groovy:${project.releaseVersion}"
+        if (/*build-versions.gradle*/ groovyEnabled) {
+            implementation "com.scurab:anuitor-groovy:${project.releaseVersion}"
+        }
     } else {
         implementation project(":service")
         if (/*build-versions.gradle*/groovyEnabled) {

@@ -24,11 +24,11 @@ afterEvaluate {
 }
 
 dependencies {
-    compileOnly project(":core")
-
     implementation "com.google.android.tools:dx:${dx}"
     implementation "org.codehaus.groovy:groovy:${groovy}"
+    compileOnly "io.ktor:ktor-server-core:$ktor"
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
 }

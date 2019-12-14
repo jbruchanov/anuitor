@@ -40,7 +40,7 @@ public class WindowManagerGlobalReflector extends Reflector<Object> implements W
         }
     }
 
-    public Activity[] getActivites() {
+    public Activity[] getActivities() {
         HashSet<Activity> result = new HashSet<>();
         for (String s : getViewRootNames()) {
             View v = getRootView(s);

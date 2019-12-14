@@ -8,6 +8,7 @@ import androidx.annotation.CallSuper
 import com.scurab.android.anuitor.Constants.COMPONENTS
 import com.scurab.android.anuitor.Constants.OWNER
 import com.scurab.android.anuitor.tools.atLeastApi
+import com.scurab.android.anuitor.tools.hasSize
 
 abstract class BaseViewExtractor : BaseExtractor() {
 
@@ -52,7 +53,7 @@ abstract class BaseViewExtractor : BaseExtractor() {
             val isParentVisible = contextData["_Visibility"] as? Int? ?: View.VISIBLE
             val isVisible = v.visibility == View.VISIBLE && (View.VISIBLE == isParentVisible)
             val hasBackground = v.background != null
-            val shouldRender = isVisible && v.isShown && (isViewGroup && hasBackground || !isViewGroup)
+            val shouldRender = v.hasSize() && isVisible && v.isShown && (isViewGroup && hasBackground || !isViewGroup)
             data["_RenderViewContent"] = shouldRender
             data["_Visibility"] = v.visibility
 
