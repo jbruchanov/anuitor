@@ -3,7 +3,7 @@
 ext {
     minSdk = 14
     compileSdk = 29
-    targetSdk = compileSdk //28 breaks anything with reflection
+    targetSdk = compileSdk
     gson = "2.8.5"
     jackson = "2.9.2"
     robolectric = "4.3.1"
