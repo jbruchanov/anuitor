@@ -29,7 +29,7 @@ object IdsHelper {
     internal var data = mutableMapOf<String, Map<Int, String>>()
     @JvmStatic
     var RClass: Class<*>? = null
-
+    @JvmStatic
     fun loadValues(Rclass: Class<*>) {
         if (data.isNotEmpty()) {
             data.clear()
@@ -63,6 +63,7 @@ object IdsHelper {
      * @param id
      * @return
      */
+    @JvmStatic
     fun getType(id: Int): RefType {
         return data
                 .filter { it.value.containsKey(id) }
@@ -78,6 +79,7 @@ object IdsHelper {
      * @param res optional value, can be null
      * @return
      */
+    @JvmStatic
     fun getAllResources(res: Resources): Map<String, List<ResourceDTO>> {
         val tv = TypedValue()
         return data.mapValues { (group, values) ->

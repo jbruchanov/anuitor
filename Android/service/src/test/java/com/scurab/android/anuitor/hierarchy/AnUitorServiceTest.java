@@ -14,6 +14,7 @@ import static org.mockito.Mockito.spy;
 /**
  * Created by jbruchanov on 23/06/2014.
  */
+@SuppressWarnings("KotlinInternalInJava")
 @RunWith(RobolectricTestRunner.class)
 public class AnUitorServiceTest {
 
@@ -24,8 +25,9 @@ public class AnUitorServiceTest {
         //remove '.R' at the end
         name = name.substring(0, name.length() - 2);
         doReturn(name).when(ser).getPackageName();
-        IdsHelper./*protected*/VALUES.clear();
+        //noinspection KotlinInternalInJava
+        IdsHelper./*protected*/getData$service_debug().clear();
         ser.onCreate();
-        assertTrue(IdsHelper.VALUES.size() > 0);
+        assertTrue(IdsHelper.getData$service_debug().size() > 0);
     }
 }
