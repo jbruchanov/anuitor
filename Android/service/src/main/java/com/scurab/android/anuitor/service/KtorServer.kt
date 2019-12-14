@@ -78,7 +78,7 @@ class KtorServer(context: Context) {
             featurePlugins = null
             val e = engine
             engine = null
-            e?.stop(2000, 2000, TimeUnit.MILLISECONDS)
+            e?.stop(2000, 2000)
         }
     }
 
