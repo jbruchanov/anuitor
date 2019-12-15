@@ -179,7 +179,7 @@ class UitorService : Service() {
                         f.mkdirs()
                         try {
                             val zipFile = "$folder/web.zip"
-                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, R.raw.anuitor, zipFile)
+                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, R.raw.uitor_webapp, zipFile)
                             ZipTools.extractFolder(zipFile, folder)
                         } catch (e: Throwable) {
                             exception = e
