@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager.NameNotFoundException
 import android.net.Uri
 import android.os.Build
+import android.os.Debug
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
@@ -68,24 +69,33 @@ class UitorService : Service() {
         super.onCreate()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        server.stop()
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        intent?.action?.let { action ->
-            when (action) {
-                START -> {
-                    if (!server.isRunning) {
-                        val port = intent.extras?.getInt(PORT, DEFAULT_PORT) ?: DEFAULT_PORT
-                        val rootFolder = intent.extras?.getString(ROOT_FOLDER)
-                                ?: throw NullPointerException("Undefined '$ROOT_FOLDER' in extras")
-                        val rootFolderFullPath = "${baseContext.cacheDir}/$rootFolder"
-                        server.start(rootFolderFullPath, port)
-                        startForeground(NOTIF_ID, createSimpleNotification(null, true))
+        try {
+            intent?.action?.let { action ->
+                when (action) {
+                    START -> {
+                        if (!server.isRunning) {
+                            val port = intent.extras?.getInt(PORT, DEFAULT_PORT) ?: DEFAULT_PORT
+                            val rootFolder = intent.extras?.getString(ROOT_FOLDER)
+                                    ?: throw NullPointerException("Undefined '$ROOT_FOLDER' in extras")
+                            val rootFolderFullPath = "${baseContext.cacheDir}/$rootFolder"
+                            server.start(rootFolderFullPath, port)
+                            startForeground(NOTIF_ID, createSimpleNotification(null, true))
+                        }
+                    }
+                    STOP -> {
+                        stopForeground(true)
+                        server.stop()
                     }
                 }
-                STOP -> {
-                    stopForeground(true)
-                    server.stop()
-                }
             }
+        } catch (e: Throwable) {
+            startForeground(NOTIF_ID, createSimpleNotification(e.message, false))
         }
         return START_NOT_STICKY
     }

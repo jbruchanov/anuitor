@@ -26,9 +26,12 @@ import java.io.File
 
 class KtorServer(context: Context) {
 
+    companion object {
+        private var engine: ApplicationEngine? = null
+    }
+
     //lambda for lateInit
     private val contextRef = { context.applicationContext }
-    private var engine: ApplicationEngine? = null
     private var windowManager = WindowManagerProvider.getManager()
     private var featurePlugins: List<FeaturePlugin>? = null
 
@@ -37,7 +40,7 @@ class KtorServer(context: Context) {
 
     fun start(root: String, port: Int = 8080) {
         if (engine != null) {
-            ise("Server already running")
+            stop()
         }
         this.port = port
         engine = embeddedServer(Netty, port) {
