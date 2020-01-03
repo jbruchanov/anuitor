@@ -21,7 +21,7 @@ publishing {
             pom {
                 name = 'AnUitor'
                 description = 'UI debug tool for Android'
-                url = 'http://anuitor.scurab.com'
+                url = 'http://uitor.scurab.com'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'

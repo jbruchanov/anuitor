@@ -1,5 +1,5 @@
 <manifest
-    package="com.scurab.android.anuitor"
+    package="com.scurab.android.uitor"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>

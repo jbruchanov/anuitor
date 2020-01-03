@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         minSdkVersion minSdk
-        applicationId "com.scurab.android.anuitorsample"
+        applicationId "com.scurab.android.uitorsample"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }

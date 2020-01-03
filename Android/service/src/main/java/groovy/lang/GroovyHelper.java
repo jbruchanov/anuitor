@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.view.View;
 
-import com.scurab.android.anuitor.extract2.DetailExtractor;
-import com.scurab.android.anuitor.hierarchy.IdsHelper;
-import com.scurab.android.anuitor.reflect.ActivityThreadReflector;
-import com.scurab.android.anuitor.reflect.Reflector;
-import com.scurab.android.anuitor.reflect.WindowManagerProvider;
+import com.scurab.android.uitor.extract2.DetailExtractor;
+import com.scurab.android.uitor.hierarchy.IdsHelper;
+import com.scurab.android.uitor.reflect.ActivityThreadReflector;
+import com.scurab.android.uitor.reflect.Reflector;
+import com.scurab.android.uitor.reflect.WindowManagerProvider;
 
 import java.util.List;
 
