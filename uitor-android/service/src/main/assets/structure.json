@@ -1408,7 +1408,7 @@
           },
           {
             "m": "getRippleColor",
-            "c:": "getRippleColor().stringColor()"
+            "c": "getRippleColor().stringColor()"
           },
           {"m": "getSize"},
           {"m": "getUseCompatPadding"}
@@ -1486,7 +1486,10 @@
           },
           {"m": "getChipBackgroundColor"},
           {"m": "getChipCornerRadius"},
-          {"n": "ChipDrawable:", "m": "getChipDrawable"},
+          {
+            "n": "ChipDrawable:",
+            "m": "getChipDrawable"
+          },
           {"m": "getChipEndPadding"},
           {"m": "getChipIcon"},
           {"m": "getChipIconSize"},
@@ -1824,14 +1827,14 @@
         "1" : [
           {
             "m": "getColor",
-            "c:": "getColor().stringColor()"
+            "c": "getColor().stringColor()"
           },
           {"m": "ascent"},
           {"m": "descent"},
           {"m": "getAlpha"},
           {
             "m": "getFlags",
-            "c:": "getFlags().binary()"
+            "c": "getFlags().binary()"
           },
           {"m": "getFontMetricsInt"},
           {"m": "getFontSpacing"},
