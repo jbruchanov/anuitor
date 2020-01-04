@@ -1,5 +1,6 @@
 package com.scurab.android.uitorsample
 
+import android.content.Context
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import com.scurab.android.uitor.hierarchy.IdsHelper
 import com.scurab.android.uitor.service.UitorClientConfig
 import com.scurab.android.uitor.service.UitorService
 import com.scurab.android.uitorsample.common.BaseFragment
+import java.util.Date
 
 class SampleApplication : MultiDexApplication() {
 
@@ -48,5 +50,12 @@ class SampleApplication : MultiDexApplication() {
                         }
             }
         })
+
+        getSharedPreferences("UIToSample", Context.MODE_PRIVATE).edit().apply {
+            putLong("Now", System.currentTimeMillis())
+            putString("Test", Date().toGMTString())
+            putStringSet("Set", setOf("1","A"))
+            apply()
+        }
     }
 }
