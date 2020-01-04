@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Rect
+import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -271,4 +272,9 @@ fun Any.toArrayString(): String? {
         is Array<*> -> Arrays.toString(this)
         else -> null
     }
+}
+
+inline fun <V> filling(v: V, action: (V) -> Unit): V {
+    action(v)
+    return v
 }

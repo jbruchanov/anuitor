@@ -1682,12 +1682,17 @@
       "items": {
         "1" : [
           {"m": "getChangingConfigurations", "c": "getChangingConfigurations().binary()"},
+          {"m": "getConstantState"},
           {"m": "getIntrinsicWidth"},
           {"m": "getIntrinsicHeight"},
           {"m": "getLevel"},
           {"m": "getMinimumWidth"},
           {"m": "getMinimumHeight"},
           {"m": "getOpacity"},
+          {
+            "m": "getPadding",
+            "c": "filling(android.graphics.Rect(), { getPadding(it) })"
+          },
           {
             "m": "getState",
             "c": "getState()?.drawableStates()"
@@ -1719,11 +1724,29 @@
             "m": "getLayoutDirection",
             "t": "ViewLayoutDirection"
           },
-          {"m": "isFilterBitmap"}
+          {"m": "isFilterBitmap"},
+          {
+            "m": "getHotspotBounds",
+            "c": "filling(android.graphics.Rect(), { getHotspotBounds(it) })"
+          }
         ],
         "29": [
           {"m": "getOpticalInsets"},
           {"m": "isProjected"}
+        ]
+      }
+    },
+    "android.graphics.drawable.AnimationDrawable": {
+      "parent": "android.graphics.drawable.Drawable",
+      "items": {
+        "1" : [
+          {"m": "getNumberOfFrames"},
+          {"m": "isOneShot"},
+          {"m": "isRunning"},
+          {
+            "m": "getDurations",
+            "c": "(0..getNumberOfFrames()).map { getDuration(it) }.toIntArray()"
+          }
         ]
       }
     },
@@ -1746,6 +1769,124 @@
         "18" : [
           {"m": "hasAntiAlias"},
           {"m": "hasMipMap"}
+        ]
+      }
+    },
+    "android.graphics.drawable.ColorDrawable": {
+      "parent": "android.graphics.drawable.Drawable",
+      "items": {
+        "11" : [
+          {
+            "m": "getColor",
+            "c": "getColor().stringColor()"
+          }
+        ]
+      }
+    },
+    "android.graphics.drawable.ColorStateListDrawable": {
+      "parent": "android.graphics.drawable.Drawable",
+      "items": {
+        "29": [
+          {"m": "getColorStateList"},
+          {"m": "getColorFilter"},
+          {"m": "getColorStateList"},
+          {"m": "getConstantState"},
+          {"m": "getCurrent"},
+          {"m": "hasFocusStateSpecified"}
+        ]
+      }
+    },
+    "android.graphics.drawable.GradientDrawable": {
+      "parent": "android.graphics.drawable.Drawable",
+      "items": {
+        "16": [
+          {"m": "getOrientation"}
+        ],
+        "21": [
+          {"m": "getColorFilter"},
+          {"m": "getGradientRadius"}
+        ],
+        "24": [
+          {"m": "getColor"},
+          {
+            "m": "getColors",
+            "c": "getColors()?.map{ it.stringColor() }"
+          },
+          {"m": "getCornerRadii"},
+          {"m": "getCornerRadius"},
+          {"m": "getGradientCenterX"},
+          {"m": "getGradientCenterY"},
+          {"m": "getGradientType"},
+          {"m": "getShape"},
+          {"m": "getUseLevel"}
+        ],
+        "29": [
+          {"m": "getInnerRadius"},
+          {"m": "getInnerRadiusRatio"},
+          {"m": "getThickness"},
+          {"m": "getThicknessRatio"}
+        ]
+      }
+    },
+    "android.graphics.drawable.LayerDrawable": {
+      "parent": "android.graphics.drawable.Drawable",
+      "items": {
+        "1": [
+          {"m": "getNumberOfLayers"}
+        ],
+        "21": [
+          {"m": "getPaddingMode"}
+        ],
+        "23": [
+          {"m": "getTopPadding"},
+          {"m": "getRightPadding"},
+          {"m": "getStartPadding"},
+          {"m": "getEndPadding"}
+        ]
+      }
+    },
+    "android.graphics.drawable.RippleDrawable": {
+      "parent": "android.graphics.drawable.LayerDrawable",
+      "items": {
+        "23": [
+          {"m": "getRadius"}
+        ]
+      }
+    },
+    "android.graphics.drawable.RotateDrawable": {
+      "parent": "android.graphics.drawable.Drawable",
+      "items": {
+        "21": [
+          {"m": "getFromDegrees"},
+          {"m": "getToDegrees"},
+          {"m": "getPivotX"},
+          {"m": "getPivotY"},
+          {"m": "isPivotXRelative"},
+          {"m": "isPivotYRelative"}
+        ]
+      }
+    },
+    "android.graphics.drawable.ShapeDrawable": {
+      "parent": "android.graphics.drawable.Drawable",
+      "items": {
+        "1": [
+          {"m": "getShape"}
+        ]
+      }
+    },
+    "android.graphics.drawable.StateListDrawable": {
+      "parent": "android.graphics.drawable.Drawable",
+      "items": {
+        "29": [
+          {"m": "getStateCount"}
+        ]
+      }
+    },
+    "android.graphics.drawable.TransitionDrawable": {
+      "parent": "android.graphics.drawable.LayerDrawable",
+      "items": {
+        "1": [
+          {"m": "isCrossFadeEnabled"}
         ]
       }
     },
