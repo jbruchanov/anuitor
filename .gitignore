@@ -60,3 +60,4 @@ Android/jdoc
 Android/service/src/main/java/com/scurab/android/anuitor/reflect/ReflectionHelper.java
 Android/service/src/main/assets/src.txt
 Android/service/src/extractors/
+uitor-android/service/src/extractors/com/scurab/android/uitor/extract2/
