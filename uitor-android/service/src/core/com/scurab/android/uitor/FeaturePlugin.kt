@@ -16,7 +16,10 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.catching(block: () -> 
     try {
         block()
     } catch (e: Throwable) {
-        call.respond(HttpStatusCode.InternalServerError, e.message ?: "Null exception mess")
+        val msg = e.message ?: "Null exception msg"
+        System.err.println(msg)
+        e.printStackTrace(System.err)
+        call.respond(HttpStatusCode.InternalServerError, msg)
     }
 }
 
