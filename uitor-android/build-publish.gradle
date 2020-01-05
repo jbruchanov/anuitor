@@ -1,4 +1,5 @@
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka'
 
 afterEvaluate {
     task sourcesJar(type: Jar) {
@@ -19,7 +20,7 @@ publishing {
             version = project.releaseVersion
 
             pom {
-                name = 'AnUitor'
+                name = 'Uitor'
                 description = 'UI debug tool for Android'
                 url = 'http://uitor.scurab.com'
                 licenses {
@@ -47,6 +48,15 @@ publishing {
                 }
             }
         }
+    }
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
+    configuration {
+        //Add /core into kdoc
+        sourceRoot { path = 'src/main/core' }
     }
 }
 
