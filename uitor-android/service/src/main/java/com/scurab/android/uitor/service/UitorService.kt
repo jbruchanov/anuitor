@@ -95,6 +95,7 @@ class UitorService : Service() {
                 }
             }
         } catch (e: Throwable) {
+            e.printStackTrace(System.err)
             startForeground(NOTIF_ID, createSimpleNotification(e.message, false))
         }
         return START_NOT_STICKY
