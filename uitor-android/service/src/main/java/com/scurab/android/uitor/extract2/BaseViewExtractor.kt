@@ -56,7 +56,8 @@ abstract class BaseViewExtractor : BaseExtractor() {
             val isParentVisible = contextData["_Visibility"] as? Int? ?: View.VISIBLE
             val isVisible = v.visibility == View.VISIBLE && (View.VISIBLE == isParentVisible)
             val hasBackground = v.background != null
-            val shouldRender = v.hasSize() && isVisible && v.isShown && (isViewGroup && hasBackground || !isViewGroup)
+            //isShown is ignored, otherwise it wouldn't be rendered app is in background or activity inactive
+            val shouldRender = v.hasSize() && isVisible /*&& v.isShown */&& (isViewGroup && hasBackground || !isViewGroup)
             data["_RenderViewContent"] = shouldRender
             data["_Visibility"] = v.visibility
 
