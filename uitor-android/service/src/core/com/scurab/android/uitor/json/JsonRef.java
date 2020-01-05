@@ -2,17 +2,11 @@ package com.scurab.android.uitor.json;
 
 import androidx.annotation.NonNull;
 
+/**
+ * A Class to have a json serializer accessible from anywhere
+ */
 public class JsonRef {
-    public static JsonSerializer JSON;
-
-    public static void init() {
-        if (JSON == null) {
-            initJson();
-            if (JSON == null) {
-                throw new IllegalStateException("JsonSerializer not yet created, assign BasePlugin.JSON!");
-            }
-        }
-    }
+    private static JsonSerializer JSON;
 
     public static JsonSerializer initJson() {
         if (JSON == null) {

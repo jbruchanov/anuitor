@@ -18,6 +18,7 @@ public class JacksonSerializer implements JsonSerializer {
                 .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public JacksonSerializer(@NonNull ObjectMapper objectMapper) {
         mObjectMapper = objectMapper;
     }

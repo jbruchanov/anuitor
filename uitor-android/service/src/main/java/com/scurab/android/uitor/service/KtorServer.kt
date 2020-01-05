@@ -24,6 +24,9 @@ import io.ktor.server.netty.Netty
 import io.ktor.util.combineSafe
 import java.io.File
 
+/**
+ * Default implementation of Web server
+ */
 class KtorServer(context: Context) {
 
     companion object {
@@ -38,6 +41,11 @@ class KtorServer(context: Context) {
     var port: Int? = null; private set
     val isRunning get() = engine != null
 
+    /**
+     * Start web server
+     * [root] root folder of the web server
+     * [port] port to start the webserver on, default is 8080
+     */
     fun start(root: String, port: Int = 8080) {
         if (engine != null) {
             stop()

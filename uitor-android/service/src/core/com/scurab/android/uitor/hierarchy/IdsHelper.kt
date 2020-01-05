@@ -23,11 +23,19 @@ enum class RefType {
     xml
 }
 
+/**
+ * Class to help you with android IDs
+ */
 object IdsHelper {
+
     @JvmStatic
     internal var data = mutableMapOf<String, Map<Int, String>>()
     @JvmStatic
-    var RClass: Class<*>? = null
+    var RClass: Class<*>? = null; private set
+
+    /**
+     * Preload names of IDs defined in the app
+     */
     @JvmStatic
     fun loadValues(Rclass: Class<*>) {
         if (data.isNotEmpty()) {
@@ -73,10 +81,7 @@ object IdsHelper {
     }
 
     /**
-     * Convert whole dataset of ids into JSON.
-     * If @param res is passed, dataset will contain source of xml files for drawables, layouts, colors
-     * @param res optional value, can be null
-     * @return
+     * Get all resources for serialization
      */
     @JvmStatic
     fun getAllResources(res: Resources): Map<String, List<ResourceDTO>> {
@@ -84,7 +89,7 @@ object IdsHelper {
         return data.mapValues { (group, values) ->
             val showValue = group == "R.drawable" || group == "R.layout" || group == "R.color"
             values.map { (resId, name) ->
-                var location = if (showValue) {
+                val location = if (showValue) {
                     res.getValue(resId, tv)
                 } else null
                 ResourceDTO(resId, name, location)
@@ -102,7 +107,7 @@ object IdsHelper {
             require(pckg != null) { "Containerclass.package:$containerClass has null name ?!" }
             v = v.replace(pckg, "").substring(1)
         }
-        IdsHelper.data[v] = values
+        data[v] = values
         fillFields(name, values, containerClass.fields, vanillaAndroid)
     }
 
@@ -125,7 +130,7 @@ object IdsHelper {
 
     private fun Resources.getValue(resId: Int, typedValue: TypedValue): CharSequence? {
         return try {
-            getValue(resId, typedValue, false);
+            getValue(resId, typedValue, false)
             typedValue.string
         } catch (e: Throwable) {
             //just for sure
