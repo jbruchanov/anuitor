@@ -6,9 +6,6 @@ import com.scurab.android.uitorsample.widget.CustomTextView;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Created by jbruchanov on 01/07/2014.
- */
 public class CustomTextViewExtractor extends TextViewExtractor {
 
     @Override

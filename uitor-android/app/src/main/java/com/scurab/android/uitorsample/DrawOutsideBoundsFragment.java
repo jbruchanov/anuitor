@@ -17,9 +17,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-/**
- * Created by JBruchanov on 04/02/2016.
- */
 public class DrawOutsideBoundsFragment extends Fragment {
 
     private TextView mTextView;

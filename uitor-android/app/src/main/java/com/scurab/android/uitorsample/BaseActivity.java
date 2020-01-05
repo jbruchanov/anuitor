@@ -5,10 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.widget.Toast;
 
-/**
- * Created by JBruchanov on 27/03/2017.
- */
-
 public abstract class BaseActivity extends AppCompatActivity {
 
     public void showToast(Throwable t) {

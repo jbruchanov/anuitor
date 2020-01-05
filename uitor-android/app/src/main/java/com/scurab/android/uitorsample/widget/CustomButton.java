@@ -5,9 +5,6 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatButton;
 
-/**
- * Created by jbruchanov on 01/07/2014.
- */
 public class CustomButton extends AppCompatButton {
 
     private int mCustomValue1 = 1234;

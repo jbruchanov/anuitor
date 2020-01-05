@@ -11,9 +11,6 @@ import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-/**
- * Created by jbruchanov on 23/06/2014.
- */
 @SuppressWarnings("KotlinInternalInJava")
 @RunWith(RobolectricTestRunner.class)
 public class UitorServiceTest {

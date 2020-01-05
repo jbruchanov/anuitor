@@ -1,8 +1,5 @@
 package com.scurab.android.uitor.model;
 
-/**
- * Created by JBruchanov on 22/02/2016.
- */
 public class OutRef<T> {
 
     private T mValue;

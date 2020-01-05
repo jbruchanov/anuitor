@@ -15,10 +15,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by jbruchanov on 20/04/2017.
- */
-
 @SuppressWarnings("WeakerAccess")
 public class UitorClientConfig {
 

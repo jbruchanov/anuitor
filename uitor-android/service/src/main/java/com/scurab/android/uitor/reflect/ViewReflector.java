@@ -6,9 +6,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-/**
- * Created by JBruchanov on 23/11/2015.
- */
 public class ViewReflector extends Reflector<View> {
     public ViewReflector(View real) {
         super(real);

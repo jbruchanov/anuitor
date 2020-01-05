@@ -18,9 +18,6 @@ import android.widget.TextView;
 
 import com.scurab.android.uitorsample.common.BaseFragment;
 
-/**
- * Created by jbruchanov on 26/06/2014.
- */
 public class WidgetsFragment extends BaseFragment {
 
     @Override

@@ -15,9 +15,6 @@ import com.scurab.android.uitorsample.widget.CustomTextView;
 import com.scurab.android.uitorsample.widget.SubCustomButton;
 import com.scurab.android.uitorsample.widget.SubCustomTextView;
 
-/**
- * Created by jbruchanov on 01/07/2014.
- */
 public class CustomWidgetsFragment extends BaseFragment {
 
 

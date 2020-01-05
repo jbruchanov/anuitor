@@ -6,9 +6,6 @@ import java.util.HashMap;
 import static com.scurab.android.uitor.tools.FileSystemTools.getExtension;
 import static com.scurab.android.uitor.tools.HttpTools.MimeType.APP_OCTET;
 
-/**
- * Created by jbruchanov on 27/05/2014.
- */
 public class HttpTools {
 
 

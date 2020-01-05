@@ -4,9 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.animation.RotateAnimation;
 
-/**
- * Created by jbruchanov on 01/07/2014.
- */
 public class CustomTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     private int mAngle;

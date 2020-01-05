@@ -8,9 +8,6 @@ import org.robolectric.RuntimeEnvironment;
 
 import static junit.framework.TestCase.assertNotNull;
 
-/**
- * Created by jbruchanov on 15.5.14.
- */
 @RunWith(RobolectricTestRunner.class)
 public class SimpleTest {
 

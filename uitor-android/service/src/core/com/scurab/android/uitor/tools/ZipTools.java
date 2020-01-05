@@ -15,7 +15,6 @@ import java.util.zip.ZipFile;
 import static com.scurab.android.uitor.tools.FileSystemTools.BUFFER;
 
 /**
- * Created by jbruchanov on 21/05/2014.
  *
  * Few help methods for operation with zip files
  */

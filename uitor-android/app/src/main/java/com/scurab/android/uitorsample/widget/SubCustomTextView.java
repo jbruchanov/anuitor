@@ -3,9 +3,6 @@ package com.scurab.android.uitorsample.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
-/**
- * Created by jbruchanov on 01/07/2014.
- */
 public class SubCustomTextView extends CustomTextView {
 
     private String mCustomValue = "CustomValue";

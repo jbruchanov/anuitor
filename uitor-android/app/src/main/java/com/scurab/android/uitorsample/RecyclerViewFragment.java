@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import com.scurab.android.uitorsample.common.BaseFragment;
 
-/**
- * Created by JBruchanov on 20/02/2016.
- */
 public class RecyclerViewFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;

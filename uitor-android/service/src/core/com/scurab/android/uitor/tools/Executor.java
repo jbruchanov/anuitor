@@ -5,9 +5,6 @@ import android.os.Looper;
 
 import com.scurab.android.uitor.model.OutRef;
 
-/**
- * Created by jbruchanov on 26/06/2014.
- */
 public class Executor {
 
     private static Handler sHandler;

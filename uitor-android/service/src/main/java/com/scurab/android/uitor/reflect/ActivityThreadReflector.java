@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by JBruchanov on 20/01/2017.
- */
-
 public class ActivityThreadReflector extends Reflector<Object> {
 
     public ActivityThreadReflector() {

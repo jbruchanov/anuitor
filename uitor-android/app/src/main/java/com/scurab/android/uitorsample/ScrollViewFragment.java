@@ -10,9 +10,6 @@ import android.widget.ScrollView;
 
 import com.scurab.android.uitorsample.common.BaseFragment;
 
-/**
- * Created by jbruchanov on 26/06/2014.
- */
 public class ScrollViewFragment extends BaseFragment {
 
     @Override

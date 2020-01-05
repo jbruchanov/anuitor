@@ -8,9 +8,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-/**
- * Created by JBruchanov on 05/02/2016.
- */
 public class LogCatProvider {
 
     public static final String TYPE_MAIN = "main";

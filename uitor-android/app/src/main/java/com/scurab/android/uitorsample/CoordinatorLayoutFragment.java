@@ -14,10 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-/**
- * Created by JBruchanov on 12/03/2017.
- */
-
 public class CoordinatorLayoutFragment extends BaseFragment {
 
     @Nullable

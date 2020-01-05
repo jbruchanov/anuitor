@@ -7,10 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.widget.FrameLayout;
 
-/**
- * Created by JBruchanov on 27/03/2017.
- */
-
 public class AnotherActivity extends BaseActivity {
 
     private static final String ARG_INIT_FRAGMENT = "ARG_INIT_FRAGMENT";

@@ -9,9 +9,6 @@ import org.robolectric.RobolectricTestRunner;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by jbruchanov on 12.6.2014.
- */
 @SuppressWarnings("KotlinInternalInJava")
 @RunWith(RobolectricTestRunner.class)
 public class IdsHelperTest {

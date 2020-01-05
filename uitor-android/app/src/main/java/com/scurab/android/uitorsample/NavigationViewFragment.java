@@ -10,10 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by JBruchanov on 12/03/2017.
- */
-
 public class NavigationViewFragment extends BaseFragment {
 
     private NavigationView mNavigationView;

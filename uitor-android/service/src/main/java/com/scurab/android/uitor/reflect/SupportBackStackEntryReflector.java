@@ -6,9 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by jbruchanov on 24/06/2014.
- */
 public class SupportBackStackEntryReflector extends Reflector<FragmentManager.BackStackEntry> {
 
     public SupportBackStackEntryReflector(FragmentManager.BackStackEntry real) {

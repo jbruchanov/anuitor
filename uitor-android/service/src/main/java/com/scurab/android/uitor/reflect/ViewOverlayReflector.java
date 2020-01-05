@@ -6,9 +6,6 @@ import android.view.ViewOverlay;
 
 import java.util.List;
 
-/**
- * Created by JBruchanov on 05/02/2016.
- */
 public class ViewOverlayReflector extends Reflector<ViewOverlay> {
 
 

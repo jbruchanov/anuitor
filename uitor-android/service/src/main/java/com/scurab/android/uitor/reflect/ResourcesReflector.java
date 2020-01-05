@@ -14,9 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.xml.transform.TransformerException;
 
-/**
- * Created by jbruchanov on 22/05/2014.
- */
 public class ResourcesReflector extends Reflector<Resources> {
 
     public ResourcesReflector(Resources mReal) {

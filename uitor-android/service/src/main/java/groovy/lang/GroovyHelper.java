@@ -13,10 +13,9 @@ import com.scurab.android.uitor.reflect.WindowManagerProvider;
 import java.util.List;
 
 /**
- * Created by JBruchanov on 20/01/2017.
+ *
  * Help class for used in groovy scripts
  */
-
 @SuppressWarnings("unused")//used indirectly via groovy scripts
 public class GroovyHelper {
 

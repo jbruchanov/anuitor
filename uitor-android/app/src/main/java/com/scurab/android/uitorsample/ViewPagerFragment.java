@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 import com.scurab.android.uitorsample.common.BaseFragment;
 import com.scurab.android.uitorsample.widget.SimplePagerAdapter;
 
-/**
- * Created by jbruchanov on 26/06/2014.
- */
 public class ViewPagerFragment extends BaseFragment {
 
     @Override

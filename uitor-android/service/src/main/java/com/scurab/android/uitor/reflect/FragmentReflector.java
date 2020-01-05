@@ -1,8 +1,5 @@
 package com.scurab.android.uitor.reflect;
 
-/**
- * Created by jbruchanov on 24/06/2014.
- */
 public class FragmentReflector extends Reflector<Object> {
 
     public FragmentReflector(Object real) {

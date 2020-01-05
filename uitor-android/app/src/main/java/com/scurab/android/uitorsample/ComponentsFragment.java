@@ -23,9 +23,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-/**
- * Created by jbruchanov on 27/06/2014.
- */
 public class ComponentsFragment extends DialogFragment {
 
     @Override

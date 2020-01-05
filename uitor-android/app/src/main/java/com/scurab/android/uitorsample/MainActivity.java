@@ -16,9 +16,6 @@ import com.scurab.android.uitor.extract2.DetailExtractor;
 import com.scurab.android.uitorsample.extract.CustomTextViewExtractor;
 import com.scurab.android.uitorsample.widget.CustomTextView;
 
-/**
- * Created by jbruchanov on 15.5.14.
- */
 public class MainActivity extends BaseActivity {
 
     private SlidingPaneLayout mPaneLayout;

@@ -7,9 +7,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-/**
- * Created by jbruchanov on 22/05/2014.
- */
 @SuppressWarnings({"unchecked", "TypeParameterHidesVisibleType"})
 public abstract class Reflector<T> {
 
