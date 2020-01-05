@@ -6,7 +6,7 @@ android {
     sourceSets {
         main.java.srcDirs += file("src/extractors")
         //having core extracted for potential bigger in future modularisation
-        main.java.srcDirs += file("src/core")
+        main.java.srcDirs += file("src/main/core")
     }
     testOptions.unitTests.includeAndroidResources = true
 }
