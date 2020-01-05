@@ -178,6 +178,7 @@ class UitorService : Service() {
         }
 
         @JvmStatic
+        @JvmOverloads
         fun startService(context: Context, port: Int, overwriteWebFolder: Boolean = false) {
             createNotificationChannel(context)
             GlobalScope.launch {
