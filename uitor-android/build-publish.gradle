@@ -20,7 +20,7 @@ publishing {
             version = project.releaseVersion
 
             pom {
-                name = 'Uitor'
+                name = 'UITor'
                 description = 'UI debug tool for Android'
                 url = 'http://uitor.scurab.com'
                 licenses {
