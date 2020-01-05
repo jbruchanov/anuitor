@@ -1,11 +1,6 @@
 #~/bin/sh
 #get output of publishToMavenLocal
 
-if [ -z $ANDROID_HOME ]; then 
-	echo "ANDROID_HOME env variable not defined!"
-	exit
-fi
-
 if [ -z $1 ]; then 
 	echo "Missing version argument"
 	exit
