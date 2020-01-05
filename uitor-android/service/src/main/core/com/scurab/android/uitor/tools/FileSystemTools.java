@@ -16,11 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * User: jbruchanov
- * Date: 15/05/2014
- * Time: 14:18
- */
 public class FileSystemTools {
 
     public static final int BUFFER = 16 * 1024;

@@ -5,11 +5,6 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-/**
- * User: jbruchanov
- * Date: 12/05/2014
- * Time: 15:55
- */
 public interface WindowManager {
 
     @Nullable

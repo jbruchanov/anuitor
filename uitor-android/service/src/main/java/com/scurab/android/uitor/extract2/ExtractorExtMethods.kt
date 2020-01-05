@@ -26,6 +26,10 @@ fun View.idName() = IdsHelper.getNameForId(id)
 fun IntArray.idsName() = map { IdsHelper.getNameForId(it) }
 fun Int.stringColor(): String = HttpTools.getStringColor(this)
 
+/**
+ * Convert [Int] to binary form grouped by 4 bits
+ *
+ */
 fun Int.binary(): String {
     if (this == 0) {
         return "0"
@@ -41,6 +45,9 @@ fun Int.binary(): String {
     return sb.toString()
 }
 
+/**
+ * Take list of classes representing inheritance of the object
+ */
 fun Any.inheritance(): String {
     val sb = StringBuilder()
     var clz: Class<*>? = javaClass
@@ -55,6 +62,10 @@ fun Any.inheritance(): String {
     return sb.toString()
 }
 
+/**
+ * Strip last [amount] of chars if possible.
+ * Otherwise return original stringbuilder
+ */
 fun StringBuilder.stripLastChars(amount: Int): StringBuilder {
     if (length > amount) {
         setLength(length - amount)
@@ -62,6 +73,9 @@ fun StringBuilder.stripLastChars(amount: Int): StringBuilder {
     return this
 }
 
+/**
+ * Extract [Bundle] as key/value collection
+ */
 fun Bundle.extract(context: ExtractingContext) {
     keySet().forEach { key ->
         context.data[key] = get(key) ?: "null"
@@ -121,6 +135,9 @@ fun Rect.stringSizes(): String {
             .append(bottom).toString()
 }
 
+/**
+ * Get a value using reflection
+ */
 fun Any.reflection(name: String): Any? {
     return try {
         Reflector.callMethodByReflection<Any>(javaClass, this, name)
@@ -133,10 +150,17 @@ fun Any.reflection(name: String): Any? {
     }
 }
 
+/**
+ * Get an [Int] value using reflection
+ */
 fun Any.reflectionInt(name: String): Int {
     return reflection(name) as Int? ?: Int.MIN_VALUE
 }
 
+/**
+ * Escape most commonly used special chars.
+ * For example '\n' => '\\n'
+ */
 fun CharSequence.escaped(): String {
     val sb = StringBuilder(length)
     for (c in toString().toCharArray()) {
@@ -159,6 +183,9 @@ fun CharSequence.escaped(): String {
     return sb.toString()
 }
 
+/**
+ * Get activity from [Context] or [ContextWrapper]
+ */
 fun Context.getActivity(): Activity? {
     var context: Context = this
     var activity: Activity? = context as? Activity?
@@ -169,6 +196,10 @@ fun Context.getActivity(): Activity? {
     return activity
 }
 
+/**
+ * Find an activity for View.
+ * This might return null if the view is using [Application] as context
+ */
 fun View.getActivity(): Activity? {
     var activity = context.getActivity()
     if (activity == null) {
@@ -228,6 +259,9 @@ fun View.components(): ViewComponents {
     }
 }
 
+/**
+ * Get all defined methods on the class including parent classes
+ */
 fun Any.allMethods(): Collection<Method> {
     val result = mutableListOf<Method>()
     var clazz: Class<*>? = javaClass
@@ -238,6 +272,9 @@ fun Any.allMethods(): Collection<Method> {
     return result
 }
 
+/**
+ * Get All fields defined on the class including parent classes
+ */
 fun Any.allFields(): Collection<Field> {
     val result = mutableListOf<Field>()
     var clazz: Class<*>? = javaClass
@@ -248,6 +285,9 @@ fun Any.allFields(): Collection<Field> {
     return result
 }
 
+/**
+ * Check if the reference is an [Array]
+ */
 fun Any.isArray(): Boolean {
     return when (this) {
         is Array<*>,

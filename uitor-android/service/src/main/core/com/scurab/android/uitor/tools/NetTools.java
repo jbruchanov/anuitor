@@ -8,11 +8,6 @@ import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-/**
- * User: jbruchanov
- * Date: 15/05/2014
- * Time: 11:50
- */
 public final class NetTools {
 
     /**

@@ -4,8 +4,17 @@ private const val CYCLE_PARENT_CHECK = "_cycleParentCheck"
 //necessary for child fragments so FragmentExtractor might be used multiple times
 //Having (CYCLE_DEPTH_CHECK + 1) child fragments depth will throw an exception
 private const val CYCLE_DEPTH_CHECK = 10
+
+/**
+ * Base class for all extractors.
+ * Pre-fills most of important properties
+ */
 abstract class BaseExtractor {
 
+    /**
+     * Define a "parent" class in terms of extracting for your extractor
+     * For example an extractor for [android.view.ViewGroup] would have [android.view.View]
+     */
     abstract val parent: Class<*>?
 
     internal open fun fillValues(item: Any, context: ExtractingContext): MutableMap<String, Any> {
@@ -47,15 +56,6 @@ abstract class BaseExtractor {
         }
     }
 
-    private fun removeCycleTag(context: ExtractingContext) {
-        parent?.let { parent ->
-            @Suppress("UNCHECKED_CAST")
-            (context.contextData[CYCLE_PARENT_CHECK] as MutableMap<Class<*>, Int>).let {
-                it[parent] = (it[parent] as Int) -1
-            }
-        }
-    }
-
     protected abstract fun onFillValues(item: Any, context: ExtractingContext)
 
     protected fun Any?.extract(context: ExtractingContext): Any {
@@ -73,13 +73,6 @@ abstract class BaseExtractor {
         }
     }
 
-    private fun extractItem(item: Any, context: ExtractingContext): MutableMap<String, Any> {
-        return (DetailExtractor.findExtractor(item::class.java)
-                ?: ReflectionExtractor(true))
-                .fillValues(item,
-                        ExtractingContext(contextData = context.contextData, depth = context.depth + 1))
-    }
-
     protected fun Any?.interfaces(): String {
         if (this == null) {
             return ""
@@ -91,5 +84,21 @@ abstract class BaseExtractor {
             clazz = clazz.superclass
         }
         return result.sorted().joinToString(", ")
+    }
+
+    private fun removeCycleTag(context: ExtractingContext) {
+        parent?.let { parent ->
+            @Suppress("UNCHECKED_CAST")
+            (context.contextData[CYCLE_PARENT_CHECK] as MutableMap<Class<*>, Int>).let {
+                it[parent] = (it[parent] as Int) -1
+            }
+        }
+    }
+
+    private fun extractItem(item: Any, context: ExtractingContext): MutableMap<String, Any> {
+        return (DetailExtractor.findExtractor(item::class.java)
+                ?: ReflectionExtractor(true))
+                .fillValues(item,
+                        ExtractingContext(contextData = context.contextData, depth = context.depth + 1))
     }
 }

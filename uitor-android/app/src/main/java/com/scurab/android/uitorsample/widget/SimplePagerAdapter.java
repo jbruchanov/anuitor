@@ -8,12 +8,6 @@ import android.view.ViewParent;
 
 import java.util.Arrays;
 
-/**
- * User: jbruchanov
- * Date: 26/06/14
- * Time: 13:02
- */
-
 @SuppressWarnings("unchecked")
 public abstract class SimplePagerAdapter<T extends View> extends PagerAdapter {
 

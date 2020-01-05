@@ -1,11 +1,5 @@
 package com.scurab.android.uitor.model;
 
-
-/**
- * User: jbruchanov
- * Date: 15/05/2014
- * Time: 14:13
- */
 public class FSItem implements Comparable<FSItem> {
 
     public static int TYPE_PARENT_FOLDER = -1;

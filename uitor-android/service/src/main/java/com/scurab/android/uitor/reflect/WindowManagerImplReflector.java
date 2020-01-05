@@ -8,9 +8,6 @@ import com.scurab.android.uitor.extract2.ExtractorExtMethodsKt;
 import java.lang.reflect.Method;
 
 /**
- * @author jbruchanov
- * @since 2014-05-28 16:34
- *
  * WindowManager used on API<18
  */
 public class WindowManagerImplReflector extends Reflector<Object> implements WindowManager {

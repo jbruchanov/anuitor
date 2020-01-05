@@ -10,10 +10,6 @@ import com.scurab.android.uitor.extract2.ExtractorExtMethodsKt;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 
-/**
- * @author jbruchanov
- * @since 2014-05-28 16:34
- */
 @TargetApi(value = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class WindowManagerGlobalReflector extends Reflector<Object> implements WindowManager {
 

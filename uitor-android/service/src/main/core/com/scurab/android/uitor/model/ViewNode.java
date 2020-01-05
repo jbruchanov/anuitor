@@ -12,11 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-/**
- * User: jbruchanov
- * Date: 12/05/2014
- * Time: 14:11
- */
 public class ViewNode {
 
     private List<ViewNode> Nodes;

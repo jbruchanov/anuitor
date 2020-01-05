@@ -4,11 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * User: jbruchanov
- * Date: 12/05/2014
- * Time: 12:03
- */
 public class ShellExecutor {
 
     public String test(String q) throws IOException {

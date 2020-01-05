@@ -3,10 +3,6 @@ package com.scurab.android.uitor.reflect;
 import android.os.Build;
 import android.view.View;
 
-/**
- * @author jbruchanov
- * @since 2014-05-28 16:34
- */
 public class WindowManagerProvider {
 
     /**

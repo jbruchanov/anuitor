@@ -7,10 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 /**
- * User: jbruchanov
- * Date: 12/05/2014
- * Time: 11:39
- *
  * Currently not used as registration for callback handler needs quite high API and it <b>won't catch first start activity</b>
  * {@link com.scurab.android.uitor.reflect.WindowManager} must be used for Application
  */

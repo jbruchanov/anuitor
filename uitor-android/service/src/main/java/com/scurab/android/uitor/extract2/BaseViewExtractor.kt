@@ -10,6 +10,9 @@ import com.scurab.android.uitor.Constants.OWNER
 import com.scurab.android.uitor.tools.atLeastApi
 import com.scurab.android.uitor.tools.hasSize
 
+/**
+ * Base extractor for any subclass of [android.view.View]
+ */
 abstract class BaseViewExtractor : BaseExtractor() {
 
     final override fun fillValues(item: Any, context: ExtractingContext): MutableMap<String, Any> {

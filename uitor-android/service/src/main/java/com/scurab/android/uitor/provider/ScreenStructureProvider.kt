@@ -17,7 +17,6 @@ class ScreenStructureProvider(private val windowManager: WindowManager) {
     private val activityThread = ActivityThreadReflector()
 
     fun getStructure(): List<Map<String, Any>> {
-        val viewRootNames = windowManager.viewRootNames
         val resultDataSet = mutableListOf<Map<String, Any>>()
 
         windowManager.viewRootNames?.let { viewRootNames ->
