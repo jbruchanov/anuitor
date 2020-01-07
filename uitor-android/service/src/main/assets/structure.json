@@ -430,6 +430,32 @@
         ]
       }
     },
+    "android.view.SurfaceView": {
+      "parent": "android.view.View",
+      "items": {
+        "1": [
+          {"m": "getHolder"}
+        ]
+      }
+    },
+    "android.opengl.GLSurfaceView": {
+      "parent": "android.view.SurfaceView",
+      "items": {
+        "3": [
+          {
+            "m": "getDebugFlags",
+            "c": "getDebugFlags().binary()"
+          },
+          {
+            "m": "getRenderMode",
+            "t": "GLSurfaceViewRenderMode"
+          }
+        ],
+        "11": [
+          {"m": "getPreserveEGLContextOnPause"}
+        ]
+      }
+    },
     "android.widget.AbsListView": {
       "parent": "android.widget.AdapterView",
       "items": {
@@ -1014,6 +1040,41 @@
             "m": "getCollapseIcon",
             "n": "CollapseIcon:"
           }
+        ]
+      }
+    },
+    "android.widget.VideoView": {
+      "parent": "android.view.SurfaceView",
+      "items": {
+        "1": [
+          {"m": "getBufferPercentage"},
+          {"m": "getCurrentPosition"},
+          {"m": "getDuration"},
+          {"m": "isPlaying"},
+          {
+            "m": "getUri",
+            "c": "reflection(\"mUri\")"
+          },
+          {
+            "m": "getHeaders",
+            "c": "reflection(\"mHeaders\")"
+          },
+          {
+            "m": "getPlayer:",
+            "c": "reflection(\"mMediaPlayer\")"
+          }
+        ],
+        "5": [
+          {"m": "canPause"},
+          {"m": "canSeekBackward"},
+          {"m": "canSeekForward"},
+          {"m": "canSeekForward"}
+        ],
+        "18": [
+          {"m": "getAudioSessionId"}
+        ],
+        "23": [
+          {"m": "getAccessibilityClassName"}
         ]
       }
     },
@@ -1921,6 +1982,43 @@
         ],
         "19" : [
           {"m": "getAllocationByteCount"}
+        ]
+      }
+    },
+    "android.media.MediaPlayer": {
+      "items": {
+        "1": [
+          {"m": "getCurrentPosition"},
+          {"m": "getDuration"},
+          {"m": "getVideoHeight"},
+          {"m": "getVideoWidth"},
+          {"m": "isPlaying"}
+        ],
+        "3": [
+          {"m": "isLooping"}
+        ],
+        "9": [
+          {"m": "getAudioSessionId"}
+        ],
+        "16": [
+          {"m": "getTrackInfo"}
+        ],
+        "23": [
+          {"m": "getPlaybackParams"},
+          {"m": "getTimestamp"}
+        ],
+        "26": [
+          {"m": "getDrmInfo"}
+        ],
+        "28": [
+          {
+            "m": "getPreferredDevice",
+            "n": "PreferredDevice:"
+          },
+          {
+            "m": "getRoutedDevice",
+            "n": "RoutedDevice:"
+          }
         ]
       }
     },

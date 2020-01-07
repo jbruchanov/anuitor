@@ -20,4 +20,5 @@
     <string name="button_label_disabled">button_label_disabled</string>
     <string name="unelevated_button_label_enabled">unelevated_button_label_enabled</string>
     <string name="demo_card_text">Demo Card Text</string>
+    <string name="play">Play</string>
 </resources>

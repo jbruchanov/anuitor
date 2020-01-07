@@ -26,8 +26,9 @@ class Structure {
     }
 
     class MethodInfo {
+        val methodName: String get() = _methodName ?: throw NullPointerException("methodName not defined in $this")
         @SerializedName("m")
-        lateinit var methodName: String
+        private var _methodName : String? = null
         @SerializedName("n")
         private val _name: String? = null
         @SerializedName("t")
@@ -49,6 +50,16 @@ class Structure {
                     substring(3)
                 } else substring(0, 1).toUpperCase() + substring(1)
             }
+        }
+
+        override fun toString(): String {
+            return "{ m:$_methodName, " +
+                    "n: $_name, " +
+                    "t: $translatorMethod, " +
+                    "c: $customCode, " +
+                    "r: $useReflection, " +
+                    "i: $isId, " +
+                    "p: $isProperty }"
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.scurab.android.uitor.extract2
 
 import android.graphics.Typeface
+import android.opengl.GLSurfaceView
 import android.os.Build
 import android.text.InputType
 import android.text.TextUtils
@@ -60,6 +61,7 @@ enum class TranslatorName {
     ViewGroupDescendantFocusability,
     WebSettingsMixedContentMode,
     WebSettingsForceDark,
+    GLSurfaceViewRenderMode
     ;
 }
 
@@ -393,6 +395,11 @@ object Translators {
             +(Barrier.BOTTOM to "BOTTOM")
             +(Barrier.START to "START")
             +(Barrier.END to "END")
+        }
+
+        itemTranslator(TranslatorName.GLSurfaceViewRenderMode) {
+            +(GLSurfaceView.RENDERMODE_CONTINUOUSLY to "RENDERMODE_CONTINUOUSLY")
+            +(GLSurfaceView.RENDERMODE_WHEN_DIRTY to "RENDERMODE_WHEN_DIRTY")
         }
 
     }
