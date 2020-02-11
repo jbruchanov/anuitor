@@ -23,8 +23,9 @@ ext {
     androidXAnnotations = "1.1.0"
     androidXCore = "1.2.0"
     androidXFragments = "1.2.1"
+    androidXMaterial = "1.1.0"
     androidXNavigation = "2.2.1"
-    constraintlayout = "2.0.0-beta3"
+    constraintlayout = "2.0.0-beta4"
     viewPager2 = "1.0.0"
     coordinatorLayout = "1.1.0"
 

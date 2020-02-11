@@ -40,7 +40,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:${androidX}"
     implementation "androidx.cardview:cardview:${androidX}"
     implementation "androidx.gridlayout:gridlayout:${androidX}"
-    implementation "com.google.android.material:material:${androidX}"
+    implementation "com.google.android.material:material:${androidXMaterial}"
     implementation "androidx.percentlayout:percentlayout:${androidX}"
     implementation "androidx.slidingpanelayout:slidingpanelayout:${androidX}"
     implementation "androidx.viewpager2:viewpager2:${viewPager2}"
