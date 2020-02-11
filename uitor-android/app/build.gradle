@@ -15,8 +15,6 @@ android {
     //necessary otherwise duplicated files error
     packagingOptions {
         pickFirst 'META-INF/kotlinx-coroutines-core.kotlin_module'
-        pickFirst 'META-INF/io.netty.versions.properties'
-        exclude 'META-INF/INDEX.LIST'
     }
 }
 
