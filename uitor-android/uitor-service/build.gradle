@@ -30,7 +30,7 @@ dependencies {
     compileOnly "androidx.cardview:cardview:${androidX}"
     compileOnly "androidx.gridlayout:gridlayout:${androidX}"
     compileOnly "androidx.percentlayout:percentlayout:${androidX}"
-    compileOnly "com.google.android.material:material:${androidX}"
+    compileOnly "com.google.android.material:material:${androidXMaterial}"
     compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
     compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
     compileOnly "androidx.constraintlayout:constraintlayout:${constraintlayout}"
