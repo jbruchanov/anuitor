@@ -19,13 +19,13 @@ dependencies {
     //necessary for service
     implementation "androidx.core:core:${androidXCore}"
     implementation "androidx.fragment:fragment:${androidXFragments}"
-    implementation "io.ktor:ktor-server-netty:$ktor"
+    implementation "io.ktor:ktor-server-jetty:$ktor"
     //debug logging
     //implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
 
-    compileOnly project(":service-groovy")
+    compileOnly project(":uitor-service-groovy")
     compileOnly "androidx.recyclerview:recyclerview:${androidX}"
     compileOnly "androidx.cardview:cardview:${androidX}"
     compileOnly "androidx.gridlayout:gridlayout:${androidX}"
@@ -37,7 +37,7 @@ dependencies {
     compileOnly "androidx.navigation:navigation-fragment:${androidXNavigation}"
 
     testImplementation "junit:junit:$junit"
-    testImplementation project(":service-groovy")
+    testImplementation project(":uitor-service-groovy")
     testImplementation "androidx.appcompat:appcompat:$androidXAppCompat"
     //androidTest only, not needed for the lib itself
     testImplementation "com.google.code.gson:gson:${gson}"

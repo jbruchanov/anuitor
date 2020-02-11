@@ -33,7 +33,7 @@ allprojects {
 }
 
 subprojects { p ->
-    if (p.name.startsWith("service")) {
+    if (p.name.startsWith("uitor-service")) {
         apply from: "$rootDir/build-publish.gradle"
     }
 }

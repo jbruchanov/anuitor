@@ -28,9 +28,9 @@ dependencies {
             implementation "com.scurab:anuitor-groovy:${project.releaseVersion}"
         }
     } else {
-        implementation project(":service")
+        implementation project(":uitor-service")
         if (/*build-versions.gradle*/groovyEnabled) {
-            implementation project(":service-groovy")
+            implementation project(":uitor-service-groovy")
         }
     }
 

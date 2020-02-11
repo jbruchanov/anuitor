@@ -1,4 +1,4 @@
 include ':buildSrc'
-include ':service-groovy'
-include ':service'
+include ':uitor-service-groovy'
+include ':uitor-service'
 include ':app'
