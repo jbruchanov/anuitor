@@ -63,7 +63,7 @@ class UitorService : Service() {
             IdsHelper.loadValues(rclass)
         } catch (e: Throwable) {
             Log.e(TAG, "Unable to load Resources, probably R class is not in your packageName => call IdsHelper.loadValues(com.application.R.class);")
-            Log.e(TAG, e.message)
+            Log.e(TAG, e.message ?: "null message")
             e.printStackTrace()
         }
         super.onCreate()
