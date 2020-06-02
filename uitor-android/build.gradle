@@ -6,6 +6,7 @@ buildscript {
     ext.kotlin_version = '1.3.72'
     ext.dokka_version = '0.10.0'
     repositories {
+        mavenLocal()
         google()
         jcenter()
         mavenCentral()
