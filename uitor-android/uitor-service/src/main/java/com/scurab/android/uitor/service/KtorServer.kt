@@ -20,7 +20,7 @@ import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.server.jetty.Jetty
 import io.ktor.util.combineSafe
 import java.io.File
 
@@ -51,7 +51,7 @@ class KtorServer(context: Context) {
             stop()
         }
         this.port = port
-        engine = embeddedServer(Netty, port) {
+        engine = embeddedServer(Jetty, port) {
             //debug logging, need to enable dep in gradle script
             //install(CallLogging) { level = Level.DEBUG }
             routing {

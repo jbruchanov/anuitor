@@ -4,36 +4,26 @@
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
       <meta charset="utf-8" />
-      <title>AnUitor</title>
+      <title>UITor</title>
       <meta name="author" content="Jiri Bruchanov">
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="description" content="AnUitor android UI debug tool" />
+      <meta name="description" content="UITor android UI debug tool" />
       <meta name="keywords" content="Android, UI Debug, Bruchanov" />
-      <meta property="og:image" content="http://anuitor.scurab.com/linkedin.jpg" />      
+      <meta property="og:image" content="http://uitor.scurab.com/linkedin.jpg" />      
       <link href="static/style.css" rel="stylesheet" type="text/css" />      
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto" />
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-54614730-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
    </head>
    <body>
       <header>
          <div class="container">
             <div class="row">            
                <div class="spinlike title">
-                  <h1>AnUitor<sup style="margin-left:10px;font-size:0.5em">1.0.1</sup></h1>
+                  <h1>UITor<sup style="margin-left:10px;font-size:0.5em">2.0.0</sup></h1>
                </div>
                <div class="spinlike">
                   <menu>
                      <ul>           
-      <li><a href="/jdoc/" target="_blank" class="menu download"><span class="version-tag">JDocs<span></a></li>            
+      <li><a href="/dokka/service/" target="_blank" class="menu download"><span class="version-tag">Dokka<span></a></li>            
       <li><a href="/demo/" target="_blank" class="menu download"><span class="version-tag">DEMO</span></a></li>
                         <!-- <li><a href="/download/anuitor.zip" class="menu download"><span class="version-tag">WEB</span></a></li>
                         <li><a href="/download/anuitor_v0.9.11.aar" class="menu download">AAR <span class="version-tag">v0.9.11</span></a></li> -->
@@ -49,7 +39,7 @@
          <div class="container">
             <div class="row">
                <div>                  
-                  <h2>UI <strong>debug tool</strong> for Android</h2>
+                  <h2>Android Inspector on 💊</h2>
                </div>
             </div>
          </div>
@@ -60,33 +50,31 @@
                <div>
                   <br/><br/><br/><br/>
                   <h3 id="introduction">Introduction</h3>
-                  <p>AnUitor is a result of my rebranding experiences of one android app what I was working on. Because of structure of project(s), not using themes, complexity of UI and app itself, 
+                  <p>UITor is a result of my rebranding experiences of one android app what I was working on. Because of the project's complex structure, not  using themes, complexity of UI and app itself, 
                      it was really hell and time consuming work to finish the app rebranding. Project structure had been done like sub-projects, because of big amount of different assets, logic, etc. I found out also 
-                     AnUitor very useful in time of UI refactoring/bugfixing other apps what I didn't know much deeply from UI perspective.
+                     UITor very useful in time of UI refactoring/bugfixing other apps what I didn't know much deeply from UI/structure perspective.
                      <p>So this is it, combination what I'd met, seen and few my own ideas. You can see a simple (not completely working though) demo <a href="/demo/">here</a>.<br/>
-                     <em class="note">Web part is optimized for Chrome and Firefox only. Other browsers had problems with WebGL or performance. So get
-                     <a href="https://www.google.com/intl/en/chrome/">Chrome</a> for the best UX…</em>
+                     <em class="note">Web part is mostly tested with Chrome and Firefox only. Other browsers might have some problems with WebGL or performance. So get <a href="https://www.google.com/intl/en/chrome/">Chrome</a> for the best UX…</em>
                   </p>
 
                   <p>App is separated into following different screens.</p>
-                  <h4>ScreenPreview</h4>
-                  <p>DDMS View hierarchy similar screen with screen preview, easy to identify and see any of views of current screen. By clicking on particular view, you will get a lot of (public) properties for selected View.</p>
-                  <h4>3D</h4>
-                  <p>This is presumably the coolest screen in AnUitor, you can see whole view hierarchy in 3D space. You can though see more easily useless parents, backgrounds or whatever is hidden by z-order.
-                     Use  <code>mouse + ASD keys</code> for better control over whole 3D app world. Click on particual view and you will get again view details.</p>
-                  <h4>ViewHierarchy</h4>
-                  <p>Another view for app. View hierarchy is now presented as a tree structure to see how deep and complex is your view hierarchy structure.
-                   Click show again details, about particular node (View), Double click collapse/expand tree.</p>
+                  <h4>Layout Inspector</h4>
+                  <p>Android Studio Layout Inspetor similar screen with a preview, easy to identify and see any of views of current screen. By clicking on particular view, you will get a lot of (public) properties for selected View. Each view behave like a switch between mode detail/focus mode. Click on same view again (in preview/tree) to turn it off again.</p>
+                  <h4>3D Inspector</h4>
+                  <p>This is presumably the coolest screen in UITor, you can see whole view hierarchy in 3D space. You can though see more easily useless parents, backgrounds or whatever is hidden by z-order.
+                     Use  <code>mouse + ASD keys</code> for better control over whole 3D app world. Click on any particual view and you will get again view details.</p>
+                  <h4>View Hierarchy</h4>
+                  <p>Tree graph of the view hierarchy. You can easily see how deep/wide/complex is your view hierarchy.
+                   Click on a node shows again details, about particular node (View), Double click collapse/expand tree.</p>
                   <h4>Resources</h4>
-                  <p>Simple and effective resources browser running under actual device context. You will see used drawables, layouts, values.
+                  <p>Simple and effective resources browser running under actual device context. You will see defined drawables, layouts, values for the context of your device (display density, orientation, locale, ...).
                    Specially for drawables and layouts notice <code>Source:</code> for identifying your source if you have some resource qualifier issues.</p>
-                  <h4>FileStorage</h4>
-                  <p>Simple file browser. You can access app folder or SDCard (be sure you have enabled storage permissions). Seeing your <code>shared_prefs.xml</code> file or getting some in-app created files is now super easy…</p>
+                  <h4>File Browser</h4>
+                  <p>Simple file browser. You can access app folder or SDCard (be sure you have enabled storage permissions). Seeing your <code>shared_prefs.xml</code> file or getting some in-app created files is now super easy… (currently doesn't support Storage Access Framework)</p>
                   <h4>Windows</h4>
-                  <p>Simple preview of running activities and all running fragments</p>
-                  <h4>WindowsDetailed</h4>
-                  <p>This screen shows current running Activities structure including (child) fragments. You can see though intents, bundles, some useful values from Activities, Fragments, Dialogs etc.
-                     Because it's quite complex hierarchy i didn't figure out some nice UI around this dataset so it's just a simple JSON. 
+                  <p>Simple preview of running activities and all running fragments.</p>
+                  <h4>Windows Detailed</h4>
+                  <p>This screen shows current running Activities structure including (child) fragments. You can see intents, bundles, some useful values from Activities, Fragments, Dialogs, Navigation etc. Because it's quite complex hierarchy I didn't try to figure out some decent UI for presenting the data so it's just a simple JSON. 
                      For better viewing use some nice browser plugin for json beautifing like <a href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en">JSONView</a> or similar tool.</p>
                   <h4>Screenshot</h4>
                   <p>Simple screenshot. As it isn't designed for rooted devices, you won't be able to see Android Notification Bar content at all.</p>
@@ -94,13 +82,25 @@
                   <p>Just logcat output showing only the app logs</p>
                   <h4>Groovy</h4>
                   <p>Coding console. Write a script in groovy and let it execute in the app. Supported only for apps having minSdk=26</p>
+                  <h4>Save/Load</h4>
+                  <p>Snapshot mode. Simply save a current state of the app for later. FileBrowser & Groovy are obviously ignored. Saving resources is configurable via
+                   <code>UitorClientConfig.setResourcesInSnapshot(true)</code>. Enabled resoruces saving is time consuming and heavily depends on the size of your resources, so be patient, it might take easily upto a minute.</p>
 
-                  <h3 id="using">Install AnUitor</h3>
-                      Gradle                      
-                      <pre class="code prettyprint" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
+                  <h3 id="using">Install UITor</h3>
+                      <pre class="code prettyprint lang-groovy" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
 //your app/build.gradle
 android {
+
+  //necessary otherwise duplicated files error
+  packagingOptions {
+        pickFirst 'META-INF/kotlinx-coroutines-core.kotlin_module'
+        pickFirst 'META-INF/io.netty.versions.properties'
+        exclude 'META-INF/INDEX.LIST'
+  }
+
   //be sure to have Java 1.8 enabled
+  //ignoring this configuration might lead into unexpected crashes like
+  //No static method metafactory ... appears in /apex/com.android.runtime/javalib/core-oj.jar
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
@@ -109,13 +109,19 @@ android {
   kotlinOptions {
     jvmTarget = "1.8"
   }
+
+  defaultConfig {           
+    //UITor has coroutines & web server as dependency, even small projects will mostlikely
+    //hit the 64k methods limit, so be ready for it
+    multiDexEnabled true
+  }
 }
 
 dependecies { 
-  implementation 'com.scurab:anuitor:1.0.1@aar'
+  implementation 'com.scurab:anuitor:2.0.0'
   if (android.defaultConfig.minSdkVersion >= 26) {
-    //groovy support is supported only for min 26+ API
-    implementation 'com.scurab:anuitor-groovy:1.0.1@aar'
+    //groovy support is only for devices with API 26+
+    implementation 'com.scurab:anuitor-groovy:2.0.0'
   }
 
   //be sure you have included Gson or Jackson
@@ -123,77 +129,89 @@ dependecies {
   //implementation 'com.google.code.gson:gson:2.8.0' 
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
 }</pre>                
-                  <ul>
-                      <li>And finally start it somewhere in your code.</li>
-                  </ul>
-                  <pre class="code prettyprint lang-java" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
+<h3 id="usi ng">Start UITor</h3>
+                  <pre class="code prettyprint lang-groovy" style="padding:10px;border: 1px solid rgba(0, 0, 0, 0.1);">
 Context context = ...;
 //start service asyncly
-AnUitorService.startService(context);
+UitorService.startService(this, 8080);
 
 //load your R.class res values 
-//mostlikely necessary if you have any more than 1 project module, flavors, ...
+//mostlikely necessary if you have more than 1 project module, flavors, ...
 IdsHelper.loadValues(com.application.R.class);
 </pre> 
 
-                  <p>That's it, in a few seconds you should see in Android Notification Bar a notification about running AnUitor where you can see ip address(es) and port used by the service.
-                  Just open it in your browser and you should see exactly same "homepage" like in <a href="/demo/" target="_blank">Demo (v0.9.1)</a>.</p>
+                  <p>That's it, in a few seconds you should see in Android Notification Bar a notification about running UITor where you can see ip address(es) and port used by the service.
+                  Just open it in your browser and you should see exactly same "homepage" like in <a href="/demo/" target="_blank">Demo</a>.</p>
                   <em class="note">Be sure that your WiFi AP doesn't block communication between you and your device!</em><br/>                
-      <em class="note">Or use just `adb forward tcp:8080 tcp:8080` and access it via http://localhost:8080</em>
+      <em class="note">Or connect your device via USB and use just `adb forward tcp:8080 tcp:8080`, then you can access it via http://localhost:8080 on your computer.</em>
                   <h4>Custom views</h4>
-                  <p>If you want to extract values for your custom view. Just create new implementation of ViewExtractor (or any other subclass) like <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L38-L48">here</a>.You can found all defined extractors in <code>com.scurab.android.anuitor.extract2</code> package.
+                  <p>If you want to extract values for your custom view. Just create new implementation of ViewExtractor (or any other subclass) like <a href="https://github.com/jbruchanov/AnUitor/blob/develop/uitor-android/app/src/main/java/com/scurab/android/uitorsample/SampleApplication.kt#L32-L52" target="_blank">here</a>.You can found all defined extractors in <code>com.scurab.android.anuitor.extract2</code> package.
                   </p>
                   <p>
-                    In case your custom view renders outside bounds, you can register a <a href="/jdoc/com/scurab/android/anuitor/extract/RenderAreaWrapper.html">RenderAreaWrapper</a> by 
-                    <a href="/jdoc/com/scurab/android/anuitor/extract/DetailExtractor.html#registerRenderArea(java.lang.Class,%20com.scurab.android.anuitor.extract.RenderAreaWrapper)">
-                      DetailExtractor.html#registerRenderArea
+                    In case your custom view renders outside bounds, you can register a <a href="/dokka/service/com.scurab.android.uitor.extract/-render-area-wrapper/index.html" target="_blank">RenderAreaWrapper</a> by 
+                    <a href="/dokka/service/com.scurab.android.uitor.extract2/-detail-extractor/register-render-area.html" target="_blank">
+                      DetailExtractor#registerRenderArea
                     </a>. This is only necessary for proper renderin in 3D screen.
                   </p>
 
-                  <h3 id="download">Download</h3>
+                  <h3 id="sample">Sample</h3>
                   <p>
-                    AnUitor is currently published on <a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22anuitor%22">Maven</a> repository or you can download AAR file directly...
-                  </p>
-                  <p>
-                     You can easily get a sample application using AnUitor <a href="/download/anuitor_sample.apk">here</a> or 
-                     <a href="/download/anuitor-groovy_sample.apk">here (API26+ Devices with Groovy support)</a>.
+                     You can easily get a sample application using UITor <a href="/download/uitor_sample.apk">here</a> or 
+                     <a href="/download/uitor-groovy_sample.apk">here (API26+ Devices with Groovy support)</a>.
                   </p>
                   <table class="logo" style="margin: auto;border-spacing: 60pt 0pt;">
                     <tr>
-                      <td>All Devices</td>
-                      <td>API26+ Devices</td>
+                      <td><a href="/download/uitor_sample.apk">All Devices</a></td>
+                      <td><a href="/download/uitor-groovy_sample.apk">API26+ Devices</a></td>
                     </tr> 
                     <tr>
-                    <td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor_sample.apk" alt="qrcode" /></td><td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://anuitor.scurab.com/download/anuitor-groovy_sample.apk" alt="qrcode" /></td></table>
+                    <td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://uitor.scurab.com/download/uitor_sample.apk" alt="qrcode" /></td><td><img src="https://chart.googleapis.com/chart?chs=210x210&amp;cht=qr&amp;chl=http://uitor.scurab.com/download/uitor-groovy_sample.apk" alt="qrcode" /></td></table>
 
                   <h3 id="tips">Known issues & tips</h3>
                   <ul>
                     <li><p>View rendering is done using SW layer. That means that view doesn't have to look exactly same as on device. You're missing shadows for your CardView ? That's exactly it.</p></li>
                     <li><p>In right view properties section. Take a look specially Owner, this will tell you what Fragment/Activity is your view located in.</p></li>
-                    <li><p>If you use MVP or you would like to add some informations from Activity/Fragment etc. Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L28-L48">How to add custom extractor for your types</a></p></li>
-                    <li><p>Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/app/src/main/java/com/scurab/android/anuitorsample/SampleApplication.kt#L19">AnUitorClientConfig</a> 
+                    <li><p>If you use MVP or you would like to add some informations from Activity/Fragment etc. Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/uitor-android/app/src/main/java/com/scurab/android/uitorsample/SampleApplication.kt#L32-L52" target="_blank">How to add custom extractor for your types</a></p></li>
+                    <li><p>Take a look <a href="https://github.com/jbruchanov/AnUitor/blob/develop/uitor-android/app/src/main/java/com/scurab/android/uitorsample/SampleApplication.kt#L22-L25">UitorClientConfig</a> 
                       You can control few web settings, like type higlighting, add ignoring views for mouse cursor in ScreenPreview.</p></li>
-                    <li><p>Wondering what classes are supported by AnUitor ? Take a look this <a href="https://github.com/jbruchanov/AnUitor/blob/develop/Android/service/src/main/assets/structure.json">json</a>.</p></li>
-                    <li><p>3D preview camera controlling is not the best UX, try to use mouse + ASD keys for rotation/distance/position move.</p></li>
+                    <li><p>Wondering what classes are supported by UITor ? Take a look this <a href="https://github.com/jbruchanov/AnUitor/blob/develop/uitor-android/service/src/main/assets/structure.json">json</a>.</p></li>
+                    <li><p>3D preview camera controlling is not the best UX, try to use mouse + ASD keys for rotation/distance/position move.</p></li>          <li><p>Middle mouse cursor in LayourInspector can disable/enable selectability using a mouse cursor.</p></li>
+                  </ul>
+
+                  <h3>Keyboard shortcuts</h3>
+                  <ul>
+                    <li><b>ALT+T</b> - change a light/dark theme</li>
+                    <li><b>ALT+R</b> - delayed reload in 5s (for case you need to put the app into some not simple state)</li>
+                    <li><b>ALT+S</b> - save a snapshot (works only in LayoutInspector, 3D Inspector, Vuew Hierarchy). This might not be working if your browser is using if or some other stuff menu/plugin...</li>
+                    <li>
+                      Layout Inspector
+                      <ul>
+                        <li><b>NUM +</b> Scale preview up</li>
+                        <li><b>NUM -</b> Scale preview down</li>
+                        <li><b>NUM *</b> Scale to fit</li>
+                      </ul>
+                    </li>
+                    <li>
+                      Groovy
+                      <ul>
+                        <li><b>SHIFT ENTER</b> Execute code</li>                        
+                      </ul>
+                    </li>
                   </ul>
                   
-                  
                   <h3 id="fewwords">Few words before you start</h3>
-                  <p>I mostly did everything with my Nexus 4 (A4.4.3) and worked correctly. As i got 4.4.4 i've noticed sometimes a native crash in some image-processing libraries.
+                  <!--<p>I mostly did everything with my Nexus 4 (A4.4.3) and worked correctly. As i got 4.4.4 i've noticed sometimes a native crash in some image-processing libraries.
                    The oldest device what i tested AnUitor with was Samsung Galaxy Ace with A2.3.x, it worked slowly and similar crashes with image-processing libraries. 
                    It's not perfect but currently i'm not much interested in those bugs as there is not much what i can do with and they were pretty rare.
-                   </p><p>
-                   Another small issue here is taking a screenshot. If you have HW acceleration enabled (by default since Honeycomb) there can be a difference
+                   </p>-->
+                   <p>
+                   Small issue here is taking a screenshot. If you have HW acceleration enabled (by default since Honeycomb) there can be a difference
                    between screenshot and real image what you can see on the device. It's because taking a screenshot is hapenning in SW mode (no HW acceleration) as you might know
                    some stuff e.g. Canvas Clipping is not fully implemented with HW acceleration). Unfortunatelly there is no official way how to get the screenshot with HW acceleration, so
                    there is (i guess) no way how to do it.
                   </p>
                   <p>
-                     As the nature of this is inside-app running module, you "can't" start anuitor in app what you don't have source code for, because it needs to get direct references to your view hierarchy children.
-                  </p>
-                  <p>
-                     If you would like to share ViewHierarchy (of course only really crazy stuff i am interested in :)) of your own app, send me a <a href="/demo/sampledata/viewhierarchy.json">/viewhierarchy.json</a>
-                     (be sure that you don't have any sensitive data there) file and i'll publish it like the ViewHierarchyTree…
+                     As the nature of this is inside-app running module, you "can't" start UITor in an app what you don't have source code for, because it needs to get direct references to your view hierarchy children.
                   </p>
 
                   <h3 id="license">License</h3>
@@ -221,8 +239,8 @@ limitations under the License.</pre>
             <div class="nav-menu content-nav">
                <ul class="nav nav-tabs nav-stacked primary">
                   <li class="active"><a href="#introduction">Introduction</a></li>
-                  <li class=""><a href="#using">Using AnUitor</a></li>
-                  <li class=""><a href="#download">Download</a></li>
+                  <li class=""><a href="#using">Using UITor</a></li>
+                  <li class=""><a href="#sample">Sample</a></li>
                   <li class=""><a href="#tips">Tips</a></li>
                   <li class=""><a href="#fewwords">Few words…</a></li>
                   <li class=""><a href="#license">License</a></li>
@@ -234,7 +252,7 @@ limitations under the License.</pre>
                   <li>
                   <div style="padding-top:5px">
           <!-- Place this tag where you want the +1 button to render. -->
-          <div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300" data-href="http://anuitor.scurab.com"></div>
+          <div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300" data-href="http://uitor.scurab.com"></div>
 
           <!-- Place this tag after the last +1 button tag. -->
           <script type="text/javascript">
@@ -251,8 +269,8 @@ limitations under the License.</pre>
                <br/>
                <div style="font-size:0.8em">
                   <li>
-                    <ul><b>2019-09-01</b> A lot (androidx, kotlin, new props, support Android Q,...)</ul>
-                    <!--ul><b>2017-04-25</b> bugfixing, type/property highlighting, client config</ul>
+                    <!--ul><b>2019-09-01</b> A lot (androidx, kotlin, new props, support Android Q,...)</ul>
+                    ul><b>2017-04-25</b> bugfixing, type/property highlighting, client config</ul>
                     <ul><b>2017-03-30</b> bugfixing, improved error handling</ul>
                     <ul><b>2017-03-14</b> web client added grid, bugfixing, added design library extractors</ul>
                     <ul><b>2017-01-23</b> updated web client, Android 7.1 supported, added Groovy inapp compiling support</ul>
@@ -263,7 +281,7 @@ limitations under the License.</pre>
             </div>
          </div>
       </section>   
-      <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>      
+      <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>     
       <script src="static/jquery.min.js"></script>
       <script src="static/jquery.smooth-scroll.min.js"></script>      
       <script src="static/bootstrap.min.js"></script>
