@@ -15,8 +15,6 @@ android {
     //necessary otherwise duplicated files error
     packagingOptions {
         pickFirst 'META-INF/kotlinx-coroutines-core.kotlin_module'
-        pickFirst 'META-INF/io.netty.versions.properties'
-        exclude 'META-INF/INDEX.LIST'
     }
 }
 
@@ -28,9 +26,9 @@ dependencies {
             implementation "com.scurab:anuitor-groovy:${project.releaseVersion}"
         }
     } else {
-        implementation project(":service")
+        implementation project(":uitor-service")
         if (/*build-versions.gradle*/groovyEnabled) {
-            implementation project(":service-groovy")
+            implementation project(":uitor-service-groovy")
         }
     }
 
@@ -40,7 +38,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:${androidX}"
     implementation "androidx.cardview:cardview:${androidX}"
     implementation "androidx.gridlayout:gridlayout:${androidX}"
-    implementation "com.google.android.material:material:${androidX}"
+    implementation "com.google.android.material:material:${androidXMaterial}"
     implementation "androidx.percentlayout:percentlayout:${androidX}"
     implementation "androidx.slidingpanelayout:slidingpanelayout:${androidX}"
     implementation "androidx.viewpager2:viewpager2:${viewPager2}"
