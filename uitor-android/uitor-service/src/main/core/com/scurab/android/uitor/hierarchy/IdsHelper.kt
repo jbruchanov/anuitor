@@ -59,10 +59,10 @@ object IdsHelper {
             return "View.NO_ID"
         }
         return data.values
-                .firstOrNull { it.contains(id) }
-                ?.let { it[id] }
-                //this is weird, TODO why is something missing ?
-                ?: Resources.getSystem().getResourceName(id)
+            .firstOrNull { it.contains(id) }
+            ?.let { it[id] }
+            // this is weird, TODO why is something missing ?
+            ?: Resources.getSystem().getResourceName(id)
     }
 
     /**
@@ -73,11 +73,11 @@ object IdsHelper {
     @JvmStatic
     fun getType(id: Int): RefType {
         return data
-                .filter { it.value.containsKey(id) }
-                .entries.firstOrNull()
-                ?.let { (type, _) -> type.split(".").lastOrNull() }
-                ?.let { RefType.valueOf(it) }
-                ?: RefType.unknown
+            .filter { it.value.containsKey(id) }
+            .entries.firstOrNull()
+            ?.let { (type, _) -> type.split(".").lastOrNull() }
+            ?.let { RefType.valueOf(it) }
+            ?: RefType.unknown
     }
 
     /**
@@ -101,7 +101,7 @@ object IdsHelper {
         val values = mutableMapOf<Int, String>()
         val name = containerClass.simpleName
         var v = containerClass.canonicalName
-                ?: throw NullPointerException("containerClass.canonicalName is null?!")
+            ?: throw NullPointerException("containerClass.canonicalName is null?!")
         val pckg = containerClass.`package`?.name
         if (!vanillaAndroid) {
             require(pckg != null) { "Containerclass.package:$containerClass has null name ?!" }
@@ -111,7 +111,12 @@ object IdsHelper {
         fillFields(name, values, containerClass.fields, vanillaAndroid)
     }
 
-    private fun fillFields(type: String, container: MutableMap<Int, String>, fields: Array<Field>, vanillaAndroid: Boolean) {
+    private fun fillFields(
+        type: String,
+        container: MutableMap<Int, String>,
+        fields: Array<Field>,
+        vanillaAndroid: Boolean
+    ) {
         for (field in fields) {
             field.isAccessible = true
             if (field.type == Int::class.javaPrimitiveType) {
@@ -121,7 +126,7 @@ object IdsHelper {
                     val tag = if ("attr" == type) "?" else "@"
                     val prefix = if (vanillaAndroid) "android:$type" else type
                     container[key] = "$tag$prefix/$name"
-                } catch (e: Throwable) { //this should never happen if we have setAccessible
+                } catch (e: Throwable) { // this should never happen if we have setAccessible
                     continue
                 }
             }
@@ -133,7 +138,7 @@ object IdsHelper {
             getValue(resId, typedValue, false)
             typedValue.string
         } catch (e: Throwable) {
-            //just for sure
+            // just for sure
             Log.e("IdsHelper", "Name:${getResourceName(resId)} Err:${e.message ?: "Null"}")
             e.printStackTrace()
             null
@@ -142,7 +147,7 @@ object IdsHelper {
 }
 
 class ResourceDTO(
-        val key: Int,
-        val value: String,
-        val contextValue: CharSequence?
+    val key: Int,
+    val value: String,
+    val contextValue: CharSequence?
 )

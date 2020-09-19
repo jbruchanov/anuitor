@@ -14,8 +14,10 @@ import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 
-class Resources(windowManager: WindowManager,
-                private val json: JsonSerializer) : FeaturePlugin {
+class Resources(
+    windowManager: WindowManager,
+    private val json: JsonSerializer
+) : FeaturePlugin {
 
     private val dataProvider = ResourcesProvider(windowManager)
 

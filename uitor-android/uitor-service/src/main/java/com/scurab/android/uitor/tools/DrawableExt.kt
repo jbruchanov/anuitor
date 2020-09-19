@@ -15,9 +15,10 @@ fun Drawable.render(xmlW: Int, xmlH: Int): ByteArray {
 
 fun Drawable.renderWithBounds(): ByteArray {
     return renderWithSize(
-            bounds.width().takeIf { it > 0 } ?: intrinsicWidth,
-            bounds.height().takeIf { it > 0 } ?: intrinsicHeight,
-            false)
+        bounds.width().takeIf { it > 0 } ?: intrinsicWidth,
+        bounds.height().takeIf { it > 0 } ?: intrinsicHeight,
+        false
+    )
 }
 
 fun Drawable.renderWithSize(w: Int, h: Int): ByteArray {

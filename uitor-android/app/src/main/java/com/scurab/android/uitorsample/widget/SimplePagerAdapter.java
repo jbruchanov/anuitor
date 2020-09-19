@@ -1,10 +1,11 @@
 package com.scurab.android.uitorsample.widget;
 
 import android.content.Context;
-import androidx.viewpager.widget.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.Arrays;
 

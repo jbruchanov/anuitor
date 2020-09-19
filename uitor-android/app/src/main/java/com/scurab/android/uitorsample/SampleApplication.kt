@@ -7,7 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.multidex.MultiDexApplication
 import com.scurab.android.uitor.Constants
 import com.scurab.android.uitor.extract.RenderAreaWrapper
-import com.scurab.android.uitor.extract2.*
+import com.scurab.android.uitor.extract2.BaseExtractor
+import com.scurab.android.uitor.extract2.DetailExtractor
+import com.scurab.android.uitor.extract2.ExtractingContext
+import com.scurab.android.uitor.extract2.IFragmentDelegate
+import com.scurab.android.uitor.extract2.ViewExtractor
 import com.scurab.android.uitor.hierarchy.IdsHelper
 import com.scurab.android.uitor.service.UitorClientConfig
 import com.scurab.android.uitor.service.UitorService
@@ -26,35 +30,43 @@ class SampleApplication : MultiDexApplication() {
         UitorService.startService(this, 8081)
         IdsHelper.loadValues(R::class.java)
 
-        DetailExtractor.registerRenderArea(DrawOutsideBoundsFragment.HelpTextView::class.java,
-                RenderAreaWrapper { view, outRect -> view.getDrawingSize(outRect) })
+        DetailExtractor.registerRenderArea(
+            DrawOutsideBoundsFragment.HelpTextView::class.java,
+            RenderAreaWrapper { view, outRect -> view.getDrawingSize(outRect) }
+        )
 
-        DetailExtractor.registerExtractor(BaseFragment::class.java, object : BaseExtractor() {
-            override val parent: Class<*> = Fragment::class.java
+        DetailExtractor.registerExtractor(
+            BaseFragment::class.java,
+            object : BaseExtractor() {
+                override val parent: Class<*> = Fragment::class.java
 
-            override fun onFillValues(item: Any, context: ExtractingContext) {
-                val baseFragment = item as BaseFragment
-                context.put("FakePresenter", baseFragment.fakePresenter)
+                override fun onFillValues(item: Any, context: ExtractingContext) {
+                    val baseFragment = item as BaseFragment
+                    context.put("FakePresenter", baseFragment.fakePresenter)
+                }
             }
-        })
+        )
 
-        //replace the ViewExtractor with custom one
-        DetailExtractor.registerExtractor(View::class.java, object : ViewExtractor() {
+        // replace the ViewExtractor with custom one
+        DetailExtractor.registerExtractor(
+            View::class.java,
+            object : ViewExtractor() {
 
-            override fun onFillValues(item: Any, context: ExtractingContext) {
-                super.onFillValues(item, context)
-                context.data[Constants.OWNER]
+                override fun onFillValues(item: Any, context: ExtractingContext) {
+                    super.onFillValues(item, context)
+                    context.data[Constants.OWNER]
                         ?.let { (it as? IFragmentDelegate)?.fragment as? BaseFragment }
                         ?.let {
                             context.put("FakePresenter", it.fakePresenter)
                         }
+                }
             }
-        })
+        )
 
         getSharedPreferences("UIToSample", Context.MODE_PRIVATE).edit().apply {
             putLong("Now", System.currentTimeMillis())
             putString("Test", Date().toGMTString())
-            putStringSet("Set", setOf("1","A"))
+            putStringSet("Set", setOf("1", "A"))
             apply()
         }
     }

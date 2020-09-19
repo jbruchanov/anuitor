@@ -3,9 +3,10 @@ package com.scurab.android.uitorsample;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.FrameLayout;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.widget.FrameLayout;
 
 public class AnotherActivity extends BaseActivity {
 

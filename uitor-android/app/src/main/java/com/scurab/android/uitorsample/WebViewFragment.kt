@@ -8,7 +8,11 @@ import android.webkit.WebView
 import com.scurab.android.uitorsample.common.BaseFragment
 
 class WebViewFragment : BaseFragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return WebView(inflater.context)
     }
 

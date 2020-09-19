@@ -1,14 +1,14 @@
 package com.scurab.android.uitorsample;
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import com.google.android.material.navigation.NavigationView;
-import com.scurab.android.uitorsample.common.BaseFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+
+import com.google.android.material.navigation.NavigationView;
+import com.scurab.android.uitorsample.common.BaseFragment;
 
 public class NavigationViewFragment extends BaseFragment {
 

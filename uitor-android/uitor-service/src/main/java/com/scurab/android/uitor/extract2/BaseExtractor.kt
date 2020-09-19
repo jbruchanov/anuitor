@@ -1,8 +1,8 @@
 package com.scurab.android.uitor.extract2
 
 private const val CYCLE_PARENT_CHECK = "_cycleParentCheck"
-//necessary for child fragments so FragmentExtractor might be used multiple times
-//Having (CYCLE_DEPTH_CHECK + 1) child fragments depth will throw an exception
+// necessary for child fragments so FragmentExtractor might be used multiple times
+// Having (CYCLE_DEPTH_CHECK + 1) child fragments depth will throw an exception
 private const val CYCLE_DEPTH_CHECK = 10
 
 /**
@@ -26,11 +26,11 @@ abstract class BaseExtractor {
         }
         onFillValues(item, context)
 
-        //recursively follow inheritance
+        // recursively follow inheritance
         parent?.let {
             cycleCheck(context)
             DetailExtractor.findExtractor(it)?.run { fillValues(item, context) }
-                    ?: throw IllegalArgumentException("Not found extractor for class: ${it.name}")
+                ?: throw IllegalArgumentException("Not found extractor for class: ${it.name}")
             removeCycleTag(context)
         }
         return context.data
@@ -47,10 +47,12 @@ abstract class BaseExtractor {
                 val counter = it[parent] as Int
                 it[parent] = counter + 1
                 if (counter > CYCLE_DEPTH_CHECK) {
-                    throw IllegalStateException("Parent class extraction cycle detected!\n" +
+                    throw IllegalStateException(
+                        "Parent class extraction cycle detected!\n" +
                             "Extractor:'${this.javaClass.name}' is trying to use parent:'${parent.name}'\n" +
                             "This parent has been already used for extracting $counter times.\n" +
-                            "Update your extractor to use correct parent!")
+                            "Update your extractor to use correct parent!"
+                    )
                 }
             }
         }
@@ -90,15 +92,19 @@ abstract class BaseExtractor {
         parent?.let { parent ->
             @Suppress("UNCHECKED_CAST")
             (context.contextData[CYCLE_PARENT_CHECK] as MutableMap<Class<*>, Int>).let {
-                it[parent] = (it[parent] as Int) -1
+                it[parent] = (it[parent] as Int) - 1
             }
         }
     }
 
     private fun extractItem(item: Any, context: ExtractingContext): MutableMap<String, Any> {
-        return (DetailExtractor.findExtractor(item::class.java)
-                ?: ReflectionExtractor(true))
-                .fillValues(item,
-                        ExtractingContext(contextData = context.contextData, depth = context.depth + 1))
+        return (
+            DetailExtractor.findExtractor(item::class.java)
+                ?: ReflectionExtractor(true)
+            )
+            .fillValues(
+                item,
+                ExtractingContext(contextData = context.contextData, depth = context.depth + 1)
+            )
     }
 }

@@ -12,8 +12,10 @@ import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 
-class ScreenComponents(windowManager: WindowManager,
-                       private val json: JsonSerializer) : FeaturePlugin {
+class ScreenComponents(
+    windowManager: WindowManager,
+    private val json: JsonSerializer
+) : FeaturePlugin {
 
     private val dataProvider = ScreenComponentsProvider(windowManager)
 

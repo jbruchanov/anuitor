@@ -2,31 +2,31 @@ package com.scurab.android.uitor.extract2
 
 import android.graphics.drawable.Drawable
 import android.os.Build
-import java.util.*
+import java.util.TreeMap
 
 /**
  * An extracting token for each particular element
  */
 class ExtractingContext(
-        /**
-         * Data what are suppose to be for a web client
-         */
-        val data: MutableMap<String, Any> = TreeMap(),
-        /**
-         * Context data for actual extracting,
-         * Not delivered to web client
-         */
-        val contextData: MutableMap<String, Any> = TreeMap(),
-        /**
-         * Tracking depth of stack during extracting.
-         * Important to avoid any infinite loops in potential references
-         */
-        var depth: Int = 0,
-        /**
-         * A field to track all references what are part of extracting to
-         * avoid infinite loops
-         */
-        val cycleHandler: MutableSet<Any> = mutableSetOf()
+    /**
+     * Data what are suppose to be for a web client
+     */
+    val data: MutableMap<String, Any> = TreeMap(),
+    /**
+     * Context data for actual extracting,
+     * Not delivered to web client
+     */
+    val contextData: MutableMap<String, Any> = TreeMap(),
+    /**
+     * Tracking depth of stack during extracting.
+     * Important to avoid any infinite loops in potential references
+     */
+    var depth: Int = 0,
+    /**
+     * A field to track all references what are part of extracting to
+     * avoid infinite loops
+     */
+    val cycleHandler: MutableSet<Any> = mutableSetOf()
 ) {
 
     constructor(data: MutableMap<String, Any>) : this(data, mutableMapOf(), 0, mutableSetOf())
@@ -38,7 +38,13 @@ class ExtractingContext(
      * [convertToString] convert value to a string, call a [toString] on the reference
      * [codeBlock] lambda to provide a extracted property
      */
-    fun <T> put(name: String, minApi: Int, item: T, convertToString: Boolean = true, codeBlock: T.() -> Any?) {
+    fun <T> put(
+        name: String,
+        minApi: Int,
+        item: T,
+        convertToString: Boolean = true,
+        codeBlock: T.() -> Any?
+    ) {
         if (Build.VERSION.SDK_INT >= minApi) {
             try {
                 var result: Any? = codeBlock(item)?.verbosed()

@@ -15,9 +15,11 @@ fun ByteArray.base64(): String {
     return Base64.encodeToString(this, Base64.NO_WRAP)
 }
 
-fun Bitmap.save(format: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG,
-                quality: Int = 80,
-                recycle: Boolean = true): ByteArray {
+fun Bitmap.save(
+    format: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG,
+    quality: Int = 80,
+    recycle: Boolean = true
+): ByteArray {
     val bos = ByteArrayOutputStream()
     compress(format, quality, bos)
     val result = bos.toByteArray()

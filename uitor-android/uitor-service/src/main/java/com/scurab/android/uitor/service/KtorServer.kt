@@ -6,8 +6,18 @@ import com.scurab.android.uitor.ContentTypes
 import com.scurab.android.uitor.FeaturePlugin
 import com.scurab.android.uitor.json.JsonRef
 import com.scurab.android.uitor.reflect.WindowManagerProvider
-import com.scurab.android.uitor.service.ktor.*
-import com.scurab.android.uitor.tools.ise
+import com.scurab.android.uitor.service.ktor.ActiveScreens
+import com.scurab.android.uitor.service.ktor.Config
+import com.scurab.android.uitor.service.ktor.Groovy
+import com.scurab.android.uitor.service.ktor.LogCat
+import com.scurab.android.uitor.service.ktor.Resources
+import com.scurab.android.uitor.service.ktor.Screen
+import com.scurab.android.uitor.service.ktor.ScreenComponents
+import com.scurab.android.uitor.service.ktor.ScreenStructure
+import com.scurab.android.uitor.service.ktor.Storage
+import com.scurab.android.uitor.service.ktor.ViewHierarchy
+import com.scurab.android.uitor.service.ktor.ViewProperty
+import com.scurab.android.uitor.service.ktor.ViewShot
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.static
@@ -18,9 +28,9 @@ import io.ktor.routing.Route
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.routing
+import io.ktor.server.cio.CIO
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.cio.CIO
 import io.ktor.util.combineSafe
 import java.io.File
 
@@ -33,7 +43,7 @@ class KtorServer(context: Context) {
         private var engine: ApplicationEngine? = null
     }
 
-    //lambda for lateInit
+    // lambda for lateInit
     private val contextRef = { context.applicationContext }
     private var windowManager = WindowManagerProvider.getManager()
     private var featurePlugins: List<FeaturePlugin>? = null
@@ -52,8 +62,8 @@ class KtorServer(context: Context) {
         }
         this.port = port
         engine = embeddedServer(CIO, port) {
-            //debug logging, need to enable dep in gradle script
-            //install(CallLogging) { level = Level.DEBUG }
+            // debug logging, need to enable dep in gradle script
+            // install(CallLogging) { level = Level.DEBUG }
             routing {
                 get("/") {
                     call.respondText(File(root, "index.html").readText(), ContentTypes.html, HttpStatusCode.OK)
@@ -69,10 +79,10 @@ class KtorServer(context: Context) {
 
     private fun Routing.tryRegisterGroovy(): Boolean {
         var hasGroovySupport = false
-        //workaround for GroovyPlugin, need for having common module with FeaturePlugin iface
-        //as it's single module, let's treat it alone
+        // workaround for GroovyPlugin, need for having common module with FeaturePlugin iface
+        // as it's single module, let's treat it alone
         kotlin.runCatching {
-            //TODO: check more cacheDir sometimes fails on permission_denied exception
+            // TODO: check more cacheDir sometimes fails on permission_denied exception
             val context = contextRef()
             val tmp: File = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) context.codeCacheDir else context.cacheDir
             Groovy(tmp).registerRoute(this)

@@ -63,7 +63,6 @@ enum class TranslatorName {
     ;
 }
 
-
 object Translators {
     private val items = mutableMapOf<TranslatorName, Translator>()
 
@@ -240,7 +239,7 @@ object Translators {
         }
 
         customTranslator(TranslatorName.InputType) { inputType ->
-            if (inputType == InputType.TYPE_NUMBER_VARIATION_NORMAL) {//0
+            if (inputType == InputType.TYPE_NUMBER_VARIATION_NORMAL) { // 0
                 "TYPE_NUMBER_VARIATION_NORMAL"
             } else {
                 val sb = StringBuilder()
@@ -249,7 +248,7 @@ object Translators {
                     for (field in fields) {
                         if (field.isAccessible && field.type == Int::class.javaPrimitiveType) {
                             val name = field.name
-                            val value = field.getInt(null)//
+                            val value = field.getInt(null) //
                             if (inputType and value == value) {
                                 sb.append(name).append("|")
                             }
@@ -356,7 +355,7 @@ object Translators {
             +(ViewGroup.FOCUS_BLOCK_DESCENDANTS to "FOCUS_BLOCK_DESCENDANTS")
         }
 
-        //androidx
+        // androidx
         itemTranslator(TranslatorName.DrawerLockMode) {
             +(DrawerLayout.LOCK_MODE_UNLOCKED to "LOCK_MODE_UNLOCKED")
             +(DrawerLayout.LOCK_MODE_LOCKED_OPEN to "LOCK_MODE_LOCKED_OPEN")
@@ -394,7 +393,6 @@ object Translators {
             +(Barrier.START to "START")
             +(Barrier.END to "END")
         }
-
     }
 
     private fun itemTranslator(name: TranslatorName, function: ItemTranslator.() -> Unit) {
@@ -407,7 +405,7 @@ object Translators {
         items[name] = itemTranslator
     }
 
-    private fun customTranslator(name : TranslatorName, function:  (Int) -> String) {
+    private fun customTranslator(name: TranslatorName, function: (Int) -> String) {
         val itemTranslator = CustomLogicTranslator(function)
         items[name] = itemTranslator
     }
@@ -428,7 +426,6 @@ private fun StringBuilder.plus(s: String, takeIf: Boolean): java.lang.StringBuil
     return this
 }
 
-
-private infix fun Int.has(bit : Int) : Boolean {
+private infix fun Int.has(bit: Int): Boolean {
     return (this and bit) == bit
 }

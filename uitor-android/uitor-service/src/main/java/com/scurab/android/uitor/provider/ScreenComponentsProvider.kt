@@ -27,28 +27,28 @@ internal class ScreenComponentsProvider(private val windowManager: WindowManager
         val name = "${item.javaClass.name}@0x${Integer.toHexString(item.hashCode())}"
         when (item) {
             is View -> {
-                //nothing, just keep name of view
+                // nothing, just keep name of view
             }
             is Application -> {
                 windowManager.viewRootNames
-                        ?.mapNotNull { Pair(it, windowManager.getRootView(it)) }
-                        ?.filter { it.second != null }
-                        ?.forEach { (name, item) ->
-                            val item = item ?: ise("Filtered `!= null` and it's null!?")
-                            //naive activity detection => app/activity/view
-                            if (name.indexOfFirst { it == '/' } != name.indexOfLast { it == '/' }) {
-                                //view without activity as a context ?
-                                //might be the app or some very unusual case
-                                val activity = item.getActivity()
-                                if (activity != null) {
-                                    items.add(simpleStructure(activity))
-                                } else {
-                                    items.add(simpleStructure(item))
-                                }
+                    ?.mapNotNull { Pair(it, windowManager.getRootView(it)) }
+                    ?.filter { it.second != null }
+                    ?.forEach { (name, item) ->
+                        val item = item ?: ise("Filtered `!= null` and it's null!?")
+                        // naive activity detection => app/activity/view
+                        if (name.indexOfFirst { it == '/' } != name.indexOfLast { it == '/' }) {
+                            // view without activity as a context ?
+                            // might be the app or some very unusual case
+                            val activity = item.getActivity()
+                            if (activity != null) {
+                                items.add(simpleStructure(activity))
                             } else {
                                 items.add(simpleStructure(item))
                             }
+                        } else {
+                            items.add(simpleStructure(item))
                         }
+                    }
             }
             is Activity -> {
                 atLeastApi(Build.VERSION_CODES.O) {
@@ -71,15 +71,15 @@ internal class ScreenComponentsProvider(private val windowManager: WindowManager
 
     private fun FragmentManager.fragmentsAsNodes(): List<Node> {
         return fragments
-                .filterNotNull()
-                .map { f -> simpleStructure(f) }
+            .filterNotNull()
+            .map { f -> simpleStructure(f) }
     }
 
     @TargetApi(Build.VERSION_CODES.O)
     private fun android.app.FragmentManager.fragmentsAsNodes(): List<Node> {
         return fragments
-                .filterNotNull()
-                .map { f -> simpleStructure(f) }
+            .filterNotNull()
+            .map { f -> simpleStructure(f) }
     }
 }
 

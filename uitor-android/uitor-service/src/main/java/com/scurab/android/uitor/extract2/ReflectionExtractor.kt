@@ -8,7 +8,10 @@ import java.util.regex.Pattern
 
 private const val MAX_DEPTH = 2
 
-class ReflectionExtractor(private val useFields: Boolean = false, private val maxDepth: Int = MAX_DEPTH) : BaseExtractor() {
+class ReflectionExtractor(
+    private val useFields: Boolean = false,
+    private val maxDepth: Int = MAX_DEPTH
+) : BaseExtractor() {
     override val parent: Class<*>? = null
 
     companion object {
@@ -16,32 +19,33 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
          * Fill this with regexp patterns to ignore methods
          */
         private val IGNORE_PATTERNS = arrayOf(
-                Pattern.compile("add.*", 0),
-                Pattern.compile("as.*", 0),
-                Pattern.compile("begin.*", 0),
-                Pattern.compile("call.*", 0),
-                Pattern.compile("clear.*", 0),
-                Pattern.compile("clone.*", 0),
-                Pattern.compile("commit.*", 0),
-                Pattern.compile("create.*", 0),
-                Pattern.compile("dispatch.*", 0),
-                Pattern.compile("exec.*", 0),
-                Pattern.compile("find.*", 0),
-                Pattern.compile("gen.*", 0),
-                Pattern.compile("lock.*", 0),
-                Pattern.compile("mutate.*", 0),
-                Pattern.compile("on.*", 0),
-                Pattern.compile("open.*", 0),
-                Pattern.compile("obtain.*", 0),
-                Pattern.compile("perform.*", 0),
-                Pattern.compile("pop.*", 0),
-                Pattern.compile("post.*", 0),
-                Pattern.compile("request.*", 0),
-                Pattern.compile("resolve.*", 0),
-                Pattern.compile("save.*", 0),
-                Pattern.compile("select.*", 0),
-                Pattern.compile("show.*", 0),
-                Pattern.compile("will.*", 0))
+            Pattern.compile("add.*", 0),
+            Pattern.compile("as.*", 0),
+            Pattern.compile("begin.*", 0),
+            Pattern.compile("call.*", 0),
+            Pattern.compile("clear.*", 0),
+            Pattern.compile("clone.*", 0),
+            Pattern.compile("commit.*", 0),
+            Pattern.compile("create.*", 0),
+            Pattern.compile("dispatch.*", 0),
+            Pattern.compile("exec.*", 0),
+            Pattern.compile("find.*", 0),
+            Pattern.compile("gen.*", 0),
+            Pattern.compile("lock.*", 0),
+            Pattern.compile("mutate.*", 0),
+            Pattern.compile("on.*", 0),
+            Pattern.compile("open.*", 0),
+            Pattern.compile("obtain.*", 0),
+            Pattern.compile("perform.*", 0),
+            Pattern.compile("pop.*", 0),
+            Pattern.compile("post.*", 0),
+            Pattern.compile("request.*", 0),
+            Pattern.compile("resolve.*", 0),
+            Pattern.compile("save.*", 0),
+            Pattern.compile("select.*", 0),
+            Pattern.compile("show.*", 0),
+            Pattern.compile("will.*", 0)
+        )
 
         private val IGNORE_CLASSES = setOf<Class<*>>(MessageQueue::class.java, Handler::class.java)
     }
@@ -51,32 +55,32 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
             return
         }
         item.allMethods()
-                .filter { !it.name.shouldIgnore() }
-                .filter { it.parameterTypes.isEmpty() /*&& it.returnType.isPrimitive*/ && it.returnType != Void.TYPE }
-                .forEach { m ->
-                    try {
-                        m.isAccessible = true
-                        m.invoke(item)?.let { v ->
-                            storeItem(m.name, v, context)
-                        }
-                    } catch (e: Throwable) {
-                        Log.e("ReflectionExtractor", "Name:${m.name} Object:$item Exception:${e.javaClass.simpleName}")
+            .filter { !it.name.shouldIgnore() }
+            .filter { it.parameterTypes.isEmpty() /*&& it.returnType.isPrimitive*/ && it.returnType != Void.TYPE }
+            .forEach { m ->
+                try {
+                    m.isAccessible = true
+                    m.invoke(item)?.let { v ->
+                        storeItem(m.name, v, context)
                     }
+                } catch (e: Throwable) {
+                    Log.e("ReflectionExtractor", "Name:${m.name} Object:$item Exception:${e.javaClass.simpleName}")
                 }
+            }
 
         if (useFields) {
             item.allFields()
-                    .filter { !(Modifier.isStatic(it.modifiers) || it.name.startsWith("shadow$")) }
-                    .forEach { f ->
-                        try {
-                            f.isAccessible = true
-                            f.get(item)?.let { v ->
-                                storeItem(f.name, v, context)
-                            }
-                        } catch (e: Throwable) {
-                            Log.e("ReflectionExtractor", "Name:${f.name} Object:$item Exception:${e.javaClass.simpleName}")
+                .filter { !(Modifier.isStatic(it.modifiers) || it.name.startsWith("shadow$")) }
+                .forEach { f ->
+                    try {
+                        f.isAccessible = true
+                        f.get(item)?.let { v ->
+                            storeItem(f.name, v, context)
                         }
+                    } catch (e: Throwable) {
+                        Log.e("ReflectionExtractor", "Name:${f.name} Object:$item Exception:${e.javaClass.simpleName}")
                     }
+                }
         }
     }
 
@@ -93,23 +97,23 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
             } else if (!cycleHandler.contains(v)) {
                 cycleHandler.add(v)
                 data[name] = v.asCollection()
-                        ?.let { collection ->
-                            var result: Any? = null
-                            if (depth < maxDepth) {
-                                result = collection.map { item ->
-                                    item?.let {
-                                        if (it.javaClass.isPrimitiveType()) {
-                                            it
-                                        } else {
-                                            it.toString()
-                                        }
+                    ?.let { collection ->
+                        var result: Any? = null
+                        if (depth < maxDepth) {
+                            result = collection.map { item ->
+                                item?.let {
+                                    if (it.javaClass.isPrimitiveType()) {
+                                        it
+                                    } else {
+                                        it.toString()
                                     }
                                 }
                             }
-                            result
                         }
-                        //no specific extractors, that could potentially create circular reference
-                        ?: this@ReflectionExtractor.fillValues(v, ExtractingContext(contextData = data, depth = depth + 1))
+                        result
+                    }
+                    // no specific extractors, that could potentially create circular reference
+                    ?: this@ReflectionExtractor.fillValues(v, ExtractingContext(contextData = data, depth = depth + 1))
             } else {
                 data[name] = v.toString()
             }
@@ -158,7 +162,7 @@ class ReflectionExtractor(private val useFields: Boolean = false, private val ma
         }
     }
 
-    private fun Any.asCollection() : Collection<*>? {
+    private fun Any.asCollection(): Collection<*>? {
         return when {
             this is Array<*> -> return this.toList()
             this is IntArray -> return this.toList()

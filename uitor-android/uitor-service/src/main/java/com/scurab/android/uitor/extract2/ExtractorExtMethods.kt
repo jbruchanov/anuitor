@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Rect
-import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -19,7 +18,7 @@ import com.scurab.android.uitor.tools.HttpTools
 import com.scurab.android.uitor.tools.atLeastApi
 import java.lang.reflect.Field
 import java.lang.reflect.Method
-import java.util.*
+import java.util.Arrays
 
 fun Int.idName() = IdsHelper.getNameForId(this)
 fun View.idName() = IdsHelper.getNameForId(id)
@@ -83,9 +82,11 @@ fun Bundle.extract(context: ExtractingContext) {
 }
 
 fun IntArray.extractRelativeLayoutRules(context: ExtractingContext) {
-    val relativeLayoutRules = arrayOf("leftOf", "rightOf", "above", "below", "alignBaseline",
-            "alignLeft", "alignTop", "alignRight", "alignBottom", "alignParentLeft", "alignParentTop", "alignParentRight",
-            "alignParentBottom", "center", "centerHorizontal", "centerVertical")
+    val relativeLayoutRules = arrayOf(
+        "leftOf", "rightOf", "above", "below", "alignBaseline",
+        "alignLeft", "alignTop", "alignRight", "alignBottom", "alignParentLeft", "alignParentTop", "alignParentRight",
+        "alignParentBottom", "center", "centerHorizontal", "centerVertical"
+    )
 
     fun relativeLayoutParamRuleName(index: Int): String {
         return "layoutParams_" + if (index < relativeLayoutRules.size) relativeLayoutRules[index] else index
@@ -94,11 +95,11 @@ fun IntArray.extractRelativeLayoutRules(context: ExtractingContext) {
     forEachIndexed { i, rule ->
         if (rule != 0) {
             context.data[relativeLayoutParamRuleName(i)] =
-                    when (rule) {
-                        RelativeLayout.TRUE -> true
-                        0 -> "false/NO_ID"
-                        else -> IdsHelper.getNameForId(rule)
-                    }
+                when (rule) {
+                    RelativeLayout.TRUE -> true
+                    0 -> "false/NO_ID"
+                    else -> IdsHelper.getNameForId(rule)
+                }
         }
     }
 }
@@ -129,10 +130,10 @@ fun View.getHitRect(): Rect {
 
 fun Rect.stringSizes(): String {
     return StringBuilder()
-            .append(left).append(",")
-            .append(top).append(",")
-            .append(right).append(",")
-            .append(bottom).toString()
+        .append(left).append(",")
+        .append(top).append(",")
+        .append(right).append(",")
+        .append(bottom).toString()
 }
 
 /**
@@ -172,7 +173,8 @@ fun CharSequence.escaped(): String {
                 '\r' -> sb.append("\\r")
                 '\b' -> sb.append("\\b")
                 '\u000C' -> sb.append("\\f")
-                else -> sb.append("{0x")
+                else ->
+                    sb.append("{0x")
                         .append(Integer.toHexString(c.toInt()))
                         .append("}")
             }
@@ -203,7 +205,7 @@ fun Context.getActivity(): Activity? {
 fun View.getActivity(): Activity? {
     var activity = context.getActivity()
     if (activity == null) {
-        //view might have Application context, so try to search it in whole hierarchy
+        // view might have Application context, so try to search it in whole hierarchy
         (this as? ViewGroup)?.apply {
             (0 until childCount).forEach { i ->
                 activity = getChildAt(i).getActivity()
@@ -228,8 +230,8 @@ fun View.components(): ViewComponents {
             result.add(AndroidXFragmentDelegate(fragment))
         }
         fragment.childFragmentManager.fragments
-                .filter { it.view != null }
-                .forEach { f -> saveChildAndroidXFragments(f) }
+            .filter { it.view != null }
+            .forEach { f -> saveChildAndroidXFragments(f) }
     }
 
     return ViewComponents(context.getApplication(), getActivity()).apply {
@@ -242,20 +244,20 @@ fun View.components(): ViewComponents {
                     result.add(AndroidFragmentDelegate(fragment))
                 }
                 fragment.childFragmentManager?.fragments
-                        ?.filter { it.view != null }
-                        ?.forEach { f -> saveChildFragments(f) }
+                    ?.filter { it.view != null }
+                    ?.forEach { f -> saveChildFragments(f) }
             }
             activity?.fragmentManager?.fragments?.forEach { saveChildFragments(it) }
         }
 
-        //keep child fragments closer to start so any iteration will rather pick them
-        //instead of parent fragment
+        // keep child fragments closer to start so any iteration will rather pick them
+        // instead of parent fragment
         fragments.addAll(result.reversed())
         fragments
-                .filter { it.view != null }
-                .forEach { f ->
-                    fragmentsPerRootView[f.view!!] = f
-                }
+            .filter { it.view != null }
+            .forEach { f ->
+                fragmentsPerRootView[f.view!!] = f
+            }
     }
 }
 
