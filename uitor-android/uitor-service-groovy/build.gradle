@@ -29,6 +29,6 @@ dependencies {
     compileOnly "io.ktor:ktor-server-core:$ktor"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     testImplementation 'junit:junit:4.12'
 }

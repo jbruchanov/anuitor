@@ -48,5 +48,5 @@ dependencies {
 //    implementation "com.google.code.gson:gson:${gson}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jackson}"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 }

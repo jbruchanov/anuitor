@@ -19,10 +19,10 @@ dependencies {
     //necessary for service
     implementation "androidx.core:core:${androidXCore}"
     implementation "androidx.fragment:fragment:${androidXFragments}"
-    implementation "io.ktor:ktor-server-jetty:$ktor"
+    implementation "io.ktor:ktor-server-cio:$ktor"
     //debug logging
     //implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
 
     compileOnly project(":uitor-service-groovy")
