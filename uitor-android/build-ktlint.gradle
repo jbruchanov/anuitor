@@ -1,0 +1,22 @@
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+//https://github.com/jlleitschuh/ktlint-gradle
+
+def isAndroid = { plugins.findPlugin("com.android.application") != null || plugins.findPlugin("com.android.library") != null }
+
+ktlint {
+    version.set(project["ktLint"])
+    verbose.set(true)
+    android.set(isAndroid())
+    outputToConsole.set(true)
+    outputColorName.set("RED")
+}
+
+afterEvaluate {
+    if (!isAndroid()) {
+        test.dependsOn ktlintCheck
+    } else {
+        project.tasks["testDebugUnitTest"].dependsOn ktlintCheck
+        project.tasks["testReleaseUnitTest"].dependsOn ktlintCheck
+        project.tasks["assembleRelease"].dependsOn ktlintCheck
+    }
+}

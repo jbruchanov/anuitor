@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply from: "$rootDir/build-android.gradle"
+apply from: "$rootDir/build-ktlint.gradle"
 
 android {
     lintOptions {
