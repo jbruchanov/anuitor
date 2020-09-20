@@ -16,6 +16,7 @@ dependencies {
     compileOnly "com.google.code.gson:gson:${gson}"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"
 
+    implementation "com.scurab:anuitor-client:${project.releaseVersion}"
     implementation "androidx.annotation:annotation:${androidXAnnotations}"
     //necessary for service
     implementation "androidx.core:core:${androidXCore}"
