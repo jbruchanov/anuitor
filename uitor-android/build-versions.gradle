@@ -2,7 +2,7 @@
 
 ext {
     minSdk = 14
-    compileSdk = 29
+    compileSdk = 30
     targetSdk = compileSdk
     gson = "2.8.6"
     jackson = "2.11.2"

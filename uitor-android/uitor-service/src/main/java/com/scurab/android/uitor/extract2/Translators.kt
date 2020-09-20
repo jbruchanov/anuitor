@@ -5,6 +5,7 @@ import android.os.Build
 import android.text.InputType
 import android.text.TextUtils
 import android.text.util.Linkify
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ enum class TranslatorName {
     Shape,
     Ellipsize,
     TextStyle,
+    TextSizeUnit,
     ScaleType,
     CoordinatorLayoutBarrierType,
     ViewPager2ScrollState,
@@ -57,6 +59,7 @@ enum class TranslatorName {
     ViewTextAlignment,
     ViewTextDirection,
     ViewScrollBarType,
+    ViewImportantForContentCapture,
     ViewGroupDescendantFocusability,
     WebSettingsMixedContentMode,
     WebSettingsForceDark,
@@ -392,6 +395,26 @@ object Translators {
             +(Barrier.BOTTOM to "BOTTOM")
             +(Barrier.START to "START")
             +(Barrier.END to "END")
+        }
+
+        atLeastApi(Build.VERSION_CODES.R) {
+            itemTranslator(TranslatorName.ViewImportantForContentCapture) {
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_AUTO to "IMPORTANT_FOR_CONTENT_CAPTURE_AUTO")
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_YES to "IMPORTANT_FOR_CONTENT_CAPTURE_YES")
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_NO to "IMPORTANT_FOR_CONTENT_CAPTURE_NO")
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_YES_EXCLUDE_DESCENDANTS to "IMPORTANT_FOR_CONTENT_CAPTURE_YES_EXCLUDE_DESCENDANTS")
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS to "IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS")
+            }
+        }
+        atLeastApi(Build.VERSION_CODES.R) {
+            itemTranslator(TranslatorName.TextSizeUnit) {
+                +(TypedValue.COMPLEX_UNIT_PX to "COMPLEX_UNIT_PX")
+                +(TypedValue.COMPLEX_UNIT_DIP to "COMPLEX_UNIT_DIP")
+                +(TypedValue.COMPLEX_UNIT_SP to "COMPLEX_UNIT_SP")
+                +(TypedValue.COMPLEX_UNIT_PT to "COMPLEX_UNIT_PT")
+                +(TypedValue.COMPLEX_UNIT_IN to "COMPLEX_UNIT_IN")
+                +(TypedValue.COMPLEX_UNIT_MM to "COMPLEX_UNIT_MM")
+            }
         }
     }
 
