@@ -41,7 +41,7 @@ dependencies {
     implementation "androidx.gridlayout:gridlayout:${androidX}"
     implementation "com.google.android.material:material:${androidXMaterial}"
     implementation "androidx.percentlayout:percentlayout:${androidX}"
-    implementation "androidx.slidingpanelayout:slidingpanelayout:${androidX}"
+    implementation "androidx.slidingpanelayout:slidingpanelayout:${slidingpaneLayout}"
     implementation "androidx.viewpager2:viewpager2:${viewPager2}"
     implementation "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
     implementation "androidx.constraintlayout:constraintlayout:${constraintlayout}"
