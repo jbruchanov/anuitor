@@ -20,12 +20,11 @@ import com.scurab.android.uitor.hierarchy.IdsHelper
 import com.scurab.android.uitor.tools.FileSystemTools
 import com.scurab.android.uitor.tools.NetTools
 import com.scurab.android.uitor.tools.ZipTools
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-
 
 private const val STOP = "STOP"
 private const val START = "START"
@@ -47,7 +46,7 @@ class UitorService : Service() {
             val appInfo = packageManager.getPackageInfo(packageName, 0).applicationInfo
             val appLabel = packageManager.getApplicationLabel(appInfo)
             appLabel.toString()
-        } catch (e: NameNotFoundException) { //just ignore it and use default value with no app name...
+        } catch (e: NameNotFoundException) { // just ignore it and use default value with no app name...
             e.printStackTrace()
             null
         }
@@ -81,7 +80,7 @@ class UitorService : Service() {
                         if (!server.isRunning) {
                             val port = intent.extras?.getInt(PORT, DEFAULT_PORT) ?: DEFAULT_PORT
                             val rootFolder = intent.extras?.getString(ROOT_FOLDER)
-                                    ?: throw NullPointerException("Undefined '$ROOT_FOLDER' in extras")
+                                ?: throw NullPointerException("Undefined '$ROOT_FOLDER' in extras")
                             val rootFolderFullPath = "${baseContext.cacheDir}/$rootFolder"
                             server.start(rootFolderFullPath, port)
                             startForeground(NOTIF_ID, createSimpleNotification(null, true))
@@ -143,20 +142,22 @@ class UitorService : Service() {
     }
 
     companion object {
-        private fun createNotification(context: Context,
-                                       title: String?,
-                                       msg: String?,
-                                       defaults: Int,
-                                       contentIntent: PendingIntent?,
-                                       stopIntent: PendingIntent?): Notification? {
+        private fun createNotification(
+            context: Context,
+            title: String?,
+            msg: String?,
+            defaults: Int,
+            contentIntent: PendingIntent?,
+            stopIntent: PendingIntent?
+        ): Notification? {
             val notib = Builder(context, TAG)
-                    .setContentTitle(title ?: TAG)
-                    .setAutoCancel(true)
-                    .setDefaults(defaults)
-                    .setContentText(msg ?: "Null msg")
-                    .setSmallIcon(android.R.drawable.ic_dialog_alert)
-                    .setContentIntent(contentIntent)
-                    .setStyle(BigTextStyle().bigText(msg))
+                .setContentTitle(title ?: TAG)
+                .setAutoCancel(true)
+                .setDefaults(defaults)
+                .setContentText(msg ?: "Null msg")
+                .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                .setContentIntent(contentIntent)
+                .setStyle(BigTextStyle().bigText(msg))
             if (stopIntent != null) {
                 notib.addAction(0, STOP, stopIntent)
             }
@@ -182,7 +183,7 @@ class UitorService : Service() {
             createNotificationChannel(context)
             GlobalScope.launch {
                 val exception = withContext(Dispatchers.IO) {
-                    val folder = "${context.cacheDir}/${DEFAULT_ROOT_FOLDER}"
+                    val folder = "${context.cacheDir}/$DEFAULT_ROOT_FOLDER"
                     val f = File(folder)
                     var exception: Throwable? = null
                     if (overwriteWebFolder || !f.exists()) {
@@ -214,11 +215,13 @@ class UitorService : Service() {
                         context.startService(intent)
                     }
                 } else {
-                    val notification = createNotification(context,
-                            "$TAG Error",
-                            exception.message!!,
-                            Notification.DEFAULT_ALL,
-                            null, null)
+                    val notification = createNotification(
+                        context,
+                        "$TAG Error",
+                        exception.message!!,
+                        Notification.DEFAULT_ALL,
+                        null, null
+                    )
                     val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     nm.notify(NOTIF_ID, notification)
                 }

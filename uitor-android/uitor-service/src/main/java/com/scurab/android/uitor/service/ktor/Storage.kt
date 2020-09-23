@@ -17,8 +17,9 @@ import io.ktor.util.pipeline.PipelineInterceptor
 import java.io.File
 
 class Storage(
-        context: Context,
-        private val json: JsonSerializer) : FeaturePlugin {
+    context: Context,
+    private val json: JsonSerializer
+) : FeaturePlugin {
 
     private val context = context.applicationContext
 
@@ -32,8 +33,8 @@ class Storage(
                     call.respondBytes(file.readBytes())
                 } else {
                     val files = file
-                            ?.let { FileSystemTools.get(it) }
-                            ?: FileSystemTools.get(this@Storage.context)
+                        ?.let { FileSystemTools.get(it) }
+                        ?: FileSystemTools.get(this@Storage.context)
                     call.respondText(json.toJson(files), ContentTypes.json, HttpStatusCode.OK)
                 }
             }

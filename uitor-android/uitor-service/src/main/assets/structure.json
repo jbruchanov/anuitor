@@ -367,6 +367,16 @@
             "n": "VerticalScrollbarTrackDrawable:"
           },
           {"m": "isForceDarkAllowed"}
+        ],
+        "30": [
+          {
+            "m": "getImportantForContentCapture",
+            "t": "ViewImportantForContentCapture"
+          },
+          {"m": "getStateDescription"},
+          {"m": "hasOnLongClickListeners"},
+          {"m": "isImportantForContentCapture"},
+          {"m": "isShowingLayoutBounds"}
         ]
       }
     },
@@ -958,6 +968,12 @@
           },
           {"m": "isHorizontallyScrollable"},
           {"m": "isSingleLine"}
+        ],
+        "30": [
+          {
+            "m": "getTextSizeUnit",
+            "t": "TextSizeUnit"
+          }
         ]
       }
     },

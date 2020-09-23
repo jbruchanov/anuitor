@@ -1,6 +1,11 @@
 package com.scurab.android.uitor.tools
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
 import android.os.Build
 import android.view.View
 import com.scurab.android.uitor.extract2.DetailExtractor
@@ -48,11 +53,11 @@ fun View.render(includeLocationOnScreen: Boolean = false): Bitmap {
     val h = location[1] + renderArea.height()
     return Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888).apply {
         Canvas(this).run {
-            //clear white background to get transparency
+            // clear white background to get transparency
             drawRect(0f, 0f, w.toFloat(), h.toFloat(), clearPaint)
-            //custom render area
+            // custom render area
             translate((-renderArea.left).toFloat(), (-renderArea.top).toFloat())
-            //includeLocationOnScreen
+            // includeLocationOnScreen
             translate(location[0].toFloat(), location[1].toFloat())
             draw(this)
         }
@@ -64,14 +69,14 @@ fun View.render(includeLocationOnScreen: Boolean = false): Bitmap {
  */
 fun View.renderBackground(): Bitmap? {
     return background
-            ?.takeIf { hasSize() }
-            ?.let { drawable ->
-                Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
-                    Canvas(this).run {
-                        //clear white background to get transparency
-                        drawRect(0f, 0f, width.toFloat(), height.toFloat(), clearPaint)
-                        drawable.draw(this)
-                    }
+        ?.takeIf { hasSize() }
+        ?.let { drawable ->
+            Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
+                Canvas(this).run {
+                    // clear white background to get transparency
+                    drawRect(0f, 0f, width.toFloat(), height.toFloat(), clearPaint)
+                    drawable.draw(this)
                 }
             }
+        }
 }

@@ -30,7 +30,7 @@ class ItemTranslator(private val name: TranslatorName, private val binary: Boole
                 sb.append("$name|")
             }
             subValue = subValue and bit.inv()
-            if(subValue == 0) {
+            if (subValue == 0) {
                 return@forEach
             }
         }

@@ -10,7 +10,11 @@ import androidx.viewpager2.widget.ViewPager2
 
 class ViewPager2Fragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val vp = ViewPager2(inflater.context)
         vp.adapter = ViewPager2Adapter()
         vp.setPageTransformer(ZoomOutPageTransformer())
@@ -27,11 +31,11 @@ private class ViewPager2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     override fun getItemCount(): Int = 10
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //no need for anything
+        // no need for anything
     }
 }
 
-//https://developer.android.com/training/animation/screen-slide#zoom-out
+// https://developer.android.com/training/animation/screen-slide#zoom-out
 private class ZoomOutPageTransformer : ViewPager2.PageTransformer {
     private val MIN_SCALE = 0.85f
     private val MIN_ALPHA = 0.5f
@@ -61,8 +65,10 @@ private class ZoomOutPageTransformer : ViewPager2.PageTransformer {
                     scaleY = scaleFactor
 
                     // Fade the page relative to its size.
-                    alpha = (MIN_ALPHA +
-                            (((scaleFactor - MIN_SCALE) / (1 - MIN_SCALE)) * (1 - MIN_ALPHA)))
+                    alpha = (
+                        MIN_ALPHA +
+                            (((scaleFactor - MIN_SCALE) / (1 - MIN_SCALE)) * (1 - MIN_ALPHA))
+                        )
                 }
                 else -> { // (1,+Infinity]
                     // This page is way off-screen to the right.

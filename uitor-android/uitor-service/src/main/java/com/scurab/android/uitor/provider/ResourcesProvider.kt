@@ -43,13 +43,13 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
     val context: Context
         get() = kotlin.run {
             activityThread.activities.firstOrNull()
-                    ?: activityThread.application
+                ?: activityThread.application
         }
 
     val resources: Resources
         get() = run {
             activityThread.activities.firstOrNull()?.resources
-                    ?: activityThread.application.resources
+                ?: activityThread.application.resources
         }
 
     fun createResourceResponse(resId: Int, screenIndex: Int): ResourceResponse {
@@ -59,28 +59,30 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
         val type = IdsHelper.getType(resId)
 
         val response: ResourceResponse =
-                when (type) {
-                    RefType.anim, RefType.animator, RefType.interpolator -> res.extractAnimation(resId)
-                    RefType.array -> res.extractArray(resId)
-                    RefType.bool -> response("boolean") { res.getBoolean(resId) }
-                    RefType.color -> res.extractColor(resId, theme)
-                    RefType.dimen -> res.extractNumber(resId)
-                    RefType.drawable, RefType.mipmap -> res.extractDrawable(resId, theme)
-                    RefType.fraction -> res.extractNumber(resId)
-                    RefType.font -> res.extractFont(resId, context)
-                    RefType.id, RefType.integer -> response(Int::class.javaPrimitiveType?.simpleName
-                            ?: STRING_DATA_TYPE) { resId }
-                    RefType.menu, RefType.navigation, RefType.layout, RefType.transition ->
-                        response(XML) { ResourcesReflector(res).load(resId) }
-                    RefType.plurals -> res.extractPlurals(resId)
-                    RefType.string -> response(STRING_DATA_TYPE) { res.getString(resId) }
-                    RefType.xml -> response(XML) { DOM2XmlPullBuilder.transform(res.getXml(resId)) }
-                    RefType.raw -> res.extractRaw(resId)
-                    else -> {
-                        /*RefType.attr, RefType.style, RefType.styleable, RefType.unknown*/
-                        response(STRING_DATA_TYPE) { "Type '$type' is not supported." }
-                    }
+            when (type) {
+                RefType.anim, RefType.animator, RefType.interpolator -> res.extractAnimation(resId)
+                RefType.array -> res.extractArray(resId)
+                RefType.bool -> response("boolean") { res.getBoolean(resId) }
+                RefType.color -> res.extractColor(resId, theme)
+                RefType.dimen -> res.extractNumber(resId)
+                RefType.drawable, RefType.mipmap -> res.extractDrawable(resId, theme)
+                RefType.fraction -> res.extractNumber(resId)
+                RefType.font -> res.extractFont(resId, context)
+                RefType.id, RefType.integer -> response(
+                    Int::class.javaPrimitiveType?.simpleName
+                        ?: STRING_DATA_TYPE
+                ) { resId }
+                RefType.menu, RefType.navigation, RefType.layout, RefType.transition ->
+                    response(XML) { ResourcesReflector(res).load(resId) }
+                RefType.plurals -> res.extractPlurals(resId)
+                RefType.string -> response(STRING_DATA_TYPE) { res.getString(resId) }
+                RefType.xml -> response(XML) { DOM2XmlPullBuilder.transform(res.getXml(resId)) }
+                RefType.raw -> res.extractRaw(resId)
+                else -> {
+                    /*RefType.attr, RefType.style, RefType.styleable, RefType.unknown*/
+                    response(STRING_DATA_TYPE) { "Type '$type' is not supported." }
                 }
+            }
 
         response.Type = type
         response.id = resId
@@ -152,38 +154,40 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
         } else {
             response("color") {
                 themeApiValue(
-                        preTheme = { getColor(resId) },
-                        theme = { getColor(resId, theme) }).stringColor()
+                    preTheme = { getColor(resId) },
+                    theme = { getColor(resId, theme) }
+                ).stringColor()
             }
         }
     }
 
     private fun Resources.extractColorStateList(resId: Int, theme: Resources.Theme?): ResourceResponse {
         val colorStateList = themeApiValue(
-                preTheme = { getColorStateList(resId) },
-                theme = { getColorStateList(resId, theme) })
+            preTheme = { getColorStateList(resId) },
+            theme = { getColorStateList(resId, theme) }
+        )
         val reflector = ColorStateListReflector(colorStateList)
 
         return response(ARRAY) {
             it.id = resId
             arrayOfNulls<ResourceResponse>(reflector.stateCount)
-                    .mapIndexed { i, _ ->
-                        response("color") { r ->
-                            r.id = resId
-                            val colorState = reflector.getColorState(i)
-                            r.Context = Translators[TranslatorName.DrawableState]
-                                    .translate(colorState)
+                .mapIndexed { i, _ ->
+                    response("color") { r ->
+                        r.id = resId
+                        val colorState = reflector.getColorState(i)
+                        r.Context = Translators[TranslatorName.DrawableState]
+                            .translate(colorState)
 
-                            val x = colorStateList.getColorForState(colorState, Integer.MIN_VALUE)
-                            val y = colorStateList.getColorForState(colorState, Integer.MAX_VALUE)
-                            //just ask twice and compare values, if they are same, default value wasn't involved
-                            if (x == y) {
-                                x.stringColor()
-                            } else {
-                                "Unable to get Color for state"
-                            }
+                        val x = colorStateList.getColorForState(colorState, Integer.MIN_VALUE)
+                        val y = colorStateList.getColorForState(colorState, Integer.MAX_VALUE)
+                        // just ask twice and compare values, if they are same, default value wasn't involved
+                        if (x == y) {
+                            x.stringColor()
+                        } else {
+                            "Unable to get Color for state"
                         }
                     }
+                }
         }
     }
 
@@ -191,8 +195,9 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
         val tv = resId.resolveTypedValue(this)
 
         val drawable = themeApiValue(
-                preTheme = { getDrawable(resId) },
-                theme = { getDrawable(resId, theme) })
+            preTheme = { getDrawable(resId) },
+            theme = { getDrawable(resId, theme) }
+        )
         return when {
             drawable is NinePatchDrawable -> drawable.extractNine9PatchDrawable()
             tv.string?.toString()?.endsWith(".xml") == true -> {
@@ -243,11 +248,13 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
                     val textView = AppCompatTextView(context).apply {
                         setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                         text = "The quick brown fox jumps over the lazy dog 01234567890\n" +
-                                "\uD83D\uDE01 ✋ \uD83D\uDE80 \uD83C\uDDEC\uD83C\uDDE7 \uD83C\uDF7B \uD83C\uDF79"
+                            "\uD83D\uDE01 ✋ \uD83D\uDE80 \uD83C\uDDEC\uD83C\uDDE7 \uD83C\uDF7B \uD83C\uDF79"
                         val padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, displayMetrics).roundToInt()
                         setPadding(padding, padding, padding, padding)
-                        measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+                        measure(
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                        )
                         layout(0, 0, measuredWidth, measuredHeight)
                         setBackgroundColor(Color.BLACK)
                         setTextColor(Color.WHITE)
@@ -273,8 +280,8 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
             try {
                 openRawResource(resId).use { stream ->
                     stream.takeIf { it.available() < MAX_RAW_SIZE_FOR_STRING }
-                            ?.let { String(it.readBytes()) }
-                            ?: "Skipped raw resources content because of size:${stream.available()}"
+                        ?.let { String(it.readBytes()) }
+                        ?: "Skipped raw resources content because of size:${stream.available()}"
                 }
             } catch (e: Throwable) {
                 e.message ?: "Null exception message"
@@ -313,13 +320,14 @@ internal class ResourcesProvider(private val windowManager: WindowManager) {
         val width = intrinsicWidth
         val height = intrinsicHeight
         val sizes = intArrayOf(
-                //1
-                width, height, max(MIN_9PATCH_SIZE, min(INC_9PATCH_CONST * width, MAX_9PATCH_SIZE)),
-                //2
-                height, width, max(MIN_9PATCH_SIZE, min(INC_9PATCH_CONST * height, MAX_9PATCH_SIZE)),
-                //3
-                max(MIN_9PATCH_SIZE, min(INC_9PATCH_CONST * width, MAX_9PATCH_SIZE)),
-                max(MIN_9PATCH_SIZE, min(INC_9PATCH_CONST * height, MAX_9PATCH_SIZE)))
+            // 1
+            width, height, max(MIN_9PATCH_SIZE, min(INC_9PATCH_CONST * width, MAX_9PATCH_SIZE)),
+            // 2
+            height, width, max(MIN_9PATCH_SIZE, min(INC_9PATCH_CONST * height, MAX_9PATCH_SIZE)),
+            // 3
+            max(MIN_9PATCH_SIZE, min(INC_9PATCH_CONST * width, MAX_9PATCH_SIZE)),
+            max(MIN_9PATCH_SIZE, min(INC_9PATCH_CONST * height, MAX_9PATCH_SIZE))
+        )
 
         return response(ARRAY) {
             arrayOfNulls<ResourceResponse>(4).mapIndexed { i, _ ->

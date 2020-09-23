@@ -5,6 +5,7 @@ import android.os.Build
 import android.text.InputType
 import android.text.TextUtils
 import android.text.util.Linkify
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ enum class TranslatorName {
     Shape,
     Ellipsize,
     TextStyle,
+    TextSizeUnit,
     ScaleType,
     CoordinatorLayoutBarrierType,
     ViewPager2ScrollState,
@@ -57,12 +59,12 @@ enum class TranslatorName {
     ViewTextAlignment,
     ViewTextDirection,
     ViewScrollBarType,
+    ViewImportantForContentCapture,
     ViewGroupDescendantFocusability,
     WebSettingsMixedContentMode,
     WebSettingsForceDark,
     ;
 }
-
 
 object Translators {
     private val items = mutableMapOf<TranslatorName, Translator>()
@@ -240,7 +242,7 @@ object Translators {
         }
 
         customTranslator(TranslatorName.InputType) { inputType ->
-            if (inputType == InputType.TYPE_NUMBER_VARIATION_NORMAL) {//0
+            if (inputType == InputType.TYPE_NUMBER_VARIATION_NORMAL) { // 0
                 "TYPE_NUMBER_VARIATION_NORMAL"
             } else {
                 val sb = StringBuilder()
@@ -249,7 +251,7 @@ object Translators {
                     for (field in fields) {
                         if (field.isAccessible && field.type == Int::class.javaPrimitiveType) {
                             val name = field.name
-                            val value = field.getInt(null)//
+                            val value = field.getInt(null) //
                             if (inputType and value == value) {
                                 sb.append(name).append("|")
                             }
@@ -356,7 +358,7 @@ object Translators {
             +(ViewGroup.FOCUS_BLOCK_DESCENDANTS to "FOCUS_BLOCK_DESCENDANTS")
         }
 
-        //androidx
+        // androidx
         itemTranslator(TranslatorName.DrawerLockMode) {
             +(DrawerLayout.LOCK_MODE_UNLOCKED to "LOCK_MODE_UNLOCKED")
             +(DrawerLayout.LOCK_MODE_LOCKED_OPEN to "LOCK_MODE_LOCKED_OPEN")
@@ -395,6 +397,25 @@ object Translators {
             +(Barrier.END to "END")
         }
 
+        atLeastApi(Build.VERSION_CODES.R) {
+            itemTranslator(TranslatorName.ViewImportantForContentCapture) {
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_AUTO to "IMPORTANT_FOR_CONTENT_CAPTURE_AUTO")
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_YES to "IMPORTANT_FOR_CONTENT_CAPTURE_YES")
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_NO to "IMPORTANT_FOR_CONTENT_CAPTURE_NO")
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_YES_EXCLUDE_DESCENDANTS to "IMPORTANT_FOR_CONTENT_CAPTURE_YES_EXCLUDE_DESCENDANTS")
+                +(View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS to "IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS")
+            }
+        }
+        atLeastApi(Build.VERSION_CODES.R) {
+            itemTranslator(TranslatorName.TextSizeUnit) {
+                +(TypedValue.COMPLEX_UNIT_PX to "COMPLEX_UNIT_PX")
+                +(TypedValue.COMPLEX_UNIT_DIP to "COMPLEX_UNIT_DIP")
+                +(TypedValue.COMPLEX_UNIT_SP to "COMPLEX_UNIT_SP")
+                +(TypedValue.COMPLEX_UNIT_PT to "COMPLEX_UNIT_PT")
+                +(TypedValue.COMPLEX_UNIT_IN to "COMPLEX_UNIT_IN")
+                +(TypedValue.COMPLEX_UNIT_MM to "COMPLEX_UNIT_MM")
+            }
+        }
     }
 
     private fun itemTranslator(name: TranslatorName, function: ItemTranslator.() -> Unit) {
@@ -407,7 +428,7 @@ object Translators {
         items[name] = itemTranslator
     }
 
-    private fun customTranslator(name : TranslatorName, function:  (Int) -> String) {
+    private fun customTranslator(name: TranslatorName, function: (Int) -> String) {
         val itemTranslator = CustomLogicTranslator(function)
         items[name] = itemTranslator
     }
@@ -428,7 +449,6 @@ private fun StringBuilder.plus(s: String, takeIf: Boolean): java.lang.StringBuil
     return this
 }
 
-
-private infix fun Int.has(bit : Int) : Boolean {
+private infix fun Int.has(bit: Int): Boolean {
     return (this and bit) == bit
 }

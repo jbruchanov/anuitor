@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import com.scurab.android.uitor.extract.RenderAreaWrapper
 import com.scurab.android.uitor.model.ViewNode
-import java.util.*
+import java.util.HashMap
 
 object DetailExtractor {
 
@@ -24,7 +24,7 @@ object DetailExtractor {
     fun resetToDefault() {
         items.clear()
         viewGroupIgnoreItems.clear()
-        //WebView is not typical viewgroup, let's treat it as a view
+        // WebView is not typical viewgroup, let's treat it as a view
         viewGroupIgnoreItems.add(WebView::class.java.name)
         ExtractorsRegister.register()
     }
@@ -76,7 +76,7 @@ object DetailExtractor {
      * @param wrapper
      * @param <T>
      * @return
-    </T> */
+     </T> */
     @JvmStatic
     fun <T : View> registerRenderArea(className: String, wrapper: RenderAreaWrapper<T>): RenderAreaWrapper<*>? {
         return renderAreaItems.put(className, wrapper)
@@ -170,15 +170,24 @@ object DetailExtractor {
     @JvmStatic
     fun parse(rootView: View, lazy: Boolean): ViewNode {
         val counter = intArrayOf(0)
-        val vn = ViewNode(rootView.id, 0, counter[0],
-                if (lazy) null
-                else getExtractor(rootView).fillValues(rootView, ExtractingContext()))
+        val vn = ViewNode(
+            rootView.id, 0, counter[0],
+            if (lazy) null
+            else getExtractor(rootView).fillValues(rootView, ExtractingContext())
+        )
         counter[0]++
         parse(rootView, vn, 1, counter, lazy, vn.data)
         return vn
     }
 
-    private fun parse(rootView: View, root: ViewNode, level: Int, position: IntArray, lazy: Boolean, parentData: MutableMap<String, Any>) {
+    private fun parse(
+        rootView: View,
+        root: ViewNode,
+        level: Int,
+        position: IntArray,
+        lazy: Boolean,
+        parentData: MutableMap<String, Any>
+    ) {
         if (rootView is ViewGroup) {
             var i = 0
             val n = rootView.childCount
@@ -191,10 +200,11 @@ object DetailExtractor {
                 else extractor.fillValues(child, ExtractingContext(result!!, parentData, 0, mutableSetOf()))
 
                 val vn = ViewNode(
-                        child.id,
-                        level,
-                        position[0],
-                        result!!)
+                    child.id,
+                    level,
+                    position[0],
+                    result!!
+                )
 
                 root.addChild(vn)
                 position[0]++
@@ -269,7 +279,7 @@ object DetailExtractor {
     @JvmStatic
     fun getExtractor(clazz: Class<*>): BaseExtractor {
         return findExtractor(clazz)
-                ?: throw IllegalStateException("Not found extractor for type:" + clazz.canonicalName)
+            ?: throw IllegalStateException("Not found extractor for type:" + clazz.canonicalName)
     }
 
     /**
@@ -287,7 +297,7 @@ object DetailExtractor {
     private fun <T, R> findItemByClassInheritance(clazz: Class<T>, data: Map<String, R>): R? {
         var clz: Class<*> = clazz
         var ve: R? = data[clz.requireCanonicalName()]
-        while (ve == null && clz != Any::class.java) {//object just for sure that View is unregistered
+        while (ve == null && clz != Any::class.java) { // object just for sure that View is unregistered
             clz = clz.superclass as Class<*>
             ve = data[clz.requireCanonicalName()]
         }
@@ -296,6 +306,6 @@ object DetailExtractor {
 
     private fun Class<*>.requireCanonicalName(): String {
         return this.canonicalName
-                ?: throw NullPointerException("${this.name}, canonicalName is null")
+            ?: throw NullPointerException("${this.name}, canonicalName is null")
     }
 }

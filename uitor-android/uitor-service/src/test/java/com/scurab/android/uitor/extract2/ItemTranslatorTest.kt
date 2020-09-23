@@ -7,7 +7,6 @@ import org.junit.Test
 
 class ItemTranslatorTest {
 
-
     @Test
     fun testUnaryTranslation() {
         val translator = Translators[TranslatorName.Visibility]

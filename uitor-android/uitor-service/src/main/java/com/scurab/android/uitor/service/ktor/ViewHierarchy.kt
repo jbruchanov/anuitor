@@ -13,7 +13,7 @@ import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 
-private const val DEFAULT_TIMEOUT = 20000//20s
+private const val DEFAULT_TIMEOUT = 20000 // 20s
 
 class ViewHierarchy(private val windowManager: WindowManager) : FeaturePlugin {
     override fun registerRoute(routing: Routing) {
@@ -34,4 +34,3 @@ class ViewHierarchy(private val windowManager: WindowManager) : FeaturePlugin {
         }
     }
 }
-

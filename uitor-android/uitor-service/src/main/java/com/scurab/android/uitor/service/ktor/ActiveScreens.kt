@@ -11,8 +11,10 @@ import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 
-class ActiveScreens(private val windowManager: WindowManager,
-                    private val json: JsonSerializer) : FeaturePlugin {
+class ActiveScreens(
+    private val windowManager: WindowManager,
+    private val json: JsonSerializer
+) : FeaturePlugin {
 
     override fun registerRoute(routing: Routing) {
         routing.get("/screens") {

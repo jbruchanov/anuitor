@@ -1,7 +1,5 @@
 package com.scurab.extractorbuilder
 
-import java.lang.StringBuilder
-
 class RegisterBuilder {
     fun build(map: Map<String, String>, packageName: String): String {
         val templateClass = """

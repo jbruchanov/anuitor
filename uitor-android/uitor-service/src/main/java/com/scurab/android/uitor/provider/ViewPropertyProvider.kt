@@ -24,23 +24,25 @@ import com.scurab.android.uitor.tools.save
 
 class ViewPropertyProvider(private val windowManager: WindowManager) {
 
-    fun getViewProperty(screenIndex: Int,
-                        viewIndex: Int,
-                        property: String?,
-                        reflection: Boolean = false,
-                        maxDepth: Int = 3): DataResponse? {
+    fun getViewProperty(
+        screenIndex: Int,
+        viewIndex: Int,
+        property: String?,
+        reflection: Boolean = false,
+        maxDepth: Int = 3
+    ): DataResponse? {
 
         return windowManager.getRootView(screenIndex)
-                ?.let { DetailExtractor.findViewByPosition(it, viewIndex) }
-                ?.let { view ->
-                    if (property != null) {
-                        getPropertyValue(property, view, reflection, maxDepth)
-                    } else {
-                        Executor.runInMainThreadBlocking(30000) {
-                            handleObject(view, reflection, view.javaClass.name, "", "", maxDepth)
-                        }
+            ?.let { DetailExtractor.findViewByPosition(it, viewIndex) }
+            ?.let { view ->
+                if (property != null) {
+                    getPropertyValue(property, view, reflection, maxDepth)
+                } else {
+                    Executor.runInMainThreadBlocking(30000) {
+                        handleObject(view, reflection, view.javaClass.name, "", "", maxDepth)
                     }
                 }
+            }
     }
 
     private fun getPropertyValue(property: String, view: View, reflection: Boolean, maxDepth: Int): DataResponse {
@@ -71,7 +73,14 @@ class ViewPropertyProvider(private val windowManager: WindowManager) {
         return handleObject(propertyValue, reflection, view.javaClass.name, property, methodName, maxDepth)
     }
 
-    private fun handleObject(item: Any?, reflection: Boolean, parentType: String, name: String, methodName: String, maxDepth: Int): DataResponse {
+    private fun handleObject(
+        item: Any?,
+        reflection: Boolean,
+        parentType: String,
+        name: String,
+        methodName: String,
+        maxDepth: Int
+    ): DataResponse {
         val response = DataResponse()
         if (item != null) {
             var extractor: BaseExtractor? = if (reflection) null else DetailExtractor.findExtractor(item.javaClass)
@@ -79,11 +88,11 @@ class ViewPropertyProvider(private val windowManager: WindowManager) {
                 extractor = ReflectionExtractor(true, maxDepth)
             }
             val data = extractor.fillValues(item, ExtractingContext())
-            //owner of owner is not wanted
+            // owner of owner is not wanted
             data.remove("Owner")
-            //renaming key
+            // renaming key
             data["0Type"] = data.remove("Type")
-                    ?: throw NullPointerException("Type is not present?!")
+                ?: throw NullPointerException("Type is not present?!")
             data["1ParentType"] = parentType
             data["2Name"] = name
             data["3MethodName"] = methodName
@@ -112,7 +121,11 @@ class ViewPropertyProvider(private val windowManager: WindowManager) {
 
     companion object {
 
-        private fun tryGetValue(reflector: ViewReflector, property: String, outMethodName: OutRef<String>): Any {
+        private fun tryGetValue(
+            reflector: ViewReflector,
+            property: String,
+            outMethodName: OutRef<String>
+        ): Any {
             val subName = Character.toUpperCase(property[0]) + property.substring(1)
             val methods = arrayOf(property, "get$subName", subName)
             for (s in methods) {
@@ -121,7 +134,7 @@ class ViewPropertyProvider(private val windowManager: WindowManager) {
                     return reflector.callMethod(s)
                 } catch (t: Throwable) {
                     outMethodName.setValue(null)
-                    //ignore
+                    // ignore
                 }
             }
             ise("Not found methods for property:'$property' tried:'${methods.contentToString()}")
