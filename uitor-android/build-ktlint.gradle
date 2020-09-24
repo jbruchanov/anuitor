@@ -13,7 +13,7 @@ ktlint {
     filter {
         exclude("**/*Extractor.kt")
         exclude("**/Extractors*")
-        //exclude("**/extractors/**")
+        exclude("**/extractors/**")
     }
 }
 

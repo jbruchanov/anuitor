@@ -28,7 +28,7 @@ class SampleApplication : MultiDexApplication() {
         UitorClientConfig.addPointerIgnoreViewId(R.id.pointer_ignore)
         UitorClientConfig.setResourcesInSnapshot(true)
         UitorService.startService(this, 8081)
-        IdsHelper.loadValues(R::class.java)
+        IdsHelper.loadValues(this, R::class.java)
 
         DetailExtractor.registerRenderArea(
             DrawOutsideBoundsFragment.HelpTextView::class.java,

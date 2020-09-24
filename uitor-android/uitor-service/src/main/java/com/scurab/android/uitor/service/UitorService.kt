@@ -58,7 +58,7 @@ class UitorService : Service() {
         try {
             val rClassName = "$packageName.R"
             val rclass = Class.forName(rClassName)
-            IdsHelper.loadValues(rclass)
+            IdsHelper.loadValues(this, rclass)
         } catch (e: Throwable) {
             Log.e(TAG, "Unable to load Resources, probably R class is not in your packageName => call IdsHelper.loadValues(com.application.R.class);")
             Log.e(TAG, e.message ?: "null message")

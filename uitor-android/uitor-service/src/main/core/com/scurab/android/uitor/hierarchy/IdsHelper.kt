@@ -1,5 +1,6 @@
 package com.scurab.android.uitor.hierarchy
 
+import android.content.Context
 import android.content.res.Resources
 import android.util.Log
 import android.util.TypedValue
@@ -28,19 +29,23 @@ enum class RefType {
  */
 object IdsHelper {
 
+    internal var appResources: Resources? = null
+
     @JvmStatic
     internal var data = mutableMapOf<String, Map<Int, String>>()
+
     @JvmStatic
-    var RClass: Class<*>? = null; private set
+    var RClass: Class<*>? = null
 
     /**
      * Preload names of IDs defined in the app
      */
     @JvmStatic
-    fun loadValues(Rclass: Class<*>) {
+    fun loadValues(context: Context, Rclass: Class<*>) {
         if (data.isNotEmpty()) {
             data.clear()
         }
+        appResources = context.applicationContext.resources
         Rclass.classes.forEach { fillClass(it, false) }
         android.R::class.java.classes.forEach { fillClass(it, true) }
         RClass = Rclass
@@ -61,8 +66,9 @@ object IdsHelper {
         return data.values
             .firstOrNull { it.contains(id) }
             ?.let { it[id] }
-            // this is weird, TODO why is something missing ?
-            ?: Resources.getSystem().getResourceName(id)
+            ?: kotlin.runCatching { appResources?.getResourceName(id) }.getOrNull()
+            ?: kotlin.runCatching { Resources.getSystem().getResourceName(id) }.getOrNull()
+            ?: id.toString()
     }
 
     /**
