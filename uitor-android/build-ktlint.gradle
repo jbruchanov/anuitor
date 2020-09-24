@@ -9,6 +9,12 @@ ktlint {
     android.set(isAndroid())
     outputToConsole.set(true)
     outputColorName.set("RED")
+
+    filter {
+        exclude("**/*Extractor.kt")
+        exclude("**/Extractors*")
+        //exclude("**/extractors/**")
+    }
 }
 
 afterEvaluate {
