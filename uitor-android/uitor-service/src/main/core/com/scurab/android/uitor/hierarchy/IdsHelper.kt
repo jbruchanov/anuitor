@@ -35,7 +35,7 @@ object IdsHelper {
     internal var data = mutableMapOf<String, Map<Int, String>>()
 
     @JvmStatic
-    var RClass: Class<*>? = null;
+    var RClass: Class<*>? = null
 
     /**
      * Preload names of IDs defined in the app
