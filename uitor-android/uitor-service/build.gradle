@@ -12,6 +12,14 @@ android {
     testOptions.unitTests.includeAndroidResources = true
 }
 
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
+}
+
 dependencies {
     compileOnly "com.google.code.gson:gson:${gson}"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:${jackson}"

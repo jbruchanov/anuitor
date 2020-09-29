@@ -51,15 +51,6 @@ publishing {
     }
 }
 
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/dokka"
-    configuration {
-        //Add /core into kdoc
-        sourceRoot { path = 'src/main/core' }
-    }
-}
-
 //region extensions
 XmlProvider.metaClass.includeDependencies = { Project project ->
     def node = delegate.asNode()
