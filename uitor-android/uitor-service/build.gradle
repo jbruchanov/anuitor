@@ -27,8 +27,8 @@ dependencies {
     implementation "com.scurab:anuitor-client:${project.releaseVersion}"
     implementation "androidx.annotation:annotation:${androidXAnnotations}"
     //necessary for service
-    implementation "androidx.core:core:${androidXCore}"
-    implementation "androidx.fragment:fragment:${androidXFragments}"
+    implementation "androidx.core:core-ktx:${androidXCore}"
+    implementation "androidx.fragment:fragment-ktx:${androidXFragments}"
     implementation "io.ktor:ktor-server-cio:$ktor"
     //debug logging
     //implementation("ch.qos.logback:logback-classic:1.2.3")
@@ -44,7 +44,7 @@ dependencies {
     compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
     compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
     compileOnly "androidx.constraintlayout:constraintlayout:${constraintlayout}"
-    compileOnly "androidx.navigation:navigation-fragment:${androidXNavigation}"
+    compileOnly "androidx.navigation:navigation-fragment-ktx:${androidXNavigation}"
 
     testImplementation "junit:junit:$junit"
     testImplementation project(":uitor-service-groovy")
