@@ -22,7 +22,7 @@ class Resources(
     private val dataProvider = ResourcesProvider(windowManager)
 
     override fun registerRoute(routing: Routing) {
-        routing.get("/resources/all") {
+        routing.get("/api/resources/all") {
             catching {
                 val data = IdsHelper.getAllResources(dataProvider.resources)
                 var groupIndex = 0
@@ -42,13 +42,13 @@ class Resources(
                 call.respondText(json.toJson(result), ContentTypes.json, HttpStatusCode.OK)
             }
         }
-        routing.get("/resources/list") {
+        routing.get("/api/resources/list") {
             catching {
                 val result = IdsHelper.getAllResources(dataProvider.resources)
                 call.respondText(json.toJson(result), ContentTypes.json, HttpStatusCode.OK)
             }
         }
-        routing.get("/resources/{screenIndex}/{resId}") {
+        routing.get("/api/resources/{screenIndex}/{resId}") {
             catching {
                 val resId = call.parameters["resId"]?.toIntOrNull()
                 val screenIndex = call.parameters["screenIndex"]?.toIntOrNull() ?: 0

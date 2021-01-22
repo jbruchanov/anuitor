@@ -20,7 +20,7 @@ class ScreenStructure(
     private val dataProvider = ScreenStructureProvider(windowManager)
 
     override fun registerRoute(routing: Routing) {
-        routing.get("/screenstructure") {
+        routing.get("/api/screenstructure") {
             catching {
                 val json = json.toJson(dataProvider.getStructure())
                 call.respondText(json, ContentTypes.json, HttpStatusCode.OK)

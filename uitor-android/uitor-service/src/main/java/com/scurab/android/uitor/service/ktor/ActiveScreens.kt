@@ -17,7 +17,7 @@ class ActiveScreens(
 ) : FeaturePlugin {
 
     override fun registerRoute(routing: Routing) {
-        routing.get("/screens") {
+        routing.get("/api/screens") {
             catching {
                 val json = json.toJson(windowManager.viewRootNames)
                 call.respondText(json, ContentTypes.json, HttpStatusCode.OK)

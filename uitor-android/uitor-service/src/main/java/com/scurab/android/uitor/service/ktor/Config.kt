@@ -14,7 +14,7 @@ class Config(
     private val json: JsonSerializer
 ) : FeaturePlugin {
     override fun registerRoute(routing: Routing) {
-        routing.get("/config") {
+        routing.get("/api/config") {
             catching {
                 call.respondText(json.toJson(configs), ContentTypes.json)
             }

@@ -16,7 +16,7 @@ import io.ktor.routing.get
 
 class Screen(private val windowManager: WindowManager) : FeaturePlugin {
     override fun registerRoute(routing: Routing) {
-        routing.get("/screen/{index}") {
+        routing.get("/api/screen/{index}") {
             catching {
                 val index = call.parameters["index"]?.toIntOrNull() ?: 0
                 val rootView = windowManager.getRootView(index)

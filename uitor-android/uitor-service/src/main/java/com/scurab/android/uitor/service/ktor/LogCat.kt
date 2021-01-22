@@ -12,7 +12,7 @@ import io.ktor.routing.get
 
 class LogCat : FeaturePlugin {
     override fun registerRoute(routing: Routing) {
-        routing.get("/logcat/{type?}") {
+        routing.get("/api/logcat/{type?}") {
             val type = call.parameters["type"]
             catching {
                 call.respondText(LogCatProvider.dumpLogcat(type), ContentTypes.text, HttpStatusCode.OK)

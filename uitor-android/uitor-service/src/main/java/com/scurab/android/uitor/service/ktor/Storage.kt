@@ -40,7 +40,7 @@ class Storage(
             }
         }
 
-        routing.get("/storage", handler)
-        routing.get("/storage?path={path?}", handler)
+        routing.get("/api/storage", handler)
+        routing.get("/api/storage?path={path?}", handler)
     }
 }

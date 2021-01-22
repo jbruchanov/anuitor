@@ -26,7 +26,7 @@ class Groovy(tempDir: File) {
     )
 
     fun registerRoute(routing: Routing) {
-        routing.post("/groovy") {
+        routing.post("/api/groovy") {
             val result: String = try {
                 call.receiveText().execute()
             } catch (t: Throwable) {

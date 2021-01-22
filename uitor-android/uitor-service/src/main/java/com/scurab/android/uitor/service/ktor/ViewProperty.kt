@@ -21,7 +21,7 @@ class ViewProperty(
     private val dataProvider = ViewPropertyProvider(windowManager)
 
     override fun registerRoute(routing: Routing) {
-        routing.get("/view/{screen}/{id}/{property}/{reflection?}/{maxDepth?}/") {
+        routing.get("/api/view/{screen}/{id}/{property}/{reflection?}/{maxDepth?}/") {
             catching {
                 val screenIndex = call.parameters["screen"]?.toIntOrNull()
                 val viewIndex = call.parameters["id"]?.toIntOrNull()

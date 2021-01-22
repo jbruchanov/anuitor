@@ -20,7 +20,7 @@ class ScreenComponents(
     private val dataProvider = ScreenComponentsProvider(windowManager)
 
     override fun registerRoute(routing: Routing) {
-        routing.get("/screencomponents") {
+        routing.get("/api/screencomponents") {
             catching {
                 val node = dataProvider.getStructure()
                 val json = json.toJson(node)

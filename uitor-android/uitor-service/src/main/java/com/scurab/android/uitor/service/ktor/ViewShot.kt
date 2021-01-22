@@ -17,7 +17,7 @@ class ViewShot(windowManager: WindowManager) : FeaturePlugin {
     private val dataProvider = ViewShotProvider(windowManager)
 
     override fun registerRoute(routing: Routing) {
-        routing.get("/view/{screen}/{id}") {
+        routing.get("/api/view/{screen}/{id}") {
             catching {
                 val screenIndex = call.parameters["screen"]?.toIntOrNull()
                 val viewIndex = call.parameters["id"]?.toIntOrNull()

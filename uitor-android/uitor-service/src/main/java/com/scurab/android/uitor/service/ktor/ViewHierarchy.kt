@@ -17,7 +17,7 @@ private const val DEFAULT_TIMEOUT = 20000 // 20s
 
 class ViewHierarchy(private val windowManager: WindowManager) : FeaturePlugin {
     override fun registerRoute(routing: Routing) {
-        routing.get("/viewhierarchy/{screenIndex}") {
+        routing.get("/api/viewhierarchy/{screenIndex}") {
             catching {
                 val screenIndex = call.parameters["screenIndex"]?.toIntOrNull()
                 val rootView = screenIndex?.let { windowManager.getRootView(it) }
