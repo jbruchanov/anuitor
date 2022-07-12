@@ -3,7 +3,17 @@ apply plugin: 'kotlin-android'
 apply from: "$rootDir/build-android.gradle"
 apply from: "$rootDir/build-ktlint.gradle"
 
+ext.artifactId = 'anuitor'
+
 android {
+    buildTypes {
+        debug {
+            buildConfigField "String", "VERSION_CODE", "\"${project["releaseVersion"]}\""
+        }
+        release {
+            buildConfigField "String", "VERSION_CODE", "\"${project["releaseVersion"]}\""
+        }
+    }
     sourceSets {
         main.java.srcDirs += file("src/extractors")
         //having core extracted for potential bigger in future modularisation
@@ -36,15 +46,19 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
 
     compileOnly project(":uitor-service-groovy")
-    compileOnly "androidx.recyclerview:recyclerview:${androidX}"
-    compileOnly "androidx.cardview:cardview:${androidX}"
-    compileOnly "androidx.gridlayout:gridlayout:${androidX}"
-    compileOnly "androidx.percentlayout:percentlayout:${androidX}"
+    compileOnly "androidx.recyclerview:recyclerview:${recyclerView}"
+    compileOnly "androidx.cardview:cardview:${cardView}"
+    compileOnly "androidx.gridlayout:gridlayout:${gridLayout}"
+    compileOnly "androidx.percentlayout:percentlayout:${percentLayout}"
     compileOnly "com.google.android.material:material:${androidXMaterial}"
     compileOnly "androidx.viewpager2:viewpager2:${viewPager2}"
     compileOnly "androidx.coordinatorlayout:coordinatorlayout:${coordinatorLayout}"
     compileOnly "androidx.constraintlayout:constraintlayout:${constraintlayout}"
     compileOnly "androidx.navigation:navigation-fragment-ktx:${androidXNavigation}"
+    compileOnly "androidx.drawerlayout:drawerlayout:${drawerLayout}"
+    compileOnly "androidx.drawerlayout:drawerlayout:${drawerLayout}"
+    implementation "androidx.customview:customview:${customView}"
+
 
     testImplementation "junit:junit:$junit"
     testImplementation project(":uitor-service-groovy")
@@ -81,11 +95,11 @@ task cleanStructureClasses {
 clean.dependsOn cleanStructureClasses
 
 
-afterEvaluate {
+afterEvaluate {p ->
     publishing {
         publications {
             maven(MavenPublication) {
-                artifactId = 'anuitor'
+                artifactId = p.artifactId
                 artifact tasks.bundleReleaseAar
                 artifact tasks.sourcesJar
                 //todo jdocs

@@ -40,6 +40,8 @@ class UitorService : Service() {
 
     private var server = KtorServer(this)
 
+    private val pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT or if (Build.VERSION.SDK_INT >= 23) PendingIntent.FLAG_IMMUTABLE else 0
+
     private val appTitle: String? by lazy {
         try {
             val packageManager = packageManager
@@ -109,7 +111,7 @@ class UitorService : Service() {
         val i = Intent(Intent.ACTION_VIEW)
         val port = server.port ?: 80
         i.data = Uri.parse("http://127.0.0.1:$port/")
-        return PendingIntent.getActivity(this, System.currentTimeMillis().toInt(), i, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(this, System.currentTimeMillis().toInt(), i, pendingIntentFlags)
     }
 
     /**
@@ -120,7 +122,7 @@ class UitorService : Service() {
     private fun createStopIntent(): PendingIntent? {
         val i = Intent(this, UitorService::class.java)
         i.action = STOP
-        return PendingIntent.getService(this, System.currentTimeMillis().toInt(), i, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getService(this, System.currentTimeMillis().toInt(), i, pendingIntentFlags)
     }
 
     private fun createSimpleNotification(addMsg: String?, addStopAction: Boolean): Notification? {

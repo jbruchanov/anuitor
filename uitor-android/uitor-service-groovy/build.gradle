@@ -3,20 +3,23 @@ apply plugin: 'kotlin-android'
 apply from: "$rootDir/build-android.gradle"
 apply from: "$rootDir/build-ktlint.gradle"
 
+
+ext.artifactId = 'anuitor-groovy'
+
 android {
     lintOptions {
         abortOnError false
     }
 }
 
-afterEvaluate {
+afterEvaluate { p ->
     publishing {
         publications {
             maven(MavenPublication) {
                 pom {
                     name = 'AnUitor - Groovy plugin'
                 }
-                artifactId = 'anuitor-groovy'
+                artifactId = p.artifactId
                 artifact tasks.bundleReleaseAar
                 artifact tasks.sourcesJar
             }
@@ -31,5 +34,5 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit"
 }

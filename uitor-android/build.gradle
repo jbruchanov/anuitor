@@ -3,16 +3,15 @@ apply from: 'build-versions.gradle'
 
 
 buildscript {
+
     repositories {
         mavenLocal()
-        google()
-        jcenter()
         mavenCentral()
+        google()
         maven { url("https://plugins.gradle.org/m2/") }
     }
-
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath "com.android.tools.build:gradle:$androidGradlePlugin"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktLintPlugin"
@@ -25,10 +24,11 @@ allprojects {
     repositories {
         mavenLocal()
         google()
-        jcenter()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
         maven {
-            url "https://dl.bintray.com/kotlin/ktor/"
+            url 'https://maven.google.com/'
+            name 'Google'
         }
     }
 }

@@ -81,7 +81,11 @@ class ExtractorsBuilder {
             mi.isId -> "${mi.methodName}().idName()"
             mi.useExtractor -> {
                 convertToString = ", false"
-                "${mi.methodName}().extract(ExtractingContext(contextData = context.contextData, depth = context.depth + 1))"
+                var methodName = mi.methodName
+                if (!(methodName == "this" || mi.isProperty)) {
+                    methodName += "()"
+                }
+                "${methodName}.extract(ExtractingContext(contextData = context.contextData, depth = context.depth + 1))"
             }
             else -> {
                 var methodName = mi.methodName

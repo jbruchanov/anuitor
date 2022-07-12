@@ -12,10 +12,12 @@ afterEvaluate {
     }
 }
 
+String libGroupId = "com.scurab";
+
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'com.scurab'
+            groupId = libGroupId
             artifactId = 'anuitor'
             version = project.releaseVersion
 
@@ -63,7 +65,8 @@ XmlProvider.metaClass.includeDependencies = { Project project ->
     final confsMap = [
             //order is important, in case of different scopes, later dep overwrites previous one
             implementation: "runtime",
-            compile       : "compile",
+            //compileOnly is manual or runtime dependency
+            /*compileOnly   : "provided",*/
             api           : "compile"] as LinkedHashMap //order matters
 
     def map = [:]
@@ -89,9 +92,9 @@ Node.metaClass.addDependency = { Dependency dep, String scope ->
     if (isProjectDependency) {
         //use name + gradle.properties values, this is local subproject dep
         def projectDep = dep as ProjectDependency
-        name = projectDep.name
-        group = project.groupId
-        version = project.versionName
+        name = projectDep.dependencyProject["artifactId"]
+        group = libGroupId
+        version = project["releaseVersion"]
     } else if (!ignoreDependency) {
         name = dep.name
         group = dep.group

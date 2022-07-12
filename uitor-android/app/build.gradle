@@ -4,9 +4,12 @@ apply from: "$rootDir/build-android.gradle"
 apply from: "$rootDir/build-ktlint.gradle"
 
 android {
+    compileSdkVersion project["compileSdk"].toInteger()
 
     defaultConfig {
-        minSdkVersion minSdk
+        minSdkVersion project["minSdk"].toInteger()
+        targetSdkVersion project["targetSdk"].toInteger()
+
         applicationId "com.scurab.android.uitorsample"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -20,24 +23,23 @@ android {
 
 dependencies {
     def localMaven = false
-    if(localMaven) {
+    if (localMaven) {
         implementation "com.scurab:anuitor:${project.releaseVersion}"
         if (/*build-versions.gradle*/ groovyEnabled) {
             implementation "com.scurab:anuitor-groovy:${project.releaseVersion}"
         }
     } else {
         implementation project(":uitor-service")
-        if (/*build-versions.gradle*/groovyEnabled) {
+        if (/*build-versions.gradle*/ groovyEnabled) {
             implementation project(":uitor-service-groovy")
         }
     }
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit"
 
-    implementation "com.android.support:multidex:${multidex}"
-    implementation "androidx.recyclerview:recyclerview:${androidX}"
-    implementation "androidx.cardview:cardview:${androidX}"
-    implementation "androidx.gridlayout:gridlayout:${androidX}"
+    implementation "androidx.recyclerview:recyclerview:${recyclerView}"
+    implementation "androidx.cardview:cardview:${cardView}"
+    implementation "androidx.gridlayout:gridlayout:${gridLayout}"
     implementation "com.google.android.material:material:${androidXMaterial}"
     implementation "androidx.percentlayout:percentlayout:${androidX}"
     implementation "androidx.slidingpanelayout:slidingpanelayout:${slidingpaneLayout}"

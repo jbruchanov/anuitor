@@ -2264,8 +2264,9 @@
       "items": {
         "1": [
           {
-            "m": "getNavController",
-            "e": true
+            "m": "navController",
+            "e": true,
+            "p": true
           }
         ]
       }
@@ -2274,12 +2275,14 @@
       "items": {
         "1": [
           {
-            "m": "getGraph",
-            "e": true
+            "m": "graph",
+            "e": true,
+            "p": true
           },
           {
-            "m": "getCurrentDestination",
-            "e": true
+            "m": "currentDestination",
+            "e": true,
+            "p": true
           },
           {
             "m": "BackStack",
@@ -2293,7 +2296,7 @@
       "items": {
         "1": [
           {
-            "m": "getDisplayName",
+            "m": "displayName",
             "r": true
           },
           {
@@ -2302,7 +2305,7 @@
           },
           {
             "n": "Destinations",
-            "c": "map{ it.getId().idName() }",
+            "c": "map{ it.id.idName() }",
             "e": true
           }
         ]
@@ -2312,16 +2315,26 @@
       "items": {
         "1": [
           {
-            "m": "getDisplayName",
-            "c": "getId().idName()"
+            "m": "displayName",
+            "c": "id.idName()"
           },
-          {"m": "getNavigatorName"},
           {
-            "m": "getArguments",
-            "e": true
+            "m": "navigatorName",
+            "p": true
           },
-          {"m": "getId"},
-          {"m": "getLabel"}
+          {
+            "m": "arguments",
+            "e": true,
+            "p": true
+          },
+          {
+            "m": "id",
+            "p": true
+          },
+          {
+            "m": "label",
+            "p": true
+          }
         ]
       }
     },

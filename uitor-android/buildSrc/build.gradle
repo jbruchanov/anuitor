@@ -12,13 +12,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
     }
 }
 
 repositories {
     google()
-    jcenter()
     mavenCentral()
 }
 
@@ -33,7 +32,7 @@ compileTestKotlin {
     }
 }
 dependencies {
-    def kotlinVersion = "1.4.21"
+    def kotlinVersion = "1.7.10"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "com.squareup:kotlinpoet:$kotlin_poet"

@@ -2,32 +2,37 @@
 
 ext {
     minSdk = 14
-    compileSdk = 30
+    compileSdk = 31
     targetSdk = compileSdk
-    gson = "2.8.6"
-    jackson = "2.11.2"
-    robolectric = "4.3.1"
+    gson = "2.9.0"
+    jackson = "2.12.7"
+    robolectric = "4.8"
     mockito = "2.25.0"
-    commonsIo = "2.6"
+    commonsIo = "2.11.0"
     groovyEnabled = minSdk >= 26 && targetSdk >= 26
     dx = "1.7"
-    groovy = "2.4.8"
-    kotlin_coroutines = "1.4.2"
+    groovy = "2.5.17"
+    kotlin_coroutines = "1.6.3"
     kotlin_poet = "1.3.0"
-    junit = "4.12"
-    multidex = "1.0.3"
+    junit = "4.13.2"
 
     androidX = "1.0.0"
-    androidXAppCompat = "1.2.0"
-    androidXAnnotations = "1.1.0"
-    androidXCore = "1.3.2"
-    androidXFragments = "1.2.5"
-    androidXMaterial = "1.2.1"
-    androidXNavigation = "2.3.2"
-    constraintlayout = "2.0.4"
+    androidXAppCompat = "1.4.2"
+    androidXAnnotations = "1.4.0"
+    androidXCore = "1.8.0"
+    androidXFragments = "1.5.0"
+    androidXMaterial = "1.6.1"
+    androidXNavigation = "2.5.0"
+    constraintlayout = "2.1.4"
     viewPager2 = "1.0.0"
-    coordinatorLayout = "1.1.0"
-    slidingpaneLayout = "1.1.0"
+    coordinatorLayout = "1.2.0"
+    slidingpaneLayout = "1.2.0"
+    recyclerView = "1.2.1"
+    cardView = "1.0.0"
+    gridLayout = "1.0.0"
+    percentLayout = "1.0.0"
+    drawerLayout = "1.1.1"
+    customView = "1.1.0"
 
-    ktor = "1.4.0"
+    ktor = "1.6.3"
 }
