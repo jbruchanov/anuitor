@@ -6,6 +6,7 @@ apply from: "$rootDir/build-ktlint.gradle"
 ext.artifactId = 'anuitor'
 
 android {
+    namespace = "com.scurab.android.uitor"
     buildTypes {
         debug {
             buildConfigField "String", "VERSION_CODE", "\"${project["releaseVersion"]}\""
@@ -95,7 +96,8 @@ task cleanStructureClasses {
 clean.dependsOn cleanStructureClasses
 
 
-afterEvaluate {p ->
+afterEvaluate { p ->
+    p.tasks["sourcesJar"].dependsOn(createStructureClasses)
     publishing {
         publications {
             maven(MavenPublication) {

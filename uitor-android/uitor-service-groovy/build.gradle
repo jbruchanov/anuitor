@@ -7,6 +7,7 @@ apply from: "$rootDir/build-ktlint.gradle"
 ext.artifactId = 'anuitor-groovy'
 
 android {
+    namespace = "com.scurab.android.service_groovy"
     lintOptions {
         abortOnError false
     }

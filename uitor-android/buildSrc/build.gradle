@@ -2,9 +2,6 @@ apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply from: '../build-versions.gradle'
 
-sourceCompatibility = "8"
-targetCompatibility = "8"
-
 buildscript {
     repositories {
         google()
@@ -12,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.23"
     }
 }
 
@@ -23,16 +20,16 @@ repositories {
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 dependencies {
-    def kotlinVersion = "1.7.10"
+    def kotlinVersion = "1.9.23"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "com.squareup:kotlinpoet:$kotlin_poet"
