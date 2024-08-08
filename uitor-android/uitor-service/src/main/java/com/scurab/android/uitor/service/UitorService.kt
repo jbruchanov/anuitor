@@ -1,5 +1,6 @@
 package com.scurab.android.uitor.service
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,6 +9,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.NameNotFoundException
+import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
@@ -20,6 +22,7 @@ import com.scurab.android.uitor.hierarchy.IdsHelper
 import com.scurab.android.uitor.tools.FileSystemTools
 import com.scurab.android.uitor.tools.NetTools
 import com.scurab.android.uitor.tools.ZipTools
+import io.ktor.features.UnsupportedMediaTypeException
 import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -85,9 +88,10 @@ class UitorService : Service() {
                                 ?: throw NullPointerException("Undefined '$ROOT_FOLDER' in extras")
                             val rootFolderFullPath = "${baseContext.cacheDir}/$rootFolder"
                             server.start(rootFolderFullPath, port)
-                            startForeground(NOTIF_ID, createSimpleNotification(null, true))
+                            startForeground(true)
                         }
                     }
+
                     STOP -> {
                         stopForeground(true)
                         server.stop()
@@ -96,9 +100,20 @@ class UitorService : Service() {
             }
         } catch (e: Throwable) {
             e.printStackTrace(System.err)
-            startForeground(NOTIF_ID, createSimpleNotification(e.message, false))
+            startForeground(false)
         }
         return START_NOT_STICKY
+    }
+
+    @SuppressLint("NewApi")
+    private fun startForeground(addStopAction: Boolean) {
+        val notification = createSimpleNotification(null, addStopAction)
+        val version = Build.VERSION.SDK_INT
+        when {
+            version >= Build.VERSION_CODES.Q -> startForeground(NOTIF_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+            version >= Build.VERSION_CODES.ECLAIR -> startForeground(NOTIF_ID, notification)
+            else -> throw IllegalStateException("Unsupported sdk:$version")
+        }
     }
 
     /**
@@ -125,7 +140,7 @@ class UitorService : Service() {
         return PendingIntent.getService(this, System.currentTimeMillis().toInt(), i, pendingIntentFlags)
     }
 
-    private fun createSimpleNotification(addMsg: String?, addStopAction: Boolean): Notification? {
+    private fun createSimpleNotification(addMsg: String?, addStopAction: Boolean): Notification {
         val defaults = Notification.DEFAULT_LIGHTS
         var msg = "IPs:${NetTools.getLocalIpAddress()}\nPort:${server.port}"
         if (addMsg != null) {
@@ -137,9 +152,6 @@ class UitorService : Service() {
         }
         val stopIntent = if (addStopAction) createStopIntent() else null
         val n = createNotification(this, title, msg, defaults, createContentIntent(), stopIntent)
-        if (n == null) {
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-        }
         return n
     }
 
@@ -151,7 +163,7 @@ class UitorService : Service() {
             defaults: Int,
             contentIntent: PendingIntent?,
             stopIntent: PendingIntent?
-        ): Notification? {
+        ): Notification {
             val notib = Builder(context, TAG)
                 .setContentTitle(title ?: TAG)
                 .setAutoCancel(true)
@@ -193,7 +205,7 @@ class UitorService : Service() {
                         f.mkdirs()
                         try {
                             val zipFile = "$folder/web.zip"
-                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, R.raw.uitor_webapp, zipFile)
+                            ZipTools.copyFileIntoInternalStorageIfNecessary(context, com.scurab.android.uitor.client.R.raw.uitor_webapp, zipFile)
                             ZipTools.extractFolder(zipFile, folder)
                         } catch (e: Throwable) {
                             exception = e

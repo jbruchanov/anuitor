@@ -67,7 +67,7 @@ public class ComponentsFragment extends DialogFragment {
     }
 
     private Button createThemedButton(String title, View.OnClickListener clickListener) {
-        Button button = new Button(new ContextThemeWrapper(requireActivity(), R.style.Theme_AppCompat_Light));
+        Button button = new Button(new ContextThemeWrapper(requireActivity(), androidx.appcompat.R.style.Theme_AppCompat_Light));
         button.setText(title);
         button.setOnClickListener(clickListener);
         return button;
@@ -101,7 +101,7 @@ public class ComponentsFragment extends DialogFragment {
     }
 
     protected void onShowDatePickerDialog() {
-        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(getActivity(), R.style.Theme_AppCompat);
+        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(getActivity(), androidx.appcompat.R.style.Theme_AppCompat_Light);
         new DatePickerDialog(themeWrapper, null, 2012, 3, 3).show();
     }
 
